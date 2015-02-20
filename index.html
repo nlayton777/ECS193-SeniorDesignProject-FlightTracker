@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<title>UCD Flight Tracker</title>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<link rel="stylesheet" href="bootstrap.css"/>
+	<script src="jquery-2.1.3.js"/></script>
+	<script src="bootstrap.min.js"></script>
+    </head>
+
+    <body>
+	<nav class="navbar navbar-inverse ">
+	    <div class="container-fluid">
+		<div class="navbar-header">
+		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		    </button>
+		    <a class="navbar-brand" href="index.html">Flight Tracker</a>
+		</div>
+		<div class="collapse navbar-collapse" id="mynavbar">
+		    <ul class="nav navbar-nav">
+			<li class="active">
+			    <a href="index.html">Search</a>
+			</li>
+			<li>
+			    <a href="about.html">About</a>
+			</li>
+		    </ul>
+		    <ul class="nav navbar-nav navbar-right">
+			<li>
+			    <a href="contact.html">Contact</a>
+			</li>
+		    </ul>
+		</div>
+	    </div>
+	</nav>
+
+	<!-- HERE WE WILL HAVE OUR SEARCH BAR -->
+	<div class="container">
+	    <header class="jumbotron" id="home">
+		<h1>UCD Flight Tracker</h1>
+		<p>Customize your travel needs!<p>
+
+		<form class="form-vertical" role="form" method="post" action="search.php">
+		    <div class="form-group form-inline">
+			<input type="text" class="form-control" id="source" 
+			    name="source" placeholder="Departure Location"/>
+			    
+			<input type="text" class="form-control" id="destination" 
+			    name="destination" placeholder="Arrival Location"/>
+
+			<input type="text" class="form-control" id="depart-date" 
+			    name="depart_date" placeholder="Depart"/>
+			    
+			<input type="text" class="form-control" id="return-date" 
+			    name="return_date" placeholder="Return"/>
+
+			<input type="text" class="form-control" id="passengers" 
+			    name="passengers" placeholder="Number of Passengers"/>
+			    
+			<input type="text" class="form-control" id="price" 
+			    name="price" placeholder="Name Your Price!"/>
+		    </div>
+
+		    <!-- destination, departure date, return date, # pass, price -->
+
+		    <div class="form-group form-inline">
+			<input type="text" class="form-control" id="airline" 
+			    name="airline" placeholder="Preferred Airline"/>
+			    
+			<input type="text" class="form-control" id="search" 
+			    name="search" placeholder="Search Window"/>
+
+			<input type="text" class="form-control" id="email" 
+			    name="email" placeholder="john.smith@website.com"/>
+			    
+			<input type="text" class="form-control" id="phone" 
+			    name="return_date" placeholder="+1 (123) 456 - 7890"/>
+
+			<input type="submit" class="btn btn-default" value="Find your flight!"/>
+		    </div>
+		</form>
+	    </header>
+	</div>
+    </body>
+</html>

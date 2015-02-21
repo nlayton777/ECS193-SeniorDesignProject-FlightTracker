@@ -47,29 +47,61 @@
 		<form class="form-vertical" role="form" method="post" action="search.php">
 		    <div class="form-group form-inline">
 			<label for="source" class="sr-only">Departure Location</label>
-			<input type="text" class="form-control" id="source" 
-			    name="source" placeholder="Departure Location"/>
+			<select class="form-control" id="source">
+			<?php
+			    if (file_exists("AirportCodes.txt"))
+			    {
+				$codes = fopen("AirportCodes.txt",'r');				
+				while (!feof($codes))
+				{
+	 			    $line = fgets($codes);
+				    echo "<option value=\"" .
+					substr($line, -5, 3) .
+					"\">" . $line . "</option>";
+				}
+			    }
+			?>
+			</select>
 			    
+			<!--need to find way to autocomplete with airport-->
 			<label for="destination" class="sr-only">Arrival Location</label>
-			<input type="text" class="form-control" id="destination" 
-			    name="destination" placeholder="Arrival Location"/>
+			<select class="form-control" id="destination">
+			<?php
+			    if (file_exists("AirportCodes.txt"))
+			    {
+				$codes = fopen("AirportCodes.txt",'r');				
+				while (!feof($codes))
+				{
+	 			    $line = fgets($codes);
+				    echo "<option value=\"" .
+					substr($line, -5, 3) .
+					"\">" . $line . "</option>";
+				}
+			    }
+			?>
+			</select>
 
+			<!--need to find way to have calendar pop-up-->
 			<label for="depart-date" class="sr-only">Date of Departure</label>
 			<input type="text" class="form-control" id="depart-date" 
 			    name="depart_date" placeholder="Depart"/>
 			    
+			<!--need to find way to have calendar pop-up-->
 			<label for="return-date" class="sr-only">Date of Return</label>
 			<input type="text" class="form-control" id="return-date" 
 			    name="return_date" placeholder="Return"/>
 
 			<label for="passengers" class="sr-only">Number of Passengers</label>
 			<select class="form-control" id="passengers">
-			    <option>1 Adult Economy</option>
-			    <option>2 Adult Economy</option>
-			    <option>3 Adult Economy</option>
-			    <option>4 Adult Economy</option>
-			    <option>5 Adult Economy</option>
-			    <option>6 Adult Economy</option>
+			<?php
+			    $pass = array("Adult", "Senior", "Youth", 
+				"Child", "Seat Infant", "Lap Infant");
+
+			    foreach ($pass as $pass_type)
+				for ($j = 1; $j <= 7; $j++)
+				    echo "<option value=\"$j $pass_type\">" .
+					"$j $pass_type Economy </option>";
+			?>
 			</select>
 
 			<label for="price" class="sr-only">Price</label>
@@ -101,9 +133,8 @@
 			<label for="phone" class="sr-only">Phone Number</label>
 			<input type="text" class="form-control" id="phone" 
 			    name="return_date" placeholder="+1 (123) 456 - 7890"/>
-
-			<input type="submit" class="btn btn-default btn-lg" value="Find your flight!"/>
 		    </div>
+		    <input type="submit" class="btn btn-default" value="Find your flight!"/>
 		</form>
 	    </header>
 	</div>

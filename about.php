@@ -50,8 +50,8 @@
 		    <div class="col-md-4 beach">
 			<h2>Customize your travel needs!</h2>
 			<p>
-			    Our search engine allows you to specify which airline you want to travel with. 
-			    No more getting stuck with the companies that you don't want to deal with
+			    Our search engine allows you to specify the airline with whom you want to travel. 
+			    No more getting stuck with the companies that you don't prefer.
 			</p>
 		    </div>
 
@@ -59,9 +59,9 @@
 			<h2>Kick back, relax, and let us find the deals for you!</h2>
 			<p>
 			    Don't miss out on price reductions. 
-			    Provide us a search window, and we will search for your flight
-			    over that period of time. Then, we notify you if the price drops
-			    to the same value or a lesser value than specified.
+			    Provide us with a search window, and we search for your flight
+			    throughout that time. Feel free to leave your computer,
+			    and we will notify you once your price has been found. 
 			</p>
 		    </div>
 

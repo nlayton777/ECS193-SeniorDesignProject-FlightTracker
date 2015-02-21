@@ -66,6 +66,7 @@
 			    </label>
 			    <input type="text-area" class="form-control" id="comments" placeholder="Let us know what you think!"/>
 			</div>
+			<input type="submit" class="btn btn-default" value="Submit"/>
 		    </form>
 		</div>
 

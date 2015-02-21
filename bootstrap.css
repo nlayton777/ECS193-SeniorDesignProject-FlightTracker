@@ -114,7 +114,7 @@ input,
 optgroup,
 select,
 textarea {
-  margin: 0;
+  margin: 3px 0;
   font: inherit;
   color: inherit;
 }
@@ -1073,12 +1073,13 @@ html {
 
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+/*background color adjustment*/
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: #333;
-  background-color: #fff;
+  background-color: #dadada;
 }
 input,
 button,
@@ -4851,11 +4852,11 @@ a.badge:focus {
   background-image: url('golden-gate2.jpg');
   background-repeat: no-repeat;
   background-size: 100% auto;
-  height: 450px;
+  height: 475px;
 }
 .jumbotron#home p {
     font-weight: bold;
-    color: #555;
+    color: inherit;
 }
 .jumbotron#about {
   height: 400px;
@@ -4886,10 +4887,17 @@ a.badge:focus {
 .jumbotron .container {
   max-width: 100%;
 }
+@media screen and (min-width: 767px) and (max-width: 991px) {
+  .jumbotron#home {
+    color: inherit;
+    height: 600px;
+    background-size: 1000px auto;
+  }
+}
 @media screen and (max-width: 767px) {
   .jumbotron#home {
     color: inherit;
-    height: 575px;
+    height: 600px;
     background-size: 1000px auto;
   }
   .jumbotron#about {

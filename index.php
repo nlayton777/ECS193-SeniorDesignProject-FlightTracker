@@ -44,10 +44,12 @@
 		<h1>UCD Flight Tracker</h1>
 		<p>Customize your travel needs!<p>
 
-		<form class="form-vertical" role="form" method="post" action="search.php">
+		<form id="search_form" class="form-vertical" method="post" action="search.php">
 		    <div class="form-group form-inline">
+			<!--SOURCE FIELD-->
 			<label for="source" class="sr-only">Departure Location</label>
-			<select class="form-control" id="source">
+			<select class="form-control" id="source" name="source" 
+				    form="search_form">
 			<?php
 			    if (file_exists("AirportCodes.txt"))
 			    {
@@ -55,17 +57,18 @@
 				while (!feof($codes))
 				{
 	 			    $line = fgets($codes);
-				    echo "<option value=\"" .
-					substr($line, -5, 3) .
-					"\">" . $line . "</option>";
+				    $sub = substr($line, -5, 3);
+				    echo "<option value=\"".$sub."\"> 
+					$line</option>";
 				}
 			    }
 			?>
 			</select>
 			    
-			<!--need to find way to autocomplete with airport-->
+			<!--DESTINATION FIELD-->
 			<label for="destination" class="sr-only">Arrival Location</label>
-			<select class="form-control" id="destination">
+			<select class="form-control" id="destination" name="destination" 
+				    form="search_form">
 			<?php
 			    if (file_exists("AirportCodes.txt"))
 			    {
@@ -73,9 +76,9 @@
 				while (!feof($codes))
 				{
 	 			    $line = fgets($codes);
-				    echo "<option value=\"" .
-					substr($line, -5, 3) .
-					"\">" . $line . "</option>";
+				    $sub = substr($line, -5, 3);
+				    echo "<option value=\"".$sub."\"> 
+					$line</option>";
 				}
 			    }
 			?>
@@ -90,13 +93,16 @@
 			<label for="return-date" class="sr-only">Date of Return</label>
 			<input type="text" class="form-control" id="return-date" 
 			    name="return_date" placeholder="Return"/>
+		    </div>
 
+		    <div class="form-group form-inline">
+			<!--PASSENGERS FIELD-->
 			<label for="passengers" class="sr-only">Number of Passengers</label>
-			<select class="form-control" id="passengers">
+			<select class="form-control" id="passengers" name="passengers"
+				    form="search_form">
 			<?php
 			    $pass = array("Adult", "Senior", "Youth", 
 				"Child", "Seat Infant", "Lap Infant");
-
 			    foreach ($pass as $pass_type)
 				for ($j = 1; $j <= 7; $j++)
 				    echo "<option value=\"$j $pass_type\">" .
@@ -104,35 +110,45 @@
 			?>
 			</select>
 
+			<!--PRICE FIELD-->
 			<label for="price" class="sr-only">Price</label>
 			<input type="text" class="form-control" id="price" 
 			    name="price" placeholder="Name Your Price!"/>
-		    </div>
 
-		    <div class="form-group form-inline">
+			<!--AIRLINE FIELD-->
 			<label for="airline" class="sr-only">Preferred Airline</label>
-			<select class="form-control" id="airline">
-			    <option>Select And Airline</option>
-			    <option>Alaskan Airlines</option>
-			    <option>American Airlines</option>
-			    <option>Delta Air Lines</option>
-			    <option>Hawaiian Airlines</option>
-			    <option>JetBlue Airways</option>
-			    <option>Southwest Airlines</option>
-			    <option>United Airlines</option>
-			    <option>United Airlines</option>
+			<select class="form-control" id="airline" name="airline"
+				    form="search_form">
+			<?php
+			    if (file_exists("Airlines.txt"))
+			    {
+				$codes = fopen("Airlines.txt",'r');				
+				while (!feof($codes))
+				{
+	 			    $line = fgets($codes);
+				    echo "<option value=\"" . $line .
+					"\">" . $line . "</option>";
+				}
+			    }
+			?>
+			</select>
 			    
-			<label for="search" class="sr-only">Search Window</label>
-			<input type="text" class="form-control" id="search" 
-			    name="search" placeholder="Search Window"/>
+			<!--SEARCH WINDOW FIELD-->
+			<label for="window" class="sr-only">Search Window</label>
+			<input type="text" class="form-control" id="window" 
+			    name="window" placeholder="Search Window (in hours)"/>
 
+		    </div>
+		    <div class="form-group form-inline">
+			<!--EMAIL FIELD-->
 			<label for="email" class="sr-only">Email</label>
 			<input type="text" class="form-control" id="email" 
 			    name="email" placeholder="john.smith@website.com"/>
 			    
+			<!--PHONE NUMBER FIELD-->
 			<label for="phone" class="sr-only">Phone Number</label>
 			<input type="text" class="form-control" id="phone" 
-			    name="return_date" placeholder="+1 (123) 456 - 7890"/>
+			    name="phone" placeholder="(123) 456 - 7890"/>
 		    </div>
 		    <input type="submit" class="btn btn-default" value="Find your flight!"/>
 		</form>

@@ -52,6 +52,17 @@
 
 
 	    print_r($_POST);
+	    echo '</br>';
+	    echo 'Source '.$_POST['source'].'</br>';
+	    echo 'Destination '.$_POST['destination'].'</br>';
+	    echo 'Departure Date '.$_POST['depart_date'].'</br>';
+	    echo 'Return Date '.$_POST['return_date'].'</br>';
+	    echo 'Passengers '.$_POST['depart_date'].'</br>';
+	    echo 'Price '.$_POST['depart_date'].'</br>';
+	    echo 'Airline '.$_POST['depart_date'].'</br>';
+	    echo 'Search Window '.$_POST['depart_date'].'</br>';
+	    echo 'Email '.$_POST['depart_date'].'</br>';
+	    echo 'Phone Number: '.$_POST['depart_date'].'</br>';
 	?>
     </body>
 </html>

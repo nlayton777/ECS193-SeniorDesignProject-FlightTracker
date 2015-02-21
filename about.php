@@ -41,13 +41,13 @@
 	<div class="container">
 	    <header class="jumbotron" id="about">
 		<h1>Find your destination</h1>
-		<p>Let us help find you the flight tickets you need.</p>
+		<p>Let us help you find the flights that you need.</p>
 	    </header>
 	</div>
 
 	<div class="container">
 		<div class="row">
-		    <div class="col-md-4 beach">
+		    <div class="col-md-4">
 			<h2>Customize your travel needs!</h2>
 			<p>
 			    Our search engine allows you to specify the airline with whom you want to travel. 
@@ -55,7 +55,7 @@
 			</p>
 		    </div>
 
-		    <div class="col-md-4 city">
+		    <div class="col-md-4">
 			<h2>Kick back, relax, and let us find the deals for you!</h2>
 			<p>
 			    Don't miss out on price reductions. 

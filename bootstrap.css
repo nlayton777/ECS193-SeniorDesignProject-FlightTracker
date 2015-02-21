@@ -1079,7 +1079,7 @@ body {
   font-size: 14px;
   line-height: 1.42857143;
   color: #333;
-  background-color: #dadada;
+  background-color: #eaeaea;
 }
 input,
 button,
@@ -4852,7 +4852,8 @@ a.badge:focus {
   background-image: url('golden-gate2.jpg');
   background-repeat: no-repeat;
   background-size: 100% auto;
-  height: 475px;
+  background-position: center center;
+  height: 500px;
 }
 .jumbotron#home p {
     font-weight: bold;
@@ -4887,22 +4888,28 @@ a.badge:focus {
 .jumbotron .container {
   max-width: 100%;
 }
-@media screen and (min-width: 767px) and (max-width: 991px) {
-  .jumbotron#home {
-    color: inherit;
-    height: 600px;
-    background-size: 1000px auto;
-  }
-}
 @media screen and (max-width: 767px) {
   .jumbotron#home {
-    color: inherit;
-    height: 600px;
-    background-size: 1000px auto;
+    height: 680px;
+    background-size: auto 100%;
+    background-position: center center;
   }
   .jumbotron#about {
     color: inherit;
     height: 200px;
+  }
+}
+@media screen and (min-width: 765) and (max-width: 780px) {
+  .jumbotron#home {
+    padding: 30px 15px;
+    margin-bottom: 30px;
+    color: #dadada;
+    background-color: #eee;
+    background-image: url('golden-gate2.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: center top;
+    height: 500px;
   }
 }
 @media screen and (min-width: 768px) {

@@ -39,7 +39,7 @@
 	</nav>
 
 	<!-- HERE WE WILL HAVE OUR SEARCH BAR -->
-	<div class="container">
+	<div class="container-fluid">
 	    <header class="jumbotron" id="home">
 		<h1>UCD Flight Tracker</h1>
 		<p>Customize your travel needs!<p>
@@ -101,12 +101,12 @@
 			<select class="form-control" id="passengers" name="passengers"
 				    form="search_form">
 			<?php
-			    $pass = array("Adult", "Senior", "Youth", 
-				"Child", "Seat Infant", "Lap Infant");
+			    $pass = array("Adult", "Kid");
 			    foreach ($pass as $pass_type)
-				for ($j = 1; $j <= 7; $j++)
-				    echo "<option value=\"$j $pass_type\">" .
-					"$j $pass_type Economy </option>";
+				for ($j = 1; $j <= 10; $j++)
+				    echo "<option value=\"$j $pass_type\">$j ".
+					($j > 1 ? ($pass_type . "s") : $pass_type).
+					" Economy </option>";
 			?>
 			</select>
 
@@ -136,7 +136,7 @@
 			<!--SEARCH WINDOW FIELD-->
 			<label for="window" class="sr-only">Search Window</label>
 			<input type="text" class="form-control" id="window" 
-			    name="window" placeholder="Search Window (in hours)"/>
+			    name="window" placeholder="Search Window (hours)"/>
 
 		    </div>
 		    <div class="form-group form-inline">
@@ -153,6 +153,36 @@
 		    <input type="submit" class="btn btn-default" value="Find your flight!"/>
 		</form>
 	    </header>
+	</div>
+	<div class="container-fluid">
+	    <section id="description">
+		<div class="row">
+		    <div class="col-md-6">
+			<h2>Let us do the work for you</h2>
+			<p>
+			    We perform background searches for your flight, 
+			    so that you don't have to worry about refreshing your 
+			    search pages.
+			    Just tell us how long you want to search, then kick back,
+			    relax, and wait for us to notify you when 
+			    we've found your flight. 
+			    If your not the waiting type, then  you don't have to.
+			    Just leave out a waiting time, and 
+			    we will provide immediate results.
+			</p>
+		    </div>
+		    <div class="col-md-6">
+			<h2>Stay updated</h2>
+			<p>
+			    We notify you when prices are to your liking. 
+			    Stay informed through email or text, the choice is yours.
+			    Once you've obtained your tickets, don't forget to share
+			    your travel excitement with your friends on Facebook or
+			    Twitter.
+			</p>
+		    </div>
+		</div>
+	    </section>
 	</div>
     </body>
 </html>

@@ -7,6 +7,20 @@
 	<link rel="stylesheet" href="bootstrap.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
+
+	<script>
+
+		var oneway = document.getElementById('oneway');		
+		
+		function OneWay(oneway)
+		{
+			if(oneway.checked)
+			{
+				document.getElementById('return-date').disabled = true			
+			}
+		}
+	</script>
+
     </head>
 
     <body>
@@ -44,6 +58,10 @@
 		<h1>UCD Flight Tracker</h1>
 		<p>Customize your travel needs!<p>
 
+		<div class= "radio-inline">
+      			<input type="radio" name="radionbutton" id="oneway">One Way</>
+		</div>
+		
 		<form id="search_form" class="form-vertical" method="post" action="search.php">
 		    <div class="form-group form-inline">
 			<!--SOURCE FIELD-->

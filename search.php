@@ -45,13 +45,77 @@
 	    require_once(__ROOT__ .
 		'/google-api-php-client/src/Google/Client.php');
 
+	    // post request from index
+	    $post = $_POST;
+
 	    $client = new Google_Client();
 	    $client->setApplicationName("Flight Tracker");
 	    $client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
 	    $service = new Google_Service_QPXExpress($client);
 	    $trips = $service->trips;
 
+	    print_R($post);
+	    //print_r($depart);
+
+	    //source
+	    if (isset($post['source']))
+	    {
+	    } 
+	    else
+	    {
+	    }
+
+	    //destination
+	    if (isset($post['destination']))
+	    {
+	    }
+	    else
+	    {
+	    }
+
+	    //depart_date
+	    if (isset($post['depart_date']))
+	    {
+		// parse departure date
+		$depart = explode('/', $post['depart_date']);
+		
+		// check if one-way
+		if (isset($post['one_way']) && $post['one_way'] == 'checked')
+		{
+		    // good to send query for one-way
+		} else if (isset($post['return_date'])){
+		    $return = explode('/', $post['return_date']);
+		    print_r($depart);
+		    print_r($return);
+		    
+		    if (($depart[0] <= $return[0]) && ($depart[1] < $return[1]))
+		    {
+			// good to send query for round trip
+		    }else{echo "invalid travel dates </br>";}
+		}else{echo "Return date NOT set </br>";}
+	    }else{echo "Depart date NOT set </br>";}
+
+	    //passengers
+	    if (isset($post['passengers']))
+	    {
+		echo 'passengers is set </br>';
+	    }else{echo 'passengers is NOT set </br>';}
+
+	    //price
+	    if (isset($post['price']) %% ($post['price'] > 0))
+	    {
+		// good
+	    }else{echo 'price is NOT set </br>';}
+
+	    //airline
+	    if (isset($post['airline']))
+	    {
+		echo 'airline is set </br>';
+	    }else{echo 'airline is NOT set </br>';}
+
+
 	    // passengers
+	    /*
 	    $passengers = new Google_Service_QPXExpress_PassengerCounts();
 	    $passengers->setAdultCount(1);
 	    
@@ -72,9 +136,26 @@
 	    // search
 	    $result = $service->trips->search($searchRequest);
 	    print_r($result);
+	    */
 
 	    
+	    //window
+	    if (isset($post['window']) && ($post['window'] >= 0))
+	    {
+		echo 'window is set </br>';
+	    }else{echo 'window is NOT set </br>';}
 
+	    //email
+	    if (isset($post['email']))
+	    {
+		echo 'email is set </br>';
+	    }else{echo 'email is NOT set </br>';}
+
+	    //phone
+	    if (isset($post['phone']))
+	    {
+		echo 'phone is set </br>';
+	    }else{echo 'phone is NOT set </br>';}
 	?>
     </body>
 </html>

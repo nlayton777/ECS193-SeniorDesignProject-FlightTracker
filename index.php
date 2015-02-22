@@ -48,11 +48,19 @@
 		<h1>UCD Flight Tracker</h1>
 		<p>Customize your travel needs!<p>
 
-		<div class= "checkbox-inline">
-      			<input type="checkbox" value="" onclick=OneWay() id="oneway">One Way</>
-		</div>
-		
 		<form id="search_form" class="form-vertical" method="post" action="search.php">
+		    <!--ONE-WAY CHECKBOX-->
+		    <div class="form-group form-inline">
+			<div class="checkbox-inline">
+			    <label for="oneway">
+				<input class="form-control" type="checkbox" value="checked" 
+				    onclick=OneWay()" id="oneway" name="one_way" 
+				    form="search_form"/>
+				One Way
+			    </label>
+			</div>
+		    </div>
+
 		    <div class="form-group form-inline">
 			<!--SOURCE FIELD-->
 			<label for="source" class="sr-only">Departure Location</label>
@@ -92,7 +100,6 @@
 			?>
 			</select>
 
-			<!--need to find way to have calendar pop-up-->
 			<script>
   				$(function() {
     				$( "#datepickerD" ).datepicker();
@@ -102,24 +109,22 @@
     				$( "#datepickerR" ).datepicker();
   				});
 	
-		function OneWay(oneway)
-		{
-			var oneway = document.getElementById('oneway');
-			if(oneway.checked)
-			{
+				function OneWay(oneway) {
+				    var oneway = document.getElementById('oneway');
+				    if(oneway.checked) {
 					$("#datepickerR" ).datepicker('disable');	
-			} 
-			else
-			{
-			    $("#datepickerR" ).datepicker('enable');
-			}
-		}
-	</script>
+				    } else {
+					$("#datepickerR" ).datepicker('enable');
+				    }
+				}
+			</script>
   			
+			<!--DEPART DATE FIELD-->
 			<label for="depart-date" class="sr-only">Date of Departure</label>
 			    <input type="text" class="form-control" id="datepickerD" 
 			    name="depart_date" placeholder="Depart"/>
 			    
+			<!--RETURN DATE FIELD-->
 			<label for="return-date" class="sr-only">Date of Return</label>
 			    <input type="text" class="form-control" id="datepickerR" 
 			    name="return_date" placeholder="Return"/>
@@ -140,11 +145,6 @@
 			?>
 			</select>
 
-			<!--PRICE FIELD-->
-			<label for="price" class="sr-only">Price</label>
-			<input type="text" class="form-control" id="price" 
-			    name="price" placeholder="Name Your Price!"/>
-
 			<!--AIRLINE FIELD-->
 			<label for="airline" class="sr-only">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline"
@@ -162,6 +162,12 @@
 			    }
 			?>
 			</select>
+
+			<!--PRICE FIELD-->
+			<label for="price" class="sr-only">Price</label>
+			<input type="text" class="form-control" id="price" 
+			    name="price" placeholder="Name Your Price!"/>
+
 			    
 			<!--SEARCH WINDOW FIELD-->
 			<label for="window" class="sr-only">Search Window</label>

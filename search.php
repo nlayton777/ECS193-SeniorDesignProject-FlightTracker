@@ -72,6 +72,9 @@
 	    {
 	    }
 
+	
+
+
 	    //depart_date; have to account for it one-way or not
 	    if (isset($post['depart_date']))
 	    {

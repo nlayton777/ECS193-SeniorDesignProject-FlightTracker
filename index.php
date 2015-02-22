@@ -68,7 +68,7 @@
 			<div class="checkbox-inline">
 			    <label for="oneway">
 				<input class="form-control" type="checkbox" value="checked" 
-				    onclick=OneWay()" id="oneway" name="one_way" 
+				    onclick="OneWay()" id="oneway" name="one_way" 
 				    form="search_form"/>
 				One Way
 			    </label>
@@ -116,11 +116,11 @@
 
 			<script>
   				$(function() {
-    				$( "#datepickerD" ).datepicker();
+    				$( "#datepickerD" ).datepicker({minDate: 0});
   				});
 				    
   				$(function() {
-    				$( "#datepickerR" ).datepicker();
+    				$( "#datepickerR" ).datepicker({minDate:0});
   				});
 	
 				function OneWay(oneway) {

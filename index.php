@@ -13,6 +13,11 @@
   	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
   	<link rel="stylesheet" href="/resources/demos/style.css">
+  	
+<!--this is for the increment button-->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="incrementButton.js"></script>
+	<link rel="stylesheet" href="incrementButton.css"/>	 	
 
 	<!--this is for the popup text bubble-->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
@@ -102,6 +107,7 @@
 			<label for="source" class="sr-only">Departure Location</label>
 			<select class="form-control" id="source" name="source" 
 				    form="search_form">
+			<option>---Select an Origin---</option>
 			<?php
 			    if (file_exists("AirportCodes.txt"))
 			    {
@@ -121,6 +127,7 @@
 			<label for="destination" class="sr-only">Arrival Location</label>
 			<select class="form-control" id="destination" name="destination" 
 				    form="search_form" >
+			<option>---Select a Destination---</option>
 			<?php
 			    if (file_exists("AirportCodes.txt"))
 			    {
@@ -149,23 +156,49 @@
 
 		    <div class="form-group form-inline">
 			<!--PASSENGERS FIELD-->
-			<label for="passengers" class="sr-only">Number of Passengers</label>
-			<select class="form-control" id="passengers" name="passengers"
-				    form="search_form" >
-			<?php
-			    $pass = array("Adult", "Kid");
-			    foreach ($pass as $pass_type)
-				for ($j = 1; $j <= 10; $j++)
-				    echo "<option value=\"$j $pass_type\">$j ".
-					($j > 1 ? ($pass_type . "s") : $pass_type).
-					" Economy </option>";
-			?>
-			</select>
+			    	<label for="Adults">
+			    		Adults
+						<input type='button' value='-' class='qtyminus' field='quantityA' />
+    					<input type='text' name='quantityA' value='0' class='qty' />
+    					<input type='button' value='+' class='qtyplus' field='quantityA' />
+			    	</label>
+			    	<label for="Children">
+			    		&nbsp;&nbsp;&nbsp;
+			    		Children
+						<input type='button' value='-' class='qtyminus' field='quantityC' />
+    					<input type='text' name='quantityC' value='0' class='qty' />
+    					<input type='button' value='+' class='qtyplus' field='quantityC' />
+			    	</label>
+			    	<label for="Seniors">
+			    		&nbsp;&nbsp;&nbsp;
+			    		Seniors
+						<input type='button' value='-' class='qtyminus' field='quantityS' />
+    					<input type='text' name='quantityS' value='0' class='qty' />
+    					<input type='button' value='+' class='qtyplus' field='quantityS' />
+			    	</label>
+			    	<label for="SeatInfant">
+			    		&nbsp;&nbsp;&nbsp;
+			    		Seat Infant
+						<input type='button' value='-' class='qtyminus' field='quantitySI' />
+    					<input type='text' name='quantitySI' value='0' class='qty' />
+    					<input type='button' value='+' class='qtyplus' field='quantitySI' />
+			    	</label>   
+			    	<label for="LapInfant">
+			    		&nbsp;&nbsp;&nbsp;
+			    		Lap Infant
+						<input type='button' value='-' class='qtyminus' field='quantityLI' />
+    					<input type='text' name='quantityLI' value='0' class='qty' />
+    					<input type='button' value='+' class='qtyplus' field='quantityLI' />
+			    	</label>
+			</div>
 
+			<div class="form-group form-inline">
 			<!--AIRLINE FIELD-->
 			<label for="airline" class="sr-only">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline"
 				    form="search_form">
+			<option>---Select an Airline---</option>
+			<option>No Preference</option>
 			<?php
 			    if (file_exists("Airlines.txt"))
 			    {
@@ -179,11 +212,24 @@
 			    }
 			?>
 			</select>
+			<div class="form-group form-inline">
 
 			<!--PRICE FIELD-->
+			Price Range
 			<label for="price" class="sr-only">Price</label>
-			<input type="text" class="form-control" id="price" 
-			    name="price" placeholder="Name Your Price!"/>
+			<<html>
+			<body>
+			<input type="range" min="0" max="5000" value="200" step="5" onchange="showValue(this.value)" />
+			<span id="range">200</span>
+			<script type="text/javascript">
+			function showValue(newValue)
+			{
+				document.getElementById("range").innerHTML=newValue;
+			}
+			</script>
+			</body>
+			</html>
+			</div>
 
 			    
 			<!--SEARCH WINDOW FIELD-->

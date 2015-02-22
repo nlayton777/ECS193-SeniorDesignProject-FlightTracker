@@ -11,6 +11,11 @@
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
   	<link rel="stylesheet" href="/resources/demos/style.css">
+  	
+<!--this is for the increment button-->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="incrementButton.js"></script>
+	<link rel="stylesheet" href="incrementButton.css"/>	 	
 
 <!--this is for the popup text bubble-->
 	<meta charset="utf-8">
@@ -146,9 +151,47 @@
 
 		    <div class="form-group form-inline">
 			<!--PASSENGERS FIELD-->
-			<label for="passengers" class="sr-only">Number of Passengers</label>
+			    	<label for="Adults">
+			    		Adults
+						<input type='button' value='-' class='qtyminus' field='quantityA' />
+    					<input type='text' name='quantityA' value='0' class='qty' />
+    					<input type='button' value='+' class='qtyplus' field='quantityA' />
+			    	</label>
+			    	<label for="Children">
+			    		&nbsp;&nbsp;&nbsp;
+			    		Children
+						<input type='button' value='-' class='qtyminus' field='quantityC' />
+    					<input type='text' name='quantityC' value='0' class='qty' />
+    					<input type='button' value='+' class='qtyplus' field='quantityC' />
+			    	</label>
+			    	<label for="Seniors">
+			    		&nbsp;&nbsp;&nbsp;
+			    		Seniors
+						<input type='button' value='-' class='qtyminus' field='quantityS' />
+    					<input type='text' name='quantityS' value='0' class='qty' />
+    					<input type='button' value='+' class='qtyplus' field='quantityS' />
+			    	</label>
+			    	<label for="SeatInfant">
+			    		&nbsp;&nbsp;&nbsp;
+			    		Seat Infant
+						<input type='button' value='-' class='qtyminus' field='quantitySI' />
+    					<input type='text' name='quantitySI' value='0' class='qty' />
+    					<input type='button' value='+' class='qtyplus' field='quantitySI' />
+			    	</label>   
+			    	<label for="LapInfant">
+			    		&nbsp;&nbsp;&nbsp;
+			    		Lap Infant
+						<input type='button' value='-' class='qtyminus' field='quantityLI' />
+    					<input type='text' name='quantityLI' value='0' class='qty' />
+    					<input type='button' value='+' class='qtyplus' field='quantityLI' />
+			    	</label>
+			</div>
+
+			<!--<label for="passengers" class="sr-only">Number of Passengers</label>
 			<select class="form-control" id="passengers" name="passengers"
-				    form="search_form">
+				    form="search_form"> 
+				    
+				    
 			<?php
 			    $pass = array("Adult", "Kid");
 			    foreach ($pass as $pass_type)
@@ -157,8 +200,9 @@
 					($j > 1 ? ($pass_type . "s") : $pass_type).
 					" Economy </option>";
 			?>
-			</select>
+			</select> -->
 
+			<div class="form-group form-inline">
 			<!--AIRLINE FIELD-->
 			<label for="airline" class="sr-only">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline"

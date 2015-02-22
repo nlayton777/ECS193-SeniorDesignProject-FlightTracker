@@ -55,6 +55,10 @@
 	    $trips = $service->trips;
 
 	    print_r($post);
+<<<<<<< HEAD
+	    //print_r($depart);
+=======
+>>>>>>> 24b20f764081876b3e98ae86d87d58c67d495b17
 
 	    //source
 	    if (isset($post['source']))

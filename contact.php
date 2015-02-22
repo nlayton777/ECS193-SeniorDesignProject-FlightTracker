@@ -43,20 +43,20 @@
 	    <p>We are interested to hear both your questions and/or your feedback regarding our website and services.</p>
 	    <div class="row">
 		<div class="col-md-8">
-		    <form role="form form-horizontal">
+		    <form role="form form-horizontal"  class="form-vertical" method="post" action="contactsubmission.php">
 			<div class="form-group">
 			    <label for="name">
 				Name: 
 			    </label>
 			    <input type="text" class="form-control" id="name" 
-				size="10" placeholder="John Smith"/>
+				name = "name" size="10" placeholder="John Smith"/>
 			</div>
 
 			<div class="form-group">
 			    <label for="email">
 				Email: 
 			    </label>
-			    <input type="text" class="form-control" id="email" 
+			    <input type="text" class="form-control" id="email" name="email"
 				size="10" placeholder="johnsmith@sitename.com"/>
 			</div>
 
@@ -64,7 +64,7 @@
 			    <label for="comments">
 				Questions/Comments/Concerns: 
 			    </label>
-			    <input type="text-area" class="form-control" id="comments" placeholder="Let us know what you think!"/>
+			    <input type="text-area" class="form-control" id="comments" name = "comments" placeholder="Let us know what you think!"/>
 			</div>
 			<input type="submit" class="btn btn-default" value="Submit"/>
 		    </form>

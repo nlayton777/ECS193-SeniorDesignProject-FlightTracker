@@ -10,13 +10,13 @@
 
 	<script>
 
-		var oneway = document.getElementById('oneway');		
 		
 		function OneWay(oneway)
 		{
+			var oneway = document.getElementById('oneway');
 			if(oneway.checked)
 			{
-				document.getElementById('return-date').disabled = true			
+				document.getElementById('return-date').disabled = true;	
 			}
 		}
 	</script>
@@ -59,7 +59,7 @@
 		<p>Customize your travel needs!<p>
 
 		<div class= "radio-inline">
-      			<input type="radio" name="radionbutton" id="oneway">One Way</>
+      			<input type="radio" name="radionbutton" onclick=OneWay() id="oneway">One Way</>
 		</div>
 		
 		<form id="search_form" class="form-vertical" method="post" action="search.php">

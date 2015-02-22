@@ -48,8 +48,10 @@
 	    // post request from index
 	    $post = $_POST;
 	    print_r($post);
+	    echo "</br>";
 	    foreach ($post as $item)
 		echo $item . "</br>";
+	    isOneWay($post['oneway']);
 
 	    // create client 
 	    $client = new Google_Client();
@@ -169,11 +171,12 @@
 		echo 'phone is set </br>';
 	    }else{echo 'phone is NOT set </br>';}
 
-	    function isOneWay() {
+	    function isOneWay(&$val) {
 		$rv = false;
-		if (isset($__POST['oneway'])) {
-		    if ($__POST['oneway'] == "yes") $rv = true;
-		}else{echo "one way NOT set </br>";}
+		if (isset($val['oneway'])) {
+		    echo "oneway: " . $val['oneway'];
+		    if ($val['oneway'] == "yes") $rv = true;
+		}
 		return $rv;
 	    }
 	?>

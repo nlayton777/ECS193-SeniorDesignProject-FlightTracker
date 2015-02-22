@@ -101,7 +101,7 @@
 			<!--DESTINATION FIELD-->
 			<label for="destination" class="sr-only">Arrival Location</label>
 			<select class="form-control" id="destination" name="destination" 
-				    form="search_form">
+				    form="search_form" >
 			<?php
 			    if (file_exists("AirportCodes.txt"))
 			    {
@@ -119,11 +119,11 @@
 
 			<script>
   				$(function() {
-    				$( "#datepickerD" ).datepicker();
+    				$( "#datepickerD" ).datepicker({minDate: 0});
   				});
 				    
   				$(function() {
-    				$( "#datepickerR" ).datepicker();
+    				$( "#datepickerR" ).datepicker({minDate:0});
   				});
 	
 				function OneWay(oneway) {
@@ -142,7 +142,7 @@
 			<!--DEPART DATE FIELD-->
 			<label for="depart-date" class="sr-only">Date of Departure</label>
 			    <input type="text" class="form-control" id="datepickerD" 
-			    name="depart_date" placeholder="Depart"/>
+			    name="depart_date" placeholder="Depart"/ required>
 			    
 			<!--RETURN DATE FIELD-->
 			<label for="return-date" class="sr-only">Date of Return</label>
@@ -154,7 +154,7 @@
 			<!--PASSENGERS FIELD-->
 			<label for="passengers" class="sr-only">Number of Passengers</label>
 			<select class="form-control" id="passengers" name="passengers"
-				    form="search_form">
+				    form="search_form" >
 			<?php
 			    $pass = array("Adult", "Kid");
 			    foreach ($pass as $pass_type)
@@ -196,17 +196,19 @@
   
 		    
 		    </div>
+		    
 		    <div class="form-group form-inline">
 			<!--EMAIL FIELD-->
 			<label for="email" class="sr-only">Email</label>
-			<input type="text" class="form-control" id="email" 
-			    name="email" placeholder="john.smith@website.com"/>
-			    
+			<input type="email" class="form-control" id="email" 
+			    name="email" pattern="*@-.-" placeholder="john.smith@website.com" required/>
+ 
 			<!--PHONE NUMBER FIELD-->
 			<label for="phone" class="sr-only">Phone Number</label>
-			<input type="text" class="form-control" id="phone" 
-			    name="phone" placeholder="(123) 456 - 7890"/>
-		    </div>
+			(<input type=tel size=3 class="form-control" id="phone1" name="phone1" placeholder ="123" required>) 
+			<input type=tel size=3 id="phone2" name="phone2" placeholder ="456"  class="form-control" required> - 
+			<input type=tel size=4 class="form-control" id="phone3" name="phone3" placeholder ="7890" required>
+    	    </div>
 		    <input type="submit" class="btn btn-default" value="Find your flight!"/>
 		</form>
 	    </header>

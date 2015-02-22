@@ -7,6 +7,10 @@
 	<link rel="stylesheet" href="bootstrap.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
+  	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+  	<link rel="stylesheet" href="/resources/demos/style.css">
     </head>
 
     <body>
@@ -85,13 +89,23 @@
 			</select>
 
 			<!--need to find way to have calendar pop-up-->
+			<script>
+  				$(function() {
+    				$( "#datepickerD" ).datepicker();
+  				});
+  			</script>
+			<script>
+  				$(function() {
+    				$( "#datepickerR" ).datepicker();
+  				});
+  			</script>
+  			
 			<label for="depart-date" class="sr-only">Date of Departure</label>
-			<input type="text" class="form-control" id="depart-date" 
+			    <input type="text" class="form-control" id="datepickerD" 
 			    name="depart_date" placeholder="Depart"/>
 			    
-			<!--need to find way to have calendar pop-up-->
 			<label for="return-date" class="sr-only">Date of Return</label>
-			<input type="text" class="form-control" id="return-date" 
+			    <input type="text" class="form-control" id="datepickerR" 
 			    name="return_date" placeholder="Return"/>
 		    </div>
 

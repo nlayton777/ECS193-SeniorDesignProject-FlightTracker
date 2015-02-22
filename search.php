@@ -49,20 +49,32 @@
 	    $client->setApplicationName("Flight Tracker");
 	    $client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
 	    $service = new Google_Service_QPXExpress($client);
+	    $trips = $service->trips;
 
+	    // passengers
+	    $passengers = new Google_Service_QPXExpress_PassengerCounts();
+	    $passengers->setAdultCount(1);
+	    
+	    // slices/ trips
+	    $slice = new Google_Service_QPXExpress_SliceInput();
+	    $slice->setDestination('LUX');
+	    $slice->setOrigin('FRA');
+	    $slice->setDate('2015-09-09');
 
-	    print_r($_POST);
-	    echo '</br>';
-	    echo 'Source '.$_POST['source'].'</br>';
-	    echo 'Destination '.$_POST['destination'].'</br>';
-	    echo 'Departure Date '.$_POST['depart_date'].'</br>';
-	    echo 'Return Date '.$_POST['return_date'].'</br>';
-	    echo 'Passengers '.$_POST['depart_date'].'</br>';
-	    echo 'Price '.$_POST['depart_date'].'</br>';
-	    echo 'Airline '.$_POST['depart_date'].'</br>';
-	    echo 'Search Window '.$_POST['depart_date'].'</br>';
-	    echo 'Email '.$_POST['depart_date'].'</br>';
-	    echo 'Phone Number: '.$_POST['depart_date'].'</br>';
+	    $request = new Google_Service_QPXExpress_TripOptionsRequest();
+	    $request->setSolutions(1);
+	    $request->setPassengers($passengers);
+	    $request->setSlice(array($slice));
+
+	    $searchRequest = new Google_Service_QPXExpress_TripsSearchRequest();
+	    $searchRequest->setRequest($request);
+
+	    // search
+	    $result = $service->trips->search($searchRequest);
+	    print_r($result);
+
+	    
+
 	?>
     </body>
 </html>

@@ -49,9 +49,32 @@
 	    $client->setApplicationName("Flight Tracker");
 	    $client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
 	    $service = new Google_Service_QPXExpress($client);
+	    $trips = $service->trips;
 
+	    // passengers
+	    $passengers = new Google_Service_QPXExpress_PassengerCounts();
+	    $passengers->setAdultCount(1);
+	    
+	    // slices/ trips
+	    $slice = new Google_Service_QPXExpress_SliceInput();
+	    $slice->setDestination('LUX');
+	    $slice->setOrigin('FRA');
+	    $slice->setDate('2015-09-09');
 
-	    print_r($_POST);
+	    $request = new Google_Service_QPXExpress_TripOptionsRequest();
+	    $request->setSolutions(1);
+	    $request->setPassengers($passengers);
+	    $request->setSlice(array($slice));
+
+	    $searchRequest = new Google_Service_QPXExpress_TripsSearchRequest();
+	    $searchRequest->setRequest($request);
+
+	    // search
+	    $result = $service->trips->search($searchRequest);
+	    print_r($result);
+
+	    
+
 	?>
     </body>
 </html>

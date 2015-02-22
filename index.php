@@ -5,22 +5,12 @@
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
-
-	<script>
-
-		
-		function OneWay(oneway)
-		{
-			var oneway = document.getElementById('oneway');
-			if(oneway.checked)
-			{
-				document.getElementById('return-date').disabled = true;	
-			}
-		}
-	</script>
-
+  	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+  	<link rel="stylesheet" href="/resources/demos/style.css">
     </head>
 
     <body>
@@ -53,13 +43,13 @@
 	</nav>
 
 	<!-- HERE WE WILL HAVE OUR SEARCH BAR -->
-	<div class="container">
+	<div class="container-fluid">
 	    <header class="jumbotron" id="home">
 		<h1>UCD Flight Tracker</h1>
 		<p>Customize your travel needs!<p>
 
-		<div class= "radio-inline">
-      			<input type="radio" name="radionbutton" onclick=OneWay() id="oneway">One Way</>
+		<div class= "checkbox-inline">
+      			<input type="checkbox" value="" onclick=OneWay() id="oneway">One Way</>
 		</div>
 		
 		<form id="search_form" class="form-vertical" method="post" action="search.php">
@@ -103,13 +93,35 @@
 			</select>
 
 			<!--need to find way to have calendar pop-up-->
+			<script>
+  				$(function() {
+    				$( "#datepickerD" ).datepicker();
+  				});
+				    
+  				$(function() {
+    				$( "#datepickerR" ).datepicker();
+  				});
+	
+		function OneWay(oneway)
+		{
+			var oneway = document.getElementById('oneway');
+			if(oneway.checked)
+			{
+					$("#datepickerR" ).datepicker('disable');	
+			} 
+			else
+			{
+			    $("#datepickerR" ).datepicker('enable');
+			}
+		}
+	</script>
+  			
 			<label for="depart-date" class="sr-only">Date of Departure</label>
-			<input type="text" class="form-control" id="depart-date" 
+			    <input type="text" class="form-control" id="datepickerD" 
 			    name="depart_date" placeholder="Depart"/>
 			    
-			<!--need to find way to have calendar pop-up-->
 			<label for="return-date" class="sr-only">Date of Return</label>
-			<input type="text" class="form-control" id="return-date" 
+			    <input type="text" class="form-control" id="datepickerR" 
 			    name="return_date" placeholder="Return"/>
 		    </div>
 
@@ -119,12 +131,12 @@
 			<select class="form-control" id="passengers" name="passengers"
 				    form="search_form">
 			<?php
-			    $pass = array("Adult", "Senior", "Youth", 
-				"Child", "Seat Infant", "Lap Infant");
+			    $pass = array("Adult", "Kid");
 			    foreach ($pass as $pass_type)
-				for ($j = 1; $j <= 7; $j++)
-				    echo "<option value=\"$j $pass_type\">" .
-					"$j $pass_type Economy </option>";
+				for ($j = 1; $j <= 10; $j++)
+				    echo "<option value=\"$j $pass_type\">$j ".
+					($j > 1 ? ($pass_type . "s") : $pass_type).
+					" Economy </option>";
 			?>
 			</select>
 
@@ -154,7 +166,7 @@
 			<!--SEARCH WINDOW FIELD-->
 			<label for="window" class="sr-only">Search Window</label>
 			<input type="text" class="form-control" id="window" 
-			    name="window" placeholder="Search Window (in hours)"/>
+			    name="window" placeholder="Search Window (hours)"/>
 
 		    </div>
 		    <div class="form-group form-inline">
@@ -171,6 +183,36 @@
 		    <input type="submit" class="btn btn-default" value="Find your flight!"/>
 		</form>
 	    </header>
+	</div>
+	<div class="container-fluid">
+	    <section id="description">
+		<div class="row">
+		    <div class="col-md-6">
+			<h2>Let us do the work for you</h2>
+			<p>
+			    We perform background searches for your flight, 
+			    so that you don't have to worry about refreshing your 
+			    search pages.
+			    Just tell us how long you want to search, then kick back,
+			    relax, and wait for us to notify you when 
+			    we've found your flight. 
+			    If your not the waiting type, then  you don't have to.
+			    Just leave out a waiting time, and 
+			    we will provide immediate results.
+			</p>
+		    </div>
+		    <div class="col-md-6">
+			<h2>Stay updated</h2>
+			<p>
+			    We notify you when prices are to your liking. 
+			    Stay informed through email or text, the choice is yours.
+			    Once you've obtained your tickets, don't forget to share
+			    your travel excitement with your friends on Facebook or
+			    Twitter.
+			</p>
+		    </div>
+		</div>
+	    </section>
 	</div>
     </body>
 </html>

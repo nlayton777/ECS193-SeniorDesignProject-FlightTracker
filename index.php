@@ -67,9 +67,12 @@
 		    <div class="form-group form-inline">
 			<div class="checkbox-inline">
 			    <label for="oneway">
-				<input class="form-control" type="checkbox" value="checked" 
-				    onclick=OneWay()" id="oneway" name="one_way" 
+				<input class="form-control" type="checkbox" value="yes" 
+				    onclick="OneWay()" id="oneway" name="one_way" 
 				    form="search_form"/>
+				<input class="form-control" type="hidden" value="no" 
+				    id="onewayHidden"  name="one_way"
+				    form="search_form" checked/>
 				One Way
 			    </label>
 			</div>
@@ -125,10 +128,13 @@
 	
 				function OneWay(oneway) {
 				    var oneway = document.getElementById('oneway');
+				    var onewayHidden = document.getElementById('onewayHidden');
 				    if(oneway.checked) {
 					$("#datepickerR" ).datepicker('disable');	
+					onewayHidden.disabled = true;
 				    } else {
 					$("#datepickerR" ).datepicker('enable');
+					onewayHidden.disabled = false;
 				    }
 				}
 			</script>

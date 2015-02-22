@@ -5,9 +5,9 @@
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
   	<link rel="stylesheet" href="/resources/demos/style.css">
@@ -48,6 +48,10 @@
 		<h1>UCD Flight Tracker</h1>
 		<p>Customize your travel needs!<p>
 
+		<div class= "checkbox-inline">
+      			<input type="checkbox" value="" onclick=OneWay() id="oneway">One Way</>
+		</div>
+		
 		<form id="search_form" class="form-vertical" method="post" action="search.php">
 		    <div class="form-group form-inline">
 			<!--SOURCE FIELD-->
@@ -93,12 +97,24 @@
   				$(function() {
     				$( "#datepickerD" ).datepicker();
   				});
-  			</script>
-			<script>
+				    
   				$(function() {
     				$( "#datepickerR" ).datepicker();
   				});
-  			</script>
+	
+		function OneWay(oneway)
+		{
+			var oneway = document.getElementById('oneway');
+			if(oneway.checked)
+			{
+					$("#datepickerR" ).datepicker('disable');	
+			} 
+			else
+			{
+			    $("#datepickerR" ).datepicker('enable');
+			}
+		}
+	</script>
   			
 			<label for="depart-date" class="sr-only">Date of Departure</label>
 			    <input type="text" class="form-control" id="datepickerD" 

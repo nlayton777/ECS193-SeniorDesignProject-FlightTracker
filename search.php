@@ -54,7 +54,7 @@
 	    $service = new Google_Service_QPXExpress($client);
 	    $trips = $service->trips;
 
-	    print_R($post);
+	    print_r($post);
 	    //print_r($depart);
 
 	    //source

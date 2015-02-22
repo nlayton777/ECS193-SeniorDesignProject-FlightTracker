@@ -54,8 +54,7 @@
 	    $service = new Google_Service_QPXExpress($client);
 	    $trips = $service->trips;
 
-	    print_R($post);
-	    //print_r($depart);
+	    print_r($post);
 
 	    //source
 	    if (isset($post['source']))
@@ -73,7 +72,7 @@
 	    {
 	    }
 
-	    //depart_date
+	    //depart_date; have to account for it one-way or not
 	    if (isset($post['depart_date']))
 	    {
 		// parse departure date
@@ -82,13 +81,13 @@
 		// check if one-way
 		if (isset($post['one_way']) && $post['one_way'] == 'checked')
 		{
-		    // good to send query for one-way
+		    // good to send query for one-way trip
 		} else if (isset($post['return_date'])){
 		    $return = explode('/', $post['return_date']);
 		    print_r($depart);
 		    print_r($return);
 		    
-		    if (($depart[0] <= $return[0]) && ($depart[1] < $return[1]))
+		    if (($depart[0] <= $return[0]) && ($depart[1] < $return[1]) && ($depart[2] <= $return[2]))
 		    {
 			// good to send query for round trip
 		    }else{echo "invalid travel dates </br>";}
@@ -102,7 +101,7 @@
 	    }else{echo 'passengers is NOT set </br>';}
 
 	    //price
-	    if (isset($post['price']) %% ($post['price'] > 0))
+	    if (isset($post['price']) && ($post['price'] > 0))
 	    {
 		// good
 	    }else{echo 'price is NOT set </br>';}

@@ -4891,6 +4891,7 @@ a.badge:focus {
 @media screen and (max-width: 767px) {
   .jumbotron#home {
     height: 680px;
+    height: 860px;
     background-size: auto 100%;
     background-position: center center;
   }

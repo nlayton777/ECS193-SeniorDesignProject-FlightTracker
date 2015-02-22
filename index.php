@@ -88,6 +88,7 @@
 			<label for="source" class="sr-only">Departure Location</label>
 			<select class="form-control" id="source" name="source" 
 				    form="search_form">
+			<option>---Select an Origin---</option>
 			<?php
 			    if (file_exists("AirportCodes.txt"))
 			    {
@@ -107,6 +108,7 @@
 			<label for="destination" class="sr-only">Arrival Location</label>
 			<select class="form-control" id="destination" name="destination" 
 				    form="search_form" >
+			<option>---Select a Destination---</option>
 			<?php
 			    if (file_exists("AirportCodes.txt"))
 			    {
@@ -198,6 +200,8 @@
 			<label for="airline" class="sr-only">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline"
 				    form="search_form">
+			<option>---Select an Airline---</option>
+			<option>No Preference</option>
 			<?php
 			    if (file_exists("Airlines.txt"))
 			    {
@@ -211,11 +215,24 @@
 			    }
 			?>
 			</select>
+			<div class="form-group form-inline">
 
 			<!--PRICE FIELD-->
+			Price Range
 			<label for="price" class="sr-only">Price</label>
-			<input type="text" class="form-control" id="price" 
-			    name="price" placeholder="Name Your Price!"/>
+			<<html>
+			<body>
+			<input type="range" min="0" max="5000" value="200" step="5" onchange="showValue(this.value)" />
+			<span id="range">200</span>
+			<script type="text/javascript">
+			function showValue(newValue)
+			{
+				document.getElementById("range").innerHTML=newValue;
+			}
+			</script>
+			</body>
+			</html>
+			</div>
 
 			    
 			<!--SEARCH WINDOW FIELD-->

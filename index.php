@@ -5,16 +5,16 @@
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
+
+	<!--this is for the datepicker()-->
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
   	<link rel="stylesheet" href="/resources/demos/style.css">
 
-<!--this is for the popup text bubble-->
-	<meta charset="utf-8">
-	<title>jQuery UI Tooltip - Default functionality</title>
+	<!--this is for the popup text bubble-->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
@@ -23,9 +23,28 @@
 	    $(function() {
 		$( document ).tooltip();
 	    });
-	</script>
 
-</head>
+	    $(function() {
+		$( "#datepickerD" ).datepicker({minDate: 0});
+	    });
+				    
+	    $(function() {
+		$( "#datepickerR" ).datepicker({minDate:0});
+	    });
+	
+	    function OneWay(oneway) {
+		var oneway = document.getElementById('oneway');
+		var onewayHidden = document.getElementById('onewayHidden');
+		if(oneway.checked) {
+		    $("#datepickerR" ).datepicker('disable');	
+		    onewayHidden.disabled = true;
+		} else {
+		    $("#datepickerR" ).datepicker('enable');
+		    onewayHidden.disabled = false;
+		}
+	    }
+	</script>
+    </head>
 
     <body>
 	<nav class="navbar navbar-inverse ">
@@ -117,28 +136,6 @@
 			?>
 			</select>
 
-			<script>
-  				$(function() {
-    				$( "#datepickerD" ).datepicker({minDate: 0});
-  				});
-				    
-  				$(function() {
-    				$( "#datepickerR" ).datepicker({minDate:0});
-  				});
-	
-				function OneWay(oneway) {
-				    var oneway = document.getElementById('oneway');
-				    var onewayHidden = document.getElementById('onewayHidden');
-				    if(oneway.checked) {
-					$("#datepickerR" ).datepicker('disable');	
-					onewayHidden.disabled = true;
-				    } else {
-					$("#datepickerR" ).datepicker('enable');
-					onewayHidden.disabled = false;
-				    }
-				}
-			</script>
-  			
 			<!--DEPART DATE FIELD-->
 			<label for="depart-date" class="sr-only">Date of Departure</label>
 			    <input type="text" class="form-control" id="datepickerD" 

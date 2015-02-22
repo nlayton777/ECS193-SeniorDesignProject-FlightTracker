@@ -48,10 +48,10 @@
 	    // post request from index
 	    $post = $_POST;
 	    print_r($post);
-	    echo "</br>";
-	    foreach ($post as $item)
-		echo $item . "</br>";
-	    isOneWay($post['oneway']);
+	    //echo "</br>";
+	    //foreach ($post as $item)
+		//echo $item . "</br>";
+	    //isOneWay($post['oneway']);
 
 	    // create client 
 	    $client = new Google_Client();
@@ -83,20 +83,20 @@
 		    $slice2->setOrigin($post['destination']);
 	    } else {echo "destination not set";}
 
-	    // manage/set date information
+	    // set/manage date information
 	    if (isset($post['depart_date'])){
 		$dep = explode('/', $post['depart_date']); // parse departure date
+		$dep_date = $dep[2] . "-" . $dep[0] . "-" . $dep[1];
 		if (isOneWay($post)) {
-		    $dep_date = $dep[2] . "-" . $dep[0] . "-" . $dep[1];
 		    print_r($dep_date);
 		    $slice1->setDate($dep_date);
 		} else if ((!isOneWay($post)) && isset($post['return_date'])){
 		    $ret = explode('/', $post['return_date']);
-		    if (($dep[0] <= $ret[0]) && ($dep[1] < $ret[1]) 
-					     && ($dep[2] <= $ret[2])){ // check if valid dates
-			$ret_date = $ret[2] . "-" . $ret[0] . "-" . $ret[1];
-			$slice2->setDate($ret_date);
-		    }else{echo "invalid travel dates </br>";}
+		    //if (($dep[0] <= $ret[0]) && ($dep[1] <= $ret[1]) 
+		    //			     && ($dep[2] <= $ret[2])){ // check if valid dates
+		    $ret_date = $ret[2] . "-" . $ret[0] . "-" . $ret[1];
+		    $slice2->setDate($ret_date);
+		    //}else{echo "invalid travel dates </br>";}
 		}else{echo "Return date NOT set </br>";}
 	    }else{echo "Depart date NOT set </br>";}
 
@@ -118,19 +118,26 @@
 
 
 	    // create request
-	    /*
 	    $request = new Google_Service_QPXExpress_TripOptionsRequest();
-	    $request->setSolutions(5);
-	    $request->setSlice(array($slice1));
+	    $request->setSolutions(1);
+	    if (isOneWay($post))
+		$request->setSlice(array($slice1));
+	    else
+		$request->setSlice(array($slice1,$slice2));
 	    $request->setPassengers($passengers);
 	    $searchRequest = new Google_Service_QPXExpress_TripsSearchRequest();
 	    $searchRequest->setRequest($request);
-	    print_r($request);
-	    */
+	    //print_r($request);
 
 	    // search
-	    //$result = $service->trips->search($searchRequest);
-	    //print_r($result);
+	    $result = $service->trips->search($searchRequest);
+	    print_r($result);
+	    /*
+	    foreach ($result as $item){
+		print_R($item);
+		echo "</br>";
+	    }
+	    */
 
 	    // passengers
 	    /*
@@ -173,9 +180,8 @@
 
 	    function isOneWay(&$val) {
 		$rv = false;
-		if (isset($val['oneway'])) {
-		    echo "oneway: " . $val['oneway'];
-		    if ($val['oneway'] == "yes") $rv = true;
+		if (isset($val['one_way'])) {
+		    if ($val['one_way'] == "yes") $rv = true;
 		}
 		return $rv;
 	    }

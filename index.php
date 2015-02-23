@@ -30,12 +30,17 @@
 		$( document ).tooltip();
 	    });
 
-	    $(function() {
-		$( "#datepickerD" ).datepicker({minDate: 0});
-	    });
-				    
-	    $(function() {
-		$( "#datepickerR" ).datepicker({minDate:0});
+	    $(function() { 
+		$( "#datepickerD" ).datepicker({minDate:0,
+		    onSelect: function (selectedDate) {
+			$("#datepickerR").datepicker("option", "minDate", selectedDate);
+		    }
+		}); 
+		$( "#datepickerR" ).datepicker({
+		    onSelect: function (selectedDate) {
+			$("#datepickerD").datepicker ("option", " maxDate", selectedDate);
+		    }
+		});
 	    });
 	
 	    function OneWay() {
@@ -53,6 +58,7 @@
 	    function showValue(newValue){
 		document.getElementById("range").innerHTML=newValue;
 	    }
+
 	</script>
     </head>
 
@@ -144,59 +150,95 @@
 			?>
 			</select>
 
+<!--
+<<<<<<< HEAD
+=======
+			<script>
+
+
+  				$(function() { 
+    				$( "#datepickerD" ).datepicker({minDate:0,
+				  onSelect: function (selectedDate) {
+					$("#datepickerR").datepicker("option", "minDate", selectedDate);
+					}
+  				}); 
+				    
+  				$( "#datepickerR" ).datepicker({
+				    onSelect: function (selectedDate) {
+					$("#datepickerD").datepicker ("option", " maxDate", selectedDate);
+					}
+  				});
+				});
+
+				
+				function OneWay(oneway) {
+				    var oneway = document.getElementById('oneway');
+				    var onewayHidden = document.getElementById('onewayHidden');
+				    if(oneway.checked) {
+					$("#datepickerR" ).datepicker('disable');	
+					onewayHidden.disabled = true;
+				    } else {
+					$("#datepickerR" ).datepicker('enable');
+					onewayHidden.disabled = false;
+				    }
+				}
+	
+		</script>
+  			
+>>>>>>> 953c3f8df24196cc491e5df03228133f8afa22ec
+-->
 			<!--DEPART DATE FIELD-->
 			<label for="depart-date" class="sr-only">Date of Departure</label>
 			    <input type="text" class="form-control" id="datepickerD" 
 			    name="depart_date" placeholder="Depart"/ required>
 			    
+
 			<!--RETURN DATE FIELD-->
 			<label for="return-date" class="sr-only">Date of Return</label>
 			    <input type="text" class="form-control" id="datepickerR" 
 			    name="return_date" placeholder="Return"/>
 		    </div>
 
+	    
+
 		    <div class="form-group form-inline">
 			<!--PASSENGERS FIELD-->
 			<label for="Adults">
-				Adults
+				&nbsp;Adults
 				<input type='button' value='-' class='qtyminus' field='adults' />
 				<input type='text' name='adults' value='0' class='qty' />
 				<input type='button' value='+' class='qtyplus' field='adults' />
 			</label>
 			<label for="Children">
-				&nbsp;
-				Children
+				&nbsp;Children
 				<input type='button' value='-' class='qtyminus' field='children' />
 				<input type='text' name='children' value='0' class='qty' />
 				<input type='button' value='+' class='qtyplus' field='children' />
 			</label>
 			<label for="Seniors">
-				&nbsp;
-				Seniors
+				&nbsp;Seniors
 				<input type='button' value='-' class='qtyminus' field='quantityS' />
 				<input type='text' name='quantityS' value='0' class='qty' />
 				<input type='button' value='+' class='qtyplus' field='quantityS' />
 			</label>
 			<label for="SeatInfant">
-				&nbsp;
-				Seat Infant
+				&nbsp;Seat Infant
 				<input type='button' value='-' class='qtyminus' field='quantitySI' />
 				<input type='text' name='quantitySI' value='0' class='qty' />
 				<input type='button' value='+' class='qtyplus' field='quantitySI' />
 			</label>   
 			<label for="LapInfant">
-				&nbsp;
-				Lap Infant
+				&nbsp;Lap Infant
 				<input type='button' value='-' class='qtyminus' field='quantityLI' />
 				<input type='text' name='quantityLI' value='0' class='qty' />
 				<input type='button' value='+' class='qtyplus' field='quantityLI' />
 			</label>
 
 			<!--PRICE FIELD-->
-			<label for="price">Price Range</label>
+			<label for="price">Price Range
 			<input class="form-control" id="price" type="range" min="0" max="5000" 
 			    step="5" onchange="showValue(this.value)" />
-			<span id="range">200</span>
+			<span id="range">200</span></label>
 
 		    </div>
 

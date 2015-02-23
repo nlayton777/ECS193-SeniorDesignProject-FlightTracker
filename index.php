@@ -235,11 +235,13 @@
 			</label>
 
 			<!--PRICE FIELD-->
-			<label for="price">Price Range
-			<input id="price" type="range" min="0" max="5000" 
-			    step="5" onchange="showValue(this.value)" />
-			<span id="range">200</span></label>
-
+			<div class="form-group">
+			    <label for="price">
+				Max Price
+				<input id="price" type="range" min="0" max="5000" 
+				    step="5" onchange="showValue(this.value)"/>
+			    <span id="range">200</span></label>
+			</div>
 		    </div>
 
 		    <div class="form-group form-inline">
@@ -250,11 +252,9 @@
 			<option>--Select an Airline--</option>
 			<option>No Preference</option>
 			<?php
-			    if (file_exists("Airlines.txt"))
-			    {
+			    if (file_exists("Airlines.txt")){
 				$codes = fopen("Airlines.txt",'r');				
-				while (!feof($codes))
-				{
+				while (!feof($codes)){
 	 			    $line = fgets($codes);
 				    echo "<option value=\"" . $line .
 					"\">" . $line . "</option>";
@@ -263,7 +263,6 @@
 			?>
 			</select>
 
-			    
 			<!--SEARCH WINDOW FIELD-->
 			<label for="window" class="sr-only">Search Window</label>
 			<input type="text" class="form-control" id="window"  

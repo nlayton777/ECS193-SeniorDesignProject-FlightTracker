@@ -44,36 +44,31 @@
 	    <p>We are interested to hear both your questions and/or your feedback regarding our website and services.</p>
 	    <div class="row">
 		<div class="col-md-4">
-		    <form role="form form-horizontal"  class="form-vertical" method="post" action="contactsubmission.php">
+		    <form role="form form-inline"  class="form-vertical" method="post" action="contactsubmission.php">
 			<div class="form-group">
 			    <label for="name">
 				Name: 
+				<input type="text" class="form-control" id="name" 
+				    name = "name" size="10" placeholder="John Smith"/>
 			    </label>
-			    <input type="text" class="form-control" id="name" 
-				name = "name" size="10" placeholder="John Smith"/>
-			</div>
 
-			<div class="form-group">
 			    <label for="email">
 				Email:
-				</label>
-				<input type="email" class="form-control" id="email" 
-			    name="email" pattern="*@-.-" placeholder="john.smith@website.com" required/>
+				<input type="email" class="form-control" id="email" name="email" 
+				    pattern="*@-.-" placeholder="john.smith@website.com" required/>
+			    </label>
 			</div>
 			
-			<div class="form-group">
+			<div class="form-group form-horizontal">
 			    <label for="comments">
 				Message: 
-			    </label>
-			    <div class="form-group">
 			    	<textarea rows="8" cols="60" id="comments" placeholder="Let us know what you think!" ></textarea>
-				</div>
+			    </label>
+			</div>
 			<input type="submit" class="btn btn-default" value="Submit"/>
 		    </form>
 		</div>
-		</header>
 	    </div>
-	</div>
-	</div>
+	</header>
     </body>
 </html>

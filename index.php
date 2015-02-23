@@ -26,41 +26,12 @@
 	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
 	<link rel="stylesheet" href="/resources/demos/style.css">
 
-	<script>
-	    $(function() {
-		$( document ).tooltip();
-	    });
+	<!--this is for checkbox list-->
+	<script type="text/javascript" src="bootstrap-multiselect.js"></script>
+	<link rel="stylesheet" href="bootstrap-multiselect.css" type="text/css"/>
 
-	    $(function() { 
-		$( "#datepickerD" ).datepicker({minDate:0,
-		    onSelect: function (selectedDate) {
-			$("#datepickerR").datepicker("option", "minDate", selectedDate);
-		    }
-		}); 
-		$( "#datepickerR" ).datepicker({
-		    onSelect: function (selectedDate) {
-			$("#datepickerD").datepicker ("option", " maxDate", selectedDate);
-		    }
-		});
-	    });
-	
-	    function OneWay() {
-		var oneway = document.getElementById('oneway');
-		var onewayHidden = document.getElementById('onewayHidden');
-		if(oneway.checked) {
-		    $("#datepickerR" ).datepicker('disable');	
-		    onewayHidden.disabled = true;
-		} else {
-		    $("#datepickerR" ).datepicker('enable');
-		    onewayHidden.disabled = false;
-		}
-	    }
-
-	    function showValue(newValue){
-		document.getElementById("range").innerHTML=newValue;
-	    }
-
-	</script>
+	<!--this is our js file-->
+	<script type="text/javascript" src="flight_tracker.js"></script>
     </head>
 
     <body>
@@ -133,61 +104,7 @@
 			?>
 			</select>	
 			<script>
-			function validate()
-			{
-			    var ddl = document.getElementById("source");
-			    var selectedOValue = ddl.options[ddl.selectedIndex].value;
-			    if (selectedOValue == "selectplease")
-				         {
-					     alert("Please select an Origin");
-					    return false;
-					}
-			    var ddd = document.getElementById("destination");
-			    var selectedDValue = ddd.options[ddd.selectedIndex].value;
-			    if (selectedDValue == "selectdest")
-				{
-				    alert("Please select a Destination");
-			            return false;
-			      }
-
-
-			    if(selectedOValue == selectedDValue)
-			    {
-				    alert("Origin and Destination can not be the same");
-				    return false;
-			    }
-
-			    var ad= document.getElementById("adult");
-			    var chil= document.getElementById("child");
-			    var sen= document.getElementById("senior");
-			    var si= document.getElementById("seatinfant");
-			    var li= document.getElementById("lapinfant");
-		
-			    var advalue = ad.value;
-			    var chilvalue = chil.value;
-			    var senvalue = sen.value;
-			    var sivalue = si.value;
-			    var livalue = li.value;
-
-			    var totalpass = advalue + chilvalue + senvalue + sivalue + livalue;
-
-
-			    if(totalpass <=1)
-			    {
-				alert("Please select passenger quantity");
-				return false;
-			    }
-			    else if(totalpass >=9)
-			    {
-				alert("Passenger quantity is too high.");
-				return false;
-			    }
-
 			
-			    return true;
-			    
-			}
-
 			</script>
 			    
 			<!--DESTINATION FIELD-->
@@ -221,31 +138,31 @@
 
 		    <div class="form-group form-inline">
 			<!--PASSENGERS FIELD-->
-			<label for="Adults">
+			<label for="adult">
 				&nbsp;Adults
 				<input type='button' value='-' class='qtyminus' field='adults' />
 				<input type='text' name='adults' value='0' class='qty' id='adult' />
 				<input type='button' value='+' class='qtyplus' field='adults' />
 			</label>
-			<label for="Children">
+			<label for="child">
 				&nbsp;Children
 				<input type='button' value='-' class='qtyminus' field='children' />
 				<input type='text' name='children' value='0' class='qty' id='child'  />
 				<input type='button' value='+' class='qtyplus' field='children' />
 			</label>
-			<label for="Seniors">
+			<label for="senior">
 				&nbsp;Seniors
 				<input type='button' value='-' class='qtyminus' field='seniors' />
 				<input type='text' name='seniors' value='0' class='qty'id='senior'/>
 				<input type='button' value='+' class='qtyplus' field='seniors' />
 			</label>
-			<label for="SeatInfant">
+			<label for="seatinfant">
 				&nbsp;Seat Infant
 				<input type='button' value='-' class='qtyminus' field='seat_infants' />
 				<input type='text' name='seat_infants' value='0' class='qty' id='seatinfant' />
 				<input type='button' value='+' class='qtyplus' field='seat_infants' />
 			</label>   
-			<label for="LapInfant">
+			<label for="lapinfant">
 				&nbsp;Lap Infant
 				<input type='button' value='-' class='qtyminus' field='lap_infants' />
 				<input type='text' name='lap_infants' value='0' class='qty' id='lapinfant' />
@@ -257,7 +174,7 @@
 			    <label for="price">
 				Max Price
 				<input id="price" type="range" min="0" max="5000" 
-				    step="5" onchange="showValue(this.value)"/>
+				    step="5" name="price" onchange="showValue(this.value)"/>
 			    <span id="range">200</span></label>
 			</div>
 		    </div>
@@ -266,9 +183,9 @@
 			<!--AIRLINE FIELD-->
 			<label for="airline" class="sr-only">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline"
-				    form="search_form">
-			<option>--Select an Airline--</option>
-			<option>No Preference</option>
+				    form="search_form" multiple="multiple">
+			<option selected="selected">--Select an Airline--</option>
+			<option value="none">No Preference</option>
 			<?php
 			    if (file_exists("Airlines.txt")){
 				$codes = fopen("Airlines.txt",'r');				

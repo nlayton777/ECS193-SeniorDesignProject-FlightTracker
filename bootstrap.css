@@ -4883,7 +4883,7 @@ a.badge:focus {
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-position: center center;
-  height: 700px;
+  height: 630px;
 }
 .jumbotron h1,
 .jumbotron .h1 {
@@ -4915,7 +4915,7 @@ a.badge:focus {
     height: 200px;
   }
   .jumbotron#contact {
-  	height: 860px;
+    height: 860px;
     background-size: auto 100%;
     background-position: center center;
   }

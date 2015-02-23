@@ -5,32 +5,62 @@
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
+
+	<!--this is for the datepicker()-->
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
   	<link rel="stylesheet" href="/resources/demos/style.css">
   	
-<!--this is for the increment button-->
+	<!--this is for the increment button-->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="incrementButton.js"></script>
 	<link rel="stylesheet" href="incrementButton.css"/>	 	
 
-<!--this is for the popup text bubble-->
-	<meta charset="utf-8">
-	<title>jQuery UI Tooltip - Default functionality</title>
+	<!--this is for the popup text bubble-->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
 	<link rel="stylesheet" href="/resources/demos/style.css">
+
 	<script>
 	    $(function() {
 		$( document ).tooltip();
 	    });
-	</script>
 
-</head>
+	    $(function() { 
+		$( "#datepickerD" ).datepicker({minDate:0,
+		    onSelect: function (selectedDate) {
+			$("#datepickerR").datepicker("option", "minDate", selectedDate);
+		    }
+		}); 
+		$( "#datepickerR" ).datepicker({
+		    onSelect: function (selectedDate) {
+			$("#datepickerD").datepicker ("option", " maxDate", selectedDate);
+		    }
+		});
+	    });
+	
+	    function OneWay() {
+		var oneway = document.getElementById('oneway');
+		var onewayHidden = document.getElementById('onewayHidden');
+		if(oneway.checked) {
+		    $("#datepickerR" ).datepicker('disable');	
+		    onewayHidden.disabled = true;
+		} else {
+		    $("#datepickerR" ).datepicker('enable');
+		    onewayHidden.disabled = false;
+		}
+	    }
+
+	    function showValue(newValue){
+		document.getElementById("range").innerHTML=newValue;
+	    }
+
+	</script>
+    </head>
 
     <body>
 	<nav class="navbar navbar-inverse ">
@@ -89,12 +119,11 @@
 			<select class="form-control" id="source" name="source" 
 				    form="search_form">
 			<option value="selectplease">---Select an Origin---</option>
+			<option>--Select an Origin--</option>
 			<?php
-			    if (file_exists("AirportCodes.txt"))
-			    {
+			    if (file_exists("AirportCodes.txt")){
 				$codes = fopen("AirportCodes.txt",'r');				
-				while (!feof($codes))
-				{
+				while (!feof($codes)){
 	 			    $line = fgets($codes);
 				    $sub = substr($line, -5, 3);
 				    echo "<option value=\"".$sub."\"> 
@@ -132,12 +161,11 @@
 			<select class="form-control" id="destination" name="destination" 
 				    form="search_form" >
 			<option value="selectdest">---Select a Destination---</option>
+			<option>--Select a Destination--</option>
 			<?php
-			    if (file_exists("AirportCodes.txt"))
-			    {
+			    if (file_exists("AirportCodes.txt")){
 				$codes = fopen("AirportCodes.txt",'r');				
-				while (!feof($codes))
-				{
+				while (!feof($codes)){
 	 			    $line = fgets($codes);
 				    $sub = substr($line, -5, 3);
 				    echo "<option value=\"".$sub."\"> 
@@ -147,38 +175,6 @@
 			?>
 			</select>
 
-			<script>
-
-
-  				$(function() { 
-    				$( "#datepickerD" ).datepicker({minDate:0,
-				  onSelect: function (selectedDate) {
-					$("#datepickerR").datepicker("option", "minDate", selectedDate);
-					}
-  				}); 
-				    
-  				$( "#datepickerR" ).datepicker({
-				    onSelect: function (selectedDate) {
-					$("#datepickerD").datepicker ("option", " maxDate", selectedDate);
-					}
-  				});
-				});
-
-				
-				function OneWay(oneway) {
-				    var oneway = document.getElementById('oneway');
-				    var onewayHidden = document.getElementById('onewayHidden');
-				    if(oneway.checked) {
-					$("#datepickerR" ).datepicker('disable');	
-					onewayHidden.disabled = true;
-				    } else {
-					$("#datepickerR" ).datepicker('enable');
-					onewayHidden.disabled = false;
-				    }
-				}
-	
-		</script>
-  			
 			<!--DEPART DATE FIELD-->
 			<label for="depart-date" class="sr-only">Date of Departure</label>
 			    <input type="text" class="form-control" id="datepickerD" 
@@ -195,55 +191,58 @@
 
 		    <div class="form-group form-inline">
 			<!--PASSENGERS FIELD-->
-			    	<label for="Adults">
-			    		Adults
-						<input type='button' value='-' class='qtyminus' field='quantityA' />
-    					<input type='text' name='quantityA' value='0' class='qty' />
-    					<input type='button' value='+' class='qtyplus' field='quantityA' />
-			    	</label>
-			    	<label for="Children">
-			    		&nbsp;&nbsp;&nbsp;
-			    		Children
-						<input type='button' value='-' class='qtyminus' field='quantityC' />
-    					<input type='text' name='quantityC' value='0' class='qty' />
-    					<input type='button' value='+' class='qtyplus' field='quantityC' />
-			    	</label>
-			    	<label for="Seniors">
-			    		&nbsp;&nbsp;&nbsp;
-			    		Seniors
-						<input type='button' value='-' class='qtyminus' field='quantityS' />
-    					<input type='text' name='quantityS' value='0' class='qty' />
-    					<input type='button' value='+' class='qtyplus' field='quantityS' />
-			    	</label>
-			    	<label for="SeatInfant">
-			    		&nbsp;&nbsp;&nbsp;
-			    		Seat Infant
-						<input type='button' value='-' class='qtyminus' field='quantitySI' />
-    					<input type='text' name='quantitySI' value='0' class='qty' />
-    					<input type='button' value='+' class='qtyplus' field='quantitySI' />
-			    	</label>   
-			    	<label for="LapInfant">
-			    		&nbsp;&nbsp;&nbsp;
-			    		Lap Infant
-						<input type='button' value='-' class='qtyminus' field='quantityLI' />
-    					<input type='text' name='quantityLI' value='0' class='qty' />
-    					<input type='button' value='+' class='qtyplus' field='quantityLI' />
-			    	</label>
-			</div>
+			<label for="Adults">
+				&nbsp;Adults
+				<input type='button' value='-' class='qtyminus' field='adults' />
+				<input type='text' name='adults' value='0' class='qty' />
+				<input type='button' value='+' class='qtyplus' field='adults' />
+			</label>
+			<label for="Children">
+				&nbsp;Children
+				<input type='button' value='-' class='qtyminus' field='children' />
+				<input type='text' name='children' value='0' class='qty' />
+				<input type='button' value='+' class='qtyplus' field='children' />
+			</label>
+			<label for="Seniors">
+				&nbsp;Seniors
+				<input type='button' value='-' class='qtyminus' field='seniors' />
+				<input type='text' name='seniors' value='0' class='qty' />
+				<input type='button' value='+' class='qtyplus' field='seniors' />
+			</label>
+			<label for="SeatInfant">
+				&nbsp;Seat Infant
+				<input type='button' value='-' class='qtyminus' field='seat_infants' />
+				<input type='text' name='seat_infants' value='0' class='qty' />
+				<input type='button' value='+' class='qtyplus' field='seat_infants' />
+			</label>   
+			<label for="LapInfant">
+				&nbsp;Lap Infant
+				<input type='button' value='-' class='qtyminus' field='lap_infants' />
+				<input type='text' name='lap_infants' value='0' class='qty' />
+				<input type='button' value='+' class='qtyplus' field='lap_infants' />
+			</label>
 
-			<div class="form-group form-inline">
+			<!--PRICE FIELD-->
+			<div class="form-group">
+			    <label for="price">
+				Max Price
+				<input id="price" type="range" min="0" max="5000" 
+				    step="5" onchange="showValue(this.value)"/>
+			    <span id="range">200</span></label>
+			</div>
+		    </div>
+
+		    <div class="form-group form-inline">
 			<!--AIRLINE FIELD-->
 			<label for="airline" class="sr-only">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline"
 				    form="search_form">
-			<option>---Select an Airline---</option>
+			<option>--Select an Airline--</option>
 			<option>No Preference</option>
 			<?php
-			    if (file_exists("Airlines.txt"))
-			    {
+			    if (file_exists("Airlines.txt")){
 				$codes = fopen("Airlines.txt",'r');				
-				while (!feof($codes))
-				{
+				while (!feof($codes)){
 	 			    $line = fgets($codes);
 				    echo "<option value=\"" . $line .
 					"\">" . $line . "</option>";
@@ -253,45 +252,26 @@
 			</select>
 			<div class="form-group form-inline">
 
-			<!--PRICE FIELD-->
-			Price Range
-			<label for="price" class="sr-only">Price</label>
-			<html>
-			<body>
-			<input type="range" min="0" max="5000" value="200" step="5" onchange="showValue(this.value)" />
-			<span id="range">200</span>
-			<script type="text/javascript">
-			function showValue(newValue)
-			{
-				document.getElementById("range").innerHTML=newValue;
-			}
-			</script>
-			</body>
-			</html>
-			</div>
 
-			    
 			<!--SEARCH WINDOW FIELD-->
 			<label for="window" class="sr-only">Search Window</label>
 			<input type="text" class="form-control" id="window"  
 			    name="window" placeholder="Search Window (hours)" title="Our search bot will keep searching for you, so we can find you the lowest flight option. Just specify the number of hours you would like us to conduct the search for."></input>
-  
-		    
-		    </div>
-		    
-		    <div class="form-group form-inline">
+
 			<!--EMAIL FIELD-->
 			<label for="email" class="sr-only">Email</label>
 			<input type="email" class="form-control" id="email" 
 			    name="email" pattern="*@-.-" placeholder="john.smith@website.com" required/>
- 
-			<!--PHONE NUMBER FIELD-->
-			<label for="phone" class="sr-only">Phone Number</label>
-			(<input type=tel size=3 class="form-control" id="phone1" name="phone1" placeholder ="123" required>) 
-			<input type=tel size=3 id="phone2" name="phone2" placeholder ="456"  class="form-control" required> - 
-			<input type=tel size=4 class="form-control" id="phone3" name="phone3" placeholder ="7890" required>
-    	    </div>
-		    <input type="submit" class="btn btn-default" onclick = "validate()" value="Find your flight!"/>
+
+			<!--PHONE FIELD-->
+			(<input type=tel size=3 class="form-control phone" 
+			    id="phone1" name="phone1" placeholder ="123" required>) 
+			<input type=tel size=3 class="form-control phone" 
+			    id="phone2" name="phone2" placeholder ="456"  required> - 
+			<input type=tel size=4 class="form-control phone" 
+			    id="phone3" name="phone3" placeholder ="7890" required>
+		    </div>
+		    <input type="submit" class="btn btn-default" onclick="validate()" value="Find your flight!"/>
 		</form>
 	    </header>
 	</div>

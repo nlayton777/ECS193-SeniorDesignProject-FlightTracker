@@ -30,58 +30,8 @@
 	<script type="text/javascript" src="bootstrap-multiselect.js"></script>
 	<link rel="stylesheet" href="bootstrap-multiselect.css" type="text/css"/>
 
-	<script>
-	    $(function() {
-		$( document ).tooltip();
-	    });
-
-	    $(function() { 
-		$( "#datepickerD" ).datepicker({minDate:0,
-		    onSelect: function (selectedDate) {
-			$("#datepickerR").datepicker("option", "minDate", selectedDate);
-		    }
-		}); 
-		$( "#datepickerR" ).datepicker({
-		    onSelect: function (selectedDate) {
-			$("#datepickerD").datepicker ("option", " maxDate", selectedDate);
-		    }
-		});
-	    });
-	
-	    function OneWay() {
-		var oneway = document.getElementById('oneway');
-		var onewayHidden = document.getElementById('onewayHidden');
-		if(oneway.checked) {
-		    $("#datepickerR" ).datepicker('disable');	
-		    onewayHidden.disabled = true;
-		} else {
-		    $("#datepickerR" ).datepicker('enable');
-		    onewayHidden.disabled = false;
-		}
-	    }
-
-	    function showValue(newValue){
-		document.getElementById("range").innerHTML=newValue;
-	    }
-
-	    $(document).ready(function() {
-		$('#airline').multiselect({
-		    buttonWidth: '180px',
-		    maxHeight: 200,
-		    checkboxName: 'airlines[]'
-		});
-		/*
-		$('#source').multiselect({
-		    buttonWidth: '300px',
-		    maxHeight: 200
-		});
-		$('#destination').multiselect({
-		    buttonWidth: '300px',
-		    maxHeight: 200
-		});
-		*/
-	    });
-	</script>
+	<!--this is our js file-->
+	<script type="text/javascript" src="flight_tracker.js"></script>
     </head>
 
     <body>
@@ -137,10 +87,10 @@
 
 		    <div class="form-group form-inline">
 			<!--SOURCE FIELD-->
-			<label for="source" class="sr-only">Departure Location</label>
+			<label for="source" class="sr-only" required >Departure Location</label>
 			<select class="form-control" id="source" name="source" 
 				    form="search_form">
-			<option>--Select an Origin--</option>
+			<option value="selectplease">---Select an Origin---</option>
 			<?php
 			    if (file_exists("AirportCodes.txt")){
 				$codes = fopen("AirportCodes.txt",'r');				
@@ -152,13 +102,16 @@
 				}
 			    }
 			?>
-			</select>
+			</select>	
+			<script>
+			
+			</script>
 			    
 			<!--DESTINATION FIELD-->
 			<label for="destination" class="sr-only">Arrival Location</label>
 			<select class="form-control" id="destination" name="destination" 
-				    form="search_form">
-			<option>--Select a Destination--</option>
+				    form="search_form" >
+			<option value="selectdest">---Select a Destination---</option>
 			<?php
 			    if (file_exists("AirportCodes.txt")){
 				$codes = fopen("AirportCodes.txt",'r');				
@@ -185,46 +138,36 @@
 
 		    <div class="form-group form-inline">
 			<!--PASSENGERS FIELD-->
-			<div class="form-group">
-			    <label for="adults">
-				    &nbsp;Adults
-				    <input type='button' value='-' class='qtyminus' field='adults' />
-				    <input id="adults" type='text' name='adults' value='0' class='qty' />
-				    <input type='button' value='+' class='qtyplus' field='adults' />
-			    </label>
-			</div>
-			<div class="form-group">
-			    <label for="children">
-				    &nbsp;Children
-				    <input type='button' value='-' class='qtyminus' field='children' />
-				    <input id="children" type='text' name='children' value='0' class='qty' />
-				    <input type='button' value='+' class='qtyplus' field='children' />
-			    </label>
-			</div>
-			<div class="form-group">
-			    <label for="seniors">
-				    &nbsp;Seniors
-				    <input type='button' value='-' class='qtyminus' field='seniors' />
-				    <input id="seniors" type='text' name='seniors' value='0' class='qty' />
-				    <input type='button' value='+' class='qtyplus' field='seniors' />
-			    </label>
-			</div>
-			<div class="form-group">
-			    <label for="seat-infant">
-				    &nbsp;Seat Infant
-				    <input type='button' value='-' class='qtyminus' field='seat_infants' />
-				    <input id="seat-infant" type='text' name='seat_infants' value='0' class='qty' />
-				    <input type='button' value='+' class='qtyplus' field='seat_infants' />
-			    </label>   
-			</div>
-			<div class="form-group">
-			    <label for="lap-infant">
-				    &nbsp;Lap Infant
-				    <input type='button' value='-' class='qtyminus' field='lap_infants' />
-				    <input id="lap-infant" type='text' name='lap_infants' value='0' class='qty' />
-				    <input type='button' value='+' class='qtyplus' field='lap_infants' />
-			    </label>
-			</div>
+			<label for="adult">
+				&nbsp;Adults
+				<input type='button' value='-' class='qtyminus' field='adults' />
+				<input type='text' name='adults' value='0' class='qty' id='adult' />
+				<input type='button' value='+' class='qtyplus' field='adults' />
+			</label>
+			<label for="child">
+				&nbsp;Children
+				<input type='button' value='-' class='qtyminus' field='children' />
+				<input type='text' name='children' value='0' class='qty' id='child'  />
+				<input type='button' value='+' class='qtyplus' field='children' />
+			</label>
+			<label for="senior">
+				&nbsp;Seniors
+				<input type='button' value='-' class='qtyminus' field='seniors' />
+				<input type='text' name='seniors' value='0' class='qty'id='senior'/>
+				<input type='button' value='+' class='qtyplus' field='seniors' />
+			</label>
+			<label for="seatinfant">
+				&nbsp;Seat Infant
+				<input type='button' value='-' class='qtyminus' field='seat_infants' />
+				<input type='text' name='seat_infants' value='0' class='qty' id='seatinfant' />
+				<input type='button' value='+' class='qtyplus' field='seat_infants' />
+			</label>   
+			<label for="lapinfant">
+				&nbsp;Lap Infant
+				<input type='button' value='-' class='qtyminus' field='lap_infants' />
+				<input type='text' name='lap_infants' value='0' class='qty' id='lapinfant' />
+				<input type='button' value='+' class='qtyplus' field='lap_infants' />
+			</label>
 
 			<!--PRICE FIELD-->
 			<div class="form-group">
@@ -251,9 +194,11 @@
 				    echo "<option value=\"" . $line .
 					"\">" . $line . "</option>";
 				}
-			    }
+			    } 
 			?>
 			</select>
+			<div class="form-group form-inline">
+
 
 			<!--SEARCH WINDOW FIELD-->
 			<label for="window" class="sr-only">Search Window</label>
@@ -263,18 +208,17 @@
 			<!--EMAIL FIELD-->
 			<label for="email" class="sr-only">Email</label>
 			<input type="email" class="form-control" id="email" 
-			    name="email" pattern="*@-.-" placeholder="john.smith@website.com" required/>
+			    name="email" pattern="*@-.-" placeholder="john.smith@website.com" title="Once our search bot has found the best priced flight option for you, we will notify you via email and/or text message so that you don't miss out on any of the great deals." required/>
 
-			<!--PHONE NUMBER FIELD-->
-			<label for="phone" class="sr-only">Phone Number</label>
-			(<input type=tel size=3 class="form-control phone" 
+			<!--PHONE FIELD-->
+			(<input type=tel size=3 maxlength='3' class="form-control phone" 
 			    id="phone1" name="phone1" placeholder ="123" required>) 
-			<input type=tel size=3 class="form-control phone" 
+			<input type=tel size=3 maxlength ='3' class="form-control phone" 
 			    id="phone2" name="phone2" placeholder ="456"  required> - 
-			<input type=tel size=4 class="form-control phone" 
+			<input type=tel size=4 maxlength = '4' class="form-control phone" 
 			    id="phone3" name="phone3" placeholder ="7890" required>
 		    </div>
-		    <input type="submit" class="btn btn-default" value="Find your flight!"/>
+		    <input type="submit" class="btn btn-success" onclick="validate()" value="Find your flight!"/>
 		</form>
 	    </header>
 	</div>

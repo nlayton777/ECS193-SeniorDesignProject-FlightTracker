@@ -120,7 +120,6 @@
 			<select class="form-control" id="source" name="source" 
 				    form="search_form">
 			<option value="selectplease">---Select an Origin---</option>
-			<option>--Select an Origin--</option>
 			<?php
 			    if (file_exists("AirportCodes.txt")){
 				$codes = fopen("AirportCodes.txt",'r');				
@@ -137,19 +136,26 @@
 			function validate()
 			{
 			    var ddl = document.getElementById("source");
-			    var selectedValue = ddl.options[ddl.selectedIndex].value;
-			    if (selectedValue == "selectplease")
+			    var selectedOValue = ddl.options[ddl.selectedIndex].value;
+			    if (selectedOValue == "selectplease")
 				         {
 					     alert("Please select an Origin");
 					    return false;
 					}
 			    var ddd = document.getElementById("destination");
-			    var selectedValue = ddd.options[ddd.selectedIndex].value;
-			    if (selectedValue == "selectdest")
+			    var selectedDValue = ddd.options[ddd.selectedIndex].value;
+			    if (selectedDValue == "selectdest")
 				{
 				    alert("Please select a Destination");
 			            return false;
 			      }
+
+
+			    if(selectedOValue == selectedDValue)
+			    {
+				    alert("Origin and Destination can not be the same");
+				    return false;
+			    }
 
 			    var ad= document.getElementById("adult");
 			    var chil= document.getElementById("child");

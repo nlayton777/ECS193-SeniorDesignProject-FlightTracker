@@ -73,11 +73,11 @@ function validate(){
     var sen= document.getElementById("senior");
     var si= document.getElementById("seatinfant");
     var li= document.getElementById("lapinfant");
-    var advalue = ad.value;
-    var chilvalue = chil.value;
-    var senvalue = sen.value;
-    var sivalue = si.value;
-    var livalue = li.value;
+    var advalue = parseInt(ad.value);
+    var chilvalue = parseInt(chil.value);
+    var senvalue = parseInt(sen.value);
+    var sivalue = parseInt(si.value);
+    var livalue = parseInt(li.value);
     var totalpass = advalue + chilvalue + senvalue + sivalue + livalue;
 
 

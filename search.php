@@ -58,9 +58,6 @@
 	    $service = new Google_Service_QPXExpress($client);
 	    $trips = $service->trips;
 
-	    // create passenger counts
-	    $passengers = new Google_Service_QPXExpress_PassengerCounts();
-
 	    // create first and second slices
 	    $slice1 = new Google_Service_QPXExpress_SliceInput();
 	    $slice2 = new Google_Service_QPXExpress_SliceInput();
@@ -98,29 +95,32 @@
 		}else{echo "Return date NOT set </br>";}
 	    }else{echo "Depart date NOT set </br>";}
 
+	    // create passenger counts
+	    $passengers = new Google_Service_QPXExpress_PassengerCounts();
+
 	    // set adult count
 	    if (isset($post['adults'])) {
-
+		$passengers->setAdultCount($post['adults']);
 	    }
 
 	    // set children count
 	    if (isset($post['children'])) {
-
+		$passengers->setChildCount($post['children']);
 	    }
 
 	    // set senior count
 	    if (isset($post['seniors'])) {
-
+		$passengers->setSeniorCount($post['seniors']);
 	    }
 
 	    // set seat infant count
-	    if (isset($post['seat_infants')) {
-
+	    if (isset($post['seat_infants'])) {
+		$passengers->setInfantInSeatCount($post['seat_infants']);
 	    }
 
 	    // set lap infant count
 	    if (isset($post['lap_infants'])) {
-
+		$passengers->setInfantInLapCount($post['lap_infants']);
 	    }
 
 	    //price
@@ -134,49 +134,24 @@
 	    }else{echo 'airline is NOT set </br>';}
 
 
-	    // create request
+	    // create request and search request
 	    $request = new Google_Service_QPXExpress_TripOptionsRequest();
+	    $searchRequest = new Google_Service_QPXExpress_TripsSearchRequest();
+
 	    $request->setSolutions(1);
 	    if (isOneWay($post))
 		$request->setSlice(array($slice1));
 	    else
 		$request->setSlice(array($slice1,$slice2));
+
 	    $request->setPassengers($passengers);
-	    $searchRequest = new Google_Service_QPXExpress_TripsSearchRequest();
-	    $searchRequest->setRequest($request);
-	    //print_r($request);
-
-	    // search
-	    $result = $service->trips->search($searchRequest);
-	    print_r($result);
-	    /*
-	    foreach ($result as $item){
-		print_R($item);
-		echo "</br>";
-	    }
-	    */
-
-	    // passengers
-	    /*
-	    $passengers = new Google_Service_QPXExpress_PassengerCounts();
-	    $passengers->setAdultCount(1);
-	    
-	    // slices/ trips
-	    $slice = new Google_Service_QPXExpress_SliceInput();
-	    $slice->setDestination('LUX');
-	    $slice->setOrigin('FRA');
-	    $slice->setDate('2015-09-09');
-
-	    $request = new Google_Service_QPXExpress_TripOptionsRequest();
-	    $searchRequest = new Google_Service_QPXExpress_TripsSearchRequest();
 	    $searchRequest->setRequest($request);
 
 	    // search
 	    $result = $service->trips->search($searchRequest);
 	    print_r($result);
-	    */
-
 	    
+
 	    //window
 	    if (isset($post['window']) && ($post['window'] >= 0))
 	    {

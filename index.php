@@ -215,11 +215,9 @@
 			<option>--Select an Airline--</option>
 			<option>No Preference</option>
 			<?php
-			    if (file_exists("Airlines.txt"))
-			    {
+			    if (file_exists("Airlines.txt")){
 				$codes = fopen("Airlines.txt",'r');				
-				while (!feof($codes))
-				{
+				while (!feof($codes)){
 	 			    $line = fgets($codes);
 				    echo "<option value=\"" . $line .
 					"\">" . $line . "</option>";
@@ -228,7 +226,6 @@
 			?>
 			</select>
 
-			    
 			<!--SEARCH WINDOW FIELD-->
 			<label for="window" class="sr-only">Search Window</label>
 			<input type="text" class="form-control" id="window"  

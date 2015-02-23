@@ -4928,33 +4928,38 @@ a.badge:focus {
 .jumbotron .container {
   max-width: 100%;
 }
+/* HOME RESIZING */
 @media screen and (min-width: 1055px) {
   .jumbotron#home {
     height: 630px;
     background-size: 100% auto;
   }
 }
-@media screen and (min-width: 783px) and (max-width: 1054px) {
+@media screen and (min-width: 790px) and (max-width: 1054px) {
   .jumbotron#home {
     height: 630px;
     background-size: auto 100%;
   }
 }
-@media screen and (min-width: 413px) and (max-width: 780px) {
+@media screen and (min-width: 413px) and (max-width: 789px) {
   .jumbotron#home {
     height: 900px;
+    background-size: auto 100%;
   }
 }
 @media screen and (max-width: 412px) {
   .jumbotron#home {
     height: 1050px;
+    background-size: auto 100%;
   }
 }
+/* ABOUT RESIZING */
 @media screen and (max-width: 679px) {
   .jumbotron#about {
     background-size: auto 100%;
   }
 }
+/* CONTACT RESIZING */
 @media screen and (min-width: 992px) and (max-width: 1199px) {
   .jumbotron#contact {
     height: 610px;
@@ -4975,7 +4980,7 @@ a.badge:focus {
 @media screen and (max-width: 320px) {
   .jumbotron#contact {
     background-size: auto 100%;
-    height: 770px;
+    height: 780px;
   }
 }
 @media screen and (min-width: 768px) {

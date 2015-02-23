@@ -2,6 +2,7 @@
 <html>
     <head>
 	<title>UCD Flight Tracker</title>
+
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
@@ -161,7 +162,6 @@
 			<select class="form-control" id="destination" name="destination" 
 				    form="search_form" >
 			<option value="selectdest">---Select a Destination---</option>
-			<option>--Select a Destination--</option>
 			<?php
 			    if (file_exists("AirportCodes.txt")){
 				$codes = fopen("AirportCodes.txt",'r');				
@@ -179,15 +179,12 @@
 			<label for="depart-date" class="sr-only">Date of Departure</label>
 			    <input type="text" class="form-control" id="datepickerD" 
 			    name="depart_date" placeholder="Depart"/ required>
-			    
 
 			<!--RETURN DATE FIELD-->
 			<label for="return-date" class="sr-only">Date of Return</label>
 			    <input type="text" class="form-control" id="datepickerR" 
 			    name="return_date" placeholder="Return"/>
 		    </div>
-
-	    
 
 		    <div class="form-group form-inline">
 			<!--PASSENGERS FIELD-->

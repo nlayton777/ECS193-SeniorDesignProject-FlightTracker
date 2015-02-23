@@ -301,7 +301,7 @@
 			<input type=tel size=4 maxlength = '4' class="form-control phone" 
 			    id="phone3" name="phone3" placeholder ="7890" required>
 		    </div>
-		    <input type="submit" class="btn btn-default" onclick="validate()" value="Find your flight!"/>
+		    <input type="submit" class="btn btn-success" onclick="validate()" value="Find your flight!"/>
 		</form>
 	    </header>
 	</div>

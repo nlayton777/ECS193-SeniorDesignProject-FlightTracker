@@ -64,7 +64,7 @@
 	</nav>
 
 	<!-- HERE WE WILL HAVE OUR SEARCH BAR -->
-	<div class="container-fluid">
+	<div class="container-fluid" id="header">
 	    <header class="jumbotron" id="home">
 		<h1>UCD Flight Tracker</h1>
 		<p>Customize your travel needs!<p>
@@ -220,23 +220,28 @@
 		</form>
 	    </header>
 	</div>
-	<div class="container-fluid">
+	<div class="container-fluid" id="details">
 	    <section id="description">
 		<div class="row">
-		    <div class="col-md-6">
+		    <div class="col-md-1"></div>
+		    <div class="col-md-10">
 			<h2>Let us do the work for you</h2>
 			<p>
-			    We perform background searches for your flight, 
-			    so that you don't have to worry about refreshing your 
-			    search pages.
-			    Just tell us how long you want to search, then kick back,
-			    relax, and wait for us to notify you when 
-			    we've found your flight. 
-			    If your not the waiting type, then  you don't have to.
-			    Just leave out a waiting time, and 
-			    we will provide immediate results.
+			    Our goal is to discover the lowest fare for the flight 
+			    that you need by performing an automated background search 
+			    so that you can obtain the best tickets for the lowest price.
+			    Our website searches for your flight over a longer period of time
+			    to try to catch the periods of time when airlines reduce their fares.
+			    This way, you don't have to worry about wasting money or refreshing your search page.
+			    Just tell us how long you want to search, then kick back,relax, 
+			    and wait for us to notify you when we've found your flight. 
+			    If your not the waiting type, then don't worry about it.
+			    Simply exclude any waiting time, and our search will provide 
+			    immediate results. 
 			</p>
 		    </div>
+		    <div class="col-md-1"></div>
+		    <!--
 		    <div class="col-md-6">
 			<h2>Stay updated</h2>
 			<p id="test">
@@ -247,6 +252,7 @@
 			    Twitter.
 			</p>
 		    </div>
+		    -->
 		</div>
 	    </section>
 	</div>

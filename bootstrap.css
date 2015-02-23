@@ -1595,6 +1595,15 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+/* changes */
+.container-fluid#details {
+  margin-top: 0;
+  padding-top: 0;
+}
+.container-fluid#header {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
 .row {
   margin-right: -15px;
   margin-left: -15px;
@@ -4919,13 +4928,13 @@ a.badge:focus {
 .jumbotron .container {
   max-width: 100%;
 }
-@media screen and (max-width: 1055px) {
+@media screen and (min-width: 1055px) {
   .jumbotron#home {
     height: 630px;
-    background-size: auto 100%;
+    background-size: 100% auto;
   }
 }
-@media screen and (min-width: 783px) and (max-width: 1072px) {
+@media screen and (min-width: 783px) and (max-width: 1054px) {
   .jumbotron#home {
     height: 630px;
     background-size: auto 100%;

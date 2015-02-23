@@ -2,6 +2,7 @@
 <html>
     <head>
 	<title>UCD Flight Tracker</title>
+
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
@@ -135,7 +136,7 @@
 			<!--DESTINATION FIELD-->
 			<label for="destination" class="sr-only">Arrival Location</label>
 			<select class="form-control" id="destination" name="destination" 
-				    form="search_form" >
+				    form="search_form">
 			<option>--Select a Destination--</option>
 			<?php
 			    if (file_exists("AirportCodes.txt")){
@@ -150,56 +151,16 @@
 			?>
 			</select>
 
-<!--
-<<<<<<< HEAD
-=======
-			<script>
-
-
-  				$(function() { 
-    				$( "#datepickerD" ).datepicker({minDate:0,
-				  onSelect: function (selectedDate) {
-					$("#datepickerR").datepicker("option", "minDate", selectedDate);
-					}
-  				}); 
-				    
-  				$( "#datepickerR" ).datepicker({
-				    onSelect: function (selectedDate) {
-					$("#datepickerD").datepicker ("option", " maxDate", selectedDate);
-					}
-  				});
-				});
-
-				
-				function OneWay(oneway) {
-				    var oneway = document.getElementById('oneway');
-				    var onewayHidden = document.getElementById('onewayHidden');
-				    if(oneway.checked) {
-					$("#datepickerR" ).datepicker('disable');	
-					onewayHidden.disabled = true;
-				    } else {
-					$("#datepickerR" ).datepicker('enable');
-					onewayHidden.disabled = false;
-				    }
-				}
-	
-		</script>
-  			
->>>>>>> 953c3f8df24196cc491e5df03228133f8afa22ec
--->
 			<!--DEPART DATE FIELD-->
 			<label for="depart-date" class="sr-only">Date of Departure</label>
 			    <input type="text" class="form-control" id="datepickerD" 
 			    name="depart_date" placeholder="Depart"/ required>
-			    
 
 			<!--RETURN DATE FIELD-->
 			<label for="return-date" class="sr-only">Date of Return</label>
 			    <input type="text" class="form-control" id="datepickerR" 
 			    name="return_date" placeholder="Return"/>
 		    </div>
-
-	    
 
 		    <div class="form-group form-inline">
 			<!--PASSENGERS FIELD-->

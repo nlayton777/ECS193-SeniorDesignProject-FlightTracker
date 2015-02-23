@@ -26,6 +26,10 @@
 	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
 	<link rel="stylesheet" href="/resources/demos/style.css">
 
+	<!--this is for checkbox list-->
+	<script type="text/javascript" src="bootstrap-multiselect.js"></script>
+	<link rel="stylesheet" href="bootstrap-multiselect.css" type="text/css"/>
+
 	<script>
 	    $(function() {
 		$( document ).tooltip();
@@ -60,6 +64,23 @@
 		document.getElementById("range").innerHTML=newValue;
 	    }
 
+	    $(document).ready(function() {
+		$('#airline').multiselect({
+		    buttonWidth: '180px',
+		    maxHeight: 200,
+		    checkboxName: 'airlines[]'
+		});
+		/*
+		$('#source').multiselect({
+		    buttonWidth: '300px',
+		    maxHeight: 200
+		});
+		$('#destination').multiselect({
+		    buttonWidth: '300px',
+		    maxHeight: 200
+		});
+		*/
+	    });
 	</script>
     </head>
 
@@ -164,43 +185,53 @@
 
 		    <div class="form-group form-inline">
 			<!--PASSENGERS FIELD-->
-			<label for="Adults">
-				&nbsp;Adults
-				<input type='button' value='-' class='qtyminus' field='adults' />
-				<input type='text' name='adults' value='0' class='qty' />
-				<input type='button' value='+' class='qtyplus' field='adults' />
-			</label>
-			<label for="Children">
-				&nbsp;Children
-				<input type='button' value='-' class='qtyminus' field='children' />
-				<input type='text' name='children' value='0' class='qty' />
-				<input type='button' value='+' class='qtyplus' field='children' />
-			</label>
-			<label for="Seniors">
-				&nbsp;Seniors
-				<input type='button' value='-' class='qtyminus' field='seniors' />
-				<input type='text' name='seniors' value='0' class='qty' />
-				<input type='button' value='+' class='qtyplus' field='seniors' />
-			</label>
-			<label for="SeatInfant">
-				&nbsp;Seat Infant
-				<input type='button' value='-' class='qtyminus' field='seat_infants' />
-				<input type='text' name='seat_infants' value='0' class='qty' />
-				<input type='button' value='+' class='qtyplus' field='seat_infants' />
-			</label>   
-			<label for="LapInfant">
-				&nbsp;Lap Infant
-				<input type='button' value='-' class='qtyminus' field='lap_infants' />
-				<input type='text' name='lap_infants' value='0' class='qty' />
-				<input type='button' value='+' class='qtyplus' field='lap_infants' />
-			</label>
+			<div class="form-group">
+			    <label for="adults">
+				    &nbsp;Adults
+				    <input type='button' value='-' class='qtyminus' field='adults' />
+				    <input id="adults" type='text' name='adults' value='0' class='qty' />
+				    <input type='button' value='+' class='qtyplus' field='adults' />
+			    </label>
+			</div>
+			<div class="form-group">
+			    <label for="children">
+				    &nbsp;Children
+				    <input type='button' value='-' class='qtyminus' field='children' />
+				    <input id="children" type='text' name='children' value='0' class='qty' />
+				    <input type='button' value='+' class='qtyplus' field='children' />
+			    </label>
+			</div>
+			<div class="form-group">
+			    <label for="seniors">
+				    &nbsp;Seniors
+				    <input type='button' value='-' class='qtyminus' field='seniors' />
+				    <input id="seniors" type='text' name='seniors' value='0' class='qty' />
+				    <input type='button' value='+' class='qtyplus' field='seniors' />
+			    </label>
+			</div>
+			<div class="form-group">
+			    <label for="seat-infant">
+				    &nbsp;Seat Infant
+				    <input type='button' value='-' class='qtyminus' field='seat_infants' />
+				    <input id="seat-infant" type='text' name='seat_infants' value='0' class='qty' />
+				    <input type='button' value='+' class='qtyplus' field='seat_infants' />
+			    </label>   
+			</div>
+			<div class="form-group">
+			    <label for="lap-infant">
+				    &nbsp;Lap Infant
+				    <input type='button' value='-' class='qtyminus' field='lap_infants' />
+				    <input id="lap-infant" type='text' name='lap_infants' value='0' class='qty' />
+				    <input type='button' value='+' class='qtyplus' field='lap_infants' />
+			    </label>
+			</div>
 
 			<!--PRICE FIELD-->
 			<div class="form-group">
 			    <label for="price">
 				Max Price
 				<input id="price" type="range" min="0" max="5000" 
-				    step="5" onchange="showValue(this.value)"/>
+				    step="5" name="price" onchange="showValue(this.value)"/>
 			    <span id="range">200</span></label>
 			</div>
 		    </div>
@@ -209,9 +240,9 @@
 			<!--AIRLINE FIELD-->
 			<label for="airline" class="sr-only">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline"
-				    form="search_form">
-			<option>--Select an Airline--</option>
-			<option>No Preference</option>
+				    form="search_form" multiple="multiple">
+			<option selected="selected">--Select an Airline--</option>
+			<option value="none">No Preference</option>
 			<?php
 			    if (file_exists("Airlines.txt")){
 				$codes = fopen("Airlines.txt",'r');				

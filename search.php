@@ -123,16 +123,16 @@
 		$passengers->setInfantInLapCount($post['lap_infants']);
 	    }
 
-	    //price
-	    if (isset($post['price']) && ($post['price'] > 0)){
-		echo 'price is set </br>';
-	    }else{echo 'price is NOT set </br>';}
-
 	    //airline
 	    if (isset($post['airline'])){
 		echo 'airline is set </br>';
 	    }else{echo 'airline is NOT set </br>';}
 
+	    //price
+	    $price = 0;
+	    if (isset($post['price']) && ($post['price'] > 0)){
+		$price = $post['price'];
+	    }else{echo 'price is NOT set </br>';}
 
 	    // create request and search request
 	    $request = new Google_Service_QPXExpress_TripOptionsRequest();

@@ -125,7 +125,6 @@
 
 	    //airline
 	    if (isset($post['airline'])){
-		echo 'airline is set </br>';
 	    }else{echo 'airline is NOT set </br>';}
 
 	    //price
@@ -145,12 +144,11 @@
 		$request->setSlice(array($slice1,$slice2));
 
 	    $request->setPassengers($passengers);
+	    $request->setSaleCountry("USA");
 	    $searchRequest->setRequest($request);
 
 	    // search
 	    $result = $service->trips->search($searchRequest);
-	    print_r($result);
-	    
 
 	    //window
 	    if (isset($post['window']) && ($post['window'] >= 0))

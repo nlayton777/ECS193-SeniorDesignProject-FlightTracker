@@ -34,8 +34,8 @@ function showValue(newValue){
 $(document).ready(function() {
     $('#airline').multiselect({
 	buttonWidth: '180px',
-	maxHeight: 200,
-	checkboxName: 'airlines[]'
+	maxHeight: 200
+	//checkboxName: 'airlines[]'
     });
     /*
     $('#source').multiselect({
@@ -81,11 +81,11 @@ function validate(){
     var totalpass = advalue + chilvalue + senvalue + sivalue + livalue;
 
 
-    if(totalpass <=1){
+    if(totalpass <1){
 	alert("Please select passenger quantity");
 	return false;
     }else if(totalpass >=9){
-	alert("Passenger quantity is too high.");
+	alert("Passenger quantity is too high. Can't be" + totalpass);
 	return false;
     }
     return true;

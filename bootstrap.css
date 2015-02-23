@@ -118,6 +118,11 @@ textarea {
   font: inherit;
   color: inherit;
 }
+input.phone {
+  margin: 3px 3px;
+  font: inherit;
+  color: inherit;
+}
 button {
   overflow: visible;
 }

@@ -39,10 +39,11 @@
 	</nav>
 
 	<div class="container">
-	    <h1>Contact us...</h1>
+	<header class="jumbotron" id="contact">
+	    <h1>Leave us a message...</h1>
 	    <p>We are interested to hear both your questions and/or your feedback regarding our website and services.</p>
 	    <div class="row">
-		<div class="col-md-8">
+		<div class="col-md-4">
 		    <form role="form form-horizontal"  class="form-vertical" method="post" action="contactsubmission.php">
 			<div class="form-group">
 			    <label for="name">
@@ -54,29 +55,25 @@
 
 			<div class="form-group">
 			    <label for="email">
-				Email: 
-			    </label>
-			    <input type="text" class="form-control" id="email" name="email"
-				size="10" placeholder="johnsmith@sitename.com"/>
+				Email:
+				</label>
+				<input type="email" class="form-control" id="email" 
+			    name="email" pattern="*@-.-" placeholder="john.smith@website.com" required/>
 			</div>
-
+			
 			<div class="form-group">
 			    <label for="comments">
-				Questions/Comments/Concerns: 
+				Message: 
 			    </label>
-			    <input type="text-area" class="form-control" id="comments" name = "comments" placeholder="Let us know what you think!"/>
-			</div>
+			    <div class="form-group">
+			    	<textarea rows="8" cols="60" id="comments" placeholder="Let us know what you think!" ></textarea>
+				</div>
 			<input type="submit" class="btn btn-default" value="Submit"/>
 		    </form>
 		</div>
-
-		<div class="col-md-2">
-		    <h2>Email</h2>
-		    <p>people@something.com</p>
-		    <h2>Telephone</h2>
-		    <p>+1.916.899.4624</p>
-		</div>
+		</header>
 	    </div>
+	</div>
 	</div>
     </body>
 </html>

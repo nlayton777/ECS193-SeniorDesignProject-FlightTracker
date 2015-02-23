@@ -81,24 +81,47 @@
 
 	    // set/manage date information
 	    if (isset($post['depart_date'])){
-		$dep = explode('/', $post['depart_date']); // parse departure date
+		// parse departure date
+		$dep = explode('/', $post['depart_date']); 
+		// reformat date
 		$dep_date = $dep[2] . "-" . $dep[0] . "-" . $dep[1];
+		// set date in request message
 		$slice1->setDate($dep_date);
+		// if not one-way
 		if (!isOneWay($post) && isset($post['return_date'])){
+		    // parse departure date
 		    $ret = explode('/', $post['return_date']);
-		    //if (($dep[0] <= $ret[0]) && ($dep[1] <= $ret[1]) 
-		    //			     && ($dep[2] <= $ret[2])){ // check if valid dates
+		    // reformat date
 		    $ret_date = $ret[2] . "-" . $ret[0] . "-" . $ret[1];
+		    // set date in request message
 		    $slice2->setDate($ret_date);
-		    //}else{echo "invalid travel dates </br>";}
 		}else{echo "Return date NOT set </br>";}
 	    }else{echo "Depart date NOT set </br>";}
 
-	    //passengers
-//	    if (isset($post['passengers'])){
-		//echo 'passengers is set </br>';
-		$passengers->setAdultCount(1);
-//	    }else{echo 'passengers is NOT set </br>';}
+	    // set adult count
+	    if (isset($post['adults'])) {
+
+	    }
+
+	    // set children count
+	    if (isset($post['children'])) {
+
+	    }
+
+	    // set senior count
+	    if (isset($post['seniors'])) {
+
+	    }
+
+	    // set seat infant count
+	    if (isset($post['seat_infants')) {
+
+	    }
+
+	    // set lap infant count
+	    if (isset($post['lap_infants'])) {
+
+	    }
 
 	    //price
 	    if (isset($post['price']) && ($post['price'] > 0)){

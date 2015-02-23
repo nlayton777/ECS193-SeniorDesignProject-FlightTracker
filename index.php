@@ -217,26 +217,26 @@
 			</label>
 			<label for="Seniors">
 				&nbsp;Seniors
-				<input type='button' value='-' class='qtyminus' field='quantityS' />
-				<input type='text' name='quantityS' value='0' class='qty' />
-				<input type='button' value='+' class='qtyplus' field='quantityS' />
+				<input type='button' value='-' class='qtyminus' field='seniors' />
+				<input type='text' name='seniors' value='0' class='qty' />
+				<input type='button' value='+' class='qtyplus' field='seniors' />
 			</label>
 			<label for="SeatInfant">
 				&nbsp;Seat Infant
-				<input type='button' value='-' class='qtyminus' field='quantitySI' />
-				<input type='text' name='quantitySI' value='0' class='qty' />
-				<input type='button' value='+' class='qtyplus' field='quantitySI' />
+				<input type='button' value='-' class='qtyminus' field='seat_infants' />
+				<input type='text' name='seat_infants' value='0' class='qty' />
+				<input type='button' value='+' class='qtyplus' field='seat_infants' />
 			</label>   
 			<label for="LapInfant">
 				&nbsp;Lap Infant
-				<input type='button' value='-' class='qtyminus' field='quantityLI' />
-				<input type='text' name='quantityLI' value='0' class='qty' />
-				<input type='button' value='+' class='qtyplus' field='quantityLI' />
+				<input type='button' value='-' class='qtyminus' field='lap_infants' />
+				<input type='text' name='lap_infants' value='0' class='qty' />
+				<input type='button' value='+' class='qtyplus' field='lap_infants' />
 			</label>
 
 			<!--PRICE FIELD-->
 			<label for="price">Price Range
-			<input class="form-control" id="price" type="range" min="0" max="5000" 
+			<input id="price" type="range" min="0" max="5000" 
 			    step="5" onchange="showValue(this.value)" />
 			<span id="range">200</span></label>
 

@@ -103,9 +103,6 @@
 			    }
 			?>
 			</select>	
-			<script>
-			
-			</script>
 			    
 			<!--DESTINATION FIELD-->
 			<label for="destination" class="sr-only">Arrival Location</label>
@@ -191,7 +188,8 @@
 				$codes = fopen("Airlines.txt",'r');				
 				while (!feof($codes)){
 	 			    $line = fgets($codes);
-				    echo "<option value=\"" . $line .
+				    $sub = substr($line, -4, 2);
+				    echo "<option value=\"" . $sub .
 					"\">" . $line . "</option>";
 				}
 			    } 
@@ -218,7 +216,7 @@
 			<input type=tel size=4 maxlength = '4' class="form-control phone" 
 			    id="phone3" name="phone3" placeholder ="7890" required>
 		    </div>
-		    <input type="submit" class="btn btn-default" onclick="validate()" value="Find your flight!"/>
+		    <input id="submit-button" type="submit" class="btn btn-info btn-lg" onclick="validate()" value="Find your flight!"/>
 		</form>
 	    </header>
 	</div>

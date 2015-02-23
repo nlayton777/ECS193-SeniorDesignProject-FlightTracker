@@ -52,7 +52,8 @@
 	    // create client 
 	    $client = new Google_Client();
 	    $client->setApplicationName("Flight Tracker");
-	    $client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+	    //$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+	    $client->setDeveloperKey("IzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 
 	    // create QPX service
 	    $service = new Google_Service_QPXExpress($client);
@@ -78,20 +79,20 @@
 
 	    // set/manage date information
 	    if (isset($post['depart_date'])){
-			// parse departure date
-			$dep = explode('/', $post['depart_date']); 
-			// reformat date
-			$dep_date = $dep[2] . "-" . $dep[0] . "-" . $dep[1];
-			// set date in request message
-			$slice1->setDate($dep_date);
-			// if not one-way
-			if (!isOneWay($post) && isset($post['return_date'])){
-		    	// parse departure date
-		    	$ret = explode('/', $post['return_date']);
-		    	// reformat date
-		    	$ret_date = $ret[2] . "-" . $ret[0] . "-" . $ret[1];
-		    	// set date in request message
-		    	$slice2->setDate($ret_date);
+		// parse departure date
+		$dep = explode('/', $post['depart_date']); 
+		// reformat date
+		$dep_date = $dep[2] . "-" . $dep[0] . "-" . $dep[1];
+		// set date in request message
+		$slice1->setDate($dep_date);
+		// if not one-way
+		if (!isOneWay($post) && isset($post['return_date'])){
+		    // parse departure date
+		    $ret = explode('/', $post['return_date']);
+		    // reformat date
+		    $ret_date = $ret[2] . "-" . $ret[0] . "-" . $ret[1];
+		    // set date in request message
+		    $slice2->setDate($ret_date);
 		}else{echo "Return date NOT set </br>";}
 	    }else{echo "Depart date NOT set </br>";}
 
@@ -123,15 +124,12 @@
 		$passengers->setInfantInLapCount($post['lap_infants']);
 	    }
 
-	    //airline
+	    // set carrier information
 	    if (isset($post['airline'])){
+		$slice1->setPermittedCarrier($post['airline']);
+		if (!isOneWay($post)) 
+		    $slice2->setPermittedCarrier($post['airline']); 
 	    }else{echo 'airline is NOT set </br>';}
-
-	    //price
-	    $price = 0;
-	    if (isset($post['price']) && ($post['price'] > 0)){
-		$price = $post['price'];
-	    }else{echo 'price is NOT set </br>';}
 
 	    // create request and search request
 	    $request = new Google_Service_QPXExpress_TripOptionsRequest();
@@ -142,13 +140,37 @@
 		$request->setSlice(array($slice1));
 	    else
 		$request->setSlice(array($slice1,$slice2));
-
 	    $request->setPassengers($passengers);
 	    $request->setSaleCountry("USA");
+	    echo "</br>";
+	    //print_r($request);
+	    echo "</br>PASSENGERS INFORMATION: </br>";
+	    print_r($request->getPassengers());
+	    echo "</br>SLICE INFORMATION: </br>";
+	    print_r($request->getSlice());
+	    echo "</br>SLICE: ORIGIN INFORMATION: </br>";
+	    //print_r($request['slice']['source']);
+	    echo "</br>SLICE: DESTINATION INFORMATION: </br>";
+	    //print_r($request['slice']['destination']);
+	    echo "</br>SLICE: DATE INFORMATION: </br>";
+	    //print_r($request['slice']['date']);
+	    echo "</br>SLICE: PERMITTEDCARRIER INFORMATION: </br>";
+	    //print_r($request['slice']['permittedCarrier']);
+	    /*
 	    $searchRequest->setRequest($request);
 
 	    // search
 	    $result = $service->trips->search($searchRequest);
+	    */
+
+	    //print_r($result['trips']['data']);
+	    //print_r($result['trips']['tripOption']);
+
+	    // manage pricing info
+	    $price = 0;
+	    if (isset($post['price']) && ($post['price'] > 0)){
+		$price = $post['price'];
+	    }else{echo 'price is NOT set </br>';}
 
 	    //window
 	    if (isset($post['window']) && ($post['window'] >= 0))

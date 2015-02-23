@@ -3159,10 +3159,18 @@ fieldset[disabled] .btn-success.active {
   color: #5cb85c;
   background-color: #fff;
 }
+/* changes */
 .btn-info {
-  color: #fff;
-  background-color: #5bc0de;
+  /*color: #fff;*/
+  color: #46b8da;
+  /*background-color: #5bc0de;*/
+  background-color: transparent;
   border-color: #46b8da;
+  border-width: 2px;
+  -webkit-transition-property: background-color 0.2s ease-in;
+  -webkit-transition-property: color 0.2s ease-in;
+  transition: background-color 0.2s ease-in;
+  transition: color 0.2s ease-in;
 }
 .btn-info:hover,
 .btn-info:focus,
@@ -3173,6 +3181,12 @@ fieldset[disabled] .btn-success.active {
   color: #fff;
   background-color: #31b0d5;
   border-color: #269abc;
+}
+/* changes */
+.btn-info:hover {
+  background-color: #46b8da;
+  border-color: #46b8da;
+  color: white;
 }
 .btn-info:active,
 .btn-info.active,

@@ -171,13 +171,6 @@
 				alert("Please select passenger quantity");
 				return false;
 			    }
-			    else if(totalpass >=9)
-			    {
-				alert("Passenger quantity is too high.");
-				return false;
-			    }
-
-			
 			    return true;
 			    
 			}

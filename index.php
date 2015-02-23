@@ -115,14 +115,23 @@
 			</select>
 
 			<script>
-  				$(function() {
-    				$( "#datepickerD" ).datepicker({minDate: 0});
-  				});
+
+
+  				$(function() { 
+    				$( "#datepickerD" ).datepicker({minDate:0,
+				  onSelect: function (selectedDate) {
+					$("#datepickerR").datepicker("option", "minDate", selectedDate);
+					}
+  				}); 
 				    
-  				$(function() {
-    				$( "#datepickerR" ).datepicker({minDate:0});
+  				$( "#datepickerR" ).datepicker({
+				    onSelect: function (selectedDate) {
+					$("#datepickerD").datepicker ("option", " maxDate", selectedDate);
+					}
   				});
-	
+				});
+
+				
 				function OneWay(oneway) {
 				    var oneway = document.getElementById('oneway');
 				    if(oneway.checked) {
@@ -131,18 +140,22 @@
 					$("#datepickerR" ).datepicker('enable');
 				    }
 				}
-			</script>
+	
+		</script>
   			
 			<!--DEPART DATE FIELD-->
 			<label for="depart-date" class="sr-only">Date of Departure</label>
 			    <input type="text" class="form-control" id="datepickerD" 
 			    name="depart_date" placeholder="Depart"/ required>
 			    
+
 			<!--RETURN DATE FIELD-->
 			<label for="return-date" class="sr-only">Date of Return</label>
 			    <input type="text" class="form-control" id="datepickerR" 
 			    name="return_date" placeholder="Return"/>
 		    </div>
+
+	    
 
 		    <div class="form-group form-inline">
 			<!--PASSENGERS FIELD-->
@@ -203,7 +216,7 @@
 			<input type=tel size=3 id="phone2" name="phone2" placeholder ="456"  class="form-control" required> - 
 			<input type=tel size=4 class="form-control" id="phone3" name="phone3" placeholder ="7890" required>
     	    </div>
-		    <input type="submit" class="btn btn-default" value="Find your flight!"/>
+		    <input type="submit" class="btn btn-default"  value="Find your flight!"/>
 		</form>
 	    </header>
 	</div>

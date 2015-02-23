@@ -48,10 +48,6 @@
 	    // post request from index
 	    $post = $_POST;
 	    print_r($post);
-	    //echo "</br>";
-	    //foreach ($post as $item)
-		//echo $item . "</br>";
-	    //isOneWay($post['oneway']);
 
 	    // create client 
 	    $client = new Google_Client();
@@ -87,10 +83,8 @@
 	    if (isset($post['depart_date'])){
 		$dep = explode('/', $post['depart_date']); // parse departure date
 		$dep_date = $dep[2] . "-" . $dep[0] . "-" . $dep[1];
-		if (isOneWay($post)) {
-		    print_r($dep_date);
-		    $slice1->setDate($dep_date);
-		} else if ((!isOneWay($post)) && isset($post['return_date'])){
+		$slice1->setDate($dep_date);
+		if (!isOneWay($post) && isset($post['return_date'])){
 		    $ret = explode('/', $post['return_date']);
 		    //if (($dep[0] <= $ret[0]) && ($dep[1] <= $ret[1]) 
 		    //			     && ($dep[2] <= $ret[2])){ // check if valid dates
@@ -101,10 +95,10 @@
 	    }else{echo "Depart date NOT set </br>";}
 
 	    //passengers
-	    if (isset($post['passengers'])){
+//	    if (isset($post['passengers'])){
 		//echo 'passengers is set </br>';
 		$passengers->setAdultCount(1);
-	    }else{echo 'passengers is NOT set </br>';}
+//	    }else{echo 'passengers is NOT set </br>';}
 
 	    //price
 	    if (isset($post['price']) && ($post['price'] > 0)){

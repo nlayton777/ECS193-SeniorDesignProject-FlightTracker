@@ -85,10 +85,10 @@
 
 		    <div class="form-group form-inline">
 			<!--SOURCE FIELD-->
-			<label for="source" class="sr-only">Departure Location</label>
+			<label for="source" class="sr-only" required >Departure Location</label>
 			<select class="form-control" id="source" name="source" 
 				    form="search_form">
-			<option>---Select an Origin---</option>
+			<option value="selectplease">---Select an Origin---</option>
 			<?php
 			    if (file_exists("AirportCodes.txt"))
 			    {
@@ -102,13 +102,36 @@
 				}
 			    }
 			?>
-			</select>
+			</select>	
+			<script>
+			function validate()
+			{
+			    var ddl = document.getElementById("source");
+			    var selectedValue = ddl.options[ddl.selectedIndex].value;
+			    if (selectedValue == "selectplease")
+				         {
+					     alert("Please select an Origin");
+					    return false;
+					}
+			    var ddd = document.getElementById("destination");
+			    var selectedValue = ddd.options[ddd.selectedIndex].value;
+			    if (selectedValue == "selectdest")
+				{
+				    alert("Please select a Destination");
+			            return false;
+			      }
+			
+			    return true;
+			    
+			}
+
+			</script>
 			    
 			<!--DESTINATION FIELD-->
 			<label for="destination" class="sr-only">Arrival Location</label>
 			<select class="form-control" id="destination" name="destination" 
 				    form="search_form" >
-			<option>---Select a Destination---</option>
+			<option value="selectdest">---Select a Destination---</option>
 			<?php
 			    if (file_exists("AirportCodes.txt"))
 			    {
@@ -225,7 +248,7 @@
 				    echo "<option value=\"" . $line .
 					"\">" . $line . "</option>";
 				}
-			    }
+			    } 
 			?>
 			</select>
 			<div class="form-group form-inline">
@@ -233,7 +256,7 @@
 			<!--PRICE FIELD-->
 			Price Range
 			<label for="price" class="sr-only">Price</label>
-			<<html>
+			<html>
 			<body>
 			<input type="range" min="0" max="5000" value="200" step="5" onchange="showValue(this.value)" />
 			<span id="range">200</span>
@@ -268,7 +291,7 @@
 			<input type=tel size=3 id="phone2" name="phone2" placeholder ="456"  class="form-control" required> - 
 			<input type=tel size=4 class="form-control" id="phone3" name="phone3" placeholder ="7890" required>
     	    </div>
-		    <input type="submit" class="btn btn-default"  value="Find your flight!"/>
+		    <input type="submit" class="btn btn-default" onclick = "validate()" value="Find your flight!"/>
 		</form>
 	    </header>
 	</div>

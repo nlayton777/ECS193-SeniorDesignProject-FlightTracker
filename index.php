@@ -212,11 +212,11 @@
 			(<input type=tel size=3 maxlength='3' class="form-control phone" 
 			    id="phone1" name="phone1" placeholder ="123" required>) 
 			<input type=tel size=3 maxlength ='3' class="form-control phone" 
-			    id="phone2" name="phone2" placeholder ="456"  required> - 
+			    id="phone2" name="phone2" placeholder ="456" required> - 
 			<input type=tel size=4 maxlength = '4' class="form-control phone" 
 			    id="phone3" name="phone3" placeholder ="7890" required>
 		    </div>
-		    <input id="submit-button" type="submit" class="btn btn-info btn-lg" onclick="validate()" value="Find your flight!"/>
+		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick="validate()" value="Find your flight!"/>
 		</form>
 	    </header>
 	</div>

@@ -21,6 +21,7 @@
 		    </button>
 		    <a class="navbar-brand" href="index.php">Flight Tracker</a>
 		</div>
+
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
 			<li class="active">
@@ -38,6 +39,7 @@
 		</div>
 	    </div>
 	</nav>
+
 	<?php
 	    define('__ROOT__',dirname(__FILE__));
 	    require_once(__ROOT__ . 
@@ -47,19 +49,17 @@
 
 	    // post request from index
 	    $post = $_POST;
-	    print_r($post);
 
 	    // create client 
 	    $client = new Google_Client();
 	    $client->setApplicationName("Flight Tracker");
-	    //$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
-	    $client->setDeveloperKey("IzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
+	    $client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+	    //$client->setDeveloperKey("IzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 
 	    // create QPX service
 	    $service = new Google_Service_QPXExpress($client);
-	    $trips = $service->trips;
 
-	    // create first and second slices
+	    // create slices: slice1 for one-way, slice2 for round trip
 	    $slice1 = new Google_Service_QPXExpress_SliceInput();
 	    $slice2 = new Google_Service_QPXExpress_SliceInput();
 
@@ -126,45 +126,35 @@
 
 	    // set carrier information
 	    if (isset($post['airline'])){
-		$slice1->setPermittedCarrier($post['airline']);
-		if (!isOneWay($post)) 
-		    $slice2->setPermittedCarrier($post['airline']); 
-	    }else{echo 'airline is NOT set </br>';}
+		if ((!in_array("none",$post['airline'],true)) && 
+		    (!in_array("--Select an Origin--",$post['airline'],true))){
+		    $slice1->setPermittedCarrier($post['airline']);
+		    if (!isOneWay($post)) 
+			$slice2->setPermittedCarrier($post['airline']); 
+	    }}else{echo 'airline is NOT set </br>';}
 
-	    // create request and search request
+	    // create request and initialize request
 	    $request = new Google_Service_QPXExpress_TripOptionsRequest();
-	    $searchRequest = new Google_Service_QPXExpress_TripsSearchRequest();
-
 	    $request->setSolutions(1);
 	    if (isOneWay($post))
 		$request->setSlice(array($slice1));
 	    else
 		$request->setSlice(array($slice1,$slice2));
 	    $request->setPassengers($passengers);
-	    $request->setSaleCountry("USA");
-	    echo "</br>";
-	    //print_r($request);
-	    echo "</br>PASSENGERS INFORMATION: </br>";
-	    print_r($request->getPassengers());
-	    echo "</br>SLICE INFORMATION: </br>";
-	    print_r($request->getSlice());
-	    echo "</br>SLICE: ORIGIN INFORMATION: </br>";
-	    //print_r($request['slice']['source']);
-	    echo "</br>SLICE: DESTINATION INFORMATION: </br>";
-	    //print_r($request['slice']['destination']);
-	    echo "</br>SLICE: DATE INFORMATION: </br>";
-	    //print_r($request['slice']['date']);
-	    echo "</br>SLICE: PERMITTEDCARRIER INFORMATION: </br>";
-	    //print_r($request['slice']['permittedCarrier']);
-	    /*
+//	    $request->setSaleCountry("US");
+
+	    // create and initialize search request
+	    $searchRequest = new Google_Service_QPXExpress_TripsSearchRequest();
 	    $searchRequest->setRequest($request);
 
 	    // search
 	    $result = $service->trips->search($searchRequest);
-	    */
+	    //print_r($result);
+	    $trips = $result->getTrips();
+	    print_r($trips);
+	    $data = $trips->getData();
+	    print_r($data);
 
-	    //print_r($result['trips']['data']);
-	    //print_r($result['trips']['tripOption']);
 
 	    // manage pricing info
 	    $price = 0;
@@ -192,9 +182,8 @@
 
 	    function isOneWay(&$val) {
 		$rv = false;
-		if (isset($val['one_way'])) {
+		if (isset($val['one_way'])) 
 		    if ($val['one_way'] == "yes") $rv = true;
-		}
 		return $rv;
 	    }
 	?>

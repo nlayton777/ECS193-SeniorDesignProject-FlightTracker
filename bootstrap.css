@@ -3171,14 +3171,15 @@ fieldset[disabled] .btn-success.active {
 }
 /* changes */
 .btn-info {
-  /*color: #fff;*/
-  color: #46b8da;
+  color: #fff;
+  /*color: #46b8da;*/
   /*background-color: #5bc0de;*/
   background-color: transparent;
-  border-color: #46b8da;
-  border-width: 2px;
-  -webkit-transition-property: background-color 0.2s ease-in;
-  -webkit-transition-property: color 0.2s ease-in;
+  /*border-color: #46b8da;*/
+  border-color: white;
+  border-width: 1px;
+  -webkit-transition: background-color 0.2s ease-in;
+  -webkit-transition: color 0.2s ease-in;
   transition: background-color 0.2s ease-in;
   transition: color 0.2s ease-in;
 }
@@ -3196,7 +3197,7 @@ fieldset[disabled] .btn-success.active {
 .btn-info:hover {
   background-color: #46b8da;
   border-color: #46b8da;
-  color: white;
+  color: black;
 }
 .btn-info:active,
 .btn-info.active,

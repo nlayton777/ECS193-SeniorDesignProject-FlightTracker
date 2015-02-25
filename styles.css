@@ -19,3 +19,6 @@ input.qtyminus {
     height:25px;
     color: black;
 }
+input[type="tel"] {
+    width: 10%;
+}

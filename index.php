@@ -18,7 +18,6 @@
 	<!--this is for the increment button-->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="incrementButton.js"></script>
-	<link rel="stylesheet" href="incrementButton.css"/>	 	
 
 	<!--this is for the popup text bubble-->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
@@ -30,8 +29,9 @@
 	<script type="text/javascript" src="bootstrap-multiselect.js"></script>
 	<link rel="stylesheet" href="bootstrap-multiselect.css" type="text/css"/>
 
-	<!--this is our js file-->
+	<!--this is our js and css file-->
 	<script type="text/javascript" src="flight_tracker.js"></script>
+	<link rel="stylesheet" href="styles.css"/>	 	
     </head>
 
     <body>
@@ -209,11 +209,11 @@
 			    name="email" pattern="*@-.-" placeholder="john.smith@website.com" title="Once our search bot has found the best priced flight option for you, we will notify you via email and/or text message so that you don't miss out on any of the great deals." required/>
 
 			<!--PHONE FIELD-->
-			(<input type=tel size=3 maxlength='3' class="form-control phone" 
+			(<input type="tel" size="3" maxlength='3' class="form-control phone" 
 			    id="phone1" name="phone1" placeholder ="123" required>) 
-			<input type=tel size=3 maxlength ='3' class="form-control phone" 
+			<input type="tel" size="3" maxlength ='3' class="form-control phone" 
 			    id="phone2" name="phone2" placeholder ="456" required> - 
-			<input type=tel size=4 maxlength = '4' class="form-control phone" 
+			<input type="tel" size="4" maxlength = '4' class="form-control phone" 
 			    id="phone3" name="phone3" placeholder ="7890" required>
 		    </div>
 		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick="validate()" value="Find your flight!"/>

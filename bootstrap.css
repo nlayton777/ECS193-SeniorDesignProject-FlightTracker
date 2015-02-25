@@ -12,6 +12,7 @@ html {
 }
 body {
   margin: 0;
+
 }
 article,
 aside,
@@ -1087,6 +1088,12 @@ body {
   /*background-color: #eaeaea;*/
   background-color: white;
 }
+
+#searchheader
+{
+    background: url('cloud.jpg');
+}
+
 input,
 button,
 select,
@@ -2244,6 +2251,14 @@ pre code {
     margin-left: 0;
   }
 }
+/*ADDING TABLE RESULT FORMATTING*/
+table#results1
+{
+    width: 100%;    
+    background-color: ##CCF5F6;
+}
+
+
 table {
   background-color: transparent;
 }
@@ -4756,6 +4771,18 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   cursor: not-allowed;
   background-color: #fff;
 }
+/*CHANGES - tooltip for popup bubble*/
+.tooltip span {
+    display:none;
+}
+
+.tooltip:hover span {
+    display:block;
+    position:absolute;
+    overflow:hidden;
+}
+ /*end of changes */
+
 .label {
   display: inline;
   padding: .2em .6em .3em;

@@ -31,6 +31,18 @@ function showValue(newValue){
     document.getElementById("range").innerHTML=newValue;
 }
 
+//tooltip changing position
+var tooltipSpan = document.getElementById('tooltip-span');
+
+window.onmousemove = function (e) {
+    var x = e.clientX,
+            y = e.clientY;
+	        tooltipSpan.style.top = (y + 20) + 'px';
+		    tooltipSpan.style.left = (x + 20) + 'px';
+};
+
+
+
 $(document).ready(function() {
     $('#airline').multiselect({
 	buttonWidth: '180px',
@@ -48,6 +60,7 @@ $(document).ready(function() {
     });
     */
 });
+
 
 function validate(){
     var ddl = document.getElementById("source");
@@ -88,5 +101,6 @@ function validate(){
 	alert("Passenger quantity is too high. Can't be" + totalpass);
 	return false;
     }
-    return true;
+
 }
+

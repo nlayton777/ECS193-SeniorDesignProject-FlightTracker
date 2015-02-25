@@ -142,7 +142,7 @@
 	    $request = new Google_Service_QPXExpress_TripOptionsRequest();
 
 	    // set solutions
-	    $request->setSolutions(10);
+	    $request->setSolutions(1);
 	    
 	    // set slices
 	    if (isOneWay($post))
@@ -177,10 +177,60 @@
 	    foreach (($result->getTrips()->getTripOption()) as $option)
 	    {
 		echo "</br><h2>TRIP OPTION ARRAY $count1: PRICING $count2:</h2></br>";
-		foreach (($option->getPricing()) as $prices)
+		foreach (($option->getPricing()) as $pricing)
 		{
-		    print_r($prices);
-		    echo "</br></br>";
+		    echo "</br><h2>TRIP OPTION ARRAY $count1: PRICING $count2: TOTALS:</h2></br>";
+		    echo "Base Fare Total: " . $pricing->getBaseFareTotal() . "</br>"; 
+		    echo "Sale Fare Total: " . $pricing->getSaleFareTotal() . "</br>";
+		    echo "Sale Tax Total: " . $pricing->getSaleTaxTotal() . "</br>";
+		    echo "Sale Total: " . $pricing->getSaleTotal() . "</br>";
+		    $pass = $pricing->getPassengers();
+		    echo "For...</br>";
+		    echo "......" . $pass->getAdultCount() . " Adults</br>";
+		    echo "......" . $pass->getChildCount() . " Children</br>";
+		    echo "......" . $pass->getInfantInLapCount() . " Lap Infants</br>";
+		    echo "......" . $pass->getInfantInSeatCount() . " Seat Infants</br>";
+		    echo "......" . $pass->getSeniorCount() . " Seniors</br>";
+
+		    echo "</br><h2>TRIP OPTION ARRAY $count1: PRICING $count2: FARE $count3</h2></br>";
+		    foreach (($pricing->getFare()) as $fare)
+		    {
+			echo "Fare $count3 ID: " . $fare->getId() . "</br>";
+			echo "Fare $count3 Carrier: " . $fare->getCarrier() . "</br>";
+			echo "Fare $count3 Origin: " . $fare->getOrigin() . "</br>";
+			echo "Fare $count3 Destination: " . $fare->getDestination() . "</br>";
+			$count3++;
+		    }
+		    $count3 = 1;
+
+		    echo "</br><h2>TRIP OPTION ARRAY $count1: PRICING $count2: SEGMENT PRICING $count3</h2></br>";
+		    foreach (($pricing->getSegmentPricing()) as $segPrice)
+		    {
+			echo "Segment Pricing $count3 Fare ID: " . 
+			    $segPrice->getFareId() . "</br>";
+			echo "Segment Pricing $count3 Segment ID: " . 
+			    $segPrice->getSegmentId() . "</br>";
+			foreach ($segPrice->getFreeBaggageOption() as $bagOption)
+			{
+			    echo "Segment Pricing $count3 Free Baggage Option $count4:</br>";  
+			    foreach ($bagOption->getBagDescriptor() as $descriptor)
+			    {
+				echo "Segment Pricing $count3 Free Baggage Option $count4: Bag Descriptor $count5</br>";
+				echo "Commercial Name: " . $descriptor->getCommercialName() . "</br>";
+				echo "Count: " . $descriptor->getCount() . "</br>";
+				echo "Descriptions:</br>";
+				foreach ($descriptor->getDescription() as $description)
+				{
+				    echo $description . "</br>";
+				}
+			    }
+			    $count5 = 0;
+			    $count4++;
+			}
+			$count4 = 1;
+			$count3++;
+		    }
+		    $count3 = 1;
 		    $count2++;
 		}
 		$count2 = 1;
@@ -191,6 +241,7 @@
 		    foreach (($slice->getSegment()) as $segment) {
 			echo "</br><h3>TRIP OPTION ARRAY $count1: 
 			    SLICE $count2: SEGMENT $count3:</h3></br>";
+			echo "Segment ID: " . $segment->getId() . "</br>";
 			echo "Segment duration: " . $segment->getDuration() . "</br>";
 			echo "Segment flight carrier: " . 
 			    $segment->getFlight()->getCarrier() . "</br>";
@@ -201,12 +252,15 @@
 			SEGMENT $count3: LEG $count4:</h4></br>";
 			foreach ($segment->getLeg() as $leg)
 			{
+			    echo "Leg $count4 ID: " . $leg->getId() . "</br>";
 			    echo "Leg $count4 Departure Time: " . $leg->getDepartureTime() . "</br>";
 			    echo "Leg $count4 Origin: " . $leg->getOrigin() . "</br>";
 			    echo "Leg $count4 Arrival Time: " . $leg->getArrivalTime() . "</br>";
 			    echo "Leg $count4 Destination: " . $leg->getDestination() . "</br>";
 			    echo "Leg $count4 Duration: " . $leg->getDuration() . "</br>";
-			    
+			    echo "Leg $count4 Mileage: " . $leg->getMileage() . "</br>";
+			    echo "Leg $count4 Meal: " . $leg->getMeal() . "</br>";
+
 			    echo "</br>";
 			    $count4++;
 			}
@@ -228,25 +282,25 @@
 	    $price = 0;
 	    if (isset($post['price']) && ($post['price'] > 0)){
 		$price = $post['price'];
-	    }else{echo 'price is NOT set </br>';}
+	    }else{/*echo 'price is NOT set </br>';*/}
 
 	    //window
 	    if (isset($post['window']) && ($post['window'] >= 0))
 	    {
 		echo 'window is set </br>';
-	    }else{echo 'window is NOT set </br>';}
+	    }else{/*echo 'window is NOT set </br>';*/}
 
 	    //email
 	    if (isset($post['email']))
 	    {
 		echo 'email is set </br>';
-	    }else{echo 'email is NOT set </br>';}
+	    }else{/*echo 'email is NOT set </br>';*/}
 
 	    //phone
 	    if (isset($post['phone']))
 	    {
 		echo 'phone is set </br>';
-	    }else{echo 'phone is NOT set </br>';}
+	    }else{/*echo 'phone is NOT set </br>';*/}
 
 	    function isOneWay(&$val) {
 		$rv = false;

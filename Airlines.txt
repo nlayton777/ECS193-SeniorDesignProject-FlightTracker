@@ -1,17 +1,9 @@
-Airtran Airlines
-Alaska Airlines
-America West Airlines
-American Airlines
-Continental Airlines
-Delta Air Lines
-Frontier Airlines
-Jet Blue
-Midwest Express
-Northwest Airlines
-Sun Country Airlines
-Southwest Airlines
-Spirit Airlines
-U.S. Airways
-U.S. Airways
-United Airlines
-WestJet
+Alaska Airlines (AS)
+American Airlines (AA)
+Delta Air Lines (DL)
+Frontier Airlines (F9)
+JetBlue (B6)
+Southwest Airlines (WN)
+Spirit Airlines (NK)
+U.S. Airways (US)
+United Airlines (UA)

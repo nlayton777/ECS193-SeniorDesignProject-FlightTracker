@@ -49,6 +49,11 @@
 
 	    // post request from index
 	    $post = $_POST;
+	    foreach ($post as $item)
+	    {
+		print_r($item);
+		echo "</br>";
+	    }
 
 	    // create client 
 	    $client = new Google_Client();
@@ -135,12 +140,19 @@
 
 	    // create request and initialize request
 	    $request = new Google_Service_QPXExpress_TripOptionsRequest();
-	    $request->setSolutions(1);
+
+	    // set solutions
+	    $request->setSolutions(10);
+	    
+	    // set slices
 	    if (isOneWay($post))
 		$request->setSlice(array($slice1));
 	    else
 		$request->setSlice(array($slice1,$slice2));
+
+	    // set passengers
 	    $request->setPassengers($passengers);
+
 //	    $request->setSaleCountry("US");
 
 	    // create and initialize search request
@@ -148,12 +160,68 @@
 	    $searchRequest->setRequest($request);
 
 	    // search
-	    $result = $service->trips->search($searchRequest);
-	    //print_r($result);
+	    $trips = $service->trips;
+	    $result = $trips->search($searchRequest);
 	    $trips = $result->getTrips();
-	    print_r($trips);
-	    $data = $trips->getData();
-	    print_r($data);
+
+	    echo "<div class=\"col-md-2\"></div>";
+	    echo "<div class=\"col-md-8\">";
+
+	    // parsing
+	    $count1 = 1;
+	    $count2 = 1;
+	    $count3 = 1;
+	    $count4 = 1;
+	    $count5 = 1;
+	    echo "<h1>TRIP OPTION ARRAY $count1:</h1></br>";
+	    foreach (($result->getTrips()->getTripOption()) as $option)
+	    {
+		echo "</br><h2>TRIP OPTION ARRAY $count1: PRICING $count2:</h2></br>";
+		foreach (($option->getPricing()) as $prices)
+		{
+		    print_r($prices);
+		    echo "</br></br>";
+		    $count2++;
+		}
+		$count2 = 1;
+
+		foreach(($option->getSlice()) as $slice)
+		{
+		    echo "</br><h2>TRIP OPTION ARRAY $count1: SLICE $count2:<h2></br>";
+		    foreach (($slice->getSegment()) as $segment) {
+			echo "</br><h3>TRIP OPTION ARRAY $count1: 
+			    SLICE $count2: SEGMENT $count3:</h3></br>";
+			echo "Segment duration: " . $segment->getDuration() . "</br>";
+			echo "Segment flight carrier: " . 
+			    $segment->getFlight()->getCarrier() . "</br>";
+			echo "Segment flight number: " . 
+			    $segment->getFlight()->getNumber() . "</br>";
+
+			echo "</br><h4>TRIP OPTION ARRAY $count1: SLICE $count2: 
+			SEGMENT $count3: LEG $count4:</h4></br>";
+			foreach ($segment->getLeg() as $leg)
+			{
+			    echo "Leg $count4 Departure Time: " . $leg->getDepartureTime() . "</br>";
+			    echo "Leg $count4 Origin: " . $leg->getOrigin() . "</br>";
+			    echo "Leg $count4 Arrival Time: " . $leg->getArrivalTime() . "</br>";
+			    echo "Leg $count4 Destination: " . $leg->getDestination() . "</br>";
+			    echo "Leg $count4 Duration: " . $leg->getDuration() . "</br>";
+			    
+			    echo "</br>";
+			    $count4++;
+			}
+			$count4 = 1;
+			$count3++;
+		    }
+		    $count3 = 1;
+		    $count2++;
+		}
+		$count2 = 1;
+		$count1++;
+	    }
+
+	    echo "</div>";
+	    echo "<div class=\"col-md-2\"></div>";
 
 
 	    // manage pricing info

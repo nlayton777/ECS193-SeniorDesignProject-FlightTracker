@@ -181,7 +181,7 @@
 			<label for="airline" class="sr-only">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline[]"
 				    form="search_form" multiple="multiple">
-			<option selected="selected">--Select an Airline--</option>
+			<option value="none" selected="selected">--Select an Airline--</option>
 			<option value="none">No Preference</option>
 			<?php
 			    if (file_exists("Airlines.txt")){

@@ -43,7 +43,6 @@ window.onmousemove = function (e) {
 
 
 
-
 $(document).ready(function() {
     $('#airline').multiselect({
 	buttonWidth: '180px',

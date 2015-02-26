@@ -45,6 +45,7 @@
 		    </button>
 		    <a class="navbar-brand" href="index.php">Flight Tracker</a>
 		</div>
+
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
 			<li class="active">

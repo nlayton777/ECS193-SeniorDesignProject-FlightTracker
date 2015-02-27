@@ -2,12 +2,14 @@
 <html>
     <head>
 	<title>UCD Flight Tracker</title>
+
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
+
     </head>
 
     <body>
@@ -67,6 +69,7 @@
 			    $result = getResults($post);
 			    $trips = $result->getTrips();
 
+			    $rowCount = 0;
 			    foreach ($trips->getTripOption() as $option) 
 			    {
 				echo "<tr>";
@@ -76,39 +79,44 @@
 				    echo "<td>";
 					echo $option->getSlice()[0]->getSegment()[0]->getLeg()[0]->getDepartureTime() . " ";
 					echo "<strong>" . $option->getSlice()[0]->getSegment()[0]->getLeg()[0]->getOrigin() . "</strong>";
-					echo "&rarr;";
+					echo " &rarr; ";
 					$temp = $option->getSlice()[0]->getSegment();
 					$temp2 = $temp[count($temp) - 1]->getLeg();
 					echo $temp2[count($temp2) - 1]->getArrivalTime() . " ";
 					echo "<strong>" . $temp2[count($temp2) - 1]->getDestination() . "</strong>";
 
-					echo "<div id=\"dropdown\">"
-					    echo "<h3>On the way there:</h3>";
-					    echo "<table cellspacing=\"10\" cellpadding=\"0\" id=\"expandedtable\" class=\"droptable\">";
+					echo "<div class=\"dropdown\" id=\"row$rowCount\">";
+					    echo "<h4>On the way there:</h4>";
+					    echo "<table cellspacing=\"10\" cellpadding=\"10\" id=\"expandedtable\" class=\"droptable\">";
 						echo "<tr>";
-						    echo "<th>Stop Number</th>";
-						    echo "<th>Point A</th>";
-						    echo "<th>Departure Time</th>";
-						    echo "<th>Point B</th>";
-						    echo "<th>Arrival Time</th>";
+						    echo "<th> Point A </th>";
+						    echo "<th> Departure Time </th>";
+						    echo "<th></th>";
+						    echo "<th> Point B </th>";
+						    echo "<th> Arrival Time </th>";
 						    echo "<th></th>";
 						echo "</tr>";
 						echo "<tr>";
 						
-						foreach ($option-getSlice()[0]->getSegment() as $segment)
+						foreach ($option->getSlice()[0]->getSegment() as $segment)
 						{
+						    echo "</tr>";
 						    foreach ($segment->getLeg() as $leg)
 						    {
-
+							echo "<td> ".$leg->getOrigin()." </td>";
+							echo "<td> ".$leg->getDepartureTime()." </td>";
+							echo "<td> &rarr; </td>";
+							echo "<td> ".$leg->getDestination()." </td>";
+							echo "<td> ".$leg->getArrivalTime()." </td>";
 						    }
+						    echo "<tr>";
 						}
 
 						echo "</tr>";
-					    echo "</table>"
-					    echo "<h3>On the way back:</h3>";
-					    echo "<table cellspacing=\"10\" cellpadding=\"0\" id=\"expandedtable\" class=\"droptable\">";
+					    echo "</table>";
+					    echo "<h4>On the way back:</h4>";
+					    echo "<table cellspacing=\"12\" cellpadding=\"0\" id=\"expandedtable\" class=\"droptable\">";
 						echo "<tr>";
-						    echo "<th>Stop Number</th>";
 						    echo "<th>Point A</th>";
 						    echo "<th>Departure Time</th>";
 						    echo "<th>Point B</th>";
@@ -116,11 +124,30 @@
 						echo "</tr>";
 						echo "<tr>";
 
+						foreach ($option->getSlice()[0]->getSegment() as $segment)
+						{
+						    echo "<tr>";
+						    foreach ($segment->getLeg() as $leg)
+						    {
+							echo "<td> ".$leg->getOrigin()." </td>";
+							echo "<td> ".$leg->getDepartureTime()." </td>";
+							echo "<td> &rarr; </td>";
+							echo "<td> ".$leg->getDestination()." </td>";
+							echo "<td> ".$leg->getArrivalTime()." </td>";
+						    }
+						echo "<tr>";
+						}
+
 						echo "</tr>";
-					    echo "</table>"
+					    echo "</table>";
 					echo "</div>";
 				    echo "</td>";
+				    echo "<td>";
+					echo "<input type=\"button\" id=\"btnExpCol$rowCount\" 
+					    onclick=\"Expand()\" value=\" Expand \"/>";
+				    echo "</td>";
 				echo "</tr>";
+				$rowCount++;
 			    }
 ?>
 		    </table>
@@ -129,4 +156,23 @@
 	    </div>
 	</div>
     </body>
+	<script>
+	    window.onload=function(){$('.dropdown').hide();};
+<?php
+	for ($i = 0; $i < $rowCount; $i++)
+	{
+	    echo "$(document).ready(function () {";
+		echo "$('#btnExpCol$i').click(function () {";
+		    echo "if ($(this).val() == 'Collapse') {";
+			echo "$('#row$i').stop().slideUp('3000');";
+			echo "$(this).val(' Expand ');";
+		    echo "} else {";
+			echo "$('#row$i').stop().slideDown('3000');";
+			echo "$(this).val('Collapse');";
+		    echo "}";
+		echo "});";
+	    echo "});";
+	}
+?>
+	</script>
 </html>

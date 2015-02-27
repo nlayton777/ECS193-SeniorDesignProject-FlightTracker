@@ -119,7 +119,8 @@
 		    
 	$('#divTest').stop().slideDown('3000');
 	    $(this).val('Collapse');		     
-	}										                 });
+	}										                 
+    });
 	});
 </script>
 																		            

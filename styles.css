@@ -25,3 +25,12 @@ input[type="tel"] {
 #results {
     font-size: 135%;
 }
+#expandedtable {
+    font-size: 70%;
+}
+td,th {
+    text-align: center;
+}
+div.dropdown h4 {
+    text-align: left;
+}

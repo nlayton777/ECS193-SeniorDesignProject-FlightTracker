@@ -16,8 +16,8 @@
 	// create client 
 	$client = new Google_Client();
 	$client->setApplicationName("Flight Tracker");
-	$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
-	//$client->setDeveloperKey("IzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
+	//$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+	$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 
 	// create QPX service
 	$service = new Google_Service_QPXExpress($client);
@@ -90,7 +90,7 @@
 	$request = new Google_Service_QPXExpress_TripOptionsRequest();
 
 	// set solutions
-	$request->setSolutions(10);
+	$request->setSolutions(20);
 	
 	// set slices
 	if (isOneWay($post))

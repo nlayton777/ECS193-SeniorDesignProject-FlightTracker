@@ -76,7 +76,7 @@
 			    $post = $_POST;
 			    $result = getResults($post);
 			    $trips = $result->getTrips();
-
+			    $trips->getTripOption()[0]->
 /*
 			    foreach($result->getTrips()->getTripOption() as $tripOption) 
 			    {
@@ -139,11 +139,8 @@
 						echo "Segment Pricing $count3 Free Baggage Option $count4: Bag Descriptor $count5</br>";
 						echo "Commercial Name: " . $descriptor->getCommercialName() . "</br>";
 						echo "Count: " . $descriptor->getCount() . "</br>";
-						echo "Descriptions:</br>";
-						foreach ($descriptor->getDescription() as $description)
-						{
-						    echo $description . "</br>";
-						}
+						echo "Description</br>";
+						print_r($descriptor->getDescription())
 					    }
 					    $count5 = 0;
 					    $count4++;

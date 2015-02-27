@@ -99,7 +99,6 @@
 	    </table>
 	<div class="col-xs-4 col-md-2"></div>
     </div>
-
 </div>
 
 <!-- Button animation code -->

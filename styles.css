@@ -22,4 +22,6 @@ input.qtyminus {
 input[type="tel"] {
     width: 10%;
 }
-
+#results {
+    font-size: 135%;
+}

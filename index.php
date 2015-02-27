@@ -93,8 +93,8 @@
 				    form="search_form">
 			<option value="selectplease">---Select an Origin---</option>
 			<?php
-			    if (file_exists("AirportCodes.txt")){
-				$codes = fopen("AirportCodes.txt",'r');				
+			    if (file_exists("airportcodes.txt")){
+				$codes = fopen("airportcodes.txt",'r');				
 				while (!feof($codes)){
 	 			    $line = fgets($codes);
 				    $sub = substr($line, -5, 3);
@@ -185,8 +185,8 @@
 			<option value="none" selected="selected">--Select an Airline--</option>
 			<option value="none">No Preference</option>
 			<?php
-			    if (file_exists("Airlines.txt")){
-				$codes = fopen("Airlines.txt",'r');				
+			    if (file_exists("airlines.txt")){
+				$codes = fopen("airlines.txt",'r');				
 				while (!feof($codes)){
 	 			    $line = fgets($codes);
 				    $sub = substr($line, -4, 2);

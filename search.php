@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="bootstrap.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
+	<link rel="stylesheet" href="styles.css"/>
     </head>
 
     <body>
@@ -42,272 +43,89 @@
 
 	<div class="container-fluid" id="searchheader">
 	    <div class="row">
-		<div class="col-xs-4 col-md-2"></div>
-		<div class="col-xs-10 col-md-8">
+		<div class="col-xs-4 col-md-1"></div>
+		<div class="col-xs-10 col-md-10">
 		    <h1>Search Results</h1>
 		    <h3>Our search bot found these travel options just for you!</h3>	
-		    <table class="table table-hover">
+		    <table id="results" class="table table-hover" style="background-color: rgba(200, 200, 200, 0.3)">
 			<tr>
 			    <th>Price</th>
 			    <th colspan='6'>Itinerary</th>
 			    <th></th>
 			</tr>
-<!--
-			<tr>
-			    <td>Southwest</td>
-			    <td>$500.00</td>
-			    <td> 10:00AM <strong>SFO</strong> &rarr; 1:00PM <strong>JFK</strong>    6h0m    (1 stop PHX)</td>
-			</tr>
 
-			<tr>
-			    <td>US Airways</td>
-			    <td>$550.00</td>
-			    <td> 10:30AM <strong>SFO</strong> &rarr; 1:45PM <strong>JFK</strong>    6h15m    (1 stop SEA)</td>
-			</tr>	
-			-->
-			<?php
-			    define('__ROOT__',dirname(__FILE__));
-			    require_once(__ROOT__ . 
+<?php
+			    define('__ROOT3__',dirname(__FILE__));
+			    require_once(__ROOT3__ .
 				'/google-api-php-client/src/Google/Service/QPXExpress.php');
-			    require_once(__ROOT__ .
+			    require_once(__ROOT3__ .
 				'/google-api-php-client/src/Google/Client.php');
+			    require_once(__ROOT3__ . '/FlightTracker.php');
 
 			    // post request from index
 			    $post = $_POST;
 			    $result = getResults($post);
 			    $trips = $result->getTrips();
-			    $trips->getTripOption()[0]->
-/*
-			    foreach($result->getTrips()->getTripOption() as $tripOption) 
+
+			    foreach ($trips->getTripOption() as $option) 
 			    {
 				echo "<tr>";
-				    echo "<td>"
-					$tripOption->get
-				    echo "</td>"
+				    echo "<td>";
+					echo "\$" . $option->getSaleTotal();
+				    echo "</td>";
+				    echo "<td>";
+					echo $option->getSlice()[0]->getSegment()[0]->getLeg()[0]->getDepartureTime() . " ";
+					echo "<strong>" . $option->getSlice()[0]->getSegment()[0]->getLeg()[0]->getOrigin() . "</strong>";
+					echo "&rarr;";
+					$temp = $option->getSlice()[0]->getSegment();
+					$temp2 = $temp[count($temp) - 1]->getLeg();
+					echo $temp2[count($temp2) - 1]->getArrivalTime() . " ";
+					echo "<strong>" . $temp2[count($temp2) - 1]->getDestination() . "</strong>";
+
+					echo "<div id=\"dropdown\">"
+					    echo "<h3>On the way there:</h3>";
+					    echo "<table cellspacing=\"10\" cellpadding=\"0\" id=\"expandedtable\" class=\"droptable\">";
+						echo "<tr>";
+						    echo "<th>Stop Number</th>";
+						    echo "<th>Point A</th>";
+						    echo "<th>Departure Time</th>";
+						    echo "<th>Point B</th>";
+						    echo "<th>Arrival Time</th>";
+						    echo "<th></th>";
+						echo "</tr>";
+						echo "<tr>";
+						
+						foreach ($option-getSlice()[0]->getSegment() as $segment)
+						{
+						    foreach ($segment->getLeg() as $leg)
+						    {
+
+						    }
+						}
+
+						echo "</tr>";
+					    echo "</table>"
+					    echo "<h3>On the way back:</h3>";
+					    echo "<table cellspacing=\"10\" cellpadding=\"0\" id=\"expandedtable\" class=\"droptable\">";
+						echo "<tr>";
+						    echo "<th>Stop Number</th>";
+						    echo "<th>Point A</th>";
+						    echo "<th>Departure Time</th>";
+						    echo "<th>Point B</th>";
+						    echo "<th>Arrival Time</th>";
+						echo "</tr>";
+						echo "<tr>";
+
+						echo "</tr>";
+					    echo "</table>"
+					echo "</div>";
+				    echo "</td>";
 				echo "</tr>";
 			    }
-			    */
-
-			    // parsing
-			    $count1 = 1;
-			    $count2 = 1;
-			    $count3 = 1;
-			    $count4 = 1;
-			    $count5 = 1;
-			    echo "<h1>TRIP OPTION ARRAY $count1:</h1></br>";
-			    foreach (($result->getTrips()->getTripOption()) as $option)
-			    {
-				echo "</br><h2>TRIP OPTION ARRAY $count1: PRICING $count2:</h2></br>";
-				foreach (($option->getPricing()) as $pricing)
-				{
-				    echo "</br><h2>TRIP OPTION ARRAY $count1: PRICING $count2: TOTALS:</h2></br>";
-				    echo "Base Fare Total: " . $pricing->getBaseFareTotal() . "</br>"; 
-				    echo "Sale Fare Total: " . $pricing->getSaleFareTotal() . "</br>";
-				    echo "Sale Tax Total: " . $pricing->getSaleTaxTotal() . "</br>";
-				    echo "Sale Total: " . $pricing->getSaleTotal() . "</br>";
-				    $pass = $pricing->getPassengers();
-				    echo "For...</br>";
-				    echo "......" . $pass->getAdultCount() . " Adults</br>";
-				    echo "......" . $pass->getChildCount() . " Children</br>";
-				    echo "......" . $pass->getInfantInLapCount() . " Lap Infants</br>";
-				    echo "......" . $pass->getInfantInSeatCount() . " Seat Infants</br>";
-				    echo "......" . $pass->getSeniorCount() . " Seniors</br>";
-
-				    echo "</br><h2>TRIP OPTION ARRAY $count1: PRICING $count2: FARE $count3</h2></br>";
-				    foreach (($pricing->getFare()) as $fare)
-				    {
-					echo "Fare $count3 ID: " . $fare->getId() . "</br>";
-					echo "Fare $count3 Carrier: " . $fare->getCarrier() . "</br>";
-					echo "Fare $count3 Origin: " . $fare->getOrigin() . "</br>";
-					echo "Fare $count3 Destination: " . $fare->getDestination() . "</br>";
-					$count3++;
-				    }
-				    $count3 = 1;
-
-				    echo "</br><h2>TRIP OPTION ARRAY $count1: PRICING $count2: SEGMENT PRICING $count3</h2></br>";
-				    foreach (($pricing->getSegmentPricing()) as $segPrice)
-				    {
-					echo "Segment Pricing $count3 Fare ID: " . 
-					    $segPrice->getFareId() . "</br>";
-					echo "Segment Pricing $count3 Segment ID: " . 
-					    $segPrice->getSegmentId() . "</br>";
-					foreach ($segPrice->getFreeBaggageOption() as $bagOption)
-					{
-					    echo "Segment Pricing $count3 Free Baggage Option $count4:</br>";  
-					    foreach ($bagOption->getBagDescriptor() as $descriptor)
-					    {
-						echo "Segment Pricing $count3 Free Baggage Option $count4: Bag Descriptor $count5</br>";
-						echo "Commercial Name: " . $descriptor->getCommercialName() . "</br>";
-						echo "Count: " . $descriptor->getCount() . "</br>";
-						echo "Description</br>";
-						print_r($descriptor->getDescription())
-					    }
-					    $count5 = 0;
-					    $count4++;
-					}
-					$count4 = 1;
-					$count3++;
-				    }
-				    $count3 = 1;
-				    $count2++;
-				}
-				$count2 = 1;
-
-				foreach(($option->getSlice()) as $slice)
-				{
-				    echo "</br><h2>TRIP OPTION ARRAY $count1: SLICE $count2:<h2></br>";
-				    foreach (($slice->getSegment()) as $segment) {
-					echo "</br><h3>TRIP OPTION ARRAY $count1: 
-					    SLICE $count2: SEGMENT $count3:</h3></br>";
-					echo "Segment ID: " . $segment->getId() . "</br>";
-					echo "Segment duration: " . $segment->getDuration() . "</br>";
-					echo "Segment flight carrier: " . 
-					    $segment->getFlight()->getCarrier() . "</br>";
-					echo "Segment flight number: " . 
-					    $segment->getFlight()->getNumber() . "</br>";
-
-					echo "</br><h4>TRIP OPTION ARRAY $count1: SLICE $count2: 
-					SEGMENT $count3: LEG $count4:</h4></br>";
-					foreach ($segment->getLeg() as $leg)
-					{
-					    echo "Leg $count4 ID: " . $leg->getId() . "</br>";
-					    echo "Leg $count4 Departure Time: " . $leg->getDepartureTime() . "</br>";
-					    echo "Leg $count4 Origin: " . $leg->getOrigin() . "</br>";
-					    echo "Leg $count4 Arrival Time: " . $leg->getArrivalTime() . "</br>";
-					    echo "Leg $count4 Destination: " . $leg->getDestination() . "</br>";
-					    echo "Leg $count4 Duration: " . $leg->getDuration() . "</br>";
-					    echo "Leg $count4 Mileage: " . $leg->getMileage() . "</br>";
-					    echo "Leg $count4 Meal: " . $leg->getMeal() . "</br>";
-
-					    echo "</br>";
-					    $count4++;
-					}
-					$count4 = 1;
-					$count3++;
-				    }
-				    $count3 = 1;
-				    $count2++;
-				}
-				$count2 = 1;
-				$count1++;
-			    }
-
-// START ISONEWAY FUNCTION
-			    function isOneWay(&$val) {
-				$rv = false;
-				if (isset($val['one_way'])) 
-				    if ($val['one_way'] == "yes") $rv = true;
-				return $rv;
-			    }
-// END ISONEWAY FUNCTION
-
-// START RESULTS FUNCTION
-			    function getResults(&$post) {
-				// create client 
-				$client = new Google_Client();
-				$client->setApplicationName("Flight Tracker");
-				$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
-				//$client->setDeveloperKey("IzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
-
-				// create QPX service
-				$service = new Google_Service_QPXExpress($client);
-
-				// create slices: slice1 for one-way, slice2 for round trip
-				$slice1 = new Google_Service_QPXExpress_SliceInput();
-				$slice2 = new Google_Service_QPXExpress_SliceInput();
-
-				// set origin information
-				if (isset($post['source'])) {
-				    $slice1->setOrigin($post['source']);
-				    if (!isOneWay($post)) // if round-trip 
-					$slice2->setDestination($post['source']);
-				} else {echo "source not set";}
-
-				// set destination information
-				if (isset($post['destination'])) {
-				    $slice1->setDestination($post['destination']);
-				    if (!isOneWay($post)) // if round-trip
-					$slice2->setOrigin($post['destination']);
-				} else {echo "destination not set";}
-
-				// set/manage date information
-				if (isset($post['depart_date'])){
-				    // parse departure date
-				    $dep = explode('/', $post['depart_date']); 
-				    // reformat date
-				    $dep_date = $dep[2] . "-" . $dep[0] . "-" . $dep[1];
-				    // set date in request message
-				    $slice1->setDate($dep_date);
-				    // if not one-way
-				    if (!isOneWay($post) && isset($post['return_date'])){
-					// parse departure date
-					$ret = explode('/', $post['return_date']);
-					// reformat date
-					$ret_date = $ret[2] . "-" . $ret[0] . "-" . $ret[1];
-					// set date in request message
-					$slice2->setDate($ret_date);
-				    }else{echo "Return date NOT set </br>";}
-				}else{echo "Depart date NOT set </br>";}
-
-				// create passenger counts
-				$passengers = new Google_Service_QPXExpress_PassengerCounts();
-
-				// set adult count
-				if (isset($post['adults'])) $passengers->setAdultCount($post['adults']);
-
-				// set children count
-				if (isset($post['children'])) $passengers->setChildCount($post['children']);
-
-				// set senior count
-				if (isset($post['seniors'])) $passengers->setSeniorCount($post['seniors']);
-
-				// set seat infant count
-				if (isset($post['seat_infants'])) $passengers->setInfantInSeatCount($post['seat_infants']);
-
-				// set lap infant count
-				if (isset($post['lap_infants'])) $passengers->setInfantInLapCount($post['lap_infants']);
-
-				// set carrier information
-				if (isset($post['airline'])){
-				    if ((!in_array("none",$post['airline'],true)) && 
-					(!in_array("--Select an Origin--",$post['airline'],true))){
-					$slice1->setPermittedCarrier($post['airline']);
-					if (!isOneWay($post)) 
-					    $slice2->setPermittedCarrier($post['airline']); 
-				}}else{echo 'airline is NOT set </br>';}
-
-				// create request and initialize request
-				$request = new Google_Service_QPXExpress_TripOptionsRequest();
-
-				// set solutions
-				$request->setSolutions(1);
-				
-				// set slices
-				if (isOneWay($post))
-				    $request->setSlice(array($slice1));
-				else
-				    $request->setSlice(array($slice1,$slice2));
-
-				// set passengers
-				$request->setPassengers($passengers);
-
-				// $request->setSaleCountry("US");
-
-				// create and initialize search request
-				$searchRequest = new Google_Service_QPXExpress_TripsSearchRequest();
-				$searchRequest->setRequest($request);
-
-				// search
-				$trips = $service->trips;
-				$result = $trips->search($searchRequest);
-				return($result);
-			    }
-// END RESULTS FUNCTION
-
-			?>
+?>
 		    </table>
 		</div>
-		<div class="col-xs-4 col-md-2"></div>
+		<div class="col-xs-4 col-md-1"></div>
 	    </div>
 	</div>
     </body>

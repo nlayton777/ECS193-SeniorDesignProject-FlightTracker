@@ -10,7 +10,7 @@
 	<script src="bootstrap.js"></script>
 
 
-    <!-- FOR DROP DOWN IN TABLE -->
+    <!-- FOR DROP DOWN IN TABLE 
 	<link rel="stylesheet" href="../../jqwidgets/styles/jqx.base.css" type="text/css" />
 	<script type="text/javascript" src="../../scripts/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="../../jqwidgets/jqxcore.js"></script>
@@ -21,6 +21,7 @@
 	<script type="text/javascript" src="../../jqwidgets/jqxgrid.js"></script>
 	<script type="text/javascript" src="../../jqwidgets/jqxgrid.selection.js"></script>
 	<script type="text/javascript" src="../../jqwidgets/jqxdropdownbutton.js"></script> 
+-->
     </head>
 
     <body>
@@ -85,7 +86,7 @@
 			    </div>
 		    </td>
 		    <td>
-			<input type="button" id="btnExpCol" onclick="Expand();" value="Expand"/>
+			<input type="button" id="btnExpCol" onclick="Expand();" value="Expand  "/>
 		    </td>
 		</tr>
 
@@ -113,12 +114,13 @@
 		                         
 					 
 	$('#divTest').stop().slideUp('3000');
-	    $(this).val('Expand');
+	    $(this).val('Expand  ');
 	} else {
 		    
 	$('#divTest').stop().slideDown('3000');
 	    $(this).val('Collapse');		     
-	}										                 });
+	}										                 
+    });
 	});
 </script>
 																		            

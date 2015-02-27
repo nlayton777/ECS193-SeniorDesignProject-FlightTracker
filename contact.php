@@ -26,12 +26,12 @@
 			<li>
 			    <a href="index.php">Search</a>
 			</li>
-			<li class="active">
+			<li>
 			    <a href="about.php">About</a>
 			</li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
-			<li>
+			<li class="active">
 			    <a href="contact.php">Contact</a>
 			</li>
 		    </ul>
@@ -40,41 +40,36 @@
 	</nav>
 
 	<div class="container">
-	    <header class="jumbotron" id="about">
-		<h1>Find your destination</h1>
-		<p>Let us help you find the flights that you need.</p>
-	    </header>
-	</div>
+	<header class="jumbotron" id="contact">
+	    <h1>Leave us a message...</h1>
+	    <p>We are interested to hear both your questions and/or your feedback regarding our website and services.</p>
+	    <div class="row">
+		<div class="col-md-4">
+		    <form role="form form-inline"  class="form-vertical" method="post" action="contactsubmission.php">
+			<div class="form-group">
+			    <label for="name">
+				Name: 
+				<input type="text" class="form-control" id="name" 
+				    name = "name" size="10" placeholder="John Smith"/>
+			    </label>
 
-	<div class="container">
-		<div class="row">
-		    <div class="col-md-4">
-			<h2>Customize your travel needs!</h2>
-			<p>
-			    Our search engine allows you to specify the airline with whom you want to travel. 
-			    No more getting stuck with the companies that you don't prefer.
-			</p>
-		    </div>
-
-		    <div class="col-md-4">
-			<h2>Kick back, relax, and let us find the deals for you!</h2>
-			<p>
-			    Don't miss out on price reductions. 
-			    Provide us with a search window, and we search for your flight
-			    throughout that time. Feel free to leave your computer,
-			    and we will notify you once your price has been found. 
-			</p>
-		    </div>
-
-		    <div class="col-md-4">
-			<h2>Share your travel plans with friends!</h2>
-			<p>
-			    Show all your friends how excited you are for your trip. 
-			    No more having to take pictures of your flight itinerary.
-			    Just click the share link, and the work is done for you.
-			</p>
-		    </div>
+			    <label for="email">
+				Email:
+				<input type="email" class="form-control" id="email" name="email" 
+				    pattern="*@-.-" placeholder="john.smith@website.com" required/>
+			    </label>
+			</div>
+			
+			<div class="form-group form-horizontal">
+			    <label for="comments">
+				Message: 
+			    	<textarea rows="8" cols="60" id="comments" placeholder="Let us know what you think!" ></textarea>
+			    </label>
+			</div>
+			<input type="submit" class="btn btn-default" value="Submit"/>
+		    </form>
 		</div>
-	</div>
+	    </div>
+	</header>
     </body>
 </html>

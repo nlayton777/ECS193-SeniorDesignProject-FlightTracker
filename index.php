@@ -17,7 +17,6 @@
   	
 	<!--this is for the increment button-->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src="incrementButton.js"></script>
 
 	<!--this is for the popup text bubble-->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
@@ -35,7 +34,8 @@
     </head>
 
     <body>
-	<nav class="navbar navbar-inverse ">
+	<nav class="navbar navbar-inverse" style="visibility: hidden;"></nav>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
 	    <div class="container-fluid">
 		<div class="navbar-header">
 		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
@@ -221,6 +221,7 @@
 		</form>
 	    </header>
 	</div>
+		    <!--
 	<div class="container-fluid" id="details">
 	    <section id="description">
 		<div class="row">
@@ -242,7 +243,6 @@
 			</p>
 		    </div>
 		    <div class="col-md-1"></div>
-		    <!--
 		    <div class="col-md-6">
 			<h2>Stay updated</h2>
 			<p id="test">
@@ -253,9 +253,9 @@
 			    Twitter.
 			</p>
 		    </div>
-		    -->
 		</div>
 	    </section>
 	</div>
+		    -->
     </body>
 </html>

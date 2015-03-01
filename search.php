@@ -49,13 +49,6 @@
 		<div class="col-xs-4 col-md-1"></div>
 		<div class="col-xs-10 col-md-10">
 		    <h1>Search Results</h1>
-		    <h3>Our search bot found these travel options just for you!</h3>	
-		    <table id="results" class="table table-hover" style="background-color: rgba(200, 200, 200, 0.3)">
-			<tr>
-			    <th>Price</th>
-			    <th colspan='6'>Itinerary</th>
-			    <th></th>
-			</tr>
 
 			<?php
 			    define('__ROOT3__',dirname(__FILE__));
@@ -63,10 +56,34 @@
 				'/google-api-php-client/src/Google/Service/QPXExpress.php');
 			    require_once(__ROOT3__ .
 				'/google-api-php-client/src/Google/Client.php');
-			    require_once(__ROOT3__ . '/FlightTracker.php');
+			    require_once(__ROOT3__ . '/flight_tracker.php');
 
 			    // post request from index
 			    $post = $_POST;
+			    //print_r($post);
+
+			    // print headers
+			    /*
+			    echo "<h3>" . $post['depart_date'] . ": <strong>" . $post['source'] . "</strong> &rarr; " .
+				" <strong>" . $post['destination'] . "</strong></h3>";
+			    if (!isOneWay($post)) {
+				echo "<h3>" . $post['return_date'] . ": <strong>" . $post['source'] . "</strong> &larr; " .
+				    " <strong>" . $post['destination'] . "</strong></h3>";
+			    }
+			    */
+			    echo "<h3>" . $post['depart_date'] . "  <strong>" . $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
+				"<strong>" . $post['destination'] . "</strong>  ";
+			    if (!isOneWay($post))
+				echo $post['return_date'];
+			    echo "</h3>";
+
+			    echo "<table id=\"results\" class=\"table table-hover\" style=\"background-color: rgba(200, 200, 200, 0.3)\">";
+			    echo "<tr>";
+			    echo "<th>Price</th>";
+			    echo "<th colspan='6'>Itinerary</th>";
+			    echo "<th></th>";
+			    echo "</tr>";
+
 			    $result = getResults($post);
 			    $trips = $result->getTrips();
 			    $rCount = printResults($trips, isOneWay($post));

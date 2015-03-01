@@ -103,6 +103,7 @@ function validate(){
     }
 
 }
+
 jQuery(document).ready(function(){
     // This button will increment the value
     $('.qtyplus').click(function(e){

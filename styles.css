@@ -34,3 +34,15 @@ td,th {
 div.dropdown h4 {
     text-align: left;
 }
+h1 {
+	font-family:'Bad Script', cursive;
+	font-weight:bold;
+	font-size: "300"
+	color: #333;
+}
+p {
+	font-family:'Bad Script', cursive;
+	font-weight:bold;
+	font-size: xx-large;
+	color: #333;
+}

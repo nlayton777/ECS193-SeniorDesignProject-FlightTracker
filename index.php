@@ -6,6 +6,7 @@
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
+ 	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bad+Script" />
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 

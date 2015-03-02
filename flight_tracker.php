@@ -38,7 +38,7 @@
 			echo "Group ";
 		    echo "Price</th>";
 		    echo "<th>Itinerary</th>";
-		    echo "<th></th>";
+		    echo "<th>More Info</th>";
 	    echo "</tr>";
 	    foreach ($options as $option) 
 	    {

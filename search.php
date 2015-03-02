@@ -53,35 +53,11 @@
 
 			    // post request from index
 			    $post = $_POST;
-			    /*
-			    $multPass = false;
-			    if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 
-				    || $post['seat_infants'] > 1 || $post['lap_infants'] > 1)
-				$multPass = true;
-
-			    // print headers
-			    echo "<h3>" . $post['depart_date'] . "  <strong>" . $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
-				"<strong>" . $post['destination'] . "</strong>  ";
-			    if (!isOneWay($post))
-				echo $post['return_date'];
-			    echo "</h3>";
-
-			    echo "<table id=\"results\" class=\"table table-hover\" 
-				style=\"background-color: rgba(150, 150, 150, 0)\" align=\"center\">";
-				echo "<tr>";
-				    echo "<th>Total ";
-				    if ($multPass)
-					echo "Group ";
-				    echo "Price</th>";
-				    echo "<th>Itinerary</th>";
-				    echo "<th></th>";
-			    echo "</tr>";
-			    */
-
 			    $result = getResults($post);
 			    $trips = $result->getTrips();
 			    $rCount = printResults($trips, $post);
-?>
+			?>
+
 		    </table>
 		</div>
 		<div class="col-xs-4 col-md-1"></div>

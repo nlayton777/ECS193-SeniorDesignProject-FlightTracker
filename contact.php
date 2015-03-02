@@ -37,7 +37,7 @@
 	<div class="container">
 	<header class="jumbotron" id="contact">
 	    <h1>Leave us a message...</h1>
-	    <h6>We are interested to hear both your questions and/or your feedback regarding our website and services.</h6>
+	    <h3>We are interested to hear both your questions and/or your feedback regarding our website and services.</h3>
 	    <div class="row">
 		<div class="col-md-4">
 		    <form role="form form-inline"  class="form-vertical" method="post" action="contactsubmission.php">

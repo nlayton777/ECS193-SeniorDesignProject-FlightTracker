@@ -8,16 +8,23 @@
     width: 40px;
     height: 25px;
     text-align: center;
+    vertical-align: middle;
+    border-width: 1px;
+    -webkit-border-radius: 5px;
 }
 input.qtyplus { 
     width:25px; 
     height:25px;
-    color: black;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
 }
 input.qtyminus { 
     width:25px; 
     height:25px;
-    color: black;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
 }
 input[type="tel"] {
     width: 10%;
@@ -44,6 +51,24 @@ div.dropdown h4 {
 #it {
     width: 1000px;
 }
+input.phone {
+    margin: 0 2px;
+    color: black;
+}
+div.price {
+    padding-left: 15px;
+}
+.search:focus {
+  color: black;
+  border-color: black;
+  background-color: transparent;
+}
+.search:hover,active {
+  color: white;
+  background-color: #46b8da;
+  border-color: #46b8da;
+}
+/*
 h1 {
 	font-family:'Bad Script', cursive;
 	font-weight:bold;
@@ -62,3 +87,4 @@ h5 {
 	font-size: xx-large;
 	color: #FFFFFF;
 }
+*/

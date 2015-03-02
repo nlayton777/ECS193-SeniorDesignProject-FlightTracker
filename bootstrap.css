@@ -3205,6 +3205,8 @@ fieldset[disabled] .btn-success.active {
   -webkit-transition: color 0.2s ease-in;
   transition: background-color 0.2s ease-in;
   transition: color 0.2s ease-in;
+  vertical-align: middle;
+  text-align: center;
 }
 .search{
   color: #000;
@@ -3229,16 +3231,22 @@ fieldset[disabled] .btn-success.active {
   background-color: #31b0d5;
   border-color: #269abc;
 }
-/* changes */
-.btn-info:hover {
-  background-color: #46b8da;
-  border-color: #46b8da;
-  color: black;
-}
 .btn-info:active,
 .btn-info.active,
 .open > .dropdown-toggle.btn-info {
   background-image: none;
+}
+/* changes */
+.btn-info:focus {
+  color: #fff;
+  background-color: transparent;
+  border-color: white;
+}
+/* changes */
+.btn-info:hover,active {
+  background-color: #46b8da;
+  border-color: #46b8da;
+  color: white;
 }
 .btn-info.disabled,
 .btn-info[disabled],
@@ -6734,6 +6742,8 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+/*Nina's font changes*/
+/*
 h1 {
 	font-family:'Bad Script', cursive;
 	font-weight:bold;
@@ -6746,3 +6756,4 @@ h6 {
 	font-size: xx-large;
 	color: #333;
 }
+*/

@@ -20,10 +20,14 @@ function OneWay() {
     var onewayHidden = document.getElementById('onewayHidden');
     if(oneway.checked) {
 	$("#datepickerR" ).datepicker('disable');	
+	document.getElementById("datepickerR").style.display = "none";
 	onewayHidden.disabled = true;
+	document.getElementById("datepickerD").style.width = "348px";
     } else {
 	$("#datepickerR" ).datepicker('enable');
+	document.getElementById("datepickerR").style.display = "initial";
 	onewayHidden.disabled = false;
+	document.getElementById("datepickerD").style.width = "initial";
     }
 }
 

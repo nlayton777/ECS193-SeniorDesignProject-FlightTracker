@@ -37,7 +37,7 @@
 	<div class="container">
 	    <header class="jumbotron" id="about">
 		<h1>Find your destination</h1>
-		<h6>Let us help you find the flights that you need.</h6>
+		<h3>Let us help you find the flights that you need.</h3>
 	    </header>
 	</div>
 

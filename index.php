@@ -6,13 +6,15 @@
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
+	<!--
  	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bad+Script" />
+	-->
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 
 	<!--this is for the increment button
-	<script src="jquery.min.js"></script>
--->
+	<script src="jquery.min.js"></script>-->
+
 	<!--this is for the datepicker()-->
 	<link rel="stylesheet" href="jquery-ui.css"/>
   	<script src="jquery-1.10.2.js"></script>
@@ -56,14 +58,14 @@
 	<div class="container-fluid" id="header">
 	    <header class="jumbotron" id="home">
 		<h1>UCD Flight Tracker</h1>
-		<h5>Customize your travel needs!</h5>
+		<h3>Customize your travel needs!</h3>
 
 		<form id="search_form" class="form-vertical" method="post" action="search.php">
+		
 		    <!--ONE-WAY CHECKBOX-->
-		    <div class="form-group form-inline">
-			<div class="checkbox-inline">
-			    <label for="oneway">
-				<input class="form-control" type="checkbox" value="yes" 
+		    <div class="form-group">
+			    <label class="no-indent" for="oneway">
+				<input class="form-control checkbox-inline" type="checkbox" value="yes" 
 				    onclick="OneWay()" id="oneway" name="one_way" 
 				    form="search_form"/>
 				<input class="form-control" type="hidden" value="no" 
@@ -71,7 +73,6 @@
 				    form="search_form" checked/>
 				One Way
 			    </label>
-			</div>
 		    </div>
 
 		    <div class="form-group form-inline">
@@ -126,42 +127,42 @@
 			<!--PASSENGERS FIELD-->
 			<label for="adult">
 				&nbsp;Adults
-				<input type='button' value='-' class='qtyminus' field='adults' />
+				<input type='button' value='-' class='btn btn-info qtyminus' field='adults' />
 				<input type='text' name='adults' value='0' class='qty' id='adult' />
-				<input type='button' value='+' class='qtyplus' field='adults' />
+				<input type='button' value='+' class='btn btn-info qtyplus' field='adults' />
 			</label>
 			<label for="child">
 				&nbsp;Children
-				<input type='button' value='-' class='qtyminus' field='children' />
+				<input type='button' value='-' class='btn btn-info qtyminus' field='children' />
 				<input type='text' name='children' value='0' class='qty' id='child'  />
-				<input type='button' value='+' class='qtyplus' field='children' />
+				<input type='button' value='+' class='btn btn-info qtyplus' field='children' />
 			</label>
 			<label for="senior">
 				&nbsp;Seniors
-				<input type='button' value='-' class='qtyminus' field='seniors' />
+				<input type='button' value='-' class='btn btn-info qtyminus' field='seniors' />
 				<input type='text' name='seniors' value='0' class='qty'id='senior'/>
-				<input type='button' value='+' class='qtyplus' field='seniors' />
+				<input type='button' value='+' class='btn btn-info qtyplus' field='seniors' />
 			</label>
 			<label for="seatinfant">
 				&nbsp;Seat Infant
-				<input type='button' value='-' class='qtyminus' field='seat_infants' />
+				<input type='button' value='-' class='btn btn-info qtyminus' field='seat_infants' />
 				<input type='text' name='seat_infants' value='0' class='qty' id='seatinfant' />
-				<input type='button' value='+' class='qtyplus' field='seat_infants' />
+				<input type='button' value='+' class='btn btn-info qtyplus' field='seat_infants' />
 			</label>   
 			<label for="lapinfant">
 				&nbsp;Lap Infant
-				<input type='button' value='-' class='qtyminus' field='lap_infants' />
+				<input type='button' value='-' class='btn btn-info qtyminus' field='lap_infants' />
 				<input type='text' name='lap_infants' value='0' class='qty' id='lapinfant' />
-				<input type='button' value='+' class='qtyplus' field='lap_infants' />
+				<input type='button' value='+' class='btn btn-info qtyplus' field='lap_infants' />
 			</label>
 
 			<!--PRICE FIELD-->
-			<div class="form-group">
+			<div class="form-group price">
 			    <label for="price">
 				Max Price
 				<input id="price" type="range" min="0" max="5000" 
 				    step="5" name="price" onchange="showValue(this.value)"/>
-			    <span id="range">200</span></label>
+			    <span id="range">2500</span></label>
 			</div>
 		    </div>
 
@@ -190,19 +191,23 @@
 			<!--SEARCH WINDOW FIELD-->
 			<label for="window" class="sr-only">Search Window</label>
 			<input type="text" class="form-control" id="window"  
-			    name="window" placeholder="Search Window (hours)" title="Our search bot will keep searching for you, so we can find you the lowest flight option. Just specify the number of hours you would like us to conduct the search for."></input>
+			    name="window" placeholder="Search Window (hours)" 
+			    title="Our search bot will keep searching for you, so we can find you the lowest flight option. 
+			    Just specify the number of hours you would like us to conduct the search for."></input>
 
 			<!--EMAIL FIELD-->
 			<label for="email" class="sr-only">Email</label>
 			<input type="email" class="form-control" id="email" 
-			    name="email" pattern="*@-.-" placeholder="john.smith@website.com" title="Once our search bot has found the best priced flight option for you, we will notify you via email and/or text message so that you don't miss out on any of the great deals." required/>
+			    name="email" pattern="*@-.-" placeholder="john.smith@website.com" title="Once our search bot 
+			    has found the best priced flight option for you, we will notify you via email and/or text 
+			    message so that you don't miss out on any of the great deals." required/>
 
 			<!--PHONE FIELD-->
-			(<input type="tel" size="3" maxlength='3' class="form-control" 
+			(<input type="tel" size="3" maxlength='3' class="form-control phone" 
 			    id="phone1" name="phone1" placeholder ="123" required>) 
-			<input type="tel" size="3" maxlength ='3' class="form-control" 
+			<input type="tel" size="3" maxlength ='3' class="form-control phone" 
 			    id="phone2" name="phone2" placeholder ="456" required> - 
-			<input type="tel" size="4" maxlength = '4' class="form-control" 
+			<input type="tel" size="4" maxlength = '4' class="form-control phone" 
 			    id="phone3" name="phone3" placeholder ="7890" required>
 		    </div>
 		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick="validate()" value="Find your flight!"/>

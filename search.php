@@ -53,6 +53,7 @@
 
 			    // post request from index
 			    $post = $_POST;
+			    /*
 			    $multPass = false;
 			    if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 
 				    || $post['seat_infants'] > 1 || $post['lap_infants'] > 1)
@@ -75,10 +76,11 @@
 				    echo "<th>Itinerary</th>";
 				    echo "<th></th>";
 			    echo "</tr>";
+			    */
 
 			    $result = getResults($post);
 			    $trips = $result->getTrips();
-			    $rCount = printResults($trips, isOneWay($post));
+			    $rCount = printResults($trips, $post);
 ?>
 		    </table>
 		</div>

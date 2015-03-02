@@ -12,45 +12,49 @@
 	return $rv;
     }
 
-    function printResults($trips, $oneWay)
+    function printResults($trips, $post)
     {
 	$rowCount = 0;
-	foreach ($trips->getTripOption() as $option) 
+	$options = $trips->getTripOption();
+	if (isset($options)) 
 	{
-	    echo "<tr>";
-		echo "<td>\$" . substr($option->getSaleTotal(),3) . "</td>";
-		echo "<td>"; // start nested text
+	    $multPass = false;
+	    if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 
+		    || $post['seat_infants'] > 1 || $post['lap_infants'] > 1)
+		$multPass = true;
 
-		    // print if one way
-		    if (!$oneWay)
-			echo "<h5>On the way there...</h5>";
+	    // print headers
+	    echo "<h3>" . $post['depart_date'] . "  <strong>" . $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
+		"<strong>" . $post['destination'] . "</strong>  ";
+	    if (!isOneWay($post))
+		echo $post['return_date'];
+	    echo "</h3>";
 
-		    foreach ($option->getSlice()[0]->getSegment() as $segment)
-		    {
-			echo "<p>";
-			foreach ($segment->getLeg() as $leg)
+	    echo "<table id=\"results\" class=\"table table-hover\" 
+		style=\"background-color: rgba(150, 150, 150, 0)\" align=\"center\">";
+		echo "<tr>";
+		    echo "<th>Total ";
+		    if ($multPass)
+			echo "Group ";
+		    echo "Price</th>";
+		    echo "<th>Itinerary</th>";
+		    echo "<th></th>";
+	    echo "</tr>";
+	    foreach ($options as $option) 
+	    {
+		echo "<tr>";
+		    echo "<td>\$" . substr($option->getSaleTotal(),3) . "</td>";
+		    echo "<td>"; // start nested text
+
+			// print if one way
+			if (!isOneWay($post))
+			    echo "<h5>On the way there...</h5>";
+
+			foreach ($option->getSlice()[0]->getSegment() as $segment)
 			{
-			    echo "<strong> ".$leg->getOrigin()." </strong>";
-			    $time = explode("T",$leg->getDepartureTime());
-			    $time2 = explode("-",$time[1]);
-			    echo " ".$time2[0]." ";
-			    echo " &rarr; ";
-			    echo "<strong> ".$leg->getDestination()." </strong>";
-			    $time = explode("T",$leg->getArrivalTime());
-			    $time2 = explode("-",$time[1]);
-			    echo $time2[0];
-			} // end for
-			echo "</p>";
-		    } // end for
-
-		    if (!$oneWay) {
-			echo "<h5>On the way back...</h5>";
-
-			foreach ($option->getSlice()[1]->getSegment() as $segment)
-			{
-			    echo "<p>";
 			    foreach ($segment->getLeg() as $leg)
 			    {
+				echo "<p>";
 				echo "<strong> ".$leg->getOrigin()." </strong>";
 				$time = explode("T",$leg->getDepartureTime());
 				$time2 = explode("-",$time[1]);
@@ -59,83 +63,110 @@
 				echo "<strong> ".$leg->getDestination()." </strong>";
 				$time = explode("T",$leg->getArrivalTime());
 				$time2 = explode("-",$time[1]);
-				echo " ".$time2[0];
+				echo $time2[0];
+				echo "</p>";
 			    } // end for
-			    echo "</p>";
 			} // end for
-		    } // end if
 
-		    echo "<div class=\"dropdown\" id=\"row$rowCount\">";
+			if (!isOneWay($post)) {
+			    echo "<h5>On the way back...</h5>";
 
-			echo "<table id=\"dropdown-table\">";
-			echo "<tr>";
-			    echo "<th>Leg</th>";
-			    echo "<th>Carrier</th>";
-			    echo "<th>Cabin</th>";
-			    echo "<th>Aircraft</th>";
-			    echo "<th>Meal</th>";
-			    echo "<th>Mileage</th>";
-			    echo "<th>Duration</th>";
-			echo "</tr>";
-			foreach ($option->getSlice() as $slice)
-			{
-			    foreach ($slice->getSegment() as $segment)
+			    foreach ($option->getSlice()[1]->getSegment() as $segment)
 			    {
+				echo "<p>";
 				foreach ($segment->getLeg() as $leg)
 				{
-				    echo "<tr>";
-					echo "<td>";
-					echo "<strong> ".$leg->getOrigin()." </strong>";
-					echo " &rarr; ";
-					echo "<strong> ".$leg->getDestination()." </strong>: ";
-					echo "</td>";
+				    echo "<strong> ".$leg->getOrigin()." </strong>";
+				    $time = explode("T",$leg->getDepartureTime());
+				    $time2 = explode("-",$time[1]);
+				    echo " ".$time2[0]." ";
+				    echo " &rarr; ";
+				    echo "<strong> ".$leg->getDestination()." </strong>";
+				    $time = explode("T",$leg->getArrivalTime());
+				    $time2 = explode("-",$time[1]);
+				    echo " ".$time2[0];
+				} // end for
+				echo "</p>";
+			    } // end for
+			} // end if
 
-					echo "<td>";
-					$carrier = $segment->getFlight()->getCarrier(); 
-					foreach ($trips->getData()->getCarrier() as $carrier)
-					{
-					    if ($carrier->getCode() == $segment->getFlight()->getCarrier())
-						echo $carrier->getName();
-					}
-					echo "</td>";
+			echo "<div class=\"dropdown\" id=\"row$rowCount\">";
 
-					echo "<td>";
-					echo ucfirst(strtolower($segment->getCabin()));
-					echo "</td>";
-					
-					echo "<td>";
-					echo $leg->getAircraft();
-					echo "</td>";
+			    echo "<table id=\"dropdown-table\">";
+			    echo "<tr>";
+				echo "<th>Leg</th>";
+				echo "<th>Carrier</th>";
+				echo "<th>Cabin</th>";
+				echo "<th>Aircraft</th>";
+				echo "<th>Meal</th>";
+				echo "<th>Mileage</th>";
+				echo "<th>Duration</th>";
+			    echo "</tr>";
+			    foreach ($option->getSlice() as $slice)
+			    {
+				foreach ($slice->getSegment() as $segment)
+				{
+				    foreach ($segment->getLeg() as $leg)
+				    {
+					echo "<tr>";
+					    echo "<td>";
+					    echo "<strong> ".$leg->getOrigin()." </strong>";
+					    echo " &rarr; ";
+					    echo "<strong> ".$leg->getDestination()." </strong>: ";
+					    echo "</td>";
 
-					echo "<td>";
-					$meal = $leg->getMeal();
-					if (isset($meal))
-					    echo $meal;
-					else
-					    echo "None";
-					echo "</td>";
+					    echo "<td>";
+					    $carrier = $segment->getFlight()->getCarrier(); 
+					    foreach ($trips->getData()->getCarrier() as $carrier)
+					    {
+						if ($carrier->getCode() == $segment->getFlight()->getCarrier())
+						    echo $carrier->getName();
+					    }
+					    echo "</td>";
 
-					echo "<td>";
-					echo $leg->getMileage();
-					echo " miles</td>";
+					    echo "<td>";
+					    echo ucfirst(strtolower($segment->getCabin()));
+					    echo "</td>";
+					    
+					    echo "<td>";
+					    echo $leg->getAircraft();
+					    echo "</td>";
 
-					echo "<td>";
-					echo $leg->getDuration();
-					echo " minutes</td>";
-				    echo "</tr>";
+					    echo "<td>";
+					    $meal = $leg->getMeal();
+					    if (isset($meal))
+						echo $meal;
+					    else
+						echo "None";
+					    echo "</td>";
+
+					    echo "<td>";
+					    echo $leg->getMileage();
+					    echo " miles</td>";
+
+					    echo "<td>";
+					    echo $leg->getDuration();
+					    echo " minutes</td>";
+					echo "</tr>";
+				    } // end for
 				} // end for
 			    } // end for
-			} // end for
-			echo "</table>";
-		    echo "</div>";  // end dropdown div
-		echo "</td>";	// end td with table inside
-		echo "<td class=\"expandButton\">";
-		    echo "<input type=\"button\" id=\"btnExpCol$rowCount\" class=\"btn btn-info search\" 
-			onclick=\"Expand()\" value=\" Expand \"/>";
-		echo "</td>";
-	    echo "</tr>";
-	    $rowCount++;
-	}
+			    echo "</table>";
+			echo "</div>";  // end dropdown div
+		    echo "</td>";	// end td with table inside
+		    echo "<td class=\"expandButton\">";
+			echo "<input type=\"button\" id=\"btnExpCol$rowCount\" class=\"btn btn-info search\" 
+			    onclick=\"Expand()\" value=\" Expand \"/>";
+		    echo "</td>";
+		echo "</tr>";
+		$rowCount++;
+	    } // end foreach(Trips)
+	    } else
+	    {
+		echo "<h2>Sorry, we could not find any flights that match your".
+		    " preferences. We suggest broadening your search parameters".
+		    " to improve your chances at finding results.</h2>";
+	    } // end if/else
 	return ($rowCount);
     }
 
@@ -211,18 +242,31 @@
 
 	// set carrier information
 	if (isset($post['airline'])){
+	/*
 	    if ((!in_array("none",$post['airline'],true)) && 
 		(!in_array("--Select an Origin--",$post['airline'],true))){
 		$slice1->setPermittedCarrier($post['airline']);
-		if (!isOneWay($post)) 
-		    $slice2->setPermittedCarrier($post['airline']); 
-	}}else{/*echo 'airline is NOT set </br>';*/}
+		*/
+	    $temp1 = array();
+	    $temp2 = array();
+	    foreach ($post['airline'] as $airline)
+	    {
+		if ($airline != "none")
+		{
+		   $temp1[] = $airline; 
+		    if (!isOneWay($post)) 
+			$temp2[] =$airline;
+		}
+	    }
+	    $slice1->setPermittedCarrier($temp1); 
+	    $slice2->setPermittedCarrier($temp2); 
+	}else{/*echo 'airline is NOT set </br>';*/}
 
 	// create request and initialize request
 	$request = new Google_Service_QPXExpress_TripOptionsRequest();
 
 	// set solutions
-	$request->setSolutions(20);
+	$request->setSolutions(50);
 	
 	// set slices
 	if (isOneWay($post))

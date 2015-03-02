@@ -48,17 +48,11 @@
 
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
-			<li class="active">
-			    <a href="index.php">Search</a>
-			</li>
-			<li>
-			    <a href="about.php">About</a>
-			</li>
+			<li class="active"><a href="index.php">Search</a></li>
+			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
-			<li>
-			    <a href="contact.php">Contact</a>
-			</li>
+			<li><a href="contact.php">Contact</a></li>
 		    </ul>
 		</div>
 	    </div>

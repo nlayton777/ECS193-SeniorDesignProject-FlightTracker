@@ -9,7 +9,6 @@
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
-
     </head>
 
     <body>
@@ -28,17 +27,11 @@
 
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
-			<li class="active">
-			    <a href="index.php">Search</a>
-			</li>
-			<li>
-			    <a href="about.php">About</a>
-			</li>
+			<li class="active"><a href="index.php">Search</a></li>
+			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
-			<li>
-			    <a href="contact.php">Contact</a>
-			</li>
+			<li><a href="contact.php">Contact</a></li>
 		    </ul>
 		</div>
 	    </div>
@@ -60,28 +53,27 @@
 
 			    // post request from index
 			    $post = $_POST;
-			    //print_r($post);
+			    $multPass = false;
+			    if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 
+				    || $post['seat_infants'] > 1 || $post['lap_infants'] > 1)
+				$multPass = true;
 
 			    // print headers
-			    /*
-			    echo "<h3>" . $post['depart_date'] . ": <strong>" . $post['source'] . "</strong> &rarr; " .
-				" <strong>" . $post['destination'] . "</strong></h3>";
-			    if (!isOneWay($post)) {
-				echo "<h3>" . $post['return_date'] . ": <strong>" . $post['source'] . "</strong> &larr; " .
-				    " <strong>" . $post['destination'] . "</strong></h3>";
-			    }
-			    */
 			    echo "<h3>" . $post['depart_date'] . "  <strong>" . $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
 				"<strong>" . $post['destination'] . "</strong>  ";
 			    if (!isOneWay($post))
 				echo $post['return_date'];
 			    echo "</h3>";
 
-			    echo "<table id=\"results\" class=\"table table-hover\" style=\"background-color: rgba(200, 200, 200, 0.3)\">";
-			    echo "<tr>";
-			    echo "<th>Price</th>";
-			    echo "<th colspan='6'>Itinerary</th>";
-			    echo "<th></th>";
+			    echo "<table id=\"results\" class=\"table table-hover\" 
+				style=\"background-color: rgba(150, 150, 150, 0)\" align=\"center\">";
+				echo "<tr>";
+				    echo "<th>Total ";
+				    if ($multPass)
+					echo "Group ";
+				    echo "Price</th>";
+				    echo "<th>Itinerary</th>";
+				    echo "<th></th>";
 			    echo "</tr>";
 
 			    $result = getResults($post);

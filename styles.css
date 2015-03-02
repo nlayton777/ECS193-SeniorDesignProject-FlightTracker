@@ -34,3 +34,13 @@ td,th {
 div.dropdown h4 {
     text-align: left;
 }
+.table#results td {
+    vertical-align: middle;
+}
+.dropdown-table th,td {
+    font-size: 77%; 
+    padding: 0 15px;
+}
+#it {
+    width: 1000px;
+}

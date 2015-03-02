@@ -3206,6 +3206,19 @@ fieldset[disabled] .btn-success.active {
   transition: background-color 0.2s ease-in;
   transition: color 0.2s ease-in;
 }
+.search{
+  color: #000;
+  /*color: #46b8da;*/
+  /*background-color: #5bc0de;*/
+  background-color: transparent;
+  /*border-color: #46b8da;*/
+  border-color: #000;
+  border-width: 1px;
+  -webkit-transition: background-color 0.2s ease-in;
+  -webkit-transition: color 0.2s ease-in;
+  transition: background-color 0.2s ease-in;
+  transition: color 0.2s ease-in;
+}
 .btn-info:hover,
 .btn-info:focus,
 .btn-info.focus,

@@ -12,16 +12,148 @@
 	return $rv;
     }
 
+    function printResults($trips, $oneWay)
+    {
+	$rowCount = 0;
+	foreach ($trips->getTripOption() as $option) 
+	{
+	    echo "<tr>";
+		echo "<td>\$" . substr($option->getSaleTotal(),3) . "</td>";
+		echo "<td>"; // start nested text
+
+		    // print if one way
+		    if (!$oneWay)
+			echo "<h5>On the way there...</h5>";
+
+		    foreach ($option->getSlice()[0]->getSegment() as $segment)
+		    {
+			echo "<p>";
+			foreach ($segment->getLeg() as $leg)
+			{
+			    echo "<strong> ".$leg->getOrigin()." </strong>";
+			    $time = explode("T",$leg->getDepartureTime());
+			    $time2 = explode("-",$time[1]);
+			    echo " ".$time2[0]." ";
+			    echo " &rarr; ";
+			    echo "<strong> ".$leg->getDestination()." </strong>";
+			    $time = explode("T",$leg->getArrivalTime());
+			    $time2 = explode("-",$time[1]);
+			    echo $time2[0];
+			} // end for
+			echo "</p>";
+		    } // end for
+
+		    if (!$oneWay) {
+			echo "<h5>On the way back...</h5>";
+
+			foreach ($option->getSlice()[1]->getSegment() as $segment)
+			{
+			    echo "<p>";
+			    foreach ($segment->getLeg() as $leg)
+			    {
+				echo "<strong> ".$leg->getOrigin()." </strong>";
+				$time = explode("T",$leg->getDepartureTime());
+				$time2 = explode("-",$time[1]);
+				echo " ".$time2[0]." ";
+				echo " &rarr; ";
+				echo "<strong> ".$leg->getDestination()." </strong>";
+				$time = explode("T",$leg->getArrivalTime());
+				$time2 = explode("-",$time[1]);
+				echo " ".$time2[0];
+			    } // end for
+			    echo "</p>";
+			} // end for
+		    } // end if
+
+		    echo "<div class=\"dropdown\" id=\"row$rowCount\">";
+
+			echo "<table id=\"dropdown-table\">";
+			echo "<tr>";
+			    echo "<th>Leg</th>";
+			    echo "<th>Carrier</th>";
+			    echo "<th>Cabin</th>";
+			    echo "<th>Aircraft</th>";
+			    echo "<th>Meal</th>";
+			    echo "<th>Mileage</th>";
+			    echo "<th>Duration</th>";
+			echo "</tr>";
+			foreach ($option->getSlice() as $slice)
+			{
+			    foreach ($slice->getSegment() as $segment)
+			    {
+				foreach ($segment->getLeg() as $leg)
+				{
+				    echo "<tr>";
+					echo "<td>";
+					echo "<strong> ".$leg->getOrigin()." </strong>";
+					echo " &rarr; ";
+					echo "<strong> ".$leg->getDestination()." </strong>: ";
+					echo "</td>";
+
+					echo "<td>";
+					$carrier = $segment->getFlight()->getCarrier(); 
+					foreach ($trips->getData()->getCarrier() as $carrier)
+					{
+					    if ($carrier->getCode() == $segment->getFlight()->getCarrier())
+						echo $carrier->getName();
+					}
+					echo "</td>";
+
+					echo "<td>";
+					echo ucfirst(strtolower($segment->getCabin()));
+					echo "</td>";
+					
+					echo "<td>";
+					echo $leg->getAircraft();
+					echo "</td>";
+
+					echo "<td>";
+					$meal = $leg->getMeal();
+					if (isset($meal))
+					    echo $meal;
+					else
+					    echo "None";
+					echo "</td>";
+
+					echo "<td>";
+					echo $leg->getMileage();
+					echo " miles</td>";
+
+					echo "<td>";
+					echo $leg->getDuration();
+					echo " minutes</td>";
+				    echo "</tr>";
+				} // end for
+			    } // end for
+			} // end for
+			echo "</table>";
+		    echo "</div>";  // end dropdown div
+		echo "</td>";	// end td with table inside
+		echo "<td class=\"expandButton\">";
+		    echo "<input type=\"button\" id=\"btnExpCol$rowCount\" class=\"btn btn-info search\" 
+			onclick=\"Expand()\" value=\" Expand \"/>";
+		echo "</td>";
+	    echo "</tr>";
+	    $rowCount++;
+	}
+	return ($rowCount);
+    }
+
     function getResults(&$post) {
 	// create client 
 	$client = new Google_Client();
 	$client->setApplicationName("Flight Tracker");
+	// nick
 	//$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
-	$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
+	// rupali
+	//$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
+	// kirsten
+	//$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
+	// nina
+	$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
 
 	// create QPX service
 	$service = new Google_Service_QPXExpress($client);
-
 	// create slices: slice1 for one-way, slice2 for round trip
 	$slice1 = new Google_Service_QPXExpress_SliceInput();
 	$slice2 = new Google_Service_QPXExpress_SliceInput();
@@ -56,8 +188,8 @@
 		$ret_date = $ret[2] . "-" . $ret[0] . "-" . $ret[1];
 		// set date in request message
 		$slice2->setDate($ret_date);
-	    }else{echo "Return date NOT set </br>";}
-	}else{echo "Depart date NOT set </br>";}
+	    }else{/*echo "Return date NOT set </br>";*/}
+	}else{/*echo "Depart date NOT set </br>";*/}
 
 	// create passenger counts
 	$passengers = new Google_Service_QPXExpress_PassengerCounts();
@@ -111,95 +243,5 @@
 	$trips = $service->trips;
 	$result = $trips->search($searchRequest);
 	return($result);
-    }
-
-    function printResults($trips, $oneWay)
-    {
-	$rowCount = 0;
-	foreach ($trips->getTripOption() as $option) 
-	{
-	    echo "<tr>";
-		echo "<td>";
-		    echo "\$" . $option->getSaleTotal();
-		echo "</td>";
-		echo "<td>";
-		    echo $option->getSlice()[0]->getSegment()[0]->getLeg()[0]->getDepartureTime() . " ";
-		    echo "<strong>" . $option->getSlice()[0]->getSegment()[0]->getLeg()[0]->getOrigin() . "</strong>";
-		    echo " &rarr; ";
-		    $temp = $option->getSlice()[0]->getSegment();
-		    $temp2 = $temp[count($temp) - 1]->getLeg();
-		    echo $temp2[count($temp2) - 1]->getArrivalTime() . " ";
-		    echo "<strong>" . $temp2[count($temp2) - 1]->getDestination() . "</strong>";
-
-		    echo "<div class=\"dropdown\" id=\"row$rowCount\">";
-			if(!$oneWay)
-			    echo "<h4>On the way there:</h4>";
-
-			echo "<table cellspacing=\"10\" cellpadding=\"10\" id=\"expandedtable\" class=\"droptable\">";
-			    echo "<tr>";
-				echo "<th> Point A </th>";
-				echo "<th> Departure Time </th>";
-				echo "<th></th>";
-				echo "<th> Point B </th>";
-				echo "<th> Arrival Time </th>";
-				echo "<th></th>";
-			    echo "</tr>";
-			    echo "<tr>";
-			    
-			    foreach ($option->getSlice()[0]->getSegment() as $segment)
-			    {
-				echo "</tr>";
-				foreach ($segment->getLeg() as $leg)
-				{
-				    echo "<td> ".$leg->getOrigin()." </td>";
-				    echo "<td> ".$leg->getDepartureTime()." </td>";
-				    echo "<td> &rarr; </td>";
-				    echo "<td> ".$leg->getDestination()." </td>";
-				    echo "<td> ".$leg->getArrivalTime()." </td>";
-				} // end for
-				echo "<tr>";
-			    } // end for
-
-			    echo "</tr>";
-			echo "</table>";
-			if (!$oneWay)
-			{
-			    echo "<h4>On the way back:</h4>";
-			    echo "<table cellspacing=\"12\" cellpadding=\"0\" id=\"expandedtable\" class=\"droptable\">";
-				echo "<tr>";
-				    echo "<th>Point A</th>";
-				    echo "<th>Departure Time</th>";
-				    echo "<th>Point B</th>";
-				    echo "<th>Arrival Time</th>";
-				echo "</tr>";
-				echo "<tr>";
-
-				foreach ($option->getSlice()[1]->getSegment() as $segment)
-				{
-				    echo "<tr>";
-				    foreach ($segment->getLeg() as $leg)
-				    {
-					echo "<td> ".$leg->getOrigin()." </td>";
-					echo "<td> ".$leg->getDepartureTime()." </td>";
-					echo "<td> &rarr; </td>";
-					echo "<td> ".$leg->getDestination()." </td>";
-					echo "<td> ".$leg->getArrivalTime()." </td>";
-				    } // end for
-				    echo "<tr>";
-				} // end for
-
-				echo "</tr>";
-			    echo "</table>";
-			} // end if
-		    echo "</div>";
-		echo "</td>";
-		echo "<td>";
-		    echo "<input type=\"button\" id=\"btnExpCol$rowCount\" 
-			onclick=\"Expand()\" value=\" Expand \"/>";
-		echo "</td>";
-	    echo "</tr>";
-	    $rowCount++;
-	}
-	return ($rowCount);
     }
 ?>

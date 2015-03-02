@@ -5,6 +5,7 @@
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bad+Script" />
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
     </head>
@@ -36,7 +37,7 @@
 	<div class="container">
 	    <header class="jumbotron" id="about">
 		<h1>Find your destination</h1>
-		<p>Let us help you find the flights that you need.</p>
+		<h6>Let us help you find the flights that you need.</h6>
 	    </header>
 	</div>
 

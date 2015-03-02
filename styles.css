@@ -44,3 +44,21 @@ div.dropdown h4 {
 #it {
     width: 1000px;
 }
+h1 {
+	font-family:'Bad Script', cursive;
+	font-weight:bold;
+	font-size: "300"
+	color: #333;
+}
+h6 {
+	font-family:'Bad Script', cursive;
+	font-weight:bold;
+	font-size: xx-large;
+	color: #333;
+}
+h5 {
+	font-family:'Bad Script', cursive;
+	font-weight:bold;
+	font-size: xx-large;
+	color: #FFFFFF;
+}

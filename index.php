@@ -6,6 +6,7 @@
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
+ 	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bad+Script" />
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 
@@ -55,7 +56,7 @@
 	<div class="container-fluid" id="header">
 	    <header class="jumbotron" id="home">
 		<h1>UCD Flight Tracker</h1>
-		<p>Customize your travel needs!<p>
+		<h5>Customize your travel needs!</h5>
 
 		<form id="search_form" class="form-vertical" method="post" action="search.php">
 		    <!--ONE-WAY CHECKBOX-->

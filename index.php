@@ -69,7 +69,7 @@
 	<div class="container-fluid" id="header">
 	    <header class="jumbotron" id="home">
 		<h1>UCD Flight Tracker</h1>
-		<p>Customize your travel needs!<p>
+		<h5>Customize your travel needs!</h5>
 
 		<form id="search_form" class="form-vertical" method="post" action="search.php">
 		    <!--ONE-WAY CHECKBOX-->

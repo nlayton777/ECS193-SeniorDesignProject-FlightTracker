@@ -5,6 +5,7 @@
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bad+Script" />
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
     </head>
@@ -42,7 +43,7 @@
 	<div class="container">
 	<header class="jumbotron" id="contact">
 	    <h1>Leave us a message...</h1>
-	    <p>We are interested to hear both your questions and/or your feedback regarding our website and services.</p>
+	    <h6>We are interested to hear both your questions and/or your feedback regarding our website and services.</h6>
 	    <div class="row">
 		<div class="col-md-4">
 		    <form role="form form-inline"  class="form-vertical" method="post" action="contactsubmission.php">

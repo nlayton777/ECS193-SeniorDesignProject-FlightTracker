@@ -4,6 +4,7 @@ cp ./*.css* /usr/local/zend/apache2/htdocs/
 cp ./*.js /usr/local/zend/apache2/htdocs/
 cp ./*.txt /usr/local/zend/apache2/htdocs/
 cp ./*.jpg /usr/local/zend/apache2/htdocs/
+cp ./*.png /usr/local/zend/apache2/htdocs/
 cp -R ./GoogleAPI/ /usr/local/zend/apache2/htdocs
 rm /usr/local/zend/apache2/htdocs/*.html
 rm /usr/local/zend/apache2/htdocs/*~

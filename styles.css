@@ -46,16 +46,16 @@ div.dropdown h4 {
 }
 .dropdown-table th,td {
     font-size: 77%; 
-    padding: 0 15px;
+    padding: 0 10px;
 }
 #it {
-    width: 1000px;
+  width: 84%;;
 }
 input.phone {
     margin: 0 2px;
     color: black;
 }
-div.price {
+#price {
     padding-left: 15px;
 }
 .search:focus {
@@ -67,6 +67,48 @@ div.price {
   color: white;
   background-color: #46b8da;
   border-color: #46b8da;
+}
+#search-submit-button {
+  border-color: black;
+  color: black;
+  background-color: transparent;
+}
+#search-submit-button:focus {
+  color: black;
+  border-color: black;
+  background-color: transparent;
+}
+#search-submit-button:hover,active {
+  color: white;
+  background-color: #46b8da;
+  border-color: #46b8da;
+}
+#on-the-way-there {
+  float: left;
+  margin-left: 35%;
+  margin-right: 3%;
+}
+#on-the-way-back {
+  float: left;
+}
+#dropdown-table {
+  margin: 0 auto;
+}
+.dropdown {
+  clear: left;
+}
+#search-title {
+  width: 50%;
+}
+#background-info {
+  width: 50%;
+}
+#trip-title {
+  clear: left;
+}
+#exclamation {
+  float: left;
+  margin-right: 3px;
 }
 /*
 h1 {

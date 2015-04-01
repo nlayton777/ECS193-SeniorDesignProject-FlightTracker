@@ -41,21 +41,82 @@
 	    <div class="row">
 		<div class="col-xs-4 col-md-1"></div>
 		<div class="col-xs-10 col-md-10">
-		    <h1>Search Results</h1>
+		    <div class="row">
+			<div class="col-md-6" id="search-title">
+			    <h1>Search Results</h1>
+			    <?php
+				define('__ROOT3__',dirname(__FILE__));
+				require_once(__ROOT3__ .
+				    '/google-api-php-client/src/Google/Service/QPXExpress.php');
+				require_once(__ROOT3__ .
+				    '/google-api-php-client/src/Google/Client.php');
+				require_once(__ROOT3__ . '/flight_tracker.php');
+
+				$post = $_POST;
+				echo "<h3 id=\"trip-title\">" . $post['depart_date'] . "  <strong>" . 
+				    $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
+				    "<strong>" . $post['destination'] . "</strong>  ";
+				if (!isOneWay($post))
+				    echo $post['return_date'];
+				echo "</h3>";
+			    ?>
+			</div>
+
+			<div class="col-md-6" id="background-info">
+			    <img id="exclamation" src="exclamation.png" alt="Important" height="8%" width="8%" />
+
+			    <p id="background-description">
+				Our search engine can work in the background for you to find 
+				deals on flights whose prices might change in the near future. 
+				Provide us with the following information, and we will begin
+				searching.
+			    </p>
+
+			    <form method="post" action="countdown.php">
+				<div class="form-group form-inline">
+				    <label for="email">Email
+					<input id="email" type="email">
+				    </label>
+
+				    <label for="search-time">Search Time
+					<select>
+					    <option>2 Hours</option>
+					    <option>4 Hours</option>
+					    <option>8 Hours</option>
+					    <option>12 Hours</option>
+					    <option>24 Hours</option>
+					    <option>48 Hours</option>
+					    <option>72 Hours</option>
+					    <option>96 Hours</option>
+					</select>
+				    </label>
+
+				    <!--
+				    <input id="search-submit-button" class="btn btn-info btn-md" 
+					type="submit" onclick="validate()" value="Keep Searching"/>
+				    -->
+				    <input id="search-submit-button" class="btn btn-info btn-md" 
+					type="submit" value="Keep Searching"/>
+				</div>
+			    </form>
+			</div>
+		    </div>
 
 			<?php
+			    /*
 			    define('__ROOT3__',dirname(__FILE__));
 			    require_once(__ROOT3__ .
 				'/google-api-php-client/src/Google/Service/QPXExpress.php');
 			    require_once(__ROOT3__ .
 				'/google-api-php-client/src/Google/Client.php');
 			    require_once(__ROOT3__ . '/flight_tracker.php');
+			    */
 
 			    // post request from index
-			    $post = $_POST;
+			    //$post = $_POST;
 			    $result = getResults($post);
 			    $trips = $result->getTrips();
-			    $rCount = printResults($trips, $post);
+			    $rowCount = printResults($trips, $post);
 			?>
 
 		    </table>
@@ -67,7 +128,7 @@
     <script>
 	window.onload=function(){$('.dropdown').hide();};
 	<?php
-	for ($i = 0; $i < $rCount; $i++)
+	for ($i = 0; $i < $rowCount; $i++)
 	{
 	    echo "$(document).ready(function () {";
 		echo "$('#btnExpCol$i').click(function () {";

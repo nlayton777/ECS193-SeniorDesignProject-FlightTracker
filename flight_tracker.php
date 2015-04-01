@@ -19,27 +19,21 @@
 	if (isset($options)) 
 	{
 	    $multPass = false;
-	    if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 
-		    || $post['seat_infants'] > 1 || $post['lap_infants'] > 1)
+	    if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 || 
+		$post['seat_infants'] > 1 || $post['lap_infants'] > 1)
 		$multPass = true;
 
 	    // print headers
-	    echo "<h3>" . $post['depart_date'] . "  <strong>" . $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
-		"<strong>" . $post['destination'] . "</strong>  ";
-	    if (!isOneWay($post))
-		echo $post['return_date'];
-	    echo "</h3>";
-
 	    echo "<table id=\"results\" class=\"table table-hover\" 
 		style=\"background-color: rgba(150, 150, 150, 0)\" align=\"center\">";
 		echo "<tr>";
-		    echo "<th>Total ";
+		    echo "<th id=\"price\">Total ";
 		    if ($multPass)
 			echo "Group ";
 		    echo "Price</th>";
-		    echo "<th>Itinerary</th>";
-		    echo "<th>More Info</th>";
-	    echo "</tr>";
+		    echo "<th id=\"it\">Itinerary</th>";
+		    echo "<th id=\"info\">More Info</th>";
+		echo "</tr>";
 	    foreach ($options as $option) 
 	    {
 		echo "<tr>";
@@ -48,7 +42,10 @@
 
 			// print if one way
 			if (!isOneWay($post))
+			{
+			    echo "<div id=\"on-the-way-there\">";
 			    echo "<h5>On the way there...</h5>";
+			}
 
 			foreach ($option->getSlice()[0]->getSegment() as $segment)
 			{
@@ -69,6 +66,8 @@
 			} // end for
 
 			if (!isOneWay($post)) {
+			    echo "</div>";
+			    echo "<div id=\"on-the-way-back\">";
 			    echo "<h5>On the way back...</h5>";
 
 			    foreach ($option->getSlice()[1]->getSegment() as $segment)
@@ -88,6 +87,7 @@
 				} // end for
 				echo "</p>";
 			    } // end for
+			    echo "</div>";
 			} // end if
 
 			echo "<div class=\"dropdown\" id=\"row$rowCount\">";
@@ -151,6 +151,7 @@
 				    } // end for
 				} // end for
 			    } // end for
+
 			    echo "</table>";
 			echo "</div>";  // end dropdown div
 		    echo "</td>";	// end td with table inside
@@ -161,12 +162,13 @@
 		echo "</tr>";
 		$rowCount++;
 	    } // end foreach(Trips)
-	    } else
-	    {
-		echo "<h2>Sorry, we could not find any flights that match your".
-		    " preferences. We suggest broadening your search parameters".
-		    " to improve your chances at finding results.</h2>";
-	    } // end if/else
+	    echo "</table>";
+	} else
+	{
+	    echo "<h2>Sorry, we could not find any flights that match your".
+		" preferences. We suggest broadening your search parameters".
+		" to improve your chances at finding results.</h2>";
+	} // end if/else
 	return ($rowCount);
     }
 
@@ -175,13 +177,13 @@
 	$client = new Google_Client();
 	$client->setApplicationName("Flight Tracker");
 	// nick
-	//$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+	$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
 	// rupali
 	//$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 	// kirsten
 	//$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
 	// nina
-	$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
+	//$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
 
 	// create QPX service
 	$service = new Google_Service_QPXExpress($client);

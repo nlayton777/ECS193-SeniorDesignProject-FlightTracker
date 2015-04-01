@@ -156,17 +156,6 @@
 				<input type='button' value='+' class='btn btn-info qtyplus' field='lap_infants' />
 			</label>
 
-			<!--PRICE FIELD-->
-			<div class="form-group price">
-			    <label for="price">
-				Max Price
-				<input id="price" type="range" min="0" max="5000" 
-				    step="5" name="price" onchange="showValue(this.value)"/>
-			    <span id="range">2500</span></label>
-			</div>
-		    </div>
-
-		    <div class="form-group form-inline">
 			<!--AIRLINE FIELD-->
 			<label for="airline" class="sr-only">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline[]"
@@ -185,70 +174,19 @@
 			    } 
 			?>
 			</select>
-			<div class="form-group form-inline">
 
-
-			<!--SEARCH WINDOW FIELD-->
-			<label for="window" class="sr-only">Search Window</label>
-			<input type="text" class="form-control" id="window"  
-			    name="window" placeholder="Search Window (hours)" 
-			    title="Our search bot will keep searching for you, so we can find you the lowest flight option. 
-			    Just specify the number of hours you would like us to conduct the search for."></input>
-
-			<!--EMAIL FIELD-->
-			<label for="email" class="sr-only">Email</label>
-			<input type="email" class="form-control" id="email" 
-			    name="email" pattern="*@-.-" placeholder="john.smith@website.com" title="Once our search bot 
-			    has found the best priced flight option for you, we will notify you via email and/or text 
-			    message so that you don't miss out on any of the great deals." required/>
-
-			<!--PHONE FIELD-->
-			(<input type="tel" size="3" maxlength='3' class="form-control phone" 
-			    id="phone1" name="phone1" placeholder ="123" required>) 
-			<input type="tel" size="3" maxlength ='3' class="form-control phone" 
-			    id="phone2" name="phone2" placeholder ="456" required> - 
-			<input type="tel" size="4" maxlength = '4' class="form-control phone" 
-			    id="phone3" name="phone3" placeholder ="7890" required>
+			<!--PRICE FIELD-->
+			<div class="form-group">
+			    <label for="price">Max Price
+				<input id="price" type="range" min="0" max="5000" 
+				    step="5" name="price" onchange="showValue(this.value)"/>
+				<span id="range">2500</span>
+			    </label>
+			</div>
 		    </div>
 		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick="validate()" value="Find your flight!"/>
 		</form>
 	    </header>
 	</div>
-		    <!--
-	<div class="container-fluid" id="details">
-	    <section id="description">
-		<div class="row">
-		    <div class="col-md-1"></div>
-		    <div class="col-md-10">
-			<h2>Let us do the work for you</h2>
-			<p>
-			    Our goal is to discover the lowest fare for the flight 
-			    that you need by performing an automated background search 
-			    so that you can obtain the best tickets for the lowest price.
-			    Our website searches for your flight over a longer period of time
-			    to try to catch the periods of time when airlines reduce their fares.
-			    This way, you don't have to worry about wasting money or refreshing your search page.
-			    Just tell us how long you want to search, then kick back,relax, 
-			    and wait for us to notify you when we've found your flight. 
-			    If your not the waiting type, then don't worry about it.
-			    Simply exclude any waiting time, and our search will provide 
-			    immediate results. 
-			</p>
-		    </div>
-		    <div class="col-md-1"></div>
-		    <div class="col-md-6">
-			<h2>Stay updated</h2>
-			<p id="test">
-			    We notify you when prices are to your liking. 
-			    Stay informed through email or text, the choice is yours.
-			    Once you've obtained your tickets, don't forget to share
-			    your travel excitement with your friends on Facebook or
-			    Twitter.
-			</p>
-		    </div>
-		</div>
-	    </section>
-	</div>
-		    -->
     </body>
 </html>

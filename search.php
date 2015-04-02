@@ -75,26 +75,39 @@
 			    <form method="post" action="countdown.php">
 				<div class="form-group form-inline">
 				    <label for="email">Email
-					<input id="email" type="email">
+					<input id="email" type="email" name="email">
 				    </label>
 
 				    <label for="search-time">Search Time
-					<select>
-					    <option>2 Hours</option>
-					    <option>4 Hours</option>
-					    <option>8 Hours</option>
-					    <option>12 Hours</option>
-					    <option>24 Hours</option>
-					    <option>48 Hours</option>
-					    <option>72 Hours</option>
-					    <option>96 Hours</option>
+					<select name="search_time">
+					    <option value="2">2 Hours</option>
+					    <option value="4">4 Hours</option>
+					    <option value="8">8 Hours</option>
+					    <option value="12">12 Hours</option>
+					    <option value="24">24 Hours</option>
+					    <option value="48">48 Hours</option>
+					    <option value="72">72 Hours</option>
+					    <option value="96">96 Hours</option>
 					</select>
 				    </label>
 
-				    <!--
-				    <input id="search-submit-button" class="btn btn-info btn-md" 
-					type="submit" onclick="validate()" value="Keep Searching"/>
-				    -->
+				    <?php
+					echo "<input type=\"hidden\" name=\"origin\" value=\"".$post['source']."\"/>";
+					echo "<input type=\"hidden\" name=\"destination\" value=\"".$post['destination']."\"/>";
+					echo "<input type=\"hidden\" name=\"depart_date\" value=\"".$post['depart_date']."\"/>";
+					echo "<input type=\"hidden\" name=\"return_date\" value=\"".$post['return_date']."\"/>";
+					echo "<input type=\"hidden\" name=\"adults\" value=\"".$post['adults']."\"/>";
+					echo "<input type=\"hidden\" name=\"children\" value=\"".$post['children']."\"/>";
+					echo "<input type=\"hidden\" name=\"seniors\" value=\"".$post['seniors']."\"/>";
+					echo "<input type=\"hidden\" name=\"seat_infant\" value=\"".$post['seat_infants']."\"/>";
+					echo "<input type=\"hidden\" name=\"lap_infant\" value=\"".$post['lap_infants']."\"/>";
+					foreach ($post['airline'] as $air)
+					{
+					    echo "<input type=\"hidden\" name=\"airline[]\" value=\"".$air."\"/>";
+					}
+					echo "<input type=\"hidden\" name=\"price\" value=\"".$post['price']."\"/>";
+				    ?>
+
 				    <input id="search-submit-button" class="btn btn-info btn-md" 
 					type="submit" value="Keep Searching"/>
 				</div>
@@ -102,22 +115,11 @@
 			</div>
 		    </div>
 
-			<?php
-			    /*
-			    define('__ROOT3__',dirname(__FILE__));
-			    require_once(__ROOT3__ .
-				'/google-api-php-client/src/Google/Service/QPXExpress.php');
-			    require_once(__ROOT3__ .
-				'/google-api-php-client/src/Google/Client.php');
-			    require_once(__ROOT3__ . '/flight_tracker.php');
-			    */
-
-			    // post request from index
-			    //$post = $_POST;
-			    $result = getResults($post);
-			    $trips = $result->getTrips();
-			    $rowCount = printResults($trips, $post);
-			?>
+		    <?php
+			$result = getResults($post);
+			$trips = $result->getTrips();
+			$rowCount = printResults($trips, $post);
+		    ?>
 
 		    </table>
 		</div>
@@ -127,21 +129,23 @@
     </body>
     <script>
 	window.onload=function(){$('.dropdown').hide();};
+
 	<?php
-	for ($i = 0; $i < $rowCount; $i++)
-	{
-	    echo "$(document).ready(function () {";
-		echo "$('#btnExpCol$i').click(function () {";
-		    echo "if ($(this).val() == 'Collapse') {";
-			echo "$('#row$i').stop().slideUp('3000');";
-			echo "$(this).val(' Expand ');";
-		    echo "} else {";
-			echo "$('#row$i').stop().slideDown('3000');";
-			echo "$(this).val('Collapse');";
-		    echo "}";
+	    for ($i = 0; $i < $rowCount; $i++)
+	    {
+		echo "$(document).ready(function () {";
+		    echo "$('#btnExpCol$i').click(function () {";
+			echo "if ($(this).val() == 'Collapse') {";
+			    echo "$('#row$i').stop().slideUp('3000');";
+			    echo "$(this).val(' Expand ');";
+			echo "} else {";
+			    echo "$('#row$i').stop().slideDown('3000');";
+			    echo "$(this).val('Collapse');";
+			echo "}";
+		    echo "});";
 		echo "});";
-	    echo "});";
-	}
+	    }
 	?>
+
     </script>
 </html>

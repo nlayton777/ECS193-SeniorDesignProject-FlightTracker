@@ -18,6 +18,7 @@ input.qtyplus {
     color: white;
     text-align: center;
     vertical-align: middle;
+    padding: 0px;
 }
 input.qtyminus { 
     width:25px; 
@@ -25,6 +26,7 @@ input.qtyminus {
     color: white;
     text-align: center;
     vertical-align: middle;
+    padding: 0px;
 }
 input[type="tel"] {
     width: 10%;
@@ -130,3 +132,41 @@ h5 {
 	color: #FFFFFF;
 }
 */
+
+#priceSlider {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-align:center;
+	margin-left:auto;
+	margin-right:auto;
+    width:75%;
+}
+
+#priceInput {
+	color: #000;
+	text-align: center;
+	margin-bottom: 20px;
+	display: inline;
+	} 
+	
+.textboxPrice { 
+    background: white; 
+    border: 1px solid #DDD; 
+    border-radius: 5px; 
+    box-shadow: 0 0 5px #DDD inset; 
+    color: #666; 
+    outline: none; 
+    height:25px; 
+    width: 100px;
+   } 
+   
+ .textbox { 
+    background: white; 
+    border: 1px solid #DDD; 
+    border-radius: 5px; 
+    box-shadow: 0 0 5px #DDD inset; 
+    color: #666; 
+    outline: none; 
+    height:35px; 
+    width: 350px;
+   }   

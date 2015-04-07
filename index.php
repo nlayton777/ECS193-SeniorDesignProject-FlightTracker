@@ -17,7 +17,7 @@
 
 	<!--this is for the datepicker()-->
 	<link rel="stylesheet" href="jquery-ui.css"/>
-  	<script src="jquery-1.10.2.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/eggplant/jquery-ui.css">
   	<script src="jquery-ui.js"></script>
 
 	<!--this is for checkbox list-->
@@ -27,6 +27,12 @@
 	<!--this is our js and css file-->
 	<script type="text/javascript" src="flight_tracker.js"></script>
 	<link rel="stylesheet" href="styles.css"/>	 	
+	
+	    
+    <!--this is for our slider-->	
+	<link href="jquery.nouislider.css" rel="stylesheet">
+	<script src="jquery.nouislider.js"></script>
+	<script src="jquery.liblink.js"></script>
     </head>
 
     <body>
@@ -60,57 +66,30 @@
 		<h1>UCD Flight Tracker</h1>
 		<h3>Customize your travel needs!</h3>
 
-		<form id="search_form" class="form-vertical" method="post" action="search.php">
+		<form id="search_form" class="form-vertical" method="post" action="search.php" onsubmit="return validate();">
 		
 		    <!--ONE-WAY CHECKBOX-->
 		    <div class="form-group">
 			    <label class="no-indent" for="oneway">
-				<input class="form-control checkbox-inline" type="checkbox" value="yes" 
+				<input type="checkbox" value="yes" 
 				    onclick="OneWay()" id="oneway" name="one_way" 
 				    form="search_form"/>
 				<input class="form-control" type="hidden" value="no" 
 				    id="onewayHidden"  name="one_way"
 				    form="search_form" checked/>
-				One Way
-			    </label>
+				One Way 
+				</label>
 		    </div>
 
 		    <div class="form-group form-inline">
 			<!--SOURCE FIELD-->
 			<label for="source" class="sr-only" required >Departure Location</label>
-			<select class="form-control" id="source" name="source" 
-				    form="search_form">
-			<option value="selectplease">---Select an Origin---</option>
-			<?php
-			    if (file_exists("airportcodes.txt")){
-				$codes = fopen("airportcodes.txt",'r');				
-				while (!feof($codes)){
-	 			    $line = fgets($codes);
-				    $sub = substr($line, -5, 3);
-				    echo "<option value=\"".$sub."\"> 
-					$line</option>";
-				}
-			    }
-			?>
-			</select>	
+			<input class="textbox" id="source" name="source" placeholder="---Select an Origin---"/>
+			
 			    
 			<!--DESTINATION FIELD-->
 			<label for="destination" class="sr-only">Arrival Location</label>
-			<select class="form-control" id="destination" name="destination" 
-				    form="search_form" >
-			<option value="selectdest">---Select a Destination---</option>
-			<?php
-			    if (file_exists("AirportCodes.txt")){
-				$codes = fopen("AirportCodes.txt",'r');				
-				while (!feof($codes)){
-	 			    $line = fgets($codes);
-				    $sub = substr($line, -5, 3);
-				    echo "<option value=\"".$sub."\"> 
-					$line</option>";
-				}
-			    }
-			?>
-			</select>
+			<input class="textbox" id="destination" name="destination" placeholder="---Select an Destination---"/>
 
 			<!--DEPART DATE FIELD-->
 			<label for="depart-date" class="sr-only">Date of Departure</label>
@@ -155,18 +134,18 @@
 				<input type='text' name='lap_infants' value='0' class='qty' id='lapinfant' />
 				<input type='button' value='+' class='btn btn-info qtyplus' field='lap_infants' />
 			</label>
-
+			
+			&nbsp;&nbsp;
 			<!--AIRLINE FIELD-->
 			<label for="airline" class="sr-only">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline[]"
-				    form="search_form" multiple="multiple">
-			<option value="none" selected="selected">--Select an Airline--</option>
+				    form="search_form" multiple="multiple" placeholder="Select an Airline">
+			<!--<option value="none" selected="selected">--Select an Airline--</option>-->
 			<option value="none">No Preference</option>
 			<?php
 			    if (file_exists("airlines.txt")){
 				$codes = fopen("airlines.txt",'r');				
-				while (!feof($codes)){
-	 			    $line = fgets($codes);
+				while ($line = fgets($codes)){
 				    $sub = substr($line, -4, 2);
 				    echo "<option value=\"" . $sub .
 					"\">" . $line . "</option>";
@@ -174,16 +153,39 @@
 			    } 
 			?>
 			</select>
-
-			<!--PRICE FIELD-->
-			<div class="form-group">
+			</div>
+			
+			<!--PRICE FIELD-->	
+			<!-- <div class="form-group">
 			    <label for="price">Max Price
 				<input id="price" type="range" min="0" max="5000" 
 				    step="5" name="price" onchange="showValue(this.value)"/>
 				<span id="range">2500</span>
 			    </label>
+			</div> -->
+			<div class="form-group form-inline" id= "priceSlider"> 		
+			<label for="price"> Max Price: </label>
+				<input class="textboxPrice" id="priceInput"></input>
+				<section id="slider"></section>
+				<script>
+					$("#slider").noUiSlider({
+						start: 200,
+						connect: 'lower',
+						step: 10,
+						range: {
+							'min': 0,
+							'75%': 600,
+							'max': 1600
+						}
+					});
+
+					$("#slider").Link('lower').to($('#priceInput'));
+
+				</script>
 			</div>
-		    </div>
+			
+			<div class="result"></div>
+
 		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick="validate()" value="Find your flight!"/>
 		</form>
 	    </header>

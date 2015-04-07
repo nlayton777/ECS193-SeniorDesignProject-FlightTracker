@@ -4935,36 +4935,39 @@ a.badge:focus {
   margin-bottom: 30px;
   color: #ffffff;
   background-color: #eee;
-  background-image: url('golden-gate2.jpg');
+  background-image: url('GoldenGate2.jpeg');
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-position: center center;
   height: 500px;
+  opacity: 0.95;
 }
 .jumbotron#home p {
     font-weight: bold;
     color: inherit;
 }
 .jumbotron#about {
-  height: 350px;
   padding: 30px 15px;
   margin-bottom: 30px;
-  color: inherit;
+  color: #000000;
   background-color: #eee;
-  background-image: url('beach.jpg');
+  background-image: url('Bicycle1.jpg');
   background-repeat: no-repeat;
   background-size: 100% auto;
+  height: 500px;
+  opacity: 0.80;
 }
 .jumbotron#contact {
   padding: 30px 15px;
   margin-bottom: 30px;
-  color: #1b1b1b;
+  color: #000000;
   background-color: #eee;
-  background-image: url('message.jpg');
+  background-image: url('Bicycle2.jpg');
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-position: center center;
   height: 600px;
+  opacity: 0.70;
 }
 .jumbotron h1,
 .jumbotron .h1 {

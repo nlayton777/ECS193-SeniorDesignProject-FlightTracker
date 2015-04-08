@@ -38,50 +38,16 @@
 	</nav>
 
 	<?php
-	    require_once 'login.php';
+	    define('__ROOT4__',dirname(__FILE__));
+	    require_once(__ROOT4__ . '/flight_tracker.php');
 
 	    $post = $_POST;
+	    echo "<pre>";
 	    print_r($_POST);
+	    echo "</pre>";
 	    echo "<br>";
-	    echo "<br>";
 
-	    // connect to database
-	    $connection = new mysqli ($db_hostname, $db_username);
-	    if($connection->connect_error) die($connection->connect_error);
-	    mysqli_select_db($connection,"flight_tracker");
+	    createNewSearch($post)
 
-	    // get search ID
-	    $query = "SELECT * FROM search_id";
-	    $result = $connection->query($query);
-	    if (!$result) die($connection->error);
-	    $result->data_seek(0);
-	    $row = $result->fetch_array(MYSQLI_ASSOC);
-	    $search_id = $row['last_id'];
-
-	    // increment search ID
-	    $query2 = "UPDATE search_id SET last_id = last_id + 1;";
-	    $result2 = $connection->query($query2);
-	    if (!$result2) die($connection->error);
-
-	    // add user info to db
-	    $d_date = explode("/",$post['depart_date']);
-	    $d_date = implode("-",array($d_date[2],$d_date[0],$d_date[1]));
-	    $r_date = explode("/",$post['return_date']);
-	    $r_date = implode("-",array($r_date[2],$r_date[0],$r_date[1]));
-	    $query3 = "INSERT INTO searches ".
-		      "VALUES (".
-			    $search_id.",'".$post['email']."','".
-			    $post['origin']."','".$post['destination']."','".
-			    $d_date."','".$r_date."',".
-			    $post['adults'].",".$post['children'].",".
-			    $post['seniors'].",".$post['seat_infant'].",".
-			    $post['lap_infant'].",".$post['price'].
-			    ",now(),now()".
-		      ");";
-	    echo $query3;
-	    $result3 = $connection->query($query3);
-	    if (!$result3) die($connection->error);
-
-	    $connection->close();
 	?>
 </html>

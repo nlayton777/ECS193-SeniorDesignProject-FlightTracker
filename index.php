@@ -80,36 +80,36 @@
 			<label for="source" class="sr-only" required >Departure Location</label>
 			<select class="form-control" id="source" name="source" 
 				    form="search_form">
-			<option value="selectplease">---Select an Origin---</option>
-			<?php
-			    if (file_exists("airportcodes.txt")){
-				$codes = fopen("airportcodes.txt",'r');				
-				while (!feof($codes)){
-	 			    $line = fgets($codes);
-				    $sub = substr($line, -5, 3);
-				    echo "<option value=\"".$sub."\"> 
-					$line</option>";
+			    <option value="selectplease">---Select an Origin---</option>
+			    <?php
+				if (file_exists("airportcodes.txt")){
+				    $codes = fopen("airportcodes.txt",'r');				
+				    while (!feof($codes)){
+					$line = fgets($codes);
+					$sub = substr($line, -5, 3);
+					echo "<option value=\"".$sub."\"> 
+					    $line</option>";
+				    }
 				}
-			    }
-			?>
+			    ?>
 			</select>	
 			    
 			<!--DESTINATION FIELD-->
 			<label for="destination" class="sr-only">Arrival Location</label>
 			<select class="form-control" id="destination" name="destination" 
 				    form="search_form" >
-			<option value="selectdest">---Select a Destination---</option>
-			<?php
-			    if (file_exists("AirportCodes.txt")){
-				$codes = fopen("AirportCodes.txt",'r');				
-				while (!feof($codes)){
-	 			    $line = fgets($codes);
-				    $sub = substr($line, -5, 3);
-				    echo "<option value=\"".$sub."\"> 
-					$line</option>";
+			    <option value="selectdest">---Select a Destination---</option>
+			    <?php
+				if (file_exists("AirportCodes.txt")){
+				    $codes = fopen("AirportCodes.txt",'r');				
+				    while (!feof($codes)){
+					$line = fgets($codes);
+					$sub = substr($line, -5, 3);
+					echo "<option value=\"".$sub."\"> 
+					    $line</option>";
+				    }
 				}
-			    }
-			?>
+			    ?>
 			</select>
 
 			<!--DEPART DATE FIELD-->

@@ -110,6 +110,9 @@ input.phone {
   float: left;
   margin-right: 3px;
 }
+#source,#destination,#airline {
+  width: 300px;
+}
 /*
 h1 {
 	font-family:'Bad Script', cursive;

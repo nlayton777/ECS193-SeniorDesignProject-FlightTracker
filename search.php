@@ -9,6 +9,8 @@
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
+	<link rel="stylesheet" href="flipclock.css"/>
+	<script src="count.js"></script>
     </head>
 
     <body>
@@ -36,6 +38,15 @@
 		</div>
 	    </div>
 	</nav>
+
+	<!-- this code is for the flipclock -->
+	<div class="clock" ></div>
+
+	<script src="jquery.js"></script>
+	<script src="flipclock.min.js"></script>
+
+	<!-- end of code for flipclock -->
+
 
 	<div class="container-fluid" id="searchheader">
 	    <div class="row">
@@ -79,7 +90,7 @@
 				    </label>
 
 				    <label for="search-time">Search Time
-					<select name="search_time">
+					<select name="search_time" id="numHours"> 
 					    <option value="2">2 Hours</option>
 					    <option value="4">4 Hours</option>
 					    <option value="8">8 Hours</option>
@@ -90,6 +101,8 @@
 					    <option value="96">96 Hours</option>
 					</select>
 				    </label>
+
+				    
 
 				    <?php
 					echo "<input type=\"hidden\" name=\"origin\" value=\"".$post['source']."\"/>";
@@ -109,7 +122,8 @@
 				    ?>
 
 				    <input id="search-submit-button" class="btn btn-info btn-md" 
-					type="submit" value="Keep Searching"/>
+					type="submit" onclick="CountdownClock()" value="Keep Searching"/>
+				    
 				</div>
 			    </form>
 			</div>

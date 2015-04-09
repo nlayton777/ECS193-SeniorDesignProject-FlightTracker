@@ -4940,7 +4940,6 @@ a.badge:focus {
   background-size: 100% auto;
   background-position: center center;
   height: 500px;
-  opacity: 0.95;
 }
 .jumbotron#home p {
     font-weight: bold;
@@ -4955,7 +4954,7 @@ a.badge:focus {
   background-repeat: no-repeat;
   background-size: 100% auto;
   height: 500px;
-  opacity: 0.80;
+  opacity: 0.85;
 }
 .jumbotron#contact {
   padding: 30px 15px;

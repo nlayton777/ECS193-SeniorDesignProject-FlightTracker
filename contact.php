@@ -5,7 +5,6 @@
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
-	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bad+Script" />
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
     </head>
@@ -58,7 +57,7 @@
 			<div class="form-group form-horizontal">
 			    <label for="comments">
 				Message: 
-			    	<textarea rows="8" cols="60" id="comments" placeholder="Let us know what you think!" ></textarea>
+			    	<textarea rows="8" cols="60" id="comments" name="comments" placeholder="Let us know what you think!" ></textarea>
 			    </label>
 			</div>
 			<input type="submit" class="btn btn-default" value="Submit"/>

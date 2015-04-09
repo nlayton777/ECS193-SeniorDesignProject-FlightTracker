@@ -141,7 +141,7 @@
 			<select class="form-control" id="airline" name="airline[]"
 				    form="search_form" multiple="multiple" placeholder="Select an Airline">
 			<!--<option value="none" selected="selected">--Select an Airline--</option>-->
-			<option value="none">No Preference</option>
+			<option value="none" selected="selected" >No Preference</option>
 			<?php
 			    if (file_exists("airlines.txt")){
 				$codes = fopen("airlines.txt",'r');				
@@ -164,8 +164,8 @@
 			    </label>
 			</div> -->
 			<div class="form-group form-inline" id= "priceSlider"> 		
-			<label for="price"> Max Price: </label>
-				<input class="textboxPrice" id="priceInput"></input>
+			<label for="price">Max Price: </label>
+				<input class="textboxPrice" name="price" id="priceInput"></input>
 				<section id="slider"></section>
 				<script>
 					$("#slider").noUiSlider({

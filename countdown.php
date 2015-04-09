@@ -9,6 +9,11 @@
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
+	<link rel="stylesheet" href="flipclock.css"/>
+	<script src="count.js"></script>
+	
+	<script src="jquery.js"></script>
+	<script src="flipclock.min.js"></script>
     </head>
 
     <body>
@@ -37,51 +42,42 @@
 	    </div>
 	</nav>
 
-	<?php
-	    require_once 'login.php';
+	<!-- this code is for the flipclock -->
+	<div class="clock" ></div>
 
-	    $post = $_POST;
-	    print_r($_POST);
-	    echo "<br>";
-	    echo "<br>";
 
-	    // connect to database
-	    $connection = new mysqli ($db_hostname, $db_username);
-	    if($connection->connect_error) die($connection->connect_error);
-	    mysqli_select_db($connection,"flight_tracker");
+	<!-- end of code for flipclock -->
 
-	    // get search ID
-	    $query = "SELECT * FROM search_id";
-	    $result = $connection->query($query);
-	    if (!$result) die($connection->error);
-	    $result->data_seek(0);
-	    $row = $result->fetch_array(MYSQLI_ASSOC);
-	    $search_id = $row['last_id'];
+	    <div class="containter-fluid">
+	    <h3>Summary of Itinerary</h3>
 
-	    // increment search ID
-	    $query2 = "UPDATE search_id SET last_id = last_id + 1;";
-	    $result2 = $connection->query($query2);
-	    if (!$result2) die($connection->error);
+	    <?php
+		define('__ROOT4__',dirname(__FILE__));
+		require_once(__ROOT4__ . '/flight_tracker.php');
 
-	    // add user info to db
-	    $d_date = explode("/",$post['depart_date']);
-	    $d_date = implode("-",array($d_date[2],$d_date[0],$d_date[1]));
-	    $r_date = explode("/",$post['return_date']);
-	    $r_date = implode("-",array($r_date[2],$r_date[0],$r_date[1]));
-	    $query3 = "INSERT INTO searches ".
-		      "VALUES (".
-			    $search_id.",'".$post['email']."','".
-			    $post['origin']."','".$post['destination']."','".
-			    $d_date."','".$r_date."',".
-			    $post['adults'].",".$post['children'].",".
-			    $post['seniors'].",".$post['seat_infant'].",".
-			    $post['lap_infant'].",".$post['price'].
-			    ",now(),now()".
-		      ");";
-	    echo $query3;
-	    $result3 = $connection->query($query3);
-	    if (!$result3) die($connection->error);
+		echo "<pre>";
+		print_r($_POST);
+		echo "</pre>";
+		echo "<br>";
 
-	    $connection->close();
-	?>
+		$post = $_POST;
+		echo "<script>CountdownClock({$post['search_time']})</script>";
+		echo "<div class=\"row\">";
+		    echo "<div class=\"col-md-6\">";
+			echo "<ul>";
+			    echo "<li>Origin: {$post['origin']}</li>";
+			    echo "<li>Destination: {$post['destination']}</li>";
+			    echo "<li>Date of Departure: {$post['depart_date']}</li>";
+			    echo "<li>Date of Return: {$post['return_date']}</li>";
+			echo "</ul>";
+		    echo "</div>";
+		    echo "<div class=\"col-md-6\">";
+		    echo "</div>";
+		echo "</div>";
+
+		createNewSearch($post)
+
+	    ?>
+
+	</div>
 </html>

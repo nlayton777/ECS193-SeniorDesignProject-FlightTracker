@@ -84,12 +84,11 @@
 		    <div class="form-group form-inline">
 			<!--SOURCE FIELD-->
 			<label for="source" class="sr-only" required >Departure Location</label>
-			<input class="textbox" id="source" name="source" placeholder="---Select an Origin---"/>
-			
+			<input class="textbox"  id="source" name="source" placeholder=" ---Select an Origin---"/>	
 			    
 			<!--DESTINATION FIELD-->
 			<label for="destination" class="sr-only">Arrival Location</label>
-			<input class="textbox" id="destination" name="destination" placeholder="---Select an Destination---"/>
+			<input class="textbox"  id="destination" name="destination" placeholder=" ---Select a Destination---"/>	
 
 			<!--DEPART DATE FIELD-->
 			<label for="depart-date" class="sr-only">Date of Departure</label>
@@ -135,25 +134,23 @@
 				<input type='button' value='+' class='btn btn-info qtyplus' field='lap_infants' />
 			</label>
 			
-			&nbsp;&nbsp;
 			<!--AIRLINE FIELD-->
-			<label for="airline" class="sr-only">Preferred Airline</label>
+			<label for="airline">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline[]"
-				    form="search_form" multiple="multiple" placeholder="Select an Airline">
-			<!--<option value="none" selected="selected">--Select an Airline--</option>-->
-			<option value="none" selected="selected" >No Preference</option>
+				    form="search_form" multiple="multiple">
+			<option value="none" selected>No Preference</option>
 			<?php
 			    if (file_exists("airlines.txt")){
 				$codes = fopen("airlines.txt",'r');				
 				while ($line = fgets($codes)){
-				    $sub = substr($line, -4, 2);
-				    echo "<option value=\"" . $sub .
-					"\">" . $line . "</option>";
+				    $line_code = explode("(", $line);
+				    $code = substr($line_code[1], 0, 2);
+				    echo "<option value=\"{$code}\">{$line_code[0]}</option>";
 				}
 			    } 
 			?>
 			</select>
-			</div>
+		    </div>
 			
 			<!--PRICE FIELD-->	
 			<!-- <div class="form-group">
@@ -184,7 +181,9 @@
 				</script>
 			</div>
 			
+			<!--
 			<div class="result"></div>
+			-->
 
 		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick="validate()" value="Find your flight!"/>
 		</form>

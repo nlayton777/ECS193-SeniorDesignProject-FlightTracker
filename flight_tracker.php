@@ -1,16 +1,19 @@
 <?php
     define('__ROOT__',dirname(__FILE__));
+
+    /*		NEED THESE FILES FOR QPX API		*/  
     require_once(__ROOT__ . 
 	'/google-api-php-client/src/Google/Service/QPXExpress.php');
     require_once(__ROOT__ .
 	'/google-api-php-client/src/Google/Client.php');
+
 
     function isOneWay(&$val) {
 	$rv = false;
 	if (isset($val['one_way'])) 
 	    if ($val['one_way'] == "yes") $rv = true;
 	return $rv;
-    }
+    } // isOneWay($val)
 
     function printResults($trips, $post)
     {
@@ -170,7 +173,7 @@
 		" to improve your chances at finding results.</h2>";
 	} // end if/else
 	return ($rowCount);
-    }
+    } // printResults($post)
 
     function getResults(&$post) {
 	// create client 
@@ -289,5 +292,95 @@
 	$trips = $service->trips;
 	$result = $trips->search($searchRequest);
 	return($result);
-    }
+    } // getResults($post)
+
+
+    function createNewSearch(&$post)
+    {
+	/*		NEED THIS FILE FOR DATABASE	    */
+	require_once('login.php');
+
+	// connect to database
+	$connection = new mysqli ($db_hostname, $db_username);
+	if($connection->connect_error) die($connection->connect_error);
+	mysqli_select_db($connection,"flight_tracker");
+
+	// add user info to db
+	$d_date = explode("/",$post['depart_date']);
+	$d_date = implode("-",array($d_date[2],$d_date[0],$d_date[1]));
+	if ($post['return_date'] != "NULL")
+	{
+	    $r_date = explode("/",$post['return_date']);
+	    $r_date = implode("-",array($r_date[2],$r_date[0],$r_date[1]));
+	    $r_date = "'".$r_date."'";
+	} else
+	    $r_date = "NULL";
+	$query3 = "INSERT INTO searches ".
+		  "(email,origin,destination,depart_date,return_date,adults,".
+		  "children,seniors,seat_infant,lap_infant,price,current,end,lowest_price) ".
+		  "VALUES (".
+			"'{$post['email']}',".
+			"'{$post['origin']}','{$post['destination']}',".
+			"'{$d_date}',{$r_date},".
+			"{$post['adults']},{$post['children']},".
+			"{$post['seniors']},{$post['seat_infant']},".
+			"{$post['lap_infant']},{$post['price']},".
+			"now(),'".getEndTime($post['search_time'])."',".
+			$post['price'].
+		  ");";
+		  /*
+	echo $query3;
+	echo "<br>";
+	*/
+	$result3 = $connection->query($query3);
+	if (!$result3) die($connection->error);
+
+	$query4 = "SELECT MAX(ID) ".
+		  "FROM searches ".
+		  "WHERE email='{$post['email']}';";
+		  /*
+	echo $query4;
+	echo "<br>";
+	*/
+	$result4 = $connection->query($query4);
+	if (!$result4) die($connection->error);
+	$result4->data_seek(0);
+	$row = $result4->fetch_array(MYSQLI_ASSOC);
+
+/*
+	echo "<pre>";
+	print_r($row);
+	echo "</pre>";
+	echo "<br>";
+	*/
+
+	$last_id = $row['MAX(ID)'];
+	//echo $last_id;
+
+	if (isset($post['airline']))
+	{
+	    $query5 = "INSERT INTO airlines ".
+		      "(search_id,email,airline) ".
+		      "VALUES ";
+
+	    $last = end($post['airline']);
+	    foreach ($post['airline'] as $airline)
+		if ($airline != $last)
+		    $query5 .= "({$last_id},'{$post['email']}','{$airline}'), ";
+	    $query5 .= "({$last_id},'{$post['email']}','{$airline}');";
+	    /*
+	    echo $query5;
+	    echo "<br>";
+	    */
+	    $result5 = $connection->query($query5);
+	    if (!$result5) die($connection->error);
+	} // foreach(airline)
+
+	$connection->close();
+    } // createNewSearch($post)
+
+    function getEndTime($search_time)
+    {
+	return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));
+    } // getEndTime($search_time)
 ?>

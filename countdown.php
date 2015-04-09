@@ -37,17 +37,35 @@
 	    </div>
 	</nav>
 
-	<?php
-	    define('__ROOT4__',dirname(__FILE__));
-	    require_once(__ROOT4__ . '/flight_tracker.php');
+	<div class="containter-fluid">
+	    <h3>Summary of Itinerary</h3>
 
-	    $post = $_POST;
-	    echo "<pre>";
-	    print_r($_POST);
-	    echo "</pre>";
-	    echo "<br>";
+	    <?php
+		define('__ROOT4__',dirname(__FILE__));
+		require_once(__ROOT4__ . '/flight_tracker.php');
 
-	    createNewSearch($post)
+		echo "<pre>";
+		print_r($_POST);
+		echo "</pre>";
+		echo "<br>";
 
-	?>
+		$post = $_POST;
+		echo "<div class=\"row\">";
+		    echo "<div class=\"col-md-6\">";
+			echo "<ul>";
+			    echo "<li>Origin: {$post['origin']}</li>";
+			    echo "<li>Destination: {$post['destination']}</li>";
+			    echo "<li>Date of Departure: {$post['depart_date']}</li>";
+			    echo "<li>Date of Return: {$post['return_date']}</li>";
+			echo "</ul>";
+		    echo "</div>";
+		    echo "<div class=\"col-md-6\">";
+		    echo "</div>";
+		echo "</div>";
+
+		createNewSearch($post)
+
+	    ?>
+
+	</div>
 </html>

@@ -328,28 +328,34 @@
 			"now(),'".getEndTime($post['search_time'])."',".
 			$post['price'].
 		  ");";
+		  /*
 	echo $query3;
 	echo "<br>";
+	*/
 	$result3 = $connection->query($query3);
 	if (!$result3) die($connection->error);
 
 	$query4 = "SELECT MAX(ID) ".
 		  "FROM searches ".
 		  "WHERE email='{$post['email']}';";
+		  /*
 	echo $query4;
 	echo "<br>";
+	*/
 	$result4 = $connection->query($query4);
 	if (!$result4) die($connection->error);
 	$result4->data_seek(0);
 	$row = $result4->fetch_array(MYSQLI_ASSOC);
 
+/*
 	echo "<pre>";
 	print_r($row);
 	echo "</pre>";
 	echo "<br>";
+	*/
 
 	$last_id = $row['MAX(ID)'];
-	echo $last_id;
+	//echo $last_id;
 
 	if (isset($post['airline']))
 	{
@@ -362,8 +368,10 @@
 		if ($airline != $last)
 		    $query5 .= "({$last_id},'{$post['email']}','{$airline}'), ";
 	    $query5 .= "({$last_id},'{$post['email']}','{$airline}');";
+	    /*
 	    echo $query5;
 	    echo "<br>";
+	    */
 	    $result5 = $connection->query($query5);
 	    if (!$result5) die($connection->error);
 	} // foreach(airline)

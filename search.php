@@ -49,6 +49,11 @@
 				require_once(__ROOT3__ . '/flight_tracker.php');
 
 				$post = $_POST;
+
+				echo "<pre>";
+				print_r($post);
+				echo "</pre>";
+
 				echo "<h3 id=\"trip-title\">" . $post['depart_date'] . "  <strong>" . 
 				    $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
 				    "<strong>" . $post['destination'] . "</strong>  ";
@@ -76,6 +81,7 @@
 
 				    <label for="search-time">Search Time
 					<select name="search_time">
+					    <option value="1">1 Hour</option>
 					    <option value="2">2 Hours</option>
 					    <option value="4">4 Hours</option>
 					    <option value="8">8 Hours</option>

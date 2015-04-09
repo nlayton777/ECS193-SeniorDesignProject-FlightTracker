@@ -45,7 +45,6 @@
 	<!-- this code is for the flipclock -->
 	<div class="clock" ></div>
 
-
 	<!-- end of code for flipclock -->
 
 	    <div class="containter-fluid">

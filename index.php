@@ -84,12 +84,37 @@
 		    <div class="form-group form-inline">
 			<!--SOURCE FIELD-->
 			<label for="source" class="sr-only" required >Departure Location</label>
-			<input class="textbox" id="source" name="source" placeholder="---Select an Origin---"/>
-			
+			<select class="form-control" id="source" name="source" 
+				    form="search_form">
+			    <option value="selectplease">---Select an Origin---</option>
+			    <?php
+				if (file_exists("airportcodes.txt")){
+				    $codes = fopen("airportcodes.txt",'r');				
+				    while (!feof($codes)){
+					$line = fgets($codes);
+					$sub = substr($line, -5, 3);
+					echo "<option value=\"{$sub}\">{$line}</option>";
+				    }
+				}
+			    ?>
+			</select>	
 			    
 			<!--DESTINATION FIELD-->
 			<label for="destination" class="sr-only">Arrival Location</label>
-			<input class="textbox" id="destination" name="destination" placeholder="---Select an Destination---"/>
+			<select class="form-control" id="destination" name="destination" 
+				    form="search_form" >
+			    <option value="selectdest">---Select a Destination---</option>
+			    <?php
+				if (file_exists("AirportCodes.txt")){
+				    $codes = fopen("AirportCodes.txt",'r');				
+				    while (!feof($codes)){
+					$line = fgets($codes);
+					$sub = substr($line, -5, 3);
+					echo "<option value=\"{$sub}\">{$line}</option>";
+				    }
+				}
+			    ?>
+			</select>
 
 			<!--DEPART DATE FIELD-->
 			<label for="depart-date" class="sr-only">Date of Departure</label>
@@ -135,25 +160,23 @@
 				<input type='button' value='+' class='btn btn-info qtyplus' field='lap_infants' />
 			</label>
 			
-			&nbsp;&nbsp;
 			<!--AIRLINE FIELD-->
-			<label for="airline" class="sr-only">Preferred Airline</label>
+			<label for="airline">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline[]"
-				    form="search_form" multiple="multiple" placeholder="Select an Airline">
-			<!--<option value="none" selected="selected">--Select an Airline--</option>-->
-			<option value="none">No Preference</option>
+				    form="search_form" multiple="multiple">
+			<option value="none" selected>No Preference</option>
 			<?php
 			    if (file_exists("airlines.txt")){
 				$codes = fopen("airlines.txt",'r');				
 				while ($line = fgets($codes)){
-				    $sub = substr($line, -4, 2);
-				    echo "<option value=\"" . $sub .
-					"\">" . $line . "</option>";
+				    $line_code = explode("(", $line);
+				    $code = substr($line_code[1], 0, 2);
+				    echo "<option value=\"{$code}\">{$line_code[0]}</option>";
 				}
 			    } 
 			?>
 			</select>
-			</div>
+		    </div>
 			
 			<!--PRICE FIELD-->	
 			<!-- <div class="form-group">
@@ -163,28 +186,29 @@
 				<span id="range">2500</span>
 			    </label>
 			</div> -->
-			<div class="form-group form-inline" id= "priceSlider"> 		
-			<label for="price"> Max Price: </label>
-				<input class="textboxPrice" id="priceInput"></input>
-				<section id="slider"></section>
-				<script>
-					$("#slider").noUiSlider({
-						start: 200,
-						connect: 'lower',
-						step: 10,
-						range: {
-							'min': 0,
-							'75%': 600,
-							'max': 1600
-						}
-					});
+			<div class="form-group form-inline" id="priceSlider"> 		
+			    <label for="price">Max Price</label>
+			    <input class="textboxPrice" id="priceInput" name="price"></input>
+			    <section id="slider"></section>
+			    <script>
+				    $("#slider").noUiSlider({
+					    start: 200,
+					    connect: 'lower',
+					    step: 10,
+					    range: {
+						    'min': 0,
+						    '75%': 600,
+						    'max': 1600
+					    }
+				    });
+				    $("#slider").Link('lower').to($('#priceInput'));
 
-					$("#slider").Link('lower').to($('#priceInput'));
-
-				</script>
+			    </script>
 			</div>
 			
+			<!--
 			<div class="result"></div>
+			-->
 
 		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick="validate()" value="Find your flight!"/>
 		</form>

@@ -112,6 +112,9 @@ input.phone {
   float: left;
   margin-right: 3px;
 }
+#source,#destination,#airline {
+  width: 300px;
+}
 /*
 h1 {
 	font-family:'Bad Script', cursive;
@@ -132,41 +135,34 @@ h5 {
 	color: #FFFFFF;
 }
 */
-
+/* div element id */
 #priceSlider {
 	margin-top: 20px;
 	margin-bottom: 20px;
 	text-align:center;
 	margin-left:auto;
 	margin-right:auto;
-    width:75%;
+	width:75%;
 }
-
+/* input element id */
 #priceInput {
 	color: #000;
 	text-align: center;
 	margin-bottom: 20px;
 	display: inline;
-	} 
-	
+} 
+/* input element class */
 .textboxPrice { 
     background: white; 
     border: 1px solid #DDD; 
     border-radius: 5px; 
-    box-shadow: 0 0 5px #DDD inset; 
-    color: #666; 
+    /*box-shadow: 0 0 5px #DDD inset; */
+    /*color: #666; */
     outline: none; 
     height:25px; 
-    width: 100px;
-   } 
-   
- .textbox { 
-    background: white; 
-    border: 1px solid #DDD; 
-    border-radius: 5px; 
-    box-shadow: 0 0 5px #DDD inset; 
-    color: #666; 
-    outline: none; 
-    height:35px; 
-    width: 350px;
-   }   
+    /*width: 100px;*/
+} 
+/* section containing slider */
+#slider {
+    width: 10%;
+}

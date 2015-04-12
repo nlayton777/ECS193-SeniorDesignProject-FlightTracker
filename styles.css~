@@ -177,11 +177,14 @@ h5 {
     outline: none; 
     height:35px; 
     width: 350px;
+<<<<<<< HEAD
    }   
 
 #clocktitle {
     margin-bottom: 20px;
+=======
 }   
 .countdown h1,h3,p{
     text-align: center;
+>>>>>>> 827dc298ff8405826918176af1fb72fa6e78c966
 }

@@ -141,6 +141,10 @@
 			$rowCount = printResults($trips, $post);
 		    ?>
 
+<<<<<<< HEAD
+		</table>
+=======
+>>>>>>> 827dc298ff8405826918176af1fb72fa6e78c966
 		</div>
 		<div class="col-xs-4 col-md-1"></div>
 	    </div>

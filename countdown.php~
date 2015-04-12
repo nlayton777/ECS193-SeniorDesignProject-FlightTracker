@@ -41,10 +41,12 @@
 	    </div>
 	</nav>
 
+<<<<<<< HEAD
 	
 	<h3 id="clocktitle">Time remaining until your search is complete:</h3>
 	<!-- this code is for the flipclock -->
 	<div class="clock" ></div>
+=======
 	<div class="containter">
 	    <div class="jumbotron countdown">
 		<h1>Search Time Remaining</h1>
@@ -58,6 +60,7 @@
 		   search results.
 		</p>
 		<h3>Summary of Itinerary</h3>
+>>>>>>> 827dc298ff8405826918176af1fb72fa6e78c966
 
 		<?php
 		    define('__ROOT4__',dirname(__FILE__));

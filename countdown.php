@@ -42,6 +42,8 @@
 	    </div>
 	</nav>
 
+	
+	<h3 id="clocktitle">Time remaining until your search is complete:</h3>
 	<!-- this code is for the flipclock -->
 	<div class="clock" ></div>
 

@@ -75,9 +75,9 @@
 
 			    foreach ($option->getSlice()[1]->getSegment() as $segment)
 			    {
-				echo "<p>";
 				foreach ($segment->getLeg() as $leg)
 				{
+				    echo "<p>";
 				    echo "<strong> ".$leg->getOrigin()." </strong>";
 				    $time = explode("T",$leg->getDepartureTime());
 				    $time2 = explode("-",$time[1]);
@@ -87,8 +87,8 @@
 				    $time = explode("T",$leg->getArrivalTime());
 				    $time2 = explode("-",$time[1]);
 				    echo " ".$time2[0];
+				    echo "</p>";
 				} // end for
-				echo "</p>";
 			    } // end for
 			    echo "</div>";
 			} // end if
@@ -180,9 +180,9 @@
 	$client = new Google_Client();
 	$client->setApplicationName("Flight Tracker");
 	// nick
-	$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+//	$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
 	// rupali
-	//$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
+	$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 	// kirsten
 	//$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
 	// nina

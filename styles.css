@@ -63,9 +63,13 @@ input.phone {
   background-color: transparent;
 }
 .search:hover,active {
+  /*
   color: white;
   background-color: #46b8da;
   border-color: #46b8da;
+  */
+  color: white;
+  background-color: black;
 }
 #search-submit-button {
   border-color: black;
@@ -78,9 +82,13 @@ input.phone {
   background-color: transparent;
 }
 #search-submit-button:hover,active {
+  background-color: black;
+  color: white;
+  /*
   color: white;
   background-color: #46b8da;
   border-color: #46b8da;
+  */
 }
 #on-the-way-there {
   float: left;
@@ -159,9 +167,8 @@ h5 {
     height:25px; 
     width: 100px;
     margin-bottom: 20px;
-   } 
-   
- .textbox { 
+} 
+.textbox { 
     background: white; 
     border: 1px solid #DDD; 
     border-radius: 5px; 
@@ -170,5 +177,7 @@ h5 {
     outline: none; 
     height:35px; 
     width: 350px;
-   }   
-
+}   
+.countdown h1,h3,p{
+    text-align: center;
+}

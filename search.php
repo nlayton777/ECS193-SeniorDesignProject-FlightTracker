@@ -140,7 +140,6 @@
 			$rowCount = printResults($trips, $post);
 		    ?>
 
-		    </table>
 		</div>
 		<div class="col-xs-4 col-md-1"></div>
 	    </div>

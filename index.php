@@ -6,9 +6,6 @@
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
-	<!--
- 	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bad+Script" />
-	-->
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 
@@ -24,18 +21,17 @@
 	<script type="text/javascript" src="bootstrap-multiselect.js"></script>
 	<link rel="stylesheet" href="bootstrap-multiselect.css" type="text/css"/>
 
-	<!--this is our js and css file-->
-	<script type="text/javascript" src="flight_tracker.js"></script>
-	<link rel="stylesheet" href="styles.css"/>	 	
-	
-	    
-    <!--this is for our slider-->	
+	<!--this is for our slider-->	
 	<link href="jquery.nouislider.css" rel="stylesheet">
 	<script src="jquery.nouislider.js"></script>
 	<script src="jquery.liblink.js"></script>
 	
 	<!--this is for alerts-->
 	<script src="bootbox.js"></script>
+
+	<!--this is our js and css file-->
+	<script type="text/javascript" src="flight_tracker.js"></script>
+	<link rel="stylesheet" href="styles.css"/>	 	
     </head>
 
     <body>
@@ -168,10 +164,7 @@
 				<input class="textboxPrice" name="price" id="priceInput"></input>
 				<section id="slider"></section>
 				<script>
-					$("#slider").noUiSlider({
-						start: 200,
-						connect: 'lower',
-						step: 10,
+					$("#slider").noUiSlider({start: 200, connect: 'lower', step: 10,
 						range: {
 							'min': 0,
 							'75%': 600,

@@ -108,6 +108,8 @@
 		    echo "<input id=\"search-submit-button\" class=\"btn btn-info btn-md\" 
 			type=\"button\" onclick=\"sendMessage({$last_id},{$post['email']},{$post['search_time']})\" value=\"Begin Search!\"/>";
 		?>
+
+
 	    </div>
 	</div>
 </html>

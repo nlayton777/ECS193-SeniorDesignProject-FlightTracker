@@ -10,7 +10,6 @@
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
 	<link rel="stylesheet" href="flipclock.css"/>
-	<script src="jquery.js"></script>
 	<script src="flipclock.min.js"></script>
 	<script src="flight_tracker.js"></script>
     </head>
@@ -41,12 +40,7 @@
 	    </div>
 	</nav>
 
-<<<<<<< HEAD
 	
-	<h3 id="clocktitle">Time remaining until your search is complete:</h3>
-	<!-- this code is for the flipclock -->
-	<div class="clock" ></div>
-=======
 	<div class="containter">
 	    <div class="jumbotron countdown">
 		<h1>Search Time Remaining</h1>
@@ -60,7 +54,6 @@
 		   search results.
 		</p>
 		<h3>Summary of Itinerary</h3>
->>>>>>> 827dc298ff8405826918176af1fb72fa6e78c966
 
 		<?php
 		    define('__ROOT4__',dirname(__FILE__));
@@ -111,20 +104,10 @@
 			echo "</div>";
 			echo "<div class=\"col-md-3\"></div>";
 		    echo "</div>";
+		    
+		    echo "<input id=\"search-submit-button\" class=\"btn btn-info btn-md\" 
+			type=\"button\" onclick=\"sendMessage({$last_id},{$post['email']},{$post['search_time']})\" value=\"Begin Search!\"/>";
 		?>
-
-		<script>
-		    var xmlhttp;
-		    if (window.XMLHttpRequest)
-		    {
-			xmlhttp = new XMLHttpRequest();
-		    } else
-		    {
-			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		    }
-
-		    xmlhttp.open("POST","
-		</script>
 	    </div>
 	</div>
 </html>

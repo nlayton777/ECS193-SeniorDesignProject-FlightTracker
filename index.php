@@ -33,6 +33,9 @@
 	<link href="jquery.nouislider.css" rel="stylesheet">
 	<script src="jquery.nouislider.js"></script>
 	<script src="jquery.liblink.js"></script>
+	
+	<!--this is for alerts-->
+	<script src="bootbox.js"></script>
     </head>
 
     <body>
@@ -66,7 +69,7 @@
 		<h1>UCD Flight Tracker</h1>
 		<h3>Customize your travel needs!</h3>
 
-		<form id="search_form" class="form-vertical" method="post" action="search.php" onsubmit="return validate();">
+		<form id="search_form" class="form-vertical" method="post" action="search.php" >
 		
 		    <!--ONE-WAY CHECKBOX-->
 		    <div class="form-group">
@@ -185,7 +188,7 @@
 			<div class="result"></div>
 			-->
 
-		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick="validate()" value="Find your flight!"/>
+		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick=" return validate();" value="Find your flight!"/>
 		</form>
 	    </header>
 	</div>

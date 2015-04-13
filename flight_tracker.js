@@ -70,16 +70,63 @@ var codeArray = ["ABR", "ABI", "ADK", "KKI", "AKI", "CAK", "KQA", "AUK", "ALM", 
 function isInArray(value, array) {
 		return array.indexOf(value) > -1;
 	}
+	
+function isDate(str) {
+    var matches = str.match(/(\d{2,2})[\/](\d{2,2})[\/](\d{4})/);
+    if (!matches) return false;
+
+    // parse each piece and see if it makes a valid date object
+    var month = parseInt(matches[1], 10);
+    var day = parseInt(matches[2], 10);
+    var year = parseInt(matches[3], 10);
+    var date = new Date(year, month - 1, day);
+    if (!date || !date.getTime()) return false;
+
+    // make sure we have no funny rollovers that the date object sometimes accepts
+    // month > 12, day > what's allowed for the month
+    if (date.getMonth() + 1 != month ||
+        date.getFullYear() != year ||
+        date.getDate() != day) {
+            return false;
+        }
+        
+    var today = new Date();
+    var mm = ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1);
+    var dd = (today.getDate() < 10 ? '0' : '') + today.getDate();
+    var yyyy = today.getFullYear();
+    
+    today = mm+'/'+dd+'/'+yyyy;
+    
+    if(str < today){
+    	alert("Not a valid date");
+    	return false;
+    }
+     
+    return true;
+}
 
 function validate(){
+	var originError = "Enter an Origin with a valid Airport Code";
+	var destError = "Enter a Destination with a valid Airport Code";
+	var sameError = "Change either Origin or Destination so they are not the same";
+	var departError = "Enter a Departure Date";
+	var returnError = "Enter a Return Date";
+	var passError = "Enter a Number of Passengers between 1 and 9";
+	
     var sourceLine = document.getElementById("source").value;
 	var sCode = sourceLine.substr(-4, 3);
 	if(sourceLine == ""){
-		alert("Please select an Origin");
+		bootbox.dialog({
+  			title: "Whoops! We need you to: ",
+  			message: originError
+		});
 		return false;
 	 }
 	 else if(!isInArray(sCode, codeArray)){
-		alert("Unrecognized Origin Airport. Please enter a valid Airport Code");
+		bootbox.dialog({
+  			title: "Whoops! We need you to: ",
+  			message: originError
+		});
 		return false;
 	 } 
 	 else{
@@ -89,11 +136,17 @@ function validate(){
     var destLine = document.getElementById("destination").value;
 	var dCode = destLine.substr(-4, 3);
 	if(destLine == ""){
-		alert("Please select an Destination");
+		bootbox.dialog({
+  			title: "Whoops! We need you to: ",
+  			message: destError
+		});
 		return false;
 	 }
 	 else if(!isInArray(dCode, codeArray)){
-		alert("Unrecognized Destination Airport. Please enter a valid Airport Code");
+		bootbox.dialog({
+  			title: "Whoops! We need you to: ",
+  			message: destError
+		});
 		return false;
 	 } 
 	 else{
@@ -101,9 +154,30 @@ function validate(){
 	 }
 
     if(sCode == dCode){
-	    alert("Origin and Destination can not be the same");
+	    bootbox.dialog({
+  			title: "Whoops! We need you to: ",
+  			message: sameError
+		});
 	    return false;
     }
+    
+    var departDate = document.getElementById("datepickerD").value;
+    var returnDate = document.getElementById("datepickerR").value;
+    if(!isDate(departDate)) {
+  		bootbox.dialog({
+  			title: "Whoops! We need you to: ",
+  			message: departError
+		});
+  		return false;
+	}
+	if(!isDate(returnDate)){
+		bootbox.dialog({
+  			title: "Whoops! We need you to: ",
+  			message: returnError
+		});
+		return false;
+	}
+     
     var ad= document.getElementById("adult");
     var chil= document.getElementById("child");
     var sen= document.getElementById("senior");
@@ -118,13 +192,18 @@ function validate(){
 
 
     if(totalpass <1){
-	alert("Please select passenger quantity");
-	return false;
+		bootbox.dialog({
+  			title: "Whoops! We need you to: ",
+  			message: passError
+		});
+		return false;
     }else if(totalpass >=9){
-	alert("Passenger quantity is too high. Can't be" + totalpass);
-	return false;
+		bootbox.dialog({
+  			title: "Whoops! We need you to: ",
+  			message: passError
+		});
+		return false;
     }
-
 }
 
 jQuery(document).ready(function(){

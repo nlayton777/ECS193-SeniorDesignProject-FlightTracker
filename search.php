@@ -40,15 +40,6 @@
 	    </div>
 	</nav>
 
-	<!-- this code is for the flipclock -->
-	<div class="clock" ></div>
-
-	<script src="jquery.js"></script>
-	<script src="flipclock.min.js"></script>
-
-	<!-- end of code for flipclock -->
-
-
 	<div class="container-fluid" id="searchheader">
 	    <div class="row">
 		<div class="col-xs-4 col-md-1"></div>
@@ -120,6 +111,7 @@
 					echo "<input type=\"hidden\" name=\"seniors\" value=\"".$post['seniors']."\"/>";
 					echo "<input type=\"hidden\" name=\"seat_infant\" value=\"".$post['seat_infants']."\"/>";
 					echo "<input type=\"hidden\" name=\"lap_infant\" value=\"".$post['lap_infants']."\"/>";
+
 					foreach ($post['airline'] as $air)
 					{
 					    echo "<input type=\"hidden\" name=\"airline[]\" value=\"".$air."\"/>";

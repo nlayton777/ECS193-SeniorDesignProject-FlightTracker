@@ -186,14 +186,24 @@ textarea {
 optgroup {
   font-weight: bold;
 }
+/*THIS IS THE TABLE IM EDITTING*/ 
 table {
-  border-spacing: 5px;
+/* border-spacing: 5px; */
+border-spacing: 0;
+border: 1px solid #bbb;
   border-collapse: collapse;
 }
 td,
 th {
-  padding: 0;
+/* padding: 0; */
+border-top: 1px solid #ddd;
+padding 4 px, 8 px;
+text-align: center;
+vertical-align: middle;
 }
+/*EXTRA TABLE STUFF */
+tbody tr:nth-child(even) td{background-color: #eee;}
+
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 @media print {
   *,
@@ -2462,6 +2472,16 @@ table th[class*="col-"] {
   min-height: .01%;
   overflow-x: auto;
 }
+
+/* table stuff i added */
+@media screen and(max-width: 640 px)
+{
+    table{
+	overflow-x: auto;
+	display: block;
+    }
+}
+
 @media screen and (max-width: 767px) {
   .table-responsive {
     width: 100%;

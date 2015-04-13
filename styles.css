@@ -172,6 +172,10 @@ h5 {
     outline: none; 
     height:35px; 
     width: 350px;
+   }   
+
+#clocktitle {
+    margin-bottom: 20px;
 }   
 #source,#destination,#airline {
   width: 350px;

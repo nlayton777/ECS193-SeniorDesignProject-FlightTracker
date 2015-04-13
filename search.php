@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="styles.css"/>
 	<link rel="stylesheet" href="flipclock.css"/>
 	<script src="count.js"></script>
+	<script type="text/javascript" src="flight_tracker.js"></script>
     </head>
 
     <body>
@@ -75,7 +76,7 @@
 				searching.
 			    </p>
 
-			    <form method="post" action="countdown.php">
+			    <form name="searchwindow" onsubmit="return check()" method="post" action="countdown.php">
 				<div class="form-group form-inline">
 				    <label for="email">Email
 					<input id="email" type="email" name="email">
@@ -119,7 +120,7 @@
 				    ?>
 
 				    <input id="search-submit-button" class="btn btn-info btn-md" 
-					type="submit" onclick="CountdownClock()" value="Keep Searching"/>
+					 type="submit"  value="Keep Searching"/>
 				    
 				</div>
 			    </form>

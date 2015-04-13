@@ -9,9 +9,7 @@
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
-	<link rel="stylesheet" href="flipclock.css"/>
-	<script src="count.js"></script>
-	<script type="text/javascript" src="flight_tracker.js"></script>
+<!--	<script type="text/javascript" src="flight_tracker.js"></script> -->
     </head>
 
     <body>
@@ -113,9 +111,8 @@
 					echo "<input type=\"hidden\" name=\"lap_infant\" value=\"".$post['lap_infants']."\"/>";
 
 					foreach ($post['airline'] as $air)
-					{
 					    echo "<input type=\"hidden\" name=\"airline[]\" value=\"".$air."\"/>";
-					}
+
 					echo "<input type=\"hidden\" name=\"price\" value=\"".$post['price']."\"/>";
 				    ?>
 
@@ -140,7 +137,6 @@
     </body>
     <script>
 	window.onload=function(){$('.dropdown').hide();};
-
 	<?php
 	    for ($i = 0; $i < $rowCount; $i++)
 	    {
@@ -157,6 +153,5 @@
 		echo "});";
 	    }
 	?>
-
     </script>
 </html>

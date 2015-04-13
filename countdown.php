@@ -10,7 +10,6 @@
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
 	<link rel="stylesheet" href="flipclock.css"/>
-	<script src="jquery.js"></script>
 	<script src="flipclock.min.js"></script>
 	<script src="flight_tracker.js"></script>
     </head>
@@ -104,20 +103,10 @@
 			echo "</div>";
 			echo "<div class=\"col-md-3\"></div>";
 		    echo "</div>";
+		    
+		    echo "<input id=\"search-submit-button\" class=\"btn btn-info btn-md\" 
+			type=\"button\" onclick=\"sendMessage({$last_id},{$post['email']},{$post['search_time']})\" value=\"Begin Search!\"/>";
 		?>
-
-		<script>
-		    var xmlhttp;
-		    if (window.XMLHttpRequest)
-		    {
-			xmlhttp = new XMLHttpRequest();
-		    } else
-		    {
-			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		    }
-
-		    xmlhttp.open("POST","
-		</script>
 	    </div>
 	</div>
 </html>

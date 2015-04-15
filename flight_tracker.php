@@ -375,8 +375,10 @@
 	    if (!$result5) die($connection->error);
 	} // foreach(airline)
 
+/*
 	$query6 = "CREATE TABLE {$post['email']}{$last_id} ".
 	    "
+	    */
 
 	$connection->close();
 	return $last_id;

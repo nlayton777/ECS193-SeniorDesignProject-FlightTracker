@@ -126,8 +126,7 @@
 
 		    <?php
 			$result = getResults($post);
-			$trips = $result->getTrips();
-			$rowCount = printResults($trips, $post);
+			$rowCount = printResults($result->getTrips(), $post);
 		    ?>
 
 		</div>

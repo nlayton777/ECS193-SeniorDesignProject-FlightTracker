@@ -1,5 +1,6 @@
 <?php
 require_once 'login.php';
+require_once 'flight_tracker.php';
 $post = $_POST;
 $interval = 10; //seconds for sleep function
 
@@ -10,16 +11,23 @@ mysqli_select_db($connection,"flight_tracker");
 
 
 do {
-
-    $query = "SELECT * FROM searches WHERE {$post['ID']} = ID and {$post['email']} = email"; 
+    // get search parameters for this particular user
+    $query = "SELECT * 
+	      FROM searches 
+	      WHERE ID = {$post['ID']} and 
+		    email = {$post['email']}"; 
     $result = $connection->query($query);
     if (!$result) die ($connection->error);
 
-    $query2 = "SELECT airline FROM airlines WHERE {$post['ID']} = ID and {$post['email']} = email"; 
+    // get airline selections for this particular user
+    $query2 = "SELECT airline 
+	       FROM airlines 
+	       WHERE ID = {$post['ID']} and 
+		     email = {$post['email']}"; 
     $result2 = $connection->query($query2);
     if (!$result2) die ($connection->error);
 
-
+    // put airline selections into an array
     $result->data_seek(0);
     $rows = $result->fetch_array(MYSQLI_ASSOC);
     $end = $rows['end'];
@@ -33,11 +41,15 @@ do {
 	$airlines[] = $rows3['airline'];
     }
 
+    // parse and reformat the time into seconds
     $ymd = explode(" ", $end);
     $ymd2 = explode("-", $ymd[0]);
     $ymd3 = explode(":", $ymd[1]);
     $end_time = mktime($ymd3[0], $ymd3[1], $ymd3[2], $ymd2[1], $ymd2[2], $ymd2[0]);
     $curent_sec = time();
+
+    // compare the times (in seconds) to
+    // check if search should continue
     if($current_sec < $end_time)
     {
 
@@ -57,6 +69,9 @@ do {
 	    
 	    "airlines" => $airlines
 	);
+
+	$results = getResults;
+	$rowCount = printResults($result->getTrips(), $current_info);
     } // if
 
     sleep($interval);

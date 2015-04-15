@@ -1,5 +1,13 @@
 <?php
 require_once 'login.php';
+require_once 'flight_tracker.php';
+define('__ROOT__',dirname(__FILE__));
+
+    /*      NEED THESE FILES FOR QPX API        */  
+    require_once(__ROOT__ . 
+    '/google-api-php-client/src/Google/Service/QPXExpress.php');
+    require_once(__ROOT__ .
+    '/google-api-php-client/src/Google/Client.php');
 
 // connect to database
     $connection = new mysqli ($db_hostname, $db_username);
@@ -14,10 +22,10 @@ do{
 $curent_sec = time();
 
 
-$query = "SELECT * FROM searches WHERE {$post['ID']} = ID and {$post['email']} = email"; 
+$query = "SELECT * FROM searches WHERE ID={$post['ID']} and email= {$post['email']}"; 
 $result = $connection->query($query);
 if (!$result) die ($connection->error);
-$query2 = "SELECT airline FROM airlines WHERE {$post['ID']} = ID and {$post['email']} = email"; 
+$query2 = "SELECT airline FROM airlines WHERE ID = {$post['ID']}  and email= {$post['email']}"; 
 $result2 = $connection->query($query2);
 if (!$result2) die ($connection->error);
 
@@ -64,12 +72,75 @@ $current_info = array(
     "airlines" => $airlines
   );
     
-
+    $finalresults = getResults($current_info);
+    $trips = $finalresult->getTrips();
+    $rowCount = parseResults($trips, $current_info);
 
 }
 sleep($interval);
 } while($current_sec < $end_time);
 
+
+function parseResults($trips, $post)
+{
+    $options = $trips->getTripOption();
+
+    if (isset($options)) 
+    {
+        $multPass = false;
+        if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 || 
+        $post['seat_infants'] > 1 || $post['lap_infants'] > 1)
+        $multPass = true;
+
+
+        foreach ($options as $option) 
+        {
+            $saleTotal = substr($option->getSaleTotal(),3)
+
+
+            foreach ($option->getSlice()[0]->getSegment() as $segment)
+            {
+                foreach ($segment->getLeg() as $leg)
+                {
+                    //Source location and departure time from source
+                    $origin = $leg->getOrigin();
+                    $time = explode("T",$leg->getDepartureTime());
+                    $time2 = explode("-",$time[1]);
+                    $depart_time = $time2[0];
+
+                    //Destination location and arrival time from destination
+                    $destination = $leg->getDestination();
+                    $time3 = explode("T",$leg->getArrivalTime());
+                    $time4 = explode("-",$time3[1]);
+                    $arrival_time = $time4[0];
+                }
+
+                if (!isOneWay($post)) {
+
+
+
+
+                }
+            }
+
+
+        }
+
+    }
+
+}
+
+
+function isOneWay($post)
+{
+    $query5 = SELECT * FROM searches WHERE return_date == NULL;
+    $result5 = $connection->query($query);
+    if (!$result5) die ($connection->error);
+    $val = true; 
+
+    if(query5 != NULL )
+        return $val;
+}
 
 
 ?>

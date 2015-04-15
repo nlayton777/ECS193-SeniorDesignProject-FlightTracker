@@ -109,7 +109,7 @@
 			# Make the call to the client.
 			$result = $mgClient->sendMessage($domain, array(
 	    		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>',
-	    		'to'      => '<rcsaiya@ucdavis.edu>',
+	    		'to'      => '<'.$post['email'].'>',
 	    		'subject' => 'Thank you for using UCD Flight Tracker ',
 	    		'html'    => '
 	    		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

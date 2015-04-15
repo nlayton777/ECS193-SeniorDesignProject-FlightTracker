@@ -12,6 +12,23 @@
 	<link rel="stylesheet" href="flipclock.css"/>
 	<script src="flipclock.min.js"></script>
 	<script src="flight_tracker.js"></script>
+	<script>
+	    function sendMessage() {
+		setInterval(function () {doStuff();}, 1000);
+	    }
+
+	    function doStuff() {
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+		    {
+			document.getElementById("test").innerHTML = xmlhttp.responseText;
+		    }
+		}
+		xmlhttp.open("POST","test.php",true);
+		xmlhttp.send();
+	    }
+	</script>
     </head>
 
     <body>
@@ -44,7 +61,7 @@
 	<div class="containter">
 	    <div class="jumbotron countdown">
 		<h1>Search Time Remaining</h1>
-		<div class="clock timer" ></div>
+		<div class="clock" ></div>
 		<p>We have begun your background search and will notify you once
 		   we have either found your results or reached the end of your 
 		   search time. We have provided a summary of your search 
@@ -59,10 +76,12 @@
 		    define('__ROOT4__',dirname(__FILE__));
 		    require_once(__ROOT4__ . '/flight_tracker.php');
 		  
+		    /*
 		    echo "<pre>";
 		    print_r($_POST);
 		    echo "</pre>";
 		    echo "<br>";
+		    */
 		    $post = $_POST;
 
 		    $last_id = createNewSearch($post);
@@ -191,7 +210,7 @@
 				echo "<li>Date of Departure: {$post['depart_date']}</li>";
 				echo "<li>Date of Return: {$post['return_date']}</li>";
 
-				$type = array(1 => 'adults', 2 => 'children', 3 => 'seniors', 4 => 'seat_infant', 5 => 'lap_infant');
+				$type = array(1 => 'Adults', 2 => 'Children', 3 => 'Seniors', 4 => 'Seat Infants', 5 => 'Lap Infants');
 				foreach ($type as $t)
 				    if (isset($post[$t]) && $post[$t] > 0)
 					echo "<li>Number of {$t}: {$post[$t]}</li>";
@@ -212,8 +231,6 @@
 			echo "<div class=\"col-md-3\"></div>";
 		    echo "</div>";
 		    
-		    echo "<input id=\"search-submit-button\" class=\"btn btn-info btn-md\" 
-			type=\"button\" value=\"Begin Search!\"/>";
 		?>
 
 

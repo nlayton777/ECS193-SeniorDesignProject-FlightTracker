@@ -201,9 +201,6 @@ padding 4 px, 8 px;
 text-align: center;
 vertical-align: middle;
 }
-/*EXTRA TABLE STUFF */
-/*tbody tr:nth-child(even) td{background-color: #eee;}
-*/
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 @media print {
   *,
@@ -2273,7 +2270,7 @@ pre code {
 table#results1
 {
     width: 100%;    
-    background-color: ##CCF5F6;
+    background-color: #CCF5F6;
 }
 
 
@@ -2472,16 +2469,6 @@ table th[class*="col-"] {
   min-height: .01%;
   overflow-x: auto;
 }
-
-/* table stuff i added */
-@media screen and(max-width: 640 px)
-{
-    table{
-	overflow-x: auto;
-	display: block;
-    }
-}
-
 @media screen and (max-width: 767px) {
   .table-responsive {
     width: 100%;

@@ -9,7 +9,6 @@
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
-	<link rel="stylesheet" href="flipclock.css"/>
 
 
 	<script>
@@ -140,9 +139,8 @@ function check(){
 					echo "<input type=\"hidden\" name=\"lap_infant\" value=\"".$post['lap_infants']."\"/>";
 
 					foreach ($post['airline'] as $air)
-					{
 					    echo "<input type=\"hidden\" name=\"airline[]\" value=\"".$air."\"/>";
-					}
+
 					echo "<input type=\"hidden\" name=\"price\" value=\"".$post['price']."\"/>";
 					
 				    ?>
@@ -168,7 +166,6 @@ function check(){
     </body>
     <script>
 	window.onload=function(){$('.dropdown').hide();};
-
 	<?php
 	    for ($i = 0; $i < $rowCount; $i++)
 	    {
@@ -185,6 +182,5 @@ function check(){
 		echo "});";
 	    }
 	?>
-
     </script>
 </html>

@@ -1,5 +1,6 @@
 <?php
 require_once 'login.php';
+<<<<<<< HEAD
 require_once 'flight_tracker.php';
 define('__ROOT__',dirname(__FILE__));
 
@@ -119,15 +120,10 @@ function parseResults($trips, $post)
 
 
 
-
                 }
             }
-
-
         }
-
     }
-
 }
 
 

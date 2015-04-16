@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<?php
+		require_once 'login.php';
+
+		// connect to database
+		$connection = new mysqli ($db_hostname, $db_username);
+		if($connection->connect_error) die($connection->connect_error);
+		mysqli_select_db($connection,"flight_tracker");
+
+		$post = $_POST;
+		
+		
+		
 		define('__ROOT3__',dirname(__FILE__));
 		require_once(__ROOT3__ . '/vendor/autoload.php');
 		use Mailgun\Mailgun;
@@ -12,7 +23,7 @@
 		# Make the call to the client.
 		$result = $mgClient->sendMessage($domain, array(
     		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>',
-    		'to'      => 'Kir <kirmail24@gmail.com>',
+    		'to'      => '<rcsaiya@ucdavis.edu>',
     		'subject' => 'It\'s Time to Fly! ',
     		'html'    => '
     		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

@@ -1,6 +1,5 @@
 <?php
 require_once 'login.php';
-<<<<<<< HEAD
 require_once 'flight_tracker.php';
 define('__ROOT__',dirname(__FILE__));
 
@@ -51,9 +50,9 @@ $ymd = explode(" ", $end);
 $ymd2 = explode("-", $ymd[0]);
 $ymd3 = explode(":", $ymd[1]);
 
-$end_time = mktime($ymd3[0], $ymd3[1], $ymd3[2], $ymd2[1], $ymd2[2], $ymd2[0]);
+$end_secs = mktime($ymd3[0], $ymd3[1], $ymd3[2], $ymd2[1], $ymd2[2], $ymd2[0]);
 
-if($current_sec < $end_time)
+if($current_sec < $end_secs)
 {
 
 $current_info = array( 
@@ -77,9 +76,11 @@ $current_info = array(
     $trips = $finalresult->getTrips();
     $rowCount = parseResults($trips, $current_info);
 
-}
+
+
+}s
 sleep($interval);
-} while($current_sec < $end_time);
+} while($current_sec < $end_secs);
 
 
 function parseResults($trips, $post)

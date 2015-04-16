@@ -9,8 +9,6 @@
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
-	<link rel="stylesheet" href="flipclock.css"/>
-	<script src="count.js"></script>
     </head>
 
     <body>

@@ -160,15 +160,15 @@
 			    </label>
 			</div> -->
 			<div class="form-group form-inline" id= "priceSlider"> 		
-			<label for="price">Max Price: </label>
+			<label for="price">Max Total Price: </label>
 				<input class="textboxPrice" name="price" id="priceInput"></input>
 				<section id="slider"></section>
 				<script>
-					$("#slider").noUiSlider({start: 200, connect: 'lower', step: 10,
+					$("#slider").noUiSlider({start: 500, connect: 'lower', step: 10,
 						range: {
 							'min': 0,
-							'75%': 600,
-							'max': 1600
+							'75%': 2000,
+							'max': 5000
 						}
 					});
 

@@ -117,9 +117,6 @@ input.phone {
   float: left;
   margin-right: 3px;
 }
-#source,#destination,#airline {
-  width: 300px;
-}
 /*
 h1 {
 	font-family:'Bad Script', cursive;
@@ -161,8 +158,6 @@ h5 {
     background: white; 
     border: 1px solid #DDD; 
     border-radius: 5px; 
-    /*box-shadow: 0 0 5px #DDD inset; */
-    /*color: #666; */
     outline: none; 
     height:25px; 
     width: 100px;
@@ -177,7 +172,11 @@ h5 {
     outline: none; 
     height:35px; 
     width: 350px;
+   }   
+
+#clocktitle {
+    margin-bottom: 20px;
 }   
-.countdown h1,h3,p{
-    text-align: center;
+#source,#destination,#airline {
+  width: 350px;
 }

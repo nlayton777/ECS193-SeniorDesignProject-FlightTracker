@@ -44,3 +44,23 @@ airlines
 | email     | varchar(50) | NO   | PRI | NULL    |       |
 | airline   | varchar(25) | NO   | PRI | NULL    |       |
 +-----------+-------------+------+-----+---------+-------+
+
+
+table name: 
+    <email><requestID>
+
+table attributes:
+    option id
+    option saletotal
+    option segment flight carrier
+    option segment flight number
+    option segment cabin 
+    option segment leg aircraft
+    option segment leg arrival time
+    option segment leg departure time
+    option segment leg origin
+    option segment leg destination
+    option segment leg duration
+    option segment leg mileage
+    option segment leg meal
+    option segment refundable

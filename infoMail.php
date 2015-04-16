@@ -1,95 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
-	<title>UCD Flight Tracker</title>
-
-	<meta charset="UTF-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<link rel="stylesheet" href="bootstrap.css"/>
-	<script src="jquery-2.1.3.js"/></script>
-	<script src="bootstrap.js"></script>
-	<link rel="stylesheet" href="styles.css"/>
-	<link rel="stylesheet" href="flipclock.css"/>
-	<script src="flipclock.min.js"></script>
-	<script src="flight_tracker.js"></script>
-	<script>
-	    function sendMessage() {
-		setInterval(function () {doStuff();}, 1000);
-	    }
-
-	    function doStuff() {
-		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.onreadystatechange = function() {
-		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-		    {
-			document.getElementById("test").innerHTML = xmlhttp.responseText;
-		    }
-		}
-		xmlhttp.open("POST","test.php",true);
-		xmlhttp.send();
-	    }
-	</script>
-    </head>
-
-    <body>
-	<nav class="navbar navbar-inverse" style="visibility: hidden;"></nav>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-	    <div id="main" class="container-fluid">
-		<div class="navbar-header">
-		    <button type="button" class="navbar-toggle" 
-			data-toggle="collapse" data-target="#mynavbar">
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		    </button>
-		    <a class="navbar-brand" href="index.php">Flight Tracker</a>
-		</div>
-
-		<div class="collapse navbar-collapse" id="mynavbar">
-		    <ul class="nav navbar-nav">
-			<li class="active"><a href="index.php">Search</a></li>
-			<li><a href="about.php">About</a></li>
-		    </ul>
-		    <ul class="nav navbar-nav navbar-right">
-			<li><a href="contact.php">Contact</a></li>
-		    </ul>
-		</div>
-	    </div>
-	</nav>
-
-	
-	<div class="containter">
-	    <div class="jumbotron countdown">
-		<h1>Search Time Remaining</h1>
-		<div class="clock" ></div>
-		<p>We have begun your background search and will notify you once
-		   we have either found your results or reached the end of your 
-		   search time. We have provided a summary of your search 
-		   parameters below. Please stay near your phone or computer 
-		   since we will contact you via email. Be sure to have your 
-		   Request ID and Email ready when you return for the updated 
-		   search results.
-		</p>
-		<h3>Summary of Itinerary</h3>
-
-		<?php
-		    define('__ROOT4__',dirname(__FILE__));
-		    require_once(__ROOT4__ . '/flight_tracker.php');
-		  
-		    /*
-		    echo "<pre>";
-		    print_r($_POST);
-		    echo "</pre>";
-		    echo "<br>";
-		    */
-		    $post = $_POST;
-
-		    $last_id = createNewSearch($post);
-
-		  
-			$userID = $last_id;
-			$userSource = $post['origin'];
-			$userDestination = $post['destination'];
+	<?php
+		function sendMailforBackgroundSearch($id, $mailid, $src, $dst)
+		{
+			
+			$userID = $id;
+			$userSource = $src;
+			$userDestination = $dst;
 
 			// $userID = 'blah';
 			// $userSource = 'blah';
@@ -99,7 +14,7 @@
 
 			define('__ROOT3__',dirname(__FILE__));
 			require_once(__ROOT3__ . '/vendor/autoload.php');
-			use Mailgun\Mailgun;
+			use Mailgun;//\Mailgun;
 			// sql query
 			// put query data in variables
 			# Instantiate the client.
@@ -109,7 +24,7 @@
 			# Make the call to the client.
 			$result = $mgClient->sendMessage($domain, array(
 	    		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>',
-	    		'to'      => '<'.$post['email'].'>',
+	    		'to'      => '<rcsaiya@ucdavis.edu>',
 	    		'subject' => 'Thank you for using UCD Flight Tracker ',
 	    		'html'    => '
 	    		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -191,49 +106,5 @@
 	print_r($result);
 	echo "</pre>";
 
-
-		    echo "<script>CountdownClock({$post['search_time']})</script>";
-		    echo "<div class=\"row\">";
-			echo "<div class=\"col-md-3\"></div>";
-			echo "<div class=\"col-md-3\">";
-			    echo "<ul>";
-				echo "<li>Request ID: {$last_id}</li>";
-				echo "<li>Email: {$post['email']}</li>";
-				echo "<li>Search Time: {$post['search_time']} hours</li>";
-				echo "<li>Origin: {$post['origin']}</li>";
-				echo "<li>Destination: {$post['destination']}</li>";
-			    echo "</ul>";
-			echo "</div>";
-
-			echo "<div class=\"col-md-3\">";
-			    echo "<ul>";
-				echo "<li>Date of Departure: {$post['depart_date']}</li>";
-				echo "<li>Date of Return: {$post['return_date']}</li>";
-
-				$type = array(1 => 'Adults', 2 => 'Children', 3 => 'Seniors', 4 => 'Seat Infants', 5 => 'Lap Infants');
-				foreach ($type as $t)
-				    if (isset($post[$t]) && $post[$t] > 0)
-					echo "<li>Number of {$t}: {$post[$t]}</li>";
-
-				$i = 1;
-				foreach ($post['airline'] as $airline)
-				{
-				    if (count($post['airline']) > 1)
-					echo "<li>Airline Preference {$i}: {$airline}</li>";
-				    else
-					echo "<li>Airline Preference: {$airline}</li>";
-				    $i++;
-				}
-
-				echo "<li>Maximum Price Limit: \${$post['price']}</li>";
-			    echo "</ul>";
-			echo "</div>";
-			echo "<div class=\"col-md-3\"></div>";
-		    echo "</div>";
-		    
-		?>
-
-
-	    </div>
-	</div>
-</html>
+}
+	?>

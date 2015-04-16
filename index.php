@@ -69,15 +69,15 @@
 		
 		    <!--ONE-WAY CHECKBOX-->
 		    <div class="form-group">
-			    <label class="no-indent" for="oneway">
-				<input type="checkbox" value="yes" 
-				    onclick="OneWay()" id="oneway" name="one_way" 
-				    form="search_form"/>
-				<input class="form-control" type="hidden" value="no" 
-				    id="onewayHidden"  name="one_way"
-				    form="search_form" checked/>
-				One Way 
-				</label>
+			<label class="no-indent" for="oneway">
+			<input type="checkbox" value="yes" 
+			    onclick="OneWay()" id="oneway" name="one_way" 
+			    form="search_form"/>
+			<input class="form-control" type="hidden" value="no" 
+			    id="onewayHidden"  name="one_way"
+			    form="search_form" checked/>
+			One Way 
+			</label>
 		    </div>
 
 		    <div class="form-group form-inline">
@@ -150,37 +150,22 @@
 			?>
 			</select>
 		    </div>
+
+		    <!--PRICE FIELD-->	
+		    <div class="form-group form-inline" id= "priceSlider"> 		
+		    <label for="price">Max Price: </label>
+			    <input class="textboxPrice" name="price" id="priceInput"></input>
+			    <section id="slider"></section>
+			    <script>
+				    $("#slider").noUiSlider({
+					start: 500, connect: 'lower', step: 10,
+					range: {'min': 0,'75%': 1000,'max': 5000}
+				    });
+				    $("#slider").Link('lower').to($('#priceInput'));
+			    </script>
+		    </div>
+
 			
-			<!--PRICE FIELD-->	
-			<!-- <div class="form-group">
-			    <label for="price">Max Price
-				<input id="price" type="range" min="0" max="5000" 
-				    step="5" name="price" onchange="showValue(this.value)"/>
-				<span id="range">2500</span>
-			    </label>
-			</div> -->
-			<div class="form-group form-inline" id= "priceSlider"> 		
-			<label for="price">Max Total Price: </label>
-				<input class="textboxPrice" name="price" id="priceInput"></input>
-				<section id="slider"></section>
-				<script>
-					$("#slider").noUiSlider({start: 500, connect: 'lower', step: 10,
-						range: {
-							'min': 0,
-							'75%': 2000,
-							'max': 5000
-						}
-					});
-
-					$("#slider").Link('lower').to($('#priceInput'));
-
-				</script>
-			</div>
-			
-			<!--
-			<div class="result"></div>
-			-->
-
 		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick=" return validate();" value="Find your flight!"/>
 		</form>
 	    </header>

@@ -9,6 +9,32 @@
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
+	<script>
+		//CHECK EMAIL VALIDATION
+	var testresults
+	function checkemail(){
+	var str=document.searchwindow.email.value
+    var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+    if (filter.test(str))
+	testresults=true
+    else{
+	alert("Please input a valid email address!")
+    	testresults=false
+	return false;
+    }
+    return (testresults)
+	}
+
+function check(){
+    if (document.layers||document.getElementById||document.all)
+    return checkemail()
+    else
+    return true
+	}
+
+	//end email validation
+
+	</script>
     </head>
 
     <body>
@@ -73,7 +99,7 @@
 				searching.
 			    </p>
 
-			    <form method="post" action="countdown.php">
+			    <form name="searchwindow" onsubmit="return check()" method="post" action="countdown.php">
 				<div class="form-group form-inline">
 				    <label for="email">Email
 					<input id="email" type="email" name="email">
@@ -110,14 +136,14 @@
 					echo "<input type=\"hidden\" name=\"lap_infant\" value=\"".$post['lap_infants']."\"/>";
 
 					foreach ($post['airline'] as $air)
-					{
 					    echo "<input type=\"hidden\" name=\"airline[]\" value=\"".$air."\"/>";
-					}
+
 					echo "<input type=\"hidden\" name=\"price\" value=\"".$post['price']."\"/>";
+					
 				    ?>
 
 				    <input id="search-submit-button" class="btn btn-info btn-md" 
-					type="submit" onclick="CountdownClock()" value="Keep Searching"/>
+					 type="submit" value="Keep Searching"/>
 				    
 				</div>
 			    </form>
@@ -137,7 +163,6 @@
     </body>
     <script>
 	window.onload=function(){$('.dropdown').hide();};
-
 	<?php
 	    for ($i = 0; $i < $rowCount; $i++)
 	    {
@@ -154,6 +179,5 @@
 		echo "});";
 	    }
 	?>
-
     </script>
 </html>

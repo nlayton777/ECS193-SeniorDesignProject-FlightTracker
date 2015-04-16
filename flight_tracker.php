@@ -7,7 +7,6 @@
     require_once(__ROOT__ .
 	'/google-api-php-client/src/Google/Client.php');
 
-
     function isOneWay(&$val) {
 	$rv = false;
 	if (isset($val['one_way'])) 
@@ -75,9 +74,9 @@
 
 			    foreach ($option->getSlice()[1]->getSegment() as $segment)
 			    {
-				echo "<p>";
 				foreach ($segment->getLeg() as $leg)
 				{
+				    echo "<p>";
 				    echo "<strong> ".$leg->getOrigin()." </strong>";
 				    $time = explode("T",$leg->getDepartureTime());
 				    $time2 = explode("-",$time[1]);
@@ -87,8 +86,8 @@
 				    $time = explode("T",$leg->getArrivalTime());
 				    $time2 = explode("-",$time[1]);
 				    echo " ".$time2[0];
+				    echo "</p>";
 				} // end for
-				echo "</p>";
 			    } // end for
 			    echo "</div>";
 			} // end if
@@ -376,6 +375,11 @@
 	    if (!$result5) die($connection->error);
 	} // foreach(airline)
 
+/*
+	$query6 = "CREATE TABLE {$post['email']}{$last_id} ".
+	    "
+	    */
+
 	$connection->close();
 	return $last_id;
     } // createNewSearch($post)
@@ -384,69 +388,4 @@
     {
 	return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));
     } // getEndTime($search_time)
-
-/*
-    function performBackgroundSearch($id,&$post)
-    {
-	require_once('login.php');
-
-	// connect to database
-	$db_hostname = 'localhost';
-	$db_username = 'flight_tracker';
-	$connection2 = new mysqli ($db_hostname, $db_username);
-	if($connection2->connect_error) 
-	{
-	    echo "<h1>bad</h1>";
-	    die($connection2->connect_error);
-	}
-	mysqli_select_db($connection2,"flight_tracker");
-
-	ignore_user_abort(true);
-	set_time_limit(60);
-
-	do
-	{
-	    // add user info to db
-	    $d_date = explode("/",$post['depart_date']);
-	    $d_date = implode("-",array($d_date[2],$d_date[0],$d_date[1]));
-	    if ($post['return_date'] != "NULL")
-	    {
-		$r_date = explode("/",$post['return_date']);
-		$r_date = implode("-",array($r_date[2],$r_date[0],$r_date[1]));
-		$r_date = "'".$r_date."'";
-	    } else
-		$r_date = "NULL";
-
-	    $query3 = "INSERT INTO searches ".
-		      "(email,origin,destination,depart_date,return_date,adults,".
-		      "children,seniors,seat_infant,lap_infant,price,current,end,lowest_price) ".
-		      "VALUES (".
-			    "'{$post['email']}',".
-			    "'{$post['origin']}','{$post['destination']}',".
-			    "'{$d_date}',{$r_date},".
-			    "{$post['adults']},{$post['children']},".
-			    "{$post['seniors']},{$post['seat_infant']},".
-			    "{$post['lap_infant']},{$post['price']},".
-			    "now(),'".getEndTime($post['search_time'])."',".
-			    $post['price'].
-		      ");";
-		      /*
-	    echo $query3;
-	    echo "<br>";
-	    */
-	    /*
-	    $result3 = $connection2->query($query3);
-	    if (!$result3) die($connection2->error);
-	    
-	    // check sql db connection2
-	    if($connection2->connect_error) 
-	    {
-		die($connection2->connect_error);
-		break;
-	    }
-	} while (1);
-
-	$connection2->close();
-    } // performBackgroundSearch()
-    */
 ?>

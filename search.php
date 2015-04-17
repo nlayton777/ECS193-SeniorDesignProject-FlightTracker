@@ -12,30 +12,27 @@
 
 
 	<script>
-		//CHECK EMAIL VALIDATION
-	var testresults
-	function checkemail(){
-	var str=document.searchwindow.email.value
-    var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-    if (filter.test(str))
-	testresults=true
-    else{
-	alert("Please input a valid email address!")
-    	testresults=false
-	return false;
-    }
-    return (testresults)
-	}
+	    //CHECK EMAIL VALIDATION
+	    var testresults;
+	    function checkemail() {
+		var str=document.searchwindow.email.value
+		var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+		if (filter.test(str))
+		    testresults=true
+		else {
+		    alert("Please input a valid email address!");
+		    testresults = false;
+		    return false;
+		}
+		return (testresults)
+	    } // checkemail
 
-function check(){
-    if (document.layers||document.getElementById||document.all)
-    return checkemail()
-    else
-    return true
-	}
-
-	//end email validation
-
+	    function check() {
+		if (document.layers||document.getElementById||document.all)
+		return checkemail()
+		else
+		return true
+	    } // check
 	</script>
 
     </head>

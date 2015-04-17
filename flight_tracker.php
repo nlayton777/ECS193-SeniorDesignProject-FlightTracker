@@ -345,14 +345,12 @@
 	if (!$result4) die($connection->error);
 	$result4->data_seek(0);
 	$row = $result4->fetch_array(MYSQLI_ASSOC);
-
 /*
 	echo "<pre>";
 	print_r($row);
 	echo "</pre>";
 	echo "<br>";
 	*/
-
 	$last_id = $row['MAX(ID)'];
 	//echo $last_id;
 
@@ -375,17 +373,11 @@
 	    if (!$result5) die($connection->error);
 	} // foreach(airline)
 
-/*
-	$query6 = "CREATE TABLE {$post['email']}{$last_id} ".
-	    "
-	    */
-
 	$connection->close();
 	return $last_id;
     } // createNewSearch($post)
 
     function getEndTime($search_time)
-    {
-	return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));
-    } // getEndTime($search_time)
+    { return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));} 
+    // getEndTime($search_time)
 ?>

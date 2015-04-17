@@ -1,37 +1,51 @@
 <?php
-require_once 'login.php';
-require_once 'flight_tracker.php';
+ignore_user_abort(true);
+//jset_time_limit(
 define('__ROOT__',dirname(__FILE__));
-
-/*      NEED THESE FILES FOR QPX API        */  
+require_once(__ROOT__ .'/flight_tracker.php');
 require_once(__ROOT__ . 
 '/google-api-php-client/src/Google/Service/QPXExpress.php');
 require_once(__ROOT__ .
 '/google-api-php-client/src/Google/Client.php');
+require_once 'login.php';
 
 // connect to database
 $connection = new mysqli ($db_hostname, $db_username);
 if($connection->connect_error) die($connection->connect_error);
 mysqli_select_db($connection,"flight_tracker");
 
-$post = $_POST;
-$interval = 10; //seconds for sleep function
+$post = $_GET;
+$interval = 20; //seconds for sleep function
 
-do {
-    $query = "SELECT * FROM searches WHERE ID={$post['ID']} and email= {$post['email']}"; 
+do {	// begin search
+    // get search parameters 
+    $query = "SELECT * ".
+	     "FROM searches ". 
+	     "WHERE ID={$post['ID']} and ". 
+		"email= {$post['email']}"; 
     $result = $connection->query($query);
     if (!$result) die ($connection->error);
-    $query2 = "SELECT airline FROM airlines WHERE ID = {$post['ID']}  and email= {$post['email']}"; 
-    $result2 = $connection->query($query2);
-    if (!$result2) die ($connection->error);
 
-
+    // get timing information
     $result->data_seek(0);
     $rows = $result->fetch_array(MYSQLI_ASSOC);
     $end = $rows['end'];
-    $rows2 = $result2->num_rows;
+    $ymd = explode(" ", $end);
+    $ymd2 = explode("-", $ymd[0]);
+    $ymd3 = explode(":", $ymd[1]);
+    $end_time = mktime($ymd3[0], $ymd3[1], $ymd3[2], $ymd2[1], $ymd2[2], $ymd2[0]);
+    $curent_sec = time();
 
+    // get airline information
+    // and put it into an array
+    $query2 = "SELECT airline ".
+	      "FROM airlines ". 
+	      "WHERE ID = {$post['ID']} and ". 
+		"email= {$post['email']}"; 
+    $result2 = $connection->query($query2);
+    if (!$result2) die ($connection->error);
     $airlines = array(); 
+    $rows2 = $result2->num_rows;
     for($i=0; $i<$rows2; $i++)
     {
 	$result2->data_seek($i);
@@ -39,15 +53,10 @@ do {
 	$airlines[] = $rows3['airline'];
     } // for
 
-    $ymd = explode(" ", $end);
-    $ymd2 = explode("-", $ymd[0]);
-    $ymd3 = explode(":", $ymd[1]);
-    $end_time = mktime($ymd3[0], $ymd3[1], $ymd3[2], $ymd2[1], $ymd2[2], $ymd2[0]);
-    $curent_sec = time();
-
+    // if search is not over
     if($current_sec < $end_time)
     {
-
+	// build object to be sent to getResults
 	$current_info = array( 
 	    "ID" => $rows['ID'],
 	    "email" => $rows['email'],
@@ -61,73 +70,35 @@ do {
 	    "seat_infant" => $rows['seat_infants'],
 	    "lap_infant" => $rows['lap_infants'], 
 	    "price" => $rows['price'], 
-	    
 	    "airlines" => $airlines
 	  );
 	    
+	// get results
 	$finalresults = getResults($current_info);
 	$trips = $finalresult->getTrips();
-	$rowCount = parseResults($trips, $current_info);
 
     } // if
     sleep($interval);
 } while($current_sec < $end_time);
 
 
-function parseResults($trips, $post)
-{
-    $options = $trips->getTripOption();
-
-    if (isset($options)) 
-    {
-        $multPass = false;
-        if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 || 
-        $post['seat_infants'] > 1 || $post['lap_infants'] > 1)
-        $multPass = true;
-
-
-        foreach ($options as $option) 
-        {
-            $saleTotal = substr($option->getSaleTotal(),3)
-
-
-            foreach ($option->getSlice()[0]->getSegment() as $segment)
-            {
-                foreach ($segment->getLeg() as $leg)
-                {
-                    //Source location and departure time from source
-                    $origin = $leg->getOrigin();
-                    $time = explode("T",$leg->getDepartureTime());
-                    $time2 = explode("-",$time[1]);
-                    $depart_time = $time2[0];
-
-                    //Destination location and arrival time from destination
-                    $destination = $leg->getDestination();
-                    $time3 = explode("T",$leg->getArrivalTime());
-                    $time4 = explode("-",$time3[1]);
-                    $arrival_time = $time4[0];
-                }
-
-                if (!checkIsOneWay($post)) {
-
-
-
-                }
-            }
-        }
-    }
-} // parseResults($current_info)
-
-
 function checkIsOneWay($post)
 {
-    $query5 = SELECT * FROM searches WHERE return_date == NULL;
-    $result5 = $connection->query($query);
-    if (!$result5) die ($connection->error);
-    $val = true; 
+    $query = "SELECT return_date ".
+	      "FROM searches ". 
+	      "WHERE return_date = NULL AND ".
+		    "id = {$post['id']} AND ".
+		    "email = {$post['email']};";
 
-    if($query5 != NULL )
-        return $val;
-}
+    $result = $connection->query($query);
+    if (!$result) die ($connection->error);
+    $result->data_seek(0);
+    $ret_day->fetch_array(MYSQLI_ASSOC)['return_date'];
 
+    $val = true;
+    if(!isset($ret_day) || $ret_day === NULL || is_null($ret_day))
+	$val = true;
+
+    return $val;
+} // checkIsOneWay()
 ?>

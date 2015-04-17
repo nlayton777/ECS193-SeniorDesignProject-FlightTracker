@@ -230,10 +230,7 @@
 			echo "</div>";
 			echo "<div class=\"col-md-3\"></div>";
 		    echo "</div>";
-		    
 		?>
-
-
 	    </div>
 	</div>
 </html>

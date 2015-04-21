@@ -174,16 +174,16 @@
 	return ($rowCount);
     } // printResults($post)
 
-    function getResults(&$post) {
+    function getResults(&$post,$num) {
 	// create client 
 	$client = new Google_Client();
 	$client->setApplicationName("Flight Tracker");
 	// nick
 	//$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
 	// rupali
-	$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
+	//$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 	// kirsten
-	//$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
+	$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
 	// nina
 	//$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
 
@@ -270,7 +270,7 @@
 	$request = new Google_Service_QPXExpress_TripOptionsRequest();
 
 	// set solutions
-	$request->setSolutions(50);
+	$request->setSolutions($num);
 	
 	// set slices
 	if (isOneWay($post))
@@ -378,6 +378,7 @@
     } // createNewSearch($post)
 
     function getEndTime($search_time)
-    { return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));} 
+    //{ return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));} 
+    { return date('Y-m-d H:i:s',time() + (2 * 60)); }
     // getEndTime($search_time)
 ?>

@@ -151,7 +151,7 @@
 		    </div>
 
 		    <?php
-			$result = getResults($post);
+			$result = getResults($post, 50);
 			$rowCount = printResults($result->getTrips(), $post);
 		    ?>
 

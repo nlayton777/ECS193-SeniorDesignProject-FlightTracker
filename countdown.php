@@ -12,19 +12,18 @@
 	<link rel="stylesheet" href="flipclock.css"/>
 	<script src="flipclock.min.js"></script>
 	<script src="flight_tracker.js"></script>
-	
 	<?php
 	    define('__ROOT4__',dirname(__FILE__));
 	    require_once(__ROOT4__ . '/flight_tracker.php');
 
 	    $post = $_POST;
 	    $userID = createNewSearch($post);
-/*
+	    /*
 	    echo "<pre>";
 	    print_r($post);
 	    echo "</pre>";
 	    echo "<br>";
-*/
+	    */
 	?>
 
 	<script>
@@ -41,7 +40,7 @@
 		}
 		var str = "id=<?php echo $userID ?>&email=<?php echo $post['email'] ?>";
 		//document.getElementById("test").innerHTML = str;
-		xmlhttp.open("GET","test.php?" + str,true);
+		xmlhttp.open("GET","background_search.php?" + str,true);
 		xmlhttp.send();
 	    } // sendMessage()
 	</script>
@@ -209,25 +208,22 @@
 					echo "<li>Number of {$t}: {$post[$t]}</li>";
 
 				$i = 1;
-				foreach ($post['airline'] as $airline)
-				{
+				foreach ($post['airline'] as $airline) {
 				    if (count($post['airline']) > 1)
 					echo "<li>Airline Preference {$i}: {$airline}</li>";
 				    else
 					echo "<li>Airline Preference: {$airline}</li>";
 				    $i++;
-				}
+				} // foreach airline
 
 				echo "<li>Maximum Price Limit: \${$post['price']}</li>";
 			    echo "</ul>";
 			echo "</div>";
 			echo "<div class=\"col-md-3\"></div>";
 		    echo "</div>";
-		    /*
-		    echo "<div id=\"test\" class=\"row\">";
+		    echo "<div id=\"test\" class=\"row\" style=\"margin-left: 200px;\">";
 			echo "stuff";
 		    echo "</div>";
-		    */
 		?>
 	    </div>
 	</div>

@@ -1,11 +1,31 @@
 # flight_tracker
 ECS 193 Lowest Flight Fare Tracker
 
-Herei our list of To-Do's:
+Quick guide to testing the background search:
+    -first have your SQL database running and ready at the comand line
+    -also, have an idea for what the name of the soon-to-be created table
+     is going to be so that you can quickly use it in the query that
+     you're about to perform
+	-an example would be like if I was going to type 
+	 "nllayton@ucdavis.edu" into search.php, then 
+	 I would know that the first part of the table
+	 name is going to be "nllaytonatucdavisdotedu", and the number
+	 that directly follows the email can be determined by going
+	 'SELECT MAX(id) FROM SEARCHES;' and then adding 1 to the result
+	 of that query.
+	-let's say the max of mine was 246, then the table name would
+	 become 'nllaytonatucdavisdotedu247'
+	-I had to change the '@' and the '.' symbols in the email
+	 to "at" and "dot" because SQL was complaining about those symbols
+    -perform a search by entering info on index.php and search.php
+    -repeatedly enter the query "SELECT COUNT(opt_saletotal) FROM <tablename>;"
+     into the SQL database and see if the number of entries increments over 
+     time
+
+Here is our list of To-Do's:
 -insert automated mail code into our search engine
--perform background search for single user
 -perform background search for multiple users
--validate email and search window time in countdown.php
+-validate search window time in countdown.php
     - NOTE: (current time + search time) cannot be
 	    greater than or equal to depart_date
 -link to booking sites once user is satisfied with results
@@ -45,13 +65,19 @@ airlines
 | airline   | varchar(25) | NO   | PRI | NULL    |       |
 +-----------+-------------+------+-----+---------+-------+
 
-
-table name: 
+table name:  
     <email><requestID>
+    NOTE: Replace the '@' symbol with 'AT'
+	  and Replace the '.' with 'DOT'
+	  when creating the table nam
+	  (see background_search.php
+	   for details)
 
 table attributes:
     option id,
     option saletotal,
+    option segment id
+    option segment duration
     option segment flight carrier,
     option segment flight number,
     option segment cabin,
@@ -63,4 +89,3 @@ table attributes:
     option segment leg duration,
     option segment leg mileage,
     option segment leg meal,
-    option segment refundable,

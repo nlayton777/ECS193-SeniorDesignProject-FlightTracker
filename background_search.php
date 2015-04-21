@@ -162,7 +162,7 @@ do {	// begin search
 	} // foreach option
 	$insertQuery .= ";";
 	//$test .= (" " . $insertQuery);
-	//echo $insertQuery;
+	echo $insertQuery;
 	$insertResult = $connection->query($insertQuery);
 	if (!$insertResult) die ($connection->error);
 

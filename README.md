@@ -1,6 +1,19 @@
 # flight_tracker
 ECS 193 Lowest Flight Fare Tracker
 
+To-Do's:
+-insert automated mail code into our search engine
+-perform background search for multiple users
+-don't let users perform a background search if 
+ there weren't any results for their search
+ parameters
+-validate search window time in countdown.php
+    - NOTE: (current time + search time) cannot be
+	    greater than or equal to depart_date
+-link to booking sites once user is satisfied with results
+-polish UI (especially index.php)
+-finalize images and logo
+
 Quick guide to testing the background search:
     -first have your SQL database running and ready at the comand line
     -also, have an idea for what the name of the soon-to-be created table
@@ -21,17 +34,6 @@ Quick guide to testing the background search:
     -repeatedly enter the query "SELECT COUNT(opt_saletotal) FROM <tablename>;"
      into the SQL database and see if the number of entries increments over 
      time
-
-Here is our list of To-Do's:
--insert automated mail code into our search engine
--perform background search for multiple users
--validate search window time in countdown.php
-    - NOTE: (current time + search time) cannot be
-	    greater than or equal to depart_date
--link to booking sites once user is satisfied with results
--polish UI (especially index.php)
--finalize images and logo
-
 
 below is our database schema
 (the name of each table is listed above the table)

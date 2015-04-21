@@ -75,11 +75,11 @@
 				require_once(__ROOT3__ . '/flight_tracker.php');
 
 				$post = $_POST;
-
+				/*
 				echo "<pre>";
 				print_r($post);
 				echo "</pre>";
-
+				*/
 				echo "<h3 id=\"trip-title\">" . $post['depart_date'] . "  <strong>" . 
 				    $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
 				    "<strong>" . $post['destination'] . "</strong>  ";

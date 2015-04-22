@@ -25,6 +25,7 @@
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
 			<li><a href="index.php">Search</a></li>
+			<li><a href="results.php">Search Status</a></li>
 			<li class="active"><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">

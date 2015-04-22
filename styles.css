@@ -37,15 +37,18 @@ input[type="tel"] {
 #expandedtable {
     font-size: 70%;
 }
-td,th {
+#results td,th {
     text-align: center;
+    vertical-align: middle;
 }
 div.dropdown h4 {
     text-align: left;
 }
+/*
 .table#results td {
     vertical-align: middle;
 }
+*/
 .dropdown-table th,td {
     font-size: 77%; 
     padding: 0 10px;
@@ -137,32 +140,20 @@ h5 {
 	color: #FFFFFF;
 }
 */
-/* div element id */
-#priceSlider {
-	margin-top: 20px;
-	margin-bottom: 20px;
-	text-align:center;
-	margin-left:auto;
-	margin-right:auto;
-	width:75%;
-}
-/* input element id */
-#priceInput {
-	color: #000;
-	text-align: center;
-	margin-bottom: 20px;
-	display: inline;
-} 
 /* input element class */
-.textboxPrice { 
-    background: white; 
-    border: 1px solid #DDD; 
-    border-radius: 5px; 
-    outline: none; 
-    height:25px; 
-    width: 100px;
-    margin-bottom: 20px;
+#price { 
+  background: white; 
+  color: black;
+  border: 1px solid #DDD; 
+  border-radius: 5px; 
+  outline: none; 
+  height:25px; 
+  width: 100px;
 } 
+#slider {
+  width: 25%;
+  margin: 10px 0;
+}
 .textbox { 
     background: white; 
     border: 1px solid #DDD; 
@@ -172,11 +163,7 @@ h5 {
     outline: none; 
     height:35px; 
     width: 350px;
-   }   
-
+}   
 #clocktitle {
     margin-bottom: 20px;
 }   
-#source,#destination,#airline {
-  width: 350px;
-}

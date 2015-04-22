@@ -2,17 +2,14 @@
 ECS 193 Lowest Flight Fare Tracker
 
 To-Do's:
--insert automated mail code into our search engine
--perform background search for multiple users
--don't let users perform a background search if 
- there weren't any results for their search
- parameters
--validate search window time in countdown.php
-    - NOTE: (current time + search time) cannot be
+-perform background search for multiple users  (nick)
+-validate search window time in countdown.php (rupali)
+    -NOTE: (current time + search time) cannot be
 	    greater than or equal to depart_date
--link to booking sites once user is satisfied with results
--polish UI (especially index.php)
--finalize images and logo
+-link to booking sites once user is satisfied with results (nina)
+-polish UI (especially index.php and search.php) (everyone)
+-sign in for returning customers 
+-finalize images and logo (nina)
 
 Quick guide to testing the background search:
     -first have your SQL database running and ready at the comand line

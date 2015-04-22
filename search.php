@@ -10,7 +10,6 @@
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
 
-
 	<script>
 	    //CHECK EMAIL VALIDATION
 	    var testresults;
@@ -34,7 +33,6 @@
 		return true
 	    } // check
 	</script>
-
     </head>
 
     <body>
@@ -54,6 +52,7 @@
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
 			<li class="active"><a href="index.php">Search</a></li>
+			<li><a href="results.php">Search Status</a></li>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
@@ -70,6 +69,7 @@
 		    <div class="row">
 			<div class="col-md-6" id="search-title">
 			    <h1>Search Results</h1>
+
 			    <?php
 				define('__ROOT3__',dirname(__FILE__));
 				require_once(__ROOT3__ . '/flight_tracker.php');
@@ -87,6 +87,7 @@
 				    echo $post['return_date'];
 				echo "</h3>";
 			    ?>
+
 			</div>
 
 			<div class="col-md-6" id="background-info">
@@ -119,8 +120,6 @@
 					</select>
 				    </label>
 
-				    
-
 				    <?php
 					echo "<input type=\"hidden\" name=\"origin\" value=\"".$post['source']."\"/>";
 					echo "<input type=\"hidden\" name=\"destination\" value=\"".$post['destination']."\"/>";
@@ -147,21 +146,41 @@
 				    
 				</div>
 			    </form>
-			</div>
-		    </div>
+			</div><!--end col-->
+		    </div><!--end row-->
 
 		    <?php
 			$result = getResults($post, 50);
-			$rowCount = printResults($result->getTrips(), $post);
+			$trips = $result->getTrips();
+
+/*
+			echo "<pre>";
+			print_r($result);
+			echo "</pre>";
+			*/
+
+			if (count($trips->getTripOption()) == 0)
+			    echo "<h2>No Results Found</h2>";
+			else
+			    $rowCount = printResults($trips, $post);
 		    ?>
+		    <h4><strong>*NOTE:</strong> If you were hoping to find
+					      more search results, then
+					      we recommend broadening your
+					      search parameters, particularly
+					      your maximum price range or
+					      your preferred airline.
+		    </h4>
 
 		</div>
 		<div class="col-xs-4 col-md-1"></div>
 	    </div>
 	</div>
     </body>
+
     <script>
 	window.onload=function(){$('.dropdown').hide();};
+
 	<?php
 	    for ($i = 0; $i < $rowCount; $i++)
 	    {
@@ -176,7 +195,8 @@
 			echo "}";
 		    echo "});";
 		echo "});";
-	    }
+	    } // for
 	?>
+
     </script>
 </html>

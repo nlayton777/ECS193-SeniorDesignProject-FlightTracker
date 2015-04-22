@@ -179,9 +179,9 @@
 	$client = new Google_Client();
 	$client->setApplicationName("Flight Tracker");
 	// nick
-	$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+	//$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
 	// rupali
-	//$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
+	$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 	// kirsten
 	//$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
 	// nina
@@ -287,20 +287,11 @@
 	// create and initialize search request
 	$searchRequest = new Google_Service_QPXExpress_TripsSearchRequest();
 	$searchRequest->setRequest($request);
-	/*
-	echo "<pre>";
-	print_r($searchRequest);
-	echo "</pre>";
-	*/
 
 	// search
 	$trips = $service->trips;
 	$result = $trips->search($searchRequest);
-	/*
-	echo "<pre>";
-	print_r($result);
-	echo "</pre>";
-	*/
+
 	return($result);
     } // getResults($post)
 
@@ -344,26 +335,7 @@
 	$result3 = $connection->query($query3);
 	if (!$result3) die($connection->error);
 
-	$query4 = "SELECT MAX(ID) ".
-		  "FROM searches ".
-		  "WHERE email='{$post['email']}';";
-		  /*
-	echo $query4;
-	echo "<br>";
-	*/
-	$result4 = $connection->query($query4);
-	if (!$result4) die($connection->error);
-	$result4->data_seek(0);
-	$row = $result4->fetch_array(MYSQLI_ASSOC);
-/*
-	echo "<pre>";
-	print_r($row);
-	echo "</pre>";
-	echo "<br>";
-	*/
-	$last_id = $row['MAX(ID)'];
-	//echo $last_id;
-
+	$last_id = $connection->insert_id;
 	if (isset($post['airline']))
 	{
 	    $query5 = "INSERT INTO airlines ".
@@ -375,10 +347,6 @@
 		if ($airline != $last)
 		    $query5 .= "({$last_id},'{$post['email']}','{$airline}'), ";
 	    $query5 .= "({$last_id},'{$post['email']}','{$airline}');";
-	    /*
-	    echo $query5;
-	    echo "<br>";
-	    */
 	    $result5 = $connection->query($query5);
 	    if (!$result5) die($connection->error);
 	} // foreach(airline)

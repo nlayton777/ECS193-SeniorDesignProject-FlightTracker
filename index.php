@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-	<title>UCD Flight Tracker</title>
+	<title>UCD Flight Tracker | Search</title>
 
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
-
-	<!--this is for the increment button
-	<script src="jquery.min.js"></script>-->
 
 	<!--this is for the datepicker()-->
 	<link rel="stylesheet" href="jquery-ui.css"/>

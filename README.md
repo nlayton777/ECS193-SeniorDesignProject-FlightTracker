@@ -2,13 +2,14 @@
 ECS 193 Lowest Flight Fare Tracker
 
 To-Do's:
--perform background search for multiple users  (nick)
+-sign in for returning customers 
+-results page
+-link to booking sites once user is satisfied with results (nina)
 -validate search window time in countdown.php (rupali)
     -NOTE: (current time + search time) cannot be
 	    greater than or equal to depart_date
--link to booking sites once user is satisfied with results (nina)
+-put MySQL queries into transactions
 -polish UI (especially index.php and search.php) (everyone)
--sign in for returning customers 
 -finalize images and logo (nina)
 
 Quick guide to testing the background search:

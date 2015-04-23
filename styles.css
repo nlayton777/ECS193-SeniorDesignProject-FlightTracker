@@ -141,7 +141,7 @@ h5 {
 }
 */
 /* input element class */
-#price { 
+input#price { 
   background: white; 
   color: black;
   border: 1px solid #DDD; 

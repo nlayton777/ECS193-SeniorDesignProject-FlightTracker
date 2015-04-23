@@ -1,6 +1,6 @@
 <?php
 //session_start();
-$_SESSION['id'] = 278;
+$_SESSION['id'] = 291;
 $_SESSION['email'] = "nllayton@ucdavis.edu";
 
 $sesh = $_SESSION;
@@ -69,61 +69,41 @@ if (isset($sesh['id']) && isset($sesh['email']))
 			    <img id="exclamation" src="exclamation.png" alt="Important" height="8%" width="8%" />
 
 			    <p id="background-description">
-				Our search engine can work in the background for you to find 
-				deals on flights whose prices might change in the near future. 
-				Provide us with the following information, and we will begin
-				searching.
+				    You can choose to either continue your search if 
+				    you would like for us to keep searching or 
+				    terminate the search by selecting one of the options 
+				    below.
 			    </p>
 
 			</div><!--end col-->
 		    </div><!--end row-->
 
-		    <h3>Search Time Remaining</h3>
+		    <h2>Search Time Remaining</h2>
 		    <div class="clock"></div>
 		    <?php
-			require_once 'login.php';
+			require_once './flight_tracker.php';
 
-			$connection = new mysqli ($db_hostname, $db_username);
-			if ($connection->connect_error) die ($connection->connect_error);
-			$connection->select_db("flight_tracker");
-
-			$getTime = <<<_QUERY
-			    SELECT end
-			    FROM searches
-			    WHERE ID = {$id}
-				and email = '{$email}';
-_QUERY;
-			$result = $connection->query($getTime);
-			if (!$result) die($connection->error);
-			$result->data_seek(0);
-			$end = $result->fetch_assoc()['end'];
-			$day_time = explode(" ",$end);
-			$day = explode("-",$day_time[0]);
-			$clock = explode(":",$day_time[1]);
-			$remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time()) / 60;
-
+			$remaining = getRemainingTime($id,$email);
 			if ($remaining > 0)
 			{
-			    echo "<script>CountdownClock({$remaining})</script>";
 			    echo <<<_STUFF
-				<h5>
-				    You can choose to either continue your search if 
-				    you would like for us to keep searching or 
-				    terminate the search by selecting one of the options 
-				    below.
-				<h5>
+				<script>CountdownClock({$remaining})</script>
+				<h2>Search Results So Far</h2>
 _STUFF;
 			} else {
-			    echo "<script>CountdownClock(0)</script>";
 			    echo <<<_STUFF2
-				<h5>
-				    Your search is complete! You can either choose 
-				    one of the options shown below, or you can start another 
-				    search at the <a href="index.php">Search</a> page.
-				<h5>";
+				<script>CountdownClock(0)</script>
+				<h2>Search Results</h2>
 _STUFF2;
-			}
+			} //if/else
+
 		    ?>
+
+		    <table id="results" class="table table-hover">
+			<tr>
+			    <th id="price">Total
+			</tr>
+		    </table>
 		</div><!--end col-->
 		<div class="col-xs-4 col-md-1"></div><!--end col-->
 	    </div><!--end row-->
@@ -131,8 +111,27 @@ _STUFF2;
     </body>
 
     <script>
-	window.onload=function(){$('.dropdown').hide();};
+	var id = <?php $id ?>;
+	var email = <?php $email ?>;
+	var seconds = 3;
+	window.setInterval(function () {
+	    var xmlhttp;
+	    if (window.XMLHttpRequest)
+	    { xmlhttp = new XMLHttpRequest(); }
+	    else
+	    { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
+	    xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+		{
+		    
+		}
+	    }
+	    var str = "id=" + id + "&email=" + email;
+	    xmlhttp.open("GET","retrieve.php?" + str,true);
+	    xmlhttp.send();
+	},seconds * 1000);
 
+	window.onload=function(){$('.dropdown').hide();};
 	<?php
 	    for ($i = 0; $i < $rowCount; $i++)
 	    {

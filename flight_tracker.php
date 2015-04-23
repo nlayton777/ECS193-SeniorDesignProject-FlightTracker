@@ -27,8 +27,7 @@
 
 	    // print headers
 	    echo <<<_HEADERS
-	    <table id="results" class="table table-hover" 
-		style="background-color: rgba(150, 150, 150, 0)" align="center">
+	    <table id="results" class="table table-hover" style="background-color: rgba(150, 150, 150, 0)" align="center">
 		<tr>
 		    <th id="price">Total
 _HEADERS;
@@ -537,4 +536,29 @@ _QUERY4;
 			    );
 	return $resultsArr;
     } // getResultsEmail()
+
+    function getRemainingTime($id,$email)
+    {
+	require_once 'login.php';
+	$connection = new mysqli ('localhost', 'root');
+	if ($connection->connect_error) die ($connection->connect_error);
+	$connection->select_db("flight_tracker");
+
+	$getTime = <<<_QUERY
+	    SELECT end
+	    FROM searches
+	    WHERE ID = {$id}
+		and email = '{$email}';
+_QUERY;
+	$result = $connection->query($getTime);
+	if (!$result) die($connection->error);
+	$result->data_seek(0);
+	$end = $result->fetch_assoc()['end'];
+	$day_time = explode(" ",$end);
+	$day = explode("-",$day_time[0]);
+	$clock = explode(":",$day_time[1]);
+	$remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time()) / 60;
+
+	return ($remaining < 0 ? 0 : $remaining);
+    } // getRemainingTime();
 ?>

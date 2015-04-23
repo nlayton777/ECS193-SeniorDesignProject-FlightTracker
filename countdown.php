@@ -13,8 +13,9 @@
 	<script src="flipclock.min.js"></script>
 	<script src="flight_tracker.js"></script>
 	<?php
-	    define('__ROOT4__',dirname(__FILE__));
-	    require_once(__ROOT4__ . '/flight_tracker.php');
+	    //define('__ROOT4__',dirname(__FILE__));
+	    //require_once(__ROOT4__ . '/flight_tracker.php');
+	    require_once('./flight_tracker.php');
 
 	    $post = $_POST;
 	    $userID = createNewSearch($post);
@@ -86,7 +87,8 @@
 
 		<?php
 		    // start countdown clock
-		    echo "<script>CountdownClock({$post['search_time']})</script>";
+		    $remaining = getRemainingTime($userID,$post['email']);
+		    echo "<script>CountdownClock({$remaining})</script>";
 
 		    $userSource = $post['origin'];
 		    $userDestination = $post['destination'];

@@ -1,3 +1,17 @@
+<?php
+//session_start();
+$_SESSION['id'] = 278;
+$_SESSION['email'] = "nllayton@ucdavis.edu";
+
+$sesh = $_SESSION;
+$session_flag = false;
+if (isset($sesh['id']) && isset($sesh['email']))
+{
+    $id = $sesh['id'];
+    $email = $sesh['email'];
+    $session_flag = true;
+}  
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -48,9 +62,7 @@
 		<div class="col-xs-10 col-md-10">
 		    <div class="row">
 			<div class="col-md-6" id="search-title">
-			<?php
-				echo "<h1>Search Results For Request #----</h1>";
-			?>
+			<?php echo "<h1>Search Results For Request #{$id}<h1>"; ?>
 			</div><!--end col-->
 
 			<div class="col-md-6" id="background-info">
@@ -69,20 +81,47 @@
 		    <h3>Search Time Remaining</h3>
 		    <div class="clock"></div>
 		    <?php
-			$time = 0;
-			echo "<script>CountdownClock({$time})</script>";
-			if ($time > 0)
+			require_once 'login.php';
+
+			$connection = new mysqli ($db_hostname, $db_username);
+			if ($connection->connect_error) die ($connection->connect_error);
+			$connection->select_db("flight_tracker");
+
+			$getTime = <<<_QUERY
+			    SELECT end
+			    FROM searches
+			    WHERE ID = {$id}
+				and email = '{$email}';
+_QUERY;
+			$result = $connection->query($getTime);
+			if (!$result) die($connection->error);
+			$result->data_seek(0);
+			$end = $result->fetch_assoc()['end'];
+			$day_time = explode(" ",$end);
+			$day = explode("-",$day_time[0]);
+			$clock = explode(":",$day_time[1]);
+			$remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time()) / 60;
+
+			if ($remaining > 0)
 			{
-			    echo "<h5>You can choose to either continue your search if ".
-				 "you would like for us to keep searching or ".
-				 "terminate the search by selecting one of the options ".
-				 "below.".
-				 "<h5>";
+			    echo "<script>CountdownClock({$remaining})</script>";
+			    echo <<<_STUFF
+				<h5>
+				    You can choose to either continue your search if 
+				    you would like for us to keep searching or 
+				    terminate the search by selecting one of the options 
+				    below.
+				<h5>
+_STUFF;
 			} else {
-			    echo "<h5>Your search is complete! You can either choose ".
-				 "one of the options shown below, or you can start another ".
-				 "search at the <a href=\"index.php\">Search</a> page.".
-				 "<h5>";
+			    echo "<script>CountdownClock(0)</script>";
+			    echo <<<_STUFF2
+				<h5>
+				    Your search is complete! You can either choose 
+				    one of the options shown below, or you can start another 
+				    search at the <a href="index.php">Search</a> page.
+				<h5>";
+_STUFF2;
 			}
 		    ?>
 		</div><!--end col-->

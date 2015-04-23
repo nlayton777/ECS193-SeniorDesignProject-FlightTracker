@@ -13,30 +13,36 @@ $post = $_GET;
 $interval = 20; //seconds for sleep function
 
 //Create table emailATemailDOTcomID and add attributes 
-$tableName = str_replace(".","DOT",str_replace("@","AT",$post['email'])) . $post['id'];
-//echo $tableName;
-$userTable = "CREATE TABLE {$tableName} (".
-		"opt_id VARCHAR(60) NOT NULL, ".
-                "opt_saletotal FLOAT(10) NOT NULL, ".
-		"opt_seg_id VARCHAR(60) NOT NULL, ".
-		"opt_seg_duration INT NOT NULL, ".
-                "opt_seg_flight_carrier VARCHAR(40) NOT NULL, ".
-                "opt_seg_flight_num VARCHAR(10) NOT NULL, ".
-                "opt_seg_cabin VARCHAR(20) NOT NULL, ".
-		"opt_seg_leg_id VARCHAR(60) NOT NULL, ".
-                "opt_seg_leg_aircraft VARCHAR(20) NOT NULL, ".
-                "opt_seg_leg_arrival_time TIMESTAMP NOT NULL, ".
-                "opt_seg_leg_departure_time TIMESTAMP NOT NULL, ".
-                "opt_seg_leg_origin VARCHAR(10) NOT NULL, ".
-                "opt_seg_leg_destination VARCHAR(10) NOT NULL, ".
-                "opt_seg_leg_duration INT NOT NULL, ".
-		"opt_seg_leg_mileage INT NOT NULL, ".
-		"opt_seg_leg_meal VARCHAR(20) NOT NULL, ".
-		"PRIMARY KEY (".
-		    "opt_id, opt_saletotal, ".
-		    "opt_seg_id, opt_seg_leg_id".
-		")".
-	      ");";
+//$tableName = str_replace(".","DOT",str_replace("@","AT",$post['email'])) . $post['id'];
+$tableName = "`{$post['id']}`";
+$userTable = <<<_TABLEQUERY
+CREATE TABLE {$tableName} (
+    opt_id VARCHAR(60) NOT NULL, 
+    opt_saletotal FLOAT(10) NOT NULL, 
+    opt_slice_num TINYINT NOT NULL, 
+    opt_slice_seg_id VARCHAR(60) NOT NULL, 
+    opt_slice_seg_duration INT NOT NULL, 
+    opt_slice_seg_flight_carrier VARCHAR(40) NOT NULL, 
+    opt_slice_seg_flight_num VARCHAR(10) NOT NULL, 
+    opt_slice_seg_cabin VARCHAR(20) NOT NULL, 
+    opt_slice_seg_leg_id VARCHAR(60) NOT NULL, 
+    opt_slice_seg_leg_aircraft VARCHAR(20) NOT NULL, 
+    opt_slice_seg_leg_arrival_time TIMESTAMP NOT NULL, 
+    opt_slice_seg_leg_departure_time TIMESTAMP NOT NULL, 
+    opt_slice_seg_leg_origin VARCHAR(10) NOT NULL, 
+    opt_slice_seg_leg_destination VARCHAR(10) NOT NULL, 
+    opt_slice_seg_leg_duration INT NOT NULL, 
+    opt_slice_seg_leg_mileage INT NOT NULL, 
+    opt_slice_seg_leg_meal VARCHAR(20) NOT NULL, 
+    PRIMARY KEY (
+	opt_id, opt_saletotal, 
+	opt_slice_seg_id, opt_slice_seg_leg_id
+    )
+  );
+_TABLEQUERY;
+echo "<pre>";
+echo $userTable;
+echo "</pre>";
 $test = $userTable;
 $resultTable = $connection->query($userTable);
 if (!$resultTable) die ($connection->error);
@@ -44,10 +50,12 @@ if (!$resultTable) die ($connection->error);
 do {	// begin search
 
     // get search parameters 
-    $query = "SELECT * ".
-	     "FROM searches ". 
-	     "WHERE ID = {$post['id']} and ". 
-		   "email = '{$post['email']}'"; 
+    $query = <<<_QUERY
+	SELECT * 
+	FROM searches  
+	WHERE ID = {$post['id']} and  
+	    email = '{$post['email']}'; 
+_QUERY;
     $result = $connection->query($query);
     if (!$result) die ($connection->error);
 
@@ -63,10 +71,12 @@ do {	// begin search
     $current_sec = time();
 
     // get airline information
-    $query2 = "SELECT airline ".
-	      "FROM airlines ". 
-	      "WHERE search_id = {$post['id']} and ". 
-		    "email = '{$post['email']}'"; 
+    $query2 = <<<_QUERY2
+	SELECT airline 
+	FROM airlines  
+	WHERE search_id = {$post['id']} and  
+	    email = '{$post['email']}'; 
+_QUERY2;
     $result2 = $connection->query($query2);
     if (!$result2) die ($connection->error);
 
@@ -82,11 +92,11 @@ do {	// begin search
 
     // check if background search should be continued
     // if the current time isn't equal to the end time
-    $d = explode("-",$rows['depart_date']);
-    $r = explode("-",$rows['return_date']);
     if($current_sec < $end_secs)
     {
 	// organize user input into an array
+	$d = explode("-",$rows['depart_date']);
+	$r = explode("-",$rows['return_date']);
 	$current_info = array( 
 	    "id" => $rows['ID'],
 	    "email" => $rows['email'],
@@ -109,23 +119,35 @@ do {	// begin search
 	//print_r($trips);
 
 	// start insertion query
-	$insertQuery = "INSERT INTO {$tableName} ".
-		       "(".
-			    "opt_id, opt_saletotal, ".
-			    "opt_seg_id, opt_seg_duration, ".
-			    "opt_seg_flight_carrier, opt_seg_flight_num, ".
-			    "opt_seg_cabin, opt_seg_leg_id, ".
-			    "opt_seg_leg_aircraft, opt_seg_leg_arrival_time, ".
-			    "opt_seg_leg_departure_time, opt_seg_leg_origin, ".
-			    "opt_seg_leg_destination, opt_seg_leg_duration, ".
-			    "opt_seg_leg_mileage, opt_seg_leg_meal".
-		       ") VALUES ";
+	$insertQuery = <<<_QUERY3
+	    INSERT INTO {$tableName} 
+	    (
+		opt_id,
+		opt_saletotal,
+		opt_slice_num,
+		opt_slice_seg_id,
+		opt_slice_seg_duration,
+		opt_slice_seg_flight_carrier,
+		opt_slice_seg_flight_num,
+		opt_slice_seg_cabin,
+		opt_slice_seg_leg_id,
+		opt_slice_seg_leg_aircraft,
+		opt_slice_seg_leg_arrival_time,
+		opt_slice_seg_leg_departure_time,
+		opt_slice_seg_leg_origin,
+		opt_slice_seg_leg_destination,
+		opt_slice_seg_leg_duration,
+		opt_slice_seg_leg_mileage,
+		opt_slice_seg_leg_meal
+	    ) VALUES 
+_QUERY3;
 	$flag = true;
 	// parse results
 	foreach ($trips->getTripOption() as $option) {
 	    $tripOptionId = $option->getId();
 	    $tripOptionSaleTotal = substr($option->getSaleTotal(),3);
 
+	    $sliceCount = 1;
 	    foreach ($option->getSlice() as $slice) {
 		foreach ($slice->getSegment() as $segment) {
 		    $segmentId = $segment->getId();
@@ -147,20 +169,35 @@ do {	// begin search
 			
 			if (!$flag) $insertQuery .= ",";
 			if ($flag) $flag = false;
-			$insertQuery .= "('{$tripOptionId}',{$tripOptionSaleTotal},".
-					"'{$segmentId}',{$segmentDuration},".
-					"'{$segmentFlightCarrier}','{$segmentFlightNumber}',".
-					"'{$segmentCabin}','{$legId}',".
-					"'{$legAircraft}','{$legArrivalTime}',".
-					"'{$legDepartureTime}','{$legOrigin}',".
-					"'{$legDestination}',{$legDuration},".
-					" {$legMileage}, '{$legMeal}'".
-					")";
+			$insertQuery .= <<<_QUERY4
+			    ('{$tripOptionId}',
+			     {$tripOptionSaleTotal},
+			     {$sliceCount},
+			    '{$segmentId}',
+			     {$segmentDuration},
+			    '{$segmentFlightCarrier}',
+			    '{$segmentFlightNumber}',
+			    '{$segmentCabin}',
+			    '{$legId}',
+			    '{$legAircraft}',
+			    '{$legArrivalTime}',
+			    '{$legDepartureTime}',
+			    '{$legOrigin}',
+			    '{$legDestination}',
+			     {$legDuration},
+			     {$legMileage},
+			    '{$legMeal}'
+			    );
+_QUERY4;
 		    } // foreach leg
 		} // foreach segment
+		$sliceCount++;
 	    } // foreach slice
 	} // foreach option
 	$insertQuery .= ";";
+	      echo "<pre>";
+	echo $insertQuery;
+	      echo "</pre>";
 	//$test .= (" " . $insertQuery);
 	//echo $insertQuery;
 	$insertResult = $connection->query($insertQuery);
@@ -194,11 +231,13 @@ do {	// begin search
 
 function checkIsOneWay($post)
 {
-    $query = "SELECT return_date ".
-	      "FROM searches ". 
-	      "WHERE return_date = NULL AND ".
-		    "id = {$post['id']} AND ".
-		    "email = '{$post['email']}';";
+    $query = <<<_BLAH
+	SELECT return_date 
+	FROM searches  
+	WHERE return_date = NULL AND 
+	    id = {$post['id']} AND 
+	    email = '{$post['email']}';
+_BLAH;
 
     $result = $connection->query($query);
     if (!$result) die ($connection->error);

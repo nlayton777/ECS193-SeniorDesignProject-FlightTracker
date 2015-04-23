@@ -1,10 +1,13 @@
 # flight_tracker
 ECS 193 Lowest Flight Fare Tracker
 
-To-Do's:
+High Priority To-Do's:
 -sign in for returning customers 
 -results page
 -link to booking sites once user is satisfied with results (nina)
+-algorithm
+
+Lower Priority To-Do's:
 -validate search window time in countdown.php (rupali)
     -NOTE: (current time + search time) cannot be
 	    greater than or equal to depart_date
@@ -13,27 +16,27 @@ To-Do's:
 -finalize images and logo (nina)
 
 Quick guide to testing the background search:
-    -first have your SQL database running and ready at the comand line
+    -first have SQL database running and ready at the comand line
     -also, have an idea for what the name of the soon-to-be created table
      is going to be so that you can quickly use it in the query that
      you're about to perform
 	-an example would be like if I was going to type 
-	 "nllayton@ucdavis.edu" into search.php, then 
+	 "example@ucdavis.edu" into search.php, then 
 	 I would know that the first part of the table
-	 name is going to be "nllaytonatucdavisdotedu", and the number
-	 that directly follows the email can be determined by going
+	 name is going to be "exampleatucdavisdotedu", and the number
+	 that directly follows the email can be determined by executing
 	 'SELECT MAX(id) FROM SEARCHES;' and then adding 1 to the result
 	 of that query.
 	-let's say the max of mine was 246, then the table name would
-	 become 'nllaytonatucdavisdotedu247'
-	-I had to change the '@' and the '.' symbols in the email
+	 become 'exampleatucdavisdotedu247'
+	-the '@' and the '.' symbols were changed in the email
 	 to "at" and "dot" because SQL was complaining about those symbols
     -perform a search by entering info on index.php and search.php
     -repeatedly enter the query "SELECT COUNT(opt_saletotal) FROM <tablename>;"
      into the SQL database and see if the number of entries increments over 
      time
 
-below is our database schema
+below is the database schema
 (the name of each table is listed above the table)
 database name: flight_tracker
 

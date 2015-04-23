@@ -18,12 +18,6 @@
 
 	    $post = $_POST;
 	    $userID = createNewSearch($post);
-	    /*
-	    echo "<pre>";
-	    print_r($post);
-	    echo "</pre>";
-	    echo "<br>";
-	    */
 	?>
 
 	<script>
@@ -36,7 +30,9 @@
 		{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
 		xmlhttp.onreadystatechange = function() {
 		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-		    { /*document.getElementById("test").innerHTML = xmlhttp.responseText;*/}
+		    { 
+			document.getElementById("test").innerHTML = xmlhttp.responseText;
+		    }
 		}
 		var str = "id=<?php echo $userID ?>&email=<?php echo $post['email'] ?>";
 		//document.getElementById("test").innerHTML = str;
@@ -142,12 +138,10 @@ _SECTION1;
 			</div>
 			<div class="col-md-3"></div>
 		    </div>
+		    <!--
+		    <div id="test" class="row" style="margin-left: 200px;">stuff</div>
+		    -->
 _SECTION2;
-		    /*
-		    echo "<div id=\"test\" class=\"row\" style=\"margin-left: 200px;\">";
-			echo "stuff";
-		    echo "</div>";
-		    */
 		?>
 	    </div>
 	</div>

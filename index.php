@@ -143,7 +143,7 @@
 
 			    <!--AIRLINE FIELD-->
 			    <label for="airline" class="sr-only">Preferred Airline</label>
-			    <select class="form-control" id="airline" name="airline[]"
+			    <select class="form-control" id="airline" name="airline[]" 
 					form="search_form" multiple="multiple">
 			    <option value="none" selected>Preferred Airline</option>
 			    <?php

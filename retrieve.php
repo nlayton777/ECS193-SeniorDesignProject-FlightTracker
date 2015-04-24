@@ -1,16 +1,23 @@
 <?php
-echo <<<_RESULTS
-    <table>
-	<tr>
-	    <th>Stuff1</th>
-	    <th>Stuff2</th>
-	    <th>Stuff3</th>
-	</tr>
-	<tr>
-	    <td>This is some data</td>
-	    <td>This is more data</td>
-	    <td>This is even more data</td>
-	</tr>
-    </table>
-_RESULTS;
+    require_once 'login.php';
+
+    $connection = new mysqli ($db_hostname, $du_username);
+    if ($connection->connect_error) die($connection->connect_error);
+    $connection->select_db("flight_tracker");
+
+/*
+    if(isset($_GET))
+	$get = $_GET;
+    else
+	echo "_GET not set";
+	*/
+    $get['email'] = 'nllayton@ucdavis.edu';
+    $get['id'] = 
+    
+    $query = <<<_QUERY
+	SELECT *
+	FROM searches
+	WHERE id=$get['id'] AND
+	      email = '{$get['email']}';
+_QUERY;
 ?>

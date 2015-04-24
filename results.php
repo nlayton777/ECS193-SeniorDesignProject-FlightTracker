@@ -1,6 +1,6 @@
 <?php
 //session_start();
-$_SESSION['id'] = 291;
+$_SESSION['id'] = 296;
 $_SESSION['email'] = "nllayton@ucdavis.edu";
 
 $sesh = $_SESSION;
@@ -101,7 +101,9 @@ _STUFF2;
 
 		    <table id="results" class="table table-hover">
 			<tr>
-			    <th id="price">Total
+			    <th id="price">Total Price</th>
+			    <th id="it">Itinerary</th>
+			    <th id="info">More Info</th>
 			</tr>
 		    </table>
 		</div><!--end col-->

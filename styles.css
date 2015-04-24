@@ -177,3 +177,7 @@ input#price {
   /*background-color: #577;*/
   background-color: transparent;
 }
+#background-search-submit {
+    border-color: black;
+    color: black;
+}

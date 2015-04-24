@@ -194,13 +194,13 @@ _STUFF11;
     function getResults(&$post,$num) {
 	// create client 
 	$client = new Google_Client();
-	$client->setApplicationName("Flight Tracker");
+	//$client->setApplicationName("Flight Tracker");
 	// nick
-	//$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+	$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
 	// rupali
 	//$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 	// kirsten
-	$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
+	//$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
 	// nina
 	//$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
 
@@ -374,14 +374,14 @@ _QUERY4;
 
     function getEndTime($search_time)
     //{ return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));} 
-    { return date('Y-m-d H:i:s',time() + (3 * 60)); }
+    { return date('Y-m-d H:i:s',time() + (0 * 60)); }
     // getEndTime($search_time)
 
-    function getConfirmationEmail(&$post,$userSource,$userDestination,$userID)
+    function getConfirmationEmail($email,$userSource,$userDestination,$userID)
     {
 	$returnArr = array(
 		    'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>',
-		    'to'      => '<'.$post['email'].'>',
+		    'to'      => '<'.$email.'>',
 		    'subject' => 'Thank you for using UCD Flight Tracker ',
 		    'html'    => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 				  <html xmlns="http://www.w3.org/1999/xhtml" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -553,12 +553,16 @@ _QUERY;
 	$result = $connection->query($getTime);
 	if (!$result) die($connection->error);
 	$result->data_seek(0);
-	$end = $result->fetch_assoc()['end'];
-	$day_time = explode(" ",$end);
-	$day = explode("-",$day_time[0]);
-	$clock = explode(":",$day_time[1]);
-	$remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time()) / 60;
+	$remaining = 0;
+	try {
+	    $end = $result->fetch_assoc()['end'];
+	    $day_time = explode(" ",$end);
+	    $day = explode("-",$day_time[0]);
+	    $clock = explode(":",$day_time[1]);
+	    $remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time()) / 60;
+	} catch (Exception $e)
+	{ }
 
-	return ($remaining < 0 ? 0 : $remaining);
+	return ($remaining <= 0 ? 0 : $remaining);
     } // getRemainingTime();
 ?>

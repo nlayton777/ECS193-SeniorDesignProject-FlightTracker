@@ -71,8 +71,6 @@
 			    <h1>Search Results</h1>
 
 			    <?php
-				//define('__ROOT3__',dirname(__FILE__));
-				//require_once(__ROOT3__ . '/flight_tracker.php');
 				require_once('./flight_tracker.php');
 
 				$post = $_POST;

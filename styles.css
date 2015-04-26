@@ -141,7 +141,7 @@ h5 {
 }
 */
 /* input element class */
-input#price { 
+#inputPrice { 
   background: white; 
   color: black;
   border: 1px solid #DDD; 
@@ -151,7 +151,7 @@ input#price {
   width: 100px;
 } 
 #slider {
-  width: 25%;
+  width: 50%;
   margin: 10px 0;
 }
 .textbox { 
@@ -163,17 +163,19 @@ input#price {
     outline: none; 
     height:35px; 
     width: 350px;
+} 
+.textboxPrice { 
+    background: white; 
+    border: 1px solid #DDD; 
+    border-radius: 5px; 
+    box-shadow: 0 0 5px #DDD inset; 
+    color: #666; 
+    outline: none; 
+    height:35px; 
+    width: 100px;
+    text-align: center;
 }   
 #clocktitle {
     margin-bottom: 20px;
 }   
-.noUi-target {
-  border: 1px solid white;
-}
-.noUi-background {
-  background-color: transparent;
-}
-.noUi-connect {
-  /*background-color: #577;*/
-  background-color: transparent;
-}
+

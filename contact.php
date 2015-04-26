@@ -7,6 +7,58 @@
 	<link rel="stylesheet" href="bootstrap.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
+	<style>
+	   html,body {
+		 height:100%;
+	   }
+
+	   h1 {
+		 font-family: Arial,sans-serif;
+		 font-size: 63px;
+		 font-weight: bold;
+		 color: #000000;
+	   }
+
+	   .lead {
+		   color:#000000;
+	   }
+
+	   /* Custom container */
+	   .container-full {
+		 margin: 0 auto;
+		 width: 100%;
+		 min-height:100%;
+		 color:#eee;
+		 overflow:hidden;
+  		 background-image: url('Bicycle2.jpg');
+  		 background-repeat: no-repeat;
+  		 background-size: 100% auto;
+  		 background-position: center center;
+  		 opacity: 0.85;	   
+  		 } 
+
+	   .container-full a {
+		 color:#efefef;
+		 text-decoration:none;
+	   }
+	   
+	   .transbox {
+	   	  margin-top: 20px;
+	   	  margin-bottom: 20px;
+	   	  background-color: #fff4e9;
+	   	  opacity: 0.80;
+	   }
+
+	   .v-center {
+		 margin-top:5%;
+	   }
+	   
+	   textarea {
+    	 resize: none;
+	   }
+	   
+	</style>
+	
     </head>
 
     <body>
@@ -34,37 +86,69 @@
 	    </div>
 	</nav>
 
-	<div class="container">
-	<header class="jumbotron" id="contact">
-	    <h1>Leave us a message...</h1>
-	    <h3>We are interested to hear both your questions and/or your feedback regarding our website and services.</h3>
-	    <div class="row">
-		<div class="col-md-4">
-		    <form role="form form-inline"  class="form-vertical" method="post" action="contactsubmission.php">
-			<div class="form-group">
-			    <label for="name">
-				Name: 
-				<input type="text" class="form-control" id="name" 
-				    name = "name" size="10" placeholder="John Smith"/>
-			    </label>
+	<div class="container-full">
 
-			    <label for="email">
-				Email:
-				<input type="email" class="form-control" id="email" name="email" 
-				    pattern="*@-.-" placeholder="john.smith@website.com" required/>
-			    </label>
-			</div>
-			
-			<div class="form-group form-horizontal">
-			    <label for="comments">
-				Message: 
-			    	<textarea rows="8" cols="60" id="comments" name="comments" placeholder="Let us know what you think!" ></textarea>
-			    </label>
-			</div>
-			<input type="submit" class="btn btn-default" value="Submit"/>
-		    </form>
+		<div class="row">
+		  <div class="col-lg-12 text-center v-center">
+		  <div class="transbox">
+			<h1>Comments?</h1>
+		  </div>
+		  </div> 
+		</div> <!-- /row -->
+  
+		<div class="row">
+	   
+		  <div class="col-lg-12 text-center v-center" style="font-size:39pt;">
+			<a href="#"><i class="icon-google-plus"></i></a> <a href="#"><i class="icon-facebook"></i></a>  <a href="#"><i class="icon-twitter"></i></a> <a href="#"><i class="icon-github"></i></a> <a href="#"><i class="icon-pinterest"></i></a>
+		  </div>
+	  
 		</div>
-	    </div>
+  
+  		<br><br><br><br><br>
+	
+	</div> <!-- /container full -->
+
+<div class="container">
+  	<hr>
+  	<div class="row">
+        <div class="col-md-3">
+          
+        </div>
+      	<div class="col-md-6">
+        	<div class="panel panel-default">
+            <div class="panel-heading"><h3>We'd Love to Hear Them.</h3></div>
+            <div class="panel-body">
+            	<form role="form form-inline"  class="form-vertical" method="post" action="contactsubmission.php">
+					<div class="form-group">
+			   			<label for="name">
+						Name: 
+						<input type="text" class="form-control" id="name" 
+				    	name = "name" size="20" placeholder="John Smith" required/>
+			    		</label>
+
+			    		<label for="email">
+							Email:
+							<input type="email" class="form-control" id="email" name="email" 
+				    		pattern="*@-.-" size="30" placeholder="john.smith@website.com" required/>
+			    		</label>
+					</div>
+					<label for="comments">
+						Message: 
+			    		<textarea rows="8" cols="60" id="comments" name="comments" placeholder="Let us know what you think!" required></textarea>
+			    	</label>
+			    
+			    <input type="submit" class="btn btn-default" value="Submit"/>
+				</form>
+            </div>
+          </div>
+        </div>
+      	<div class="col-md-3">
+        	
+        </div>
+    	</div>
+    </div>
+
+</div>
 	</header>
     </body>
 </html>

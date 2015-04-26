@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-	<title>UCD Flight Tracker</title>
+	<title>UCD Flight Tracker | Search</title>
 
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
-
-	<!--this is for the increment button
-	<script src="jquery.min.js"></script>-->
 
 	<!--this is for the datepicker()-->
 	<link rel="stylesheet" href="jquery-ui.css"/>
@@ -50,6 +47,7 @@
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
 			<li class="active"><a href="index.php">Search</a></li>
+			<li><a href="results.php">Search Status</a></li>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
@@ -80,25 +78,26 @@
 			</label>
 		    </div>
 
-		    <div class="form-group form-inline">
-			<!--SOURCE FIELD-->
-			<label for="source" class="sr-only" required >Departure Location</label>
-			<input class="textbox"  id="source" name="source" placeholder=" ---Select an Origin---"/>	
+		    <div class="row">
+			<div class="form-group form-inline">
+			    <!--SOURCE FIELD-->
+			    <label for="source" class="sr-only" required >Departure Location</label>
+			    <input class="textbox"  id="source" name="source" placeholder=" ---Select an Origin---"/>	
+				
+			    <!--DESTINATION FIELD-->
+			    <label for="destination" class="sr-only">Arrival Location</label>
+			    <input class="textbox"  id="destination" name="destination" placeholder=" ---Select a Destination---"/>	
 			    
-			<!--DESTINATION FIELD-->
-			<label for="destination" class="sr-only">Arrival Location</label>
-			<input class="textbox"  id="destination" name="destination" placeholder=" ---Select a Destination---"/>	
+			    <!--DEPART DATE FIELD-->
+			    <label for="depart-date" class="sr-only">Date of Departure</label>
+				<input type="text" class="form-control" id="datepickerD" 
+				name="depart_date" placeholder="Depart"/ required>
 
-			<!--DEPART DATE FIELD-->
-			<label for="depart-date" class="sr-only">Date of Departure</label>
-			    <input type="text" class="form-control" id="datepickerD" 
-			    name="depart_date" placeholder="Depart"/ required>
-
-			<!--RETURN DATE FIELD-->
-			<label for="return-date" class="sr-only">Date of Return</label>
-			    <input type="text" class="form-control" id="datepickerR" 
-			    name="return_date" placeholder="Return"/>
-		    </div>
+			    <!--RETURN DATE FIELD-->
+			    <label for="return-date" class="sr-only">Date of Return</label>
+				<input type="text" class="form-control" id="datepickerR" 
+				name="return_date" placeholder="Return"/>
+				</div>
 
 		    <div class="form-group form-inline">
 			<!--PASSENGERS FIELD-->
@@ -161,10 +160,9 @@
 					start: 500, connect: 'lower', step: 10,
 					range: {'min': 0,'75%': 1000,'max': 5000}
 				    });
-				    $("#slider").Link('lower').to($('#priceInput'));
+				$("#slider").Link('lower').to($('#priceInput'));
 			    </script>
 		    </div>
-
 			
 		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick=" return validate();" value="Find your flight!"/>
 		</form>

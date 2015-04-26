@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-	<title>UCD Flight Tracker</title>
+	<title>UCD Flight Tracker | Search</title>
 
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -10,30 +10,27 @@
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
 	<script>
-		//CHECK EMAIL VALIDATION
-	var testresults
-	function checkemail(){
-	var str=document.searchwindow.email.value
-    var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-    if (filter.test(str))
-	testresults=true
-    else{
-	alert("Please input a valid email address!")
-    	testresults=false
-	return false;
-    }
-    return (testresults)
-	}
+	    //CHECK EMAIL VALIDATION
+	    var testresults;
+	    function checkemail() {
+		var str=document.searchwindow.email.value
+		var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+		if (filter.test(str))
+		    testresults=true
+		else {
+		    alert("Please input a valid email address!");
+		    testresults = false;
+		    return false;
+		}
+		return (testresults)
+	    } // checkemail
 
-function check(){
-    if (document.layers||document.getElementById||document.all)
-    return checkemail()
-    else
-    return true
-	}
-
-	//end email validation
-
+	    function check() {
+		if (document.layers||document.getElementById||document.all)
+		return checkemail()
+		else
+		return true
+	    } // check
 	</script>
     </head>
 
@@ -54,6 +51,7 @@ function check(){
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
 			<li class="active"><a href="index.php">Search</a></li>
+			<li><a href="results.php">Search Status</a></li>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
@@ -70,16 +68,13 @@ function check(){
 		    <div class="row">
 			<div class="col-md-6" id="search-title">
 			    <h1>Search Results</h1>
+
 			    <?php
-				define('__ROOT3__',dirname(__FILE__));
-				require_once(__ROOT3__ . '/flight_tracker.php');
+				//define('__ROOT3__',dirname(__FILE__));
+				//require_once(__ROOT3__ . '/flight_tracker.php');
+				require_once('./flight_tracker.php');
 
 				$post = $_POST;
-
-				echo "<pre>";
-				print_r($post);
-				echo "</pre>";
-
 				echo "<h3 id=\"trip-title\">" . $post['depart_date'] . "  <strong>" . 
 				    $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
 				    "<strong>" . $post['destination'] . "</strong>  ";
@@ -119,27 +114,28 @@ function check(){
 					</select>
 				    </label>
 
-				    
-
 				    <?php
-					echo "<input type=\"hidden\" name=\"origin\" value=\"".$post['source']."\"/>";
-					echo "<input type=\"hidden\" name=\"destination\" value=\"".$post['destination']."\"/>";
-					echo "<input type=\"hidden\" name=\"depart_date\" value=\"".$post['depart_date']."\"/>";
+					echo <<<_SECTION1
+					<input type="hidden" name="origin" value="{$post['source']}"/>
+					<input type="hidden" name="destination" value="{$post['destination']}"/>
+					<input type="hidden" name="depart_date" value="{$post['depart_date']}"/>
+_SECTION1;
 					if (isset($post['return_date']))
 					    echo "<input type=\"hidden\" name=\"return_date\" value=\"".$post['return_date']."\"/>";
 					else
 					    echo "<input type=\"hidden\" name=\"return_date\" value=\"NULL\"/>";
-					echo "<input type=\"hidden\" name=\"adults\" value=\"".$post['adults']."\"/>";
-					echo "<input type=\"hidden\" name=\"children\" value=\"".$post['children']."\"/>";
-					echo "<input type=\"hidden\" name=\"seniors\" value=\"".$post['seniors']."\"/>";
-					echo "<input type=\"hidden\" name=\"seat_infant\" value=\"".$post['seat_infants']."\"/>";
-					echo "<input type=\"hidden\" name=\"lap_infant\" value=\"".$post['lap_infants']."\"/>";
+					echo <<<_SECTION2
+					<input type="hidden" name="adults" value="{$post['adults']}"/>
+					<input type="hidden" name="children" value="{$post['children']}"/>
+					<input type="hidden" name="seniors" value="{$post['seniors']}"/>
+					<input type="hidden" name="seat_infant" value="{$post['seat_infants']}"/>
+					<input type="hidden" name="lap_infant" value="{$post['lap_infants']}"/>
+_SECTION2;
 
 					foreach ($post['airline'] as $air)
 					    echo "<input type=\"hidden\" name=\"airline[]\" value=\"".$air."\"/>";
 
 					echo "<input type=\"hidden\" name=\"price\" value=\"".$post['price']."\"/>";
-					
 				    ?>
 
 				    <input id="search-submit-button" class="btn btn-info btn-md" 
@@ -147,37 +143,55 @@ function check(){
 				    
 				</div>
 			    </form>
-			</div>
-		    </div>
+			</div><!--end col-->
+		    </div><!--end row-->
 
 		    <?php
-			$result = getResults($post);
+			$result = getResults($post, 50);
 			$trips = $result->getTrips();
-			$rowCount = printResults($trips, $post);
+
+			if (count($trips->getTripOption()) <= 0)
+			    echo "<h2>No Results Found</h2>";
+			else
+			    $rowCount = printResults($trips, $post);
 		    ?>
+		    <h4>
+			<strong>*NOTE:</strong> 
+			    If you were hoping to find
+			    more search results, then
+			    we recommend broadening your
+			    search parameters, particularly
+			    your maximum price range or
+			    your preferred airline.
+		    </h4>
 
 		</div>
 		<div class="col-xs-4 col-md-1"></div>
 	    </div>
 	</div>
     </body>
+
     <script>
 	window.onload=function(){$('.dropdown').hide();};
+
 	<?php
 	    for ($i = 0; $i < $rowCount; $i++)
 	    {
-		echo "$(document).ready(function () {";
-		    echo "$('#btnExpCol$i').click(function () {";
-			echo "if ($(this).val() == 'Collapse') {";
-			    echo "$('#row$i').stop().slideUp('3000');";
-			    echo "$(this).val(' Expand ');";
-			echo "} else {";
-			    echo "$('#row$i').stop().slideDown('3000');";
-			    echo "$(this).val('Collapse');";
-			echo "}";
-		    echo "});";
-		echo "});";
-	    }
+		echo <<<_SECTION3
+		$(document).ready(function () {
+		    $('#btnExpCol{$i}').click(function () {
+			if ($(this).val() == 'Collapse') {
+			    $('#row{$i}').stop().slideUp('3000');
+			    $(this).val(' Expand ');
+			} else {
+			    $('#row{$i}').stop().slideDown('3000');
+			    $(this).val('Collapse');
+			}
+		    });
+		});
+_SECTION3;
+	    } // for
 	?>
+
     </script>
 </html>

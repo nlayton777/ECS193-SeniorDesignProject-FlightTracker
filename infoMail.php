@@ -14,7 +14,7 @@
 
 			define('__ROOT3__',dirname(__FILE__));
 			require_once(__ROOT3__ . '/vendor/autoload.php');
-			use Mailgun;//\Mailgun;
+			use Mailgun\Mailgun;
 			// sql query
 			// put query data in variables
 			# Instantiate the client.

@@ -1,16 +1,14 @@
 <?php
 //session_start();
-$_SESSION['id'] = 291;
-$_SESSION['email'] = "nllayton@ucdavis.edu";
-
+$post = $_POST;
 $sesh = $_SESSION;
-$session_flag = false;
-if (isset($sesh['id']) && isset($sesh['email']))
-{
-    $id = $sesh['id'];
-    $email = $sesh['email'];
-    $session_flag = true;
-}  
+$id = $post['id'];
+$email = $post['email'];
+$sesh['id'] = $post['id'];
+$sesh['email'] = $post['email'];
+
+$session_flag = true;
+
 ?>
 <!DOCTYPE html>
 <html>

@@ -38,7 +38,7 @@
 		var str = "id=<?php echo $userID; ?>&email=<?php echo $email; ?>";
 		str += "&source=<?php echo $userSource; ?>&destination=<?php echo $userDestination; ?>";
 		xmlhttp.open("GET","background_search.php?" + str,true);
-		xmlhttp.send();
+		//xmlhttp.send();
 	    }; // sendMessage()
 	</script>
     </head>

@@ -987,10 +987,12 @@ $(function() {
 	
 function CountdownClock(time)
 {
+	//time is in hours
     var numhours = time;
-    numhours = numhours/24;
+    //convert to days 
+    var numDays = numhours/24;
 
-    var remaining_hours = 3600 * 24 * numhours;
+    var remaining_hours = 3600 * 24 * numDays;
     var clock = $('.clock').FlipClock(remaining_hours, {
     clockFace: 'DailyCounter',
     countdown: true

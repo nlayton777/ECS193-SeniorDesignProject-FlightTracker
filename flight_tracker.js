@@ -1004,7 +1004,8 @@ $(function() {
 	
 function CountdownClock(time)
 {
-    var numhours = time;
+    var numseconds = time
+    var numhours = numseconds / (60 * 60);
     numhours = numhours/24;
 
     var remaining_hours = 3600 * 24 * numhours;

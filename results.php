@@ -162,6 +162,7 @@ _STUFF2;
 	window.onload=function(){$('.dropdown').hide();};
 
 	<?php
+	/*
 	    for ($i = 0; $i < $rowCount; $i++)
 	    {
 		echo <<<_SECTION1
@@ -178,6 +179,7 @@ _STUFF2;
 		});
 _SECTION1;
 	    } // for
+	    */
 	?>
 
     </script>

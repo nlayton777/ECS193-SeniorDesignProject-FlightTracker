@@ -162,7 +162,7 @@
 			    <section id="slider"></section>
 			    <script>
 				    $("#slider").noUiSlider({
-					start: 500, connect: 'lower', step: 10,
+					start: 5000, connect: 'lower', step: 10,
 					range: {'min': 0,'75%': 1000,'max': 5000}
 				    });
 				$("#slider").Link('lower').to($('#priceInput'));

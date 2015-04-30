@@ -204,7 +204,7 @@ _QUERY4;
 	if (!$insertResult) die ($connection->error);
 
 	//If sale total is less than current lowest price found, update table and send mail to user
-	/*
+	
 	if($rowCount['opt_saletotal'] < $min_price)
 	{
 	    $min_price = $rowCount['opt_saletotal'];
@@ -218,7 +218,7 @@ _QUERY4;
 	    // send email
 	    $result = $mgClient->sendMessage($domain, getResultsEmail($post['email'],$post['id'],$rows['origin'],$rows['destination'])); 
 	} // if lower price discovered
-	*/
+	
     } // if search still needs to be running
     else // search is over, and we need to email
     {
@@ -228,6 +228,22 @@ _QUERY4;
     // delay execution
     sleep($interval);
 } while($current_sec < $end_secs);
+
+
+//Send email once search is over
+if($current_sec < $end_secs)
+{
+
+	define('__ROOT3__',dirname(__FILE__));
+	require_once(__ROOT3__ . '/vendor/autoload.php');
+	use Mailgun\Mailgun;
+	$mgClient = new Mailgun('key-d76af0f266f20519801b8997210febfd');
+	$domain = "sandboxc740d3f374c749c391b5e8abfdee56b2.mailgun.org";
+
+	// send email
+	$result = $mgClient->sendMessage($domain, SearchOverEmail($post['email'],$post['id'],$rows['origin'],$rows['destination'])); 
+
+}
 
 function checkIsOneWay($post)
 {

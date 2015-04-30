@@ -12,56 +12,48 @@
 
 
 	<script>
+
 	    //  VALIDATION
-function check()
+
+function check(mail) 
 {
-	//check email
 
-
-    
-    if (document.layers||document.getElementById||document.all)
-    {
-
-		var str=document.searchwindow.email.value
-    	var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-    	if (filter.test(str))
-			var testresults=true
-    	else{
-			alert("Please input a valid email address!")
-			return false;
-			}
-	}
-    	
-	//validation search time is after depart date
- //    var currentSecs = new Date().getTime()/1000; //get time right now in seconds 
+	var currentSecs = new Date().getTime()/1000; //get time right now in seconds 
 	    
- //    var searchTime = document.getElementById("numHours").value;
- //    var searchSecs = searchTime * 60 * 60; //search window time in seconds 
+    var searchTime = document.getElementById("numHours").value;
+    var searchSecs = searchTime * 60 * 60; //search window time in seconds 
 
- //    var CurrentSearchSecs = currentSecs + searchSecs;
+    var CurrentSearchSecs = currentSecs + searchSecs;
 
     
- //   //get Departure date and convert to seconds 
+   //get Departure date and convert to seconds 
 	 <?php 
 	 	require_once('./flight_tracker.php');
 
 		$post = $_POST;
-	// 	echo "var departureDate = \"{$post['depart_date']}\";";
-	 ?>   
+		$departureDate = $post['depart_date'];
+		$departureDate = strtotime($departureDate);
+	 	echo "var departSecs = \"{$departureDate}\";";
+	 ?>  
 
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchwindow.email.value))
+  {
+		if((CurrentSearchSecs) > departSecs)
+		{
+			alert("Please choose a search time that will complete before your departure date.")
+			return false;
+		}
+		return(true);
+  }
+  else
+  {
+  	//alert(departSecs);
+  	alert("You have entered an invalid email address!")
+    return (false)
+  }
+    
+}//end  check() --  validation for email and search time
 
-	// var departSecs = getDateFromFormat(departureDate, "MM/DD/YYYY");
-
-	// departSecs = departSecs/1000;
-
-	// if((currentSecs + searchSecs) > departSecs)
-	// {
-	// 	alert("Please choose a search time that will complete before your departure date.")
-		
-	// }
-
-}
-	//end  validation
 	</script>
 
 
@@ -84,7 +76,7 @@ function check()
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
 			<li class="active"><a href="index.php">Search</a></li>
-			<li><a href="results.php">Search Status</a></li>
+			<li><a href="signin.php">Search Status</a></li>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
@@ -112,6 +104,120 @@ function check()
 				    echo $post['return_date'];
 				echo "</h3>";
 			    ?>
+
+			    <div>
+			    	<h3 style="color:red">Price Analysis Hints:</h3>
+			    	<?php
+			    		$currentDate = date('m/d/Y');
+
+			    		$departDate = $post['depart_date'];
+			    		$returnDate = $post['return_date'];
+
+			    		$timeNow = strtotime($currentDate);
+			    		$timeDepart = strtotime($departDate);
+			    		$timeReturn = strtotime($returnDate);
+
+			    		$departDay = date("N", $timeDepart);
+			    		$returnDay = date("N", $timeReturn);
+
+			    		$diff = abs($timeDepart - $timeNow);
+			    		
+			    		$diff /= 60 * 60 * 24; 
+
+			    		// MOST OPTIMAL SITUATION 
+			    		if((($departDay == 2 || $departDay == 3) && ($returnDay == 2 || $returnDay == 3)) && $diff == 47)
+			    		{
+			    			echo "You are planning on travelling on the best priced days of the week, and according to historic trends today is the prime day to book your tickets for the lowest price. We recommend you book your tickets now!";
+			    		}
+
+			    		//check for individual cases
+			    		else
+			    		{
+				    		//ANALYSIS ON DAY OF WEEK (TUES AND WED ARE BEST DAYS TO TRAVEL ON)
+				    		if(($departDay == 2 || $departDay == 3) && ($returnDay == 2 || $returnDay == 3))
+				    		{
+				    			if($departDay == 2)
+								{
+									$dow = "Tuesday";
+								}
+								else if ($departDay == 3)
+								{
+									$dow = "Wednesday";
+								}
+								if($returnDay == 2)
+								{
+									$dow2 = "Tuesday";
+								}
+								else if ($returnDay == 3)
+								{
+									$dow2 = "Wednesday";
+								}
+				    			echo "You are currently planning on departing on a " .$dow. " and planning to return on " . $dow2. ". These are historically the best priced days of the week to purchase a flight for. \n";
+				    		}
+
+				    		else if($departDay == 2 || $departDay == 3)
+				    		{
+				    			if($departDay == 2)
+								{
+									$dow = "Tuesday";
+								}
+								else if ($departDay == 3)
+								{
+									$dow = "Wednesday";
+								}
+				    			echo "You are currently planning on departing on a " .$dow. ". This is historically the best priced day of the week to purchase a flight for. \n";
+				    		}
+
+				    		else if($returnDay == 2 || $returnDay == 3)
+				    		{
+				    			if($returnDay == 2)
+								{
+									$dow = "Tuesday";
+								}
+								else if ($returnDay == 3)
+								{
+									$dow = "Wednesday";
+								}
+				    			echo "You are currently planning on returning on a " .$dow. ". This is historically the best priced day of the week to purchase a flight for. \n";
+				    		} 
+
+				    		//ANALYSIS ON DAYS BEFORE FLIGHT (47 DAYS BEFORE FLIGHT = BEST DAY TO PURCHASE FLIGHT)
+				    		if($diff == 47)
+				    		{
+				    			echo "According to past trends, we recommend purchasing your flight ticket today because it is the prime day for you to book your flight!\n";	
+				    			echo "\n";		   						
+				    		}
+
+				    		else if($diff > 47 && $diff < 114)
+				    		{
+				    			$dayLeft = 114 - $diff;
+				    			echo "This is the prime booking window. We recommend that you shold book your flight in the next ", $dayLeft," days before prices begin to rise.\n";
+				    			echo "\n";	
+				    		}
+
+				    		else if($diff < 47 && $diff > 14)
+				    		{
+				    			$days = $diff - 14;
+				    			echo "You are reaching the end of the prime booking window for this flight. We recommend that you should book your flight within the next " .$days. " days before prices begin to rise.\n";
+				    			echo "\n";	
+				    		}
+				    		else if($diff > 114)
+				    		{
+				    			$daysRemain = $diff - 114;
+				    			echo "It seems to be a little too early to book this flight. We would recommend waiting at least " .$daysRemain. " days until booking your flight that way you can book within the prime booking window.\n";
+				    			echo "\n";	
+				    		}
+				    		else
+				    		{
+				    			echo "Below are the current flight choices our search bot has found for you. We recommend booking soon since your flight is coming up very soon.\n";
+				    			echo "\n";	
+				    		}
+				    	}
+
+			    	?>
+
+
+			    </div>
 			</div>
 
 			<div class="col-md-6" id="background-info">
@@ -124,7 +230,7 @@ function check()
 				searching.
 			    </p>
 
-			    <form name="searchwindow" onsubmit="return check();" method="post" action="countdown.php">
+			    <form name="searchwindow" onsubmit="return check(email);" method="post" action="countdown.php">
 				<div class="form-group form-inline">
 				    <label for="email">Email
 					<input id="email" type="email" name="email">

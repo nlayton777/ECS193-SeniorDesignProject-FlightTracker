@@ -97,6 +97,8 @@ function validate(){
 	var returnError = "Enter a valid Return Date";
 	var passError = "Enter a Number of Passengers between 1 and 9";
 	
+	var oneway = document.getElementById('oneway');
+	
     var sourceLine = document.getElementById("source").value;
 	var sCode = sourceLine.substr(-4, 3);
 	if(sourceLine == ""){
@@ -154,7 +156,7 @@ function validate(){
 		});
   		return false;
 	}
-	if(!isDate(returnDate)){
+	if(!isDate(returnDate) && !oneway.checked){
 		bootbox.dialog({
   			title: "Whoops! We need you to: ",
   			message: returnError
@@ -162,12 +164,14 @@ function validate(){
 		return false;
 	}
 	
-	if(returnDate < departDate){
-		bootbox.dialog({
-  			title: "Whoops! We need you to: ",
-  			message: returnError
-		});
-		return false;
+	if(!oneway.checked){
+	  if(returnDate < departDate){
+		  bootbox.dialog({
+			  title: "Whoops! We need you to: ",
+			  message: returnError
+		  });
+		  return false;
+	  }
 	}
      
     var ad= document.getElementById("adult");

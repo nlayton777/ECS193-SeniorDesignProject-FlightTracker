@@ -46,8 +46,13 @@
 
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
-			<li class="active"><a href="index.php">Search</a></li>
-			<li><a href="results.php">Search Status</a></li>
+			<li class="active"><a href="index.php">Find a Flight</a></li>
+			<?php
+			    // if session is set
+				//echo "<li><a href=\"results.php\">My Search</a></li>";
+			    // else if not set
+				echo "<li><a href=\"signin.php\">My Search</a></li>";
+			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
@@ -87,7 +92,7 @@
 			    <!--DESTINATION FIELD-->
 			    <label for="destination" class="sr-only">Arrival Location</label>
 			    <input class="textbox"  id="destination" name="destination" placeholder=" ---Select a Destination---"/>	
-
+			    
 			    <!--DEPART DATE FIELD-->
 			    <label for="depart-date" class="sr-only">Date of Departure</label>
 				<input type="text" class="form-control" id="datepickerD" 
@@ -97,82 +102,72 @@
 			    <label for="return-date" class="sr-only">Date of Return</label>
 				<input type="text" class="form-control" id="datepickerR" 
 				name="return_date" placeholder="Return"/>
-			</div><!--End Form Group-->
-		    </div> <!--End Row 1-->
+				</div>
 
-		    <div class="row">
-			<div class="form-group form-inline">
-
-			    <!--PASSENGERS FIELD-->
-			    <label for="adult">
-				    &nbsp;Adults
-				    <input type='button' value='-' class='btn btn-info qtyminus' field='adults' />
-				    <input type='text' name='adults' value='0' class='qty' id='adult' />
-				    <input type='button' value='+' class='btn btn-info qtyplus' field='adults' />
-			    </label>
-			    <label for="child">
-				    &nbsp;Children
-				    <input type='button' value='-' class='btn btn-info qtyminus' field='children' />
-				    <input type='text' name='children' value='0' class='qty' id='child'  />
-				    <input type='button' value='+' class='btn btn-info qtyplus' field='children' />
-			    </label>
-			    <label for="senior">
-				    &nbsp;Seniors
-				    <input type='button' value='-' class='btn btn-info qtyminus' field='seniors' />
-				    <input type='text' name='seniors' value='0' class='qty'id='senior'/>
-				    <input type='button' value='+' class='btn btn-info qtyplus' field='seniors' />
-			    </label>
-			    <label for="seatinfant">
-				    &nbsp;Seat Infant
-				    <input type='button' value='-' class='btn btn-info qtyminus' field='seat_infants' />
-				    <input type='text' name='seat_infants' value='0' class='qty' id='seatinfant' />
-				    <input type='button' value='+' class='btn btn-info qtyplus' field='seat_infants' />
-			    </label>   
-			    <label for="lapinfant">
-				    &nbsp;Lap Infant
-				    <input type='button' value='-' class='btn btn-info qtyminus' field='lap_infants' />
-				    <input type='text' name='lap_infants' value='0' class='qty' id='lapinfant' />
-				    <input type='button' value='+' class='btn btn-info qtyplus' field='lap_infants' />
-			    </label>
-
-			</div><!--End Form Group-->
-		    </div> <!--End Row 2-->
+		    <div class="form-group form-inline">
+			<!--PASSENGERS FIELD-->
+			<label for="adult">
+				&nbsp;Adults
+				<input type='button' value='-' class='btn btn-info qtyminus' field='adults' />
+				<input type='text' name='adults' value='0' class='qty' id='adult' />
+				<input type='button' value='+' class='btn btn-info qtyplus' field='adults' />
+			</label>
+			<label for="child">
+				&nbsp;Children
+				<input type='button' value='-' class='btn btn-info qtyminus' field='children' />
+				<input type='text' name='children' value='0' class='qty' id='child'  />
+				<input type='button' value='+' class='btn btn-info qtyplus' field='children' />
+			</label>
+			<label for="senior">
+				&nbsp;Seniors
+				<input type='button' value='-' class='btn btn-info qtyminus' field='seniors' />
+				<input type='text' name='seniors' value='0' class='qty'id='senior'/>
+				<input type='button' value='+' class='btn btn-info qtyplus' field='seniors' />
+			</label>
+			<label for="seatinfant">
+				&nbsp;Seat Infant
+				<input type='button' value='-' class='btn btn-info qtyminus' field='seat_infants' />
+				<input type='text' name='seat_infants' value='0' class='qty' id='seatinfant' />
+				<input type='button' value='+' class='btn btn-info qtyplus' field='seat_infants' />
+			</label>   
+			<label for="lapinfant">
+				&nbsp;Lap Infant
+				<input type='button' value='-' class='btn btn-info qtyminus' field='lap_infants' />
+				<input type='text' name='lap_infants' value='0' class='qty' id='lapinfant' />
+				<input type='button' value='+' class='btn btn-info qtyplus' field='lap_infants' />
+			</label>
 			
-		    <div class="row">
-			<div class="form-group form-inline"> 		
+			<!--AIRLINE FIELD-->
+			<label for="airline">Preferred Airline</label>
+			<select class="form-control" id="airline" name="airline[]"
+				    form="search_form" multiple="multiple">
+			<option value="none" selected>No Preference</option>
+			<?php
+			    if (file_exists("airlines.txt")){
+				$codes = fopen("airlines.txt",'r');				
+				while ($line = fgets($codes)){
+				    $line_code = explode("(", $line);
+				    $code = substr($line_code[1], 0, 2);
+				    echo "<option value=\"{$code}\">{$line_code[0]}</option>";
+				}
+			    } 
+			?>
+			</select>
+		    </div>
 
-			    <!--AIRLINE FIELD-->
-			    <label for="airline" class="sr-only">Preferred Airline</label>
-			    <select class="form-control" id="airline" name="airline[]" 
-					form="search_form" multiple="multiple">
-			    <option value="none" selected>Preferred Airline</option>
-			    <?php
-				if (file_exists("airlines.txt")){
-				    $codes = fopen("airlines.txt",'r');				
-				    while ($line = fgets($codes)){
-					$line_code = explode("(", $line);
-					$code = substr($line_code[1], 0, 2);
-					echo "<option value=\"{$code}\">{$line_code[0]}</option>";
-				    }
-				} 
-			    ?>
-			    </select>
-			    
-			    <!--PRICE FIELD-->	
-			    <label for="price">Max Price: </label>
-			    <input name="price" id="price"></input>
-			    <div id="slider"></div>
-
+		    <!--PRICE FIELD-->	
+		    <div class="form-group form-inline" id= "priceSlider"> 		
+		    <label for="price">Max Price: </label>
+			    <input class="textboxPrice" name="price" id="priceInput"></input>
+			    <section id="slider"></section>
 			    <script>
-				$("#slider").noUiSlider({
-				    start: 1000, connect: 'lower', step: 10,
-				    range: {'min': 0,'75%': 1500,'max': 2000}
+				    $("#slider").noUiSlider({
+					start: 500, connect: 'lower', step: 10,
+					range: {'min': 0,'75%': 1000,'max': 5000}
 				    });
-				$("#slider").Link('lower').to($('#price'));
+				$("#slider").Link('lower').to($('#priceInput'));
 			    </script>
-
-			</div><!--End Form Group-->
-		    </div> <!--End Row 3-->
+		    </div>
 			
 		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick=" return validate();" value="Find your flight!"/>
 		</form>

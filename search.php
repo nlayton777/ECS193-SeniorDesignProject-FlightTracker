@@ -10,29 +10,58 @@
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
 
-	<script>
-	    //CHECK EMAIL VALIDATION
-	    var testresults;
-	    function checkemail() {
-		var str=document.searchwindow.email.value
-		var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-		if (filter.test(str))
-		    testresults=true
-		else {
-		    alert("Please input a valid email address!");
-		    testresults = false;
-		    return false;
-		}
-		return (testresults)
-	    } // checkemail
 
-	    function check() {
-		if (document.layers||document.getElementById||document.all)
-		return checkemail()
-		else
-		return true
-	    } // check
+	<script>
+	    //  VALIDATION
+function check()
+{
+    //check email
+    if (document.layers||document.getElementById||document.all)
+    {
+
+		var str=document.searchwindow.email.value
+    	var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+    	if (filter.test(str))
+			var testresults=true
+    	else{
+			alert("Please input a valid email address!")
+			return false;
+			}
+	}
+    	
+	//validation search time is after depart date
+ //    var currentSecs = new Date().getTime()/1000; //get time right now in seconds 
+	    
+ //    var searchTime = document.getElementById("numHours").value;
+ //    var searchSecs = searchTime * 60 * 60; //search window time in seconds 
+
+ //    var CurrentSearchSecs = currentSecs + searchSecs;
+
+    
+ //   //get Departure date and convert to seconds 
+	 <?php 
+	 	require_once('./flight_tracker.php');
+
+		$post = $_POST;
+	// 	echo "var departureDate = \"{$post['depart_date']}\";";
+	 ?>   
+
+
+	// var departSecs = getDateFromFormat(departureDate, "MM/DD/YYYY");
+
+	// departSecs = departSecs/1000;
+
+	// if((currentSecs + searchSecs) > departSecs)
+	// {
+	// 	alert("Please choose a search time that will complete before your departure date.")
+		
+	// }
+
+}
+	//end  validation
 	</script>
+
+
     </head>
 
     <body>
@@ -51,8 +80,13 @@
 
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
-			<li class="active"><a href="index.php">Search</a></li>
-			<li><a href="results.php">Search Status</a></li>
+			<li class="active"><a href="index.php">Find a Flight</a></li>
+			<?php
+			    // if session is set
+				//echo "<li><a href=\"results.php\">My Search</a></li>";
+			    // else
+				echo "<li><a href=\"signin.php\">My Search</a></li>";
+			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
@@ -93,7 +127,7 @@
 				searching.
 			    </p>
 
-			    <form name="searchwindow" onsubmit="return check()" method="post" action="countdown.php">
+			    <form name="searchwindow" onsubmit="return check();" method="post" action="countdown.php">
 				<div class="form-group form-inline">
 				    <label for="email">Email
 					<input id="email" type="email" name="email">

@@ -23,8 +23,7 @@
 	?>
 
 	<script>
-	    window.onload = function() {sendMessage();};
-	    function sendMessage() {
+	    window.onload = function() {
 		var xmlhttp;
 		if (window.XMLHttpRequest)
 		{ xmlhttp = new XMLHttpRequest(); }
@@ -40,7 +39,7 @@
 		str += "&source=<?php echo $userSource; ?>&destination=<?php echo $userDestination; ?>";
 		xmlhttp.open("GET","background_search.php?" + str,true);
 		xmlhttp.send();
-	    } // sendMessage()
+	    }; // sendMessage()
 	</script>
     </head>
 
@@ -60,8 +59,13 @@
 
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
-			<li class="active"><a href="index.php">Search</a></li>
-			<li><a href="results.php">Search Status</a></li>
+			<li class="active"><a href="index.php">Find a Flight</a></li>
+			<?php
+			    // if session is set
+				//echo "<li><a href=\"results.php\">My Search</a></li>";
+			    // else
+				echo "<li><a href=\"signin.php\">My Search</a></li>";
+			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">

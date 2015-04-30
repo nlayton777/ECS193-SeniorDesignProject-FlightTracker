@@ -374,7 +374,7 @@ _QUERY4;
 
     function getEndTime($search_time)
     //{ return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));} 
-    { return date('Y-m-d H:i:s',time() + (2 * 60)); }
+    { return date('Y-m-d H:i:s',time() + (1/30 * 60 * 60)); }
     // getEndTime($search_time)
 
     function getConfirmationEmail($email,$userSource,$userDestination,$userID)
@@ -564,5 +564,5 @@ _QUERY;
 	{ }
 
 	return ($remaining <= 0 ? 0 : $remaining);
-    } // getRemainingTime();
+    } // getRemainingTime(); returns UNIX timestamp
 ?>

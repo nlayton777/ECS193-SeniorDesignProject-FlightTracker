@@ -37,8 +37,13 @@
 		}
 		var str = "id=<?php echo $userID; ?>&email=<?php echo $email; ?>";
 		str += "&source=<?php echo $userSource; ?>&destination=<?php echo $userDestination; ?>";
+<<<<<<< HEAD
 		xmlhttp.open("GET","background_search.php?" + str,true);
-		xmlhttp.send();
+		//xmlhttp.send();
+=======
+//		xmlhttp.open("GET","background_search.php?" + str,true);
+//		xmlhttp.send();
+>>>>>>> b0dd8d6fda8c61bc09cd74bca4e257dade6c7cb7
 	    }; // sendMessage()
 	</script>
     </head>

@@ -75,8 +75,14 @@ function check(mail)
 
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
-			<li class="active"><a href="index.php">Search</a></li>
-			<li><a href="signin.php">Search Status</a></li>
+
+			<li class="active"><a href="index.php">Find a Flight</a></li>
+			<?php
+			    // if session is set
+				//echo "<li><a href=\"results.php\">My Search</a></li>";
+			    // else
+				echo "<li><a href=\"signin.php\">My Search</a></li>";
+			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
@@ -95,8 +101,9 @@ function check(mail)
 			    <h1>Search Results</h1>
 
 			    <?php
-			
-				
+				require_once('./flight_tracker.php');
+
+				$post = $_POST;
 				echo "<h3 id=\"trip-title\">" . $post['depart_date'] . "  <strong>" . 
 				    $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
 				    "<strong>" . $post['destination'] . "</strong>  ";

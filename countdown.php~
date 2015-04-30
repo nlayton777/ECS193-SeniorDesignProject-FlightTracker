@@ -13,17 +13,17 @@
 	<script src="flipclock.min.js"></script>
 	<script src="flight_tracker.js"></script>
 	<?php
-	    //define('__ROOT4__',dirname(__FILE__));
-	    //require_once(__ROOT4__ . '/flight_tracker.php');
-	    require_once('./flight_tracker.php');
+	    require_once('flight_tracker.php');
 
 	    $post = $_POST;
+	    $email = $post['email'];
+	    $userSource = $post['origin'];
+	    $userDestination = $post['destination'];
 	    $userID = createNewSearch($post);
 	?>
 
 	<script>
-	    window.onload = function() {sendMessage();};
-	    function sendMessage() {
+	    window.onload = function() {
 		var xmlhttp;
 		if (window.XMLHttpRequest)
 		{ xmlhttp = new XMLHttpRequest(); }
@@ -35,11 +35,11 @@
 			document.getElementById("test").innerHTML = xmlhttp.responseText;
 		    }
 		}
-		var str = "id=<?php echo $userID ?>&email=<?php echo $post['email'] ?>";
-		//document.getElementById("test").innerHTML = str;
+		var str = "id=<?php echo $userID; ?>&email=<?php echo $email; ?>";
+		str += "&source=<?php echo $userSource; ?>&destination=<?php echo $userDestination; ?>";
 		xmlhttp.open("GET","background_search.php?" + str,true);
 		xmlhttp.send();
-	    } // sendMessage()
+	    }; // sendMessage()
 	</script>
     </head>
 
@@ -59,8 +59,13 @@
 
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
-			<li class="active"><a href="index.php">Search</a></li>
-			<li><a href="signin.php">Search Status</a></li>
+			<li class="active"><a href="index.php">Find a Flight</a></li>
+			<?php
+			    // if session is set
+				//echo "<li><a href=\"results.php\">My Search</a></li>";
+			    // else
+				echo "<li><a href=\"signin.php\">My Search</a></li>";
+			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
@@ -90,16 +95,6 @@
 		    $remaining = getRemainingTime($userID,$post['email']);
 		    echo "<script>CountdownClock({$remaining})</script>";
 
-		    $userSource = $post['origin'];
-		    $userDestination = $post['destination'];
-
-		    // send email to user
-		    define('__ROOT3__',dirname(__FILE__));
-		    require_once(__ROOT3__ . '/vendor/autoload.php');
-		    use Mailgun\Mailgun;
-		    $mgClient = new Mailgun('key-d76af0f266f20519801b8997210febfd');
-		    $domain = "sandboxc740d3f374c749c391b5e8abfdee56b2.mailgun.org";
-		    $result = $mgClient->sendMessage($domain, getConfirmationEmail($post,$userSource,$userDestination,$userID));
 
 		    echo <<<_SECTION1
 		    <div class="row">

@@ -11,18 +11,15 @@
 	   html,body {
 		 height:100%;
 	   }
-
 	   h1 {
 		 font-family: Arial,sans-serif;
 		 font-size: 63px;
 		 font-weight: bold;
 		 color: #000000;
 	   }
-
 	   .lead {
 		   color:#000000;
 	   }
-
 	   /* Custom container */
 	   .container-full {
 		 margin: 0 auto;
@@ -36,29 +33,23 @@
   		 background-position: center center;
   		 opacity: 0.85;	   
   		 } 
-
 	   .container-full a {
 		 color:#efefef;
 		 text-decoration:none;
 	   }
-	   
 	   .transbox {
 	   	  margin-top: 20px;
 	   	  margin-bottom: 20px;
 	   	  background-color: #fff4e9;
 	   	  opacity: 0.80;
 	   }
-
 	   .v-center {
 		 margin-top:5%;
 	   }
-	   
 	   textarea {
     	 resize: none;
 	   }
-	   
 	</style>
-	
     </head>
 
     <body>
@@ -75,8 +66,13 @@
 		</div>
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
-			<li><a href="index.php">Search</a></li>
-			<li><a href="results.php">Search Status</a></li>
+			<li><a href="index.php">Find a Flight</a></li>
+			<?php
+			    // if session is set
+				//echo "<li><a href=\"results.php\">My Search</a></li>";
+			    // else
+				echo "<li><a href=\"signin.php\">My Search</a></li>";
+			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">

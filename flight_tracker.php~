@@ -377,9 +377,13 @@ _QUERY4;
     { return date('Y-m-d H:i:s',time() + (1/30 * 60 * 60)); }
     // getEndTime($search_time)
 
+<<<<<<< HEAD
     define ("URL", "localhost:10088/signin.php");
 
     function getConfirmationEmail(&$post,$userSource,$userDestination,$userID)
+=======
+    function getConfirmationEmail($email,$userSource,$userDestination,$userID)
+>>>>>>> 7c87e0d0b79ddbf0eecb8a968ce9ade1840078e7
     {
 	$returnArr = array(
 		    'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>',

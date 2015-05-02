@@ -141,7 +141,7 @@ function check(mail)
 			    		else
 			    		{
 				    		//ANALYSIS ON DAY OF WEEK (TUES AND WED ARE BEST DAYS TO TRAVEL ON)
-				    		if(($departDay == 2 || $departDay == 3) && ($returnDay == 2 || $returnDay == 3))
+				    		if(($departDay == 2 || $departDay == 3 || $departDay == 6) && ($returnDay == 2 || $returnDay == 3 || $returnDay == 6))
 				    		{
 				    			if($departDay == 2)
 								{
@@ -150,6 +150,10 @@ function check(mail)
 								else if ($departDay == 3)
 								{
 									$dow = "Wednesday";
+								}
+								else if ($departDay == 6)
+								{
+									$dow = "Saturday";
 								}
 								if($returnDay == 2)
 								{
@@ -159,10 +163,14 @@ function check(mail)
 								{
 									$dow2 = "Wednesday";
 								}
-				    			echo "You are currently planning on departing on a " .$dow. " and planning to return on " . $dow2. ". These are historically the best priced days of the week to purchase a flight for. \n";
+								else if ($returnDay == 6)
+								{
+									$dow2 = "Saturday";
+								}
+				    			echo "You are currently planning on departing on a " .$dow. " and are planning to return on " . $dow2. ". These are historically the best priced days of the week to purchase a flight for. \n";
 				    		}
 
-				    		else if($departDay == 2 || $departDay == 3)
+				    		else if($departDay == 2 || $departDay == 3 || $departDay == 6)
 				    		{
 				    			if($departDay == 2)
 								{
@@ -172,10 +180,14 @@ function check(mail)
 								{
 									$dow = "Wednesday";
 								}
+								else if ($departDay == 6)
+								{
+									$dow = "Saturday";
+								}
 				    			echo "You are currently planning on departing on a " .$dow. ". This is historically the best priced day of the week to purchase a flight for. \n";
 				    		}
 
-				    		else if($returnDay == 2 || $returnDay == 3)
+				    		else if($returnDay == 2 || $returnDay == 3|| $returnDay == 6)
 				    		{
 				    			if($returnDay == 2)
 								{
@@ -185,8 +197,16 @@ function check(mail)
 								{
 									$dow = "Wednesday";
 								}
+								else if ($returnDay == 6)
+								{
+									$dow = "Saturday";
+								}
 				    			echo "You are currently planning on returning on a " .$dow. ". This is historically the best priced day of the week to purchase a flight for. \n";
 				    		} 
+				    		else
+				    		{
+				    			echo "If you are able to be flexible with your dates and would like to find the lowest priced flight option possible, we recommend flying on a Saturday, Tuesday, or Wednesday.";
+				    		}
 
 				    		//ANALYSIS ON DAYS BEFORE FLIGHT (47 DAYS BEFORE FLIGHT = BEST DAY TO PURCHASE FLIGHT)
 				    		if($diff == 47)

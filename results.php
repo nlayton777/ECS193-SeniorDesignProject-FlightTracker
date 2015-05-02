@@ -151,7 +151,7 @@ _STUFF2;
 	    xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 		{
-		    document.getElementById("test").innerHTML = xmlhttp.responseText;
+		    document.getElementById("test").innerHTML = xmlhttp.responseXML;
 		}
 	    }
 	    var str = "id=" + id + "&email=" + email;
@@ -182,5 +182,6 @@ _SECTION1;
 	    */
 	?>
 
+	
     </script>
 </html>

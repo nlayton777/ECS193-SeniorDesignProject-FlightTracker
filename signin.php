@@ -58,8 +58,11 @@
 
 	    function checkEnter(e)
 	    {
-		if(e.keyCode == 13)
-			doStuff();
+		if(e.which == 13 || e.keyCode == 13)
+		{
+		    doStuff();
+		    return true;
+		}
 	    } // checkEnter
 
 	    function post(params) 
@@ -107,7 +110,7 @@
 		<h3 class="sign-up-title">Check Flight Results!</h3>
 		<input type="text" class="sign-up-input" name="email" id="email" placeholder="Email" autofocus>
 		<input type="text" class="sign-up-input" name="id"  id="id" placeholder="Request ID">
-		<input type="button" value="Submit" onclick="doStuff()" onkeypress="checkEnter(event)" class="sign-up-button">
+		<input type="button" value="Submit" onclick="doStuff()" onkeypress="return checkEnter(event)" class="sign-up-button">
 	    </form>
 
 	    <form id="hiddenForm" method="post" action="results.php">

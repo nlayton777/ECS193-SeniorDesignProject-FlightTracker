@@ -648,7 +648,7 @@ _QUERY;
 	    $day_time = explode(" ",$end);
 	    $day = explode("-",$day_time[0]);
 	    $clock = explode(":",$day_time[1]);
-	    $remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time()) / 60;
+	    $remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time());
 	} catch (Exception $e)
 	{ }
 

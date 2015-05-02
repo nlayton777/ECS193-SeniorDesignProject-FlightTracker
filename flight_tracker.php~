@@ -202,7 +202,7 @@ _STUFF11;
 	// kirsten
 	//$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
 	// nina
-	$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
+	//$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
 
 	// create QPX service
 	$service = new Google_Service_QPXExpress($client);
@@ -621,17 +621,11 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
     } // SearchOverEmail()
 
 
-
-
-
-
-
     function getEndTime($search_time)
     //{ return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));} 
-    { return date('Y-m-d H:i:s', time() + 60); }
+    { return date('Y-m-d H:i:s',(time() + 60)); }
     // getEndTime($search_time)
 
-    /* returns number of seconds remaining*/
     function getRemainingTime($id,$email)
     {
 	require_once 'login.php';
@@ -651,13 +645,14 @@ _QUERY;
 	$remaining = 0;
 	try {
 	    $end = $result->fetch_assoc()['end'];
-	    echo "$end";
 	    $day_time = explode(" ",$end);
 	    $day = explode("-",$day_time[0]);
-	    print_r($day);
 	    $clock = explode(":",$day_time[1]);
-	    print_r($clock);
+<<<<<<< HEAD
+	    $remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time()) / 60;
+=======
 	    $remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time());
+>>>>>>> e52f073476322f9c1912839646e41a63fa21a5b3
 	} catch (Exception $e)
 	{ }
 

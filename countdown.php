@@ -32,7 +32,7 @@
 		xmlhttp.onreadystatechange = function() {
 		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 		    { 
-//			document.getElementById("test").innerHTML = xmlhttp.responseText;
+			document.getElementById("test").innerHTML = xmlhttp.responseText;
 		    }
 		}
 		var str = "id=<?php echo $userID; ?>&email=<?php echo $email; ?>";
@@ -84,8 +84,8 @@
 		<p>We have begun your background search and will notify you once
 		   we have either found your results or reached the end of your 
 		   search time. We have provided a summary of your search 
-		   parameters below. Please stay near your phone or computer 
-		   since we will contact you via email. Be sure to have your 
+		   parameters below. Please stay near your phone or computer. 
+		   We will be updating you via email. Be sure to have your 
 		   Request ID and Email ready when you return for the updated 
 		   search results.
 		</p>
@@ -95,7 +95,6 @@
 		    // start countdown clock
 		    $remaining = getRemainingTime($userID,$post['email']);
 		    echo "<script>CountdownClock({$remaining})</script>";
-
 
 		    echo <<<_SECTION1
 		    <div class="row">

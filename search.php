@@ -12,51 +12,41 @@
 
 
 	<script>
-
 	    //  VALIDATION
+	    function check(mail) 
+	    {
+		var currentSecs = new Date().getTime()/1000; //get time right now in seconds 
+		var searchTime = document.getElementById("numHours").value;
+		var searchSecs = searchTime * 60 * 60; //search window time in seconds 
+		var CurrentSearchSecs = currentSecs + searchSecs;
 
-function check(mail) 
-{
+		//get Departure date and convert to seconds 
+		     <?php 
+			require_once('./flight_tracker.php');
 
-	var currentSecs = new Date().getTime()/1000; //get time right now in seconds 
-	    
-    var searchTime = document.getElementById("numHours").value;
-    var searchSecs = searchTime * 60 * 60; //search window time in seconds 
+			$post = $_POST;
+			$departureDate = $post['depart_date'];
+			$departureDate = strtotime($departureDate);
+			echo "var departSecs = \"{$departureDate}\";";
+		     ?>  
 
-    var CurrentSearchSecs = currentSecs + searchSecs;
-
-    
-   //get Departure date and convert to seconds 
-	 <?php 
-	 	require_once('./flight_tracker.php');
-
-		$post = $_POST;
-		$departureDate = $post['depart_date'];
-		$departureDate = strtotime($departureDate);
-	 	echo "var departSecs = \"{$departureDate}\";";
-	 ?>  
-
- if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchwindow.email.value))
-  {
-		if((CurrentSearchSecs) > departSecs)
-		{
-			alert("Please choose a search time that will complete before your departure date.")
-			return false;
-		}
-		return(true);
-  }
-  else
-  {
-  	//alert(departSecs);
-  	alert("You have entered an invalid email address!")
-    return (false)
-  }
-    
-}//end  check() --  validation for email and search time
+		 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchwindow.email.value))
+		  {
+			if((CurrentSearchSecs) > departSecs)
+			{
+				alert("Please choose a search time that will complete before your departure date.")
+				return false;
+			}
+			return(true);
+		  }
+		  else
+		  {
+		    alert("You have entered an invalid email address!")
+		    return (false)
+		  }
+	    }//end  check() --  validation for email and search time
 
 	</script>
-
-
     </head>
 
     <body>
@@ -101,7 +91,6 @@ function check(mail)
 			    <h1>Search Results</h1>
 
 			    <?php
-				require_once('./flight_tracker.php');
 
 				$post = $_POST;
 				echo "<h3 id=\"trip-title\">" . $post['depart_date'] . "  <strong>" . 
@@ -116,19 +105,14 @@ function check(mail)
 			    	<h3 style="color:red">Price Analysis Hints:</h3>
 			    	<?php
 			    		$currentDate = date('m/d/Y');
-
 			    		$departDate = $post['depart_date'];
 			    		$returnDate = $post['return_date'];
-
 			    		$timeNow = strtotime($currentDate);
 			    		$timeDepart = strtotime($departDate);
 			    		$timeReturn = strtotime($returnDate);
-
 			    		$departDay = date("N", $timeDepart);
 			    		$returnDay = date("N", $timeReturn);
-
 			    		$diff = abs($timeDepart - $timeNow);
-			    		
 			    		$diff /= 60 * 60 * 24; 
 
 			    		// MOST OPTIMAL SITUATION 
@@ -136,9 +120,7 @@ function check(mail)
 			    		{
 			    			echo "You are planning on travelling on the best priced days of the week, and according to historic trends today is the prime day to book your tickets for the lowest price. We recommend you book your tickets now!";
 			    		}
-
-			    		//check for individual cases
-			    		else
+			    		else//check for individual cases
 			    		{
 				    		//ANALYSIS ON DAY OF WEEK (TUES AND WED ARE BEST DAYS TO TRAVEL ON)
 				    		if(($departDay == 2 || $departDay == 3) && ($returnDay == 2 || $returnDay == 3))

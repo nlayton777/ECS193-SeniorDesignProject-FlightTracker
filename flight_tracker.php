@@ -113,7 +113,9 @@ _STUFF5;
 				<th>Meal</th>
 				<th>Mileage</th>
 				<th>Duration</th>
+				<th>Flight #</th>
 			    </tr>
+
 _STUFF6;
 			    foreach ($option->getSlice() as $slice)
 			    {
@@ -121,8 +123,14 @@ _STUFF6;
 				{
 				    foreach ($segment->getLeg() as $leg)
 				    {
+				    //$orig and $dest are for the particular part of the flight
+				    //$origin and $destination are for the whole flight
 					$orig = $leg->getOrigin();
 					$dest = $leg->getDestination();
+					$origin = $post['source'];
+					$destination = $post['destination'];
+				
+					
 					echo <<<_STUFF7
 					<tr>
 					    <td>
@@ -132,12 +140,94 @@ _STUFF6;
 					    </td>
 					    <td>
 _STUFF7;
-					    $carrier = $segment->getFlight()->getCarrier(); 
+
+
+					    $carrier = $segment->getFlight()->getCarrier();
+					    $previous = NULL; 
 					    foreach ($trips->getData()->getCarrier() as $carrier)
 					    {
-						if ($carrier->getCode() == $segment->getFlight()->getCarrier())
+						//GET THE AIRLINES    	
+						if ($carrier->getCode() == $segment->getFlight()->getCarrier()){
 						    echo $carrier->getName();
+						
+ 							$site = $carrier->getCode();
+ 							//USE THE AIRLINE TO FIGURE OUT WHERE THE LINK NEEDS TO GO
+						    switch ($site) {
+	   						case "AS":
+	        					$website = 'http://www.alaskaair.com/planbook?semid=6d438f04-2f98-4cf7-86c2-38aa49bd0f07::43508::||Evergreen||&gclid=CLfmt9DWi8UCFUWVfgodf7UATQ';
+						        break;
+						    case "AA":
+						        $website = 'http://www.aa.com/reservation/roundTripSearchAccess.do';
+						        break;
+						    case "DL":
+						        $website = 'http://www.delta.com/air-shopping/searchFlights.action?tripType=ROUND_TRIP&Log=1&mkcpgn=SEzzzGGw1a&s_kwcid=TC|8489|delta%20airlines||S|e|63450946028&clickid=6d438f04-2f98-4cf7-86c2-38aa49bd0f07&tracking_id=284x2139560';
+						        break;
+						    case "F9":
+						        $website = 'https://booking.flyfrontier.com/Flight/Internal';
+						        break;
+						    case "B6":
+						        $website = 'http://www.jetblue.com/plan-a-trip/';
+						        break;
+						    case "WN":
+						        $website = 'https://www.southwest.com/';
+						        break;
+						    case "NK":
+						        $website = 'http://www.spirit.com/Default.aspx';
+						        break;
+						    case "US":
+						        $website = 'http://www.usairways.com/default.aspx?redir=https://www.google.com/';
+						        break;
+						    case "UA":
+						        $website = 'http://www.united.com/web/en-US/apps/booking/flight/searchRT.aspx';
+						        break;
+						    case "VX":
+						        $website = 'https://www.virginamerica.com/?cid=PS_gaw_BK_BNDSFO_2009_11_13&psmid=sZuPPQTzj%7Cdc_pcrid_56576924350_pkw_virgin%20america_pmt_e&psag=Virgin%20America%20-%20Top%20Term&psaid=e&gclid=CK2ssLCSlcUCFQSUfgodQj0A-w';
+						        break;
+						    default:
+						        echo "WE ARE NOT CURRENTLY SET UP TO ACCOMODATE THIS SITE";
+						        $website = 'http://giphy.com/gifs/facepalm-OWpMbuG5W4r4Y';
+						     //CREATE THE BUTTON THAT CONTAINS THE LINK							}
+							if ( $origin == $orig || $orig== $destination || $origin == 'NYC'|| $destination == 'NYC' || $origin == 'WAS'|| $destination == 'WAS'){
+								//THERE ARE A FEW ODD CASES SUCH AS NYC AND WAS WHICH HAVE MULTIPLE AIRPORTS TO THE SAME CODE
+								if ($origin == 'NYC'){
+									if ($orig == 'EWR' || $orig == 'JFK' || $orig == 'LGA'){
+										echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+									} elseif ($orig == $destination){
+
+										echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+									}
+								} elseif($destination == 'NYC'){
+									if ($orig == $origin){
+									
+										echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+									}elseif ($orig == 'EWR' || $orig == 'JFK' || $orig == 'LGA'){
+										echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+									}
+
+								}if ($origin == 'WAS'){
+									if ($orig == 'DCA' || $orig == 'IAD' || $orig == 'BWI'){
+										echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+									} elseif ($orig == $destination){
+
+										echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+									}
+								} elseif($destination == 'WAS'){
+									if ($orig == $origin){
+									
+										echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+									}elseif ($orig == 'DCA' || $orig == 'EAD' || $orig == 'BWI'){
+										echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+									}
+								}else{
+						    		echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+						    	}
+						    }
 					    }
+					}
+					    
+					 
+						   
+					   
 					    $cab = ucfirst(strtolower($segment->getCabin()));
 					    $lg = $leg->getAircraft();
 
@@ -155,10 +245,12 @@ _STUFF8;
 
 					    $mlg = $leg->getMileage();
 					    $dur = $leg->getDuration();
+					    $segFlightNum = $segment->getFlight()->getNumber();
 					    echo <<<_STUFF9
 					    </td>
 					    <td>{$mlg} miles</td>
 					    <td>{$dur} minutes</td>
+					    <td>{$site}{$segFlightNum}</td>
 					</tr>
 _STUFF9;
 				    } // end for
@@ -172,6 +264,7 @@ _STUFF9;
 		    <td class="expandButton">
 			<input type="button" id="btnExpCol{$rowCount}" class="btn btn-info search" 
 			    onclick="Expand()" value=" Expand "/>
+			 
 		    </td>
 		</tr>
 _STUFF10;
@@ -194,13 +287,13 @@ _STUFF11;
     function getResults(&$post,$num) {
 	// create client 
 	$client = new Google_Client();
-	//$client->setApplicationName("Flight Tracker");
+	$client->setApplicationName("Flight Tracker");
 	// nick
 	//$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
 	// rupali
-	$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
+	//$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 	// kirsten
-	//$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
+	$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
 	// nina
 	//$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
 
@@ -372,14 +465,16 @@ _QUERY4;
 	return $last_id;
     } // createNewSearch($post)
 
-
-    define ("URL", "localhost:10088/signin.php");
+    function getEndTime($search_time)
+    //{ return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));} 
+    { return date('Y-m-d H:i:s',time() + (3 * 60)); }
+    // getEndTime($search_time)
 
     function getConfirmationEmail(&$post,$userSource,$userDestination,$userID)
     {
 	$returnArr = array(
 		    'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>',
-		    'to'      => '<'.$email.'>',
+		    'to'      => '<'.$post['email'].'>',
 		    'subject' => 'Thank you for using UCD Flight Tracker ',
 		    'html'    => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 				  <html xmlns="http://www.w3.org/1999/xhtml" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -419,7 +514,7 @@ _QUERY4;
 								    </tr>
 								    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 									<td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-									    <a href='.URL.' class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Pack Your Bags!</a>
+									    <a href="http://www.mailgun.com" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Pack Your Bags!</a>
 									</td>
 								    </tr>
 								    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -434,7 +529,7 @@ _QUERY4;
 						    <div class="footer" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
 							<table width="100%" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-								<td class="aligncenter content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top"><a href='.URL.' style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">Unsubscribe</a> from these alerts.</td>
+								<td class="aligncenter content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top"><a href="http://www.mailgun.com" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">Unsubscribe</a> from these alerts.</td>
 							    </tr>
 							</table>
 						    </div>
@@ -455,7 +550,6 @@ _QUERY4;
 
     function getResultsEmail($userEmail, $userID, $userSource, $userDestination)
     {
-
 	$resultArr = array(
 		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 'to'      => '<'.$userEmail.'>',
 		'subject' => 'We found a flight for you!  ',
@@ -491,16 +585,16 @@ _QUERY4;
 							    </td>
 						    </tr>
 							<td class="content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-							    We have begun our search for the perfect flight for you!                                                            </td>
+							    We found the perfect flight for you!                                                            </td>
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							<td class="content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-							    Our search bot found some great flight options for you from'.$userSource.' to ' .$userDestination. '. Please check the status of your search by clicking on the button below. We will continue to post the results we find for you on this page. Use your request ID and email to login to our page to view your flight results. As a reminder your request ID was #'.$userID.'. We hope you enjoy your flight.
+							    Our search bot found the perfect flight for you from'.$userSource.' to ' .$userDestination. '. Please act on the following information quickly as we are not certain how long these deals will last for. Use your request ID and email to login to our page to view your flight results. As a reminder your request ID was #'.$userID.'. We hope you enjoy your flight.
 							</td>
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							<td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-							    <a href='.URL.' class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Check Flight Status</a>
+							    <a href="http://www.mailgun.com" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Pack Your Bags!</a>
 							</td>
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -515,7 +609,7 @@ _QUERY4;
 				    <div class="footer" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
 					<table width="100%" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 					    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-						<td class="aligncenter content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top"><a href='.URL.' style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">Unsubscribe</a> from these alerts.</td>
+						<td class="aligncenter content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top"><a href="http://www.mailgun.com" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">Unsubscribe</a> from these alerts.</td>
 					    </tr>
 					</table>
 				    </div></div>
@@ -536,96 +630,6 @@ _QUERY4;
 	return $resultsArr;
     } // getResultsEmail()
 
-
-function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
-    {
-
-	$resultArr = array(
-		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 'to'      => '<'.$userEmail.'>',
-		'subject' => 'We found a flight for you!  ',
-		'html'    => '
-		    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-		    <html xmlns="http://www.w3.org/1999/xhtml" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-		    <head>
-		    <meta name="viewport" content="width=device-width" />
-		    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		    <title>UCD Flight Tracker</title>
-
-		    </head>
-
-		    <body itemscope itemtype="http://schema.org/EmailMessage" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
-
-		    <table class="body-wrap" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
-			<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-			    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
-			    <td class="container" width="600" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; width: 100% !important; margin: 0 auto;" valign="top">
-				<div class="content" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 10px;">
-				    <table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff">
-					<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-					    <td class="alert alert-warning" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 30px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #f3a56f; margin: 0; padding: 20px;" align="center" bgcolor="#f3a56f" valign="top">
-						It\'s Time to Fly!
-					    </td>
-					</tr>
-					<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-					    <td class="content-wrap" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 10px;" valign="top">
-						<table width="100%" cellpadding="0" cellspacing="0" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-							<td class="image" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-							    <img src="https://download.unsplash.com/photo-1422464804701-7d8356b3a42f" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; max-width: 100%; margin: 0;" />
-							    </td>
-						    </tr>
-							<td class="content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-							    We have found the perfect flight for you!                                                            </td>
-						    </tr>
-						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-							<td class="content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-							    Our search bot found some flight results for you from'.$userSource.' to ' .$userDestination. '. Please check the final result of your search by clicking on the button below. Use your request ID and email to login to our page to view your flight results. As a reminder your request ID was #'.$userID.'. We hope you enjoy your flight! 
-							</td>
-						    </tr>
-						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-							<td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-							    <a href='.URL.' class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Pack Your Bags!</a>
-							</td>
-						    </tr>
-						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-							<td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-							    Thanks for choosing UCD Flight Tracker!
-							</td>
-						    </tr>
-						</table>
-					    </td>
-					</tr>
-				    </table>
-				    <div class="footer" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
-					<table width="100%" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-					    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-						<td class="aligncenter content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top"><a href='.URL.' style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">Unsubscribe</a> from these alerts.</td>
-					    </tr>
-					</table>
-				    </div></div>
-			    </td>
-			    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"></td>
-			</tr>
-		    </table>
-
-
-		    <style type="text/css">
-		    img { max-width: 100% !important; }
-		    body { -webkit-font-smoothing: antialiased !important; -webkit-text-size-adjust: none !important; width: 100% !important; height: 100% !important; line-height: 1.6 !important; }
-		    body { background-color: #f6f6f6 !important; }
-		    </style>
-		    </body>
-		    </html>'
-			    );
-	return $resultsArr;
-    } // SearchOverEmail()
-
-
-    function getEndTime($search_time)
-    //{ return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));} 
-    { return date('Y-m-d H:i:s',(time() + 60)); }
-    // getEndTime($search_time)
-
     function getRemainingTime($id,$email)
     {
 	require_once 'login.php';
@@ -642,16 +646,12 @@ _QUERY;
 	$result = $connection->query($getTime);
 	if (!$result) die($connection->error);
 	$result->data_seek(0);
-	$remaining = 0;
-	try {
-	    $end = $result->fetch_assoc()['end'];
-	    $day_time = explode(" ",$end);
-	    $day = explode("-",$day_time[0]);
-	    $clock = explode(":",$day_time[1]);
-	    $remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time());
-	} catch (Exception $e)
-	{ }
+	$end = $result->fetch_assoc()['end'];
+	$day_time = explode(" ",$end);
+	$day = explode("-",$day_time[0]);
+	$clock = explode(":",$day_time[1]);
+	$remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time()) / 60;
 
-	return ($remaining <= 0 ? 0 : $remaining);
-    } // getRemainingTime(); returns UNIX timestamp
+	return ($remaining < 0 ? 0 : $remaining);
+    } // getRemainingTime();
 ?>

@@ -32,11 +32,12 @@
 		xmlhttp.onreadystatechange = function() {
 		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 		    { 
-			//document.getElementById("test").innerHTML = xmlhttp.responseText;
+			document.getElementById("test").innerHTML = xmlhttp.responseText;
 		    }
 		}
 		var str = "id=<?php echo $userID; ?>&email=<?php echo $email; ?>";
 		str += "&source=<?php echo $userSource; ?>&destination=<?php echo $userDestination; ?>";
+			document.getElementById("test").innerHTML = str;
 		xmlhttp.open("GET","background_search.php?" + str,true);
 		xmlhttp.send();
 	    }; // sendMessage()
@@ -134,9 +135,9 @@ _SECTION1;
 			</div>
 			<div class="col-md-3"></div>
 		    </div>
-		    <!--
+		    
 		    <div id="test" class="row" style="margin-left: 200px;">stuff</div>
-		    -->
+		    
 _SECTION2;
 		?>
 	    </div>

@@ -8,21 +8,20 @@ require_once(__ROOT3__ . '/vendor/autoload.php');
 
 $post = $_GET;
 $userID = $post['id'];
-$userSource = $post['userSource'];
-$userDestination = $post['userDestination'];
+$userSource = $post['source'];
+$userDestination = $post['destination'];
 $interval = 20; //seconds for sleep function
 
 // send email to user
 use Mailgun\Mailgun;
 $mgClient = new Mailgun('key-d76af0f266f20519801b8997210febfd');
 $domain = "sandboxc740d3f374c749c391b5e8abfdee56b2.mailgun.org";
-$result = $mgClient->sendMessage($domain, getConfirmationEmail($post['email'],$userSource,$userDestination,$userID));
+$result = $mgClient->sendMessage($domain, getConfirmationEmail($post,$userSource,$userDestination,$userID));
 
 // connect to database
-$connection = new mysqli ($db_hostname, $db_username);
+$connection = new mysqli ("localhost", "root");
 if($connection->connect_error) die($connection->connect_error);
 mysqli_select_db($connection,"flight_tracker");
-
 
 //Create table emailATemailDOTcomID and add attributes 
 //$tableName = str_replace(".","DOT",str_replace("@","AT",$post['email'])) . $post['id'];
@@ -56,7 +55,7 @@ $test = $userTable;
 $resultTable = $connection->query($userTable);
 if (!$resultTable) die ($connection->error);
 
-echo "Search Has Begun!";
+//echo "Search Has Begun!";
 do {	// begin search
 
     // get search parameters 
@@ -209,7 +208,7 @@ _QUERY4;
 	if (!$insertResult) die ($connection->error);
 
 	//If sale total is less than current lowest price found, update table and send mail to user
-	/*
+/*	
 	if($rowCount['opt_saletotal'] < $min_price)
 	{
 	    $min_price = $rowCount['opt_saletotal'];
@@ -224,6 +223,7 @@ _QUERY4;
 	    $result = $mgClient->sendMessage($domain, getResultsEmail($post['email'],$post['id'],$rows['origin'],$rows['destination'])); 
 	} // if lower price discovered
 	*/
+	
     } // if search still needs to be running
     else // search is over, and we need to email
     {
@@ -234,6 +234,20 @@ _QUERY4;
     // delay execution
     sleep($interval);
 } while($current_sec < $end_secs);
+
+
+//Send email once search is over
+/*
+
+	define('__ROOT3__',dirname(__FILE__));
+	require_once(__ROOT3__ . '/vendor/autoload.php');
+	use Mailgun\Mailgun;
+	$mgClient = new Mailgun('key-d76af0f266f20519801b8997210febfd');
+	$domain = "sandboxc740d3f374c749c391b5e8abfdee56b2.mailgun.org";
+
+	// send email
+	$result = $mgClient->sendMessage($domain, SearchOverEmail($post['email'],$post['id'],$rows['origin'],$rows['destination'])); 
+	*/
 
 function checkIsOneWay($post)
 {

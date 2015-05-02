@@ -118,6 +118,7 @@ _STUFF2;
 
 		    ?>
 
+		    <!-- TABLE OF RESULTS -->
 		    <table id="results" class="table table-hover">
 			<tr>
 			    <th id="price">Total Price</th>
@@ -126,9 +127,15 @@ _STUFF2;
 			</tr>
 		    </table>
 
+		    <!-- SCRIPT TO UPDATE TABLE WITH RESULTS -->
+		    <script>
+
+		    </script>
+
 		    <div id="test">
 			blah
 		    </div>
+
 		</div><!--end col-->
 		<div class="col-xs-4 col-md-1"></div><!--end col-->
 	    </div><!--end row-->
@@ -184,7 +191,6 @@ _SECTION1;
 	    } // for
 	    */
 	?>
-
 	
     </script>
 </html>

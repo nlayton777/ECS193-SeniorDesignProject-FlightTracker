@@ -558,12 +558,9 @@ _QUERY;
 	$remaining = 0;
 	try {
 	    $end = $result->fetch_assoc()['end'];
-	    echo "$end";
 	    $day_time = explode(" ",$end);
 	    $day = explode("-",$day_time[0]);
-	    print_r($day);
 	    $clock = explode(":",$day_time[1]);
-	    print_r($clock);
 	    $remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time());
 	} catch (Exception $e)
 	{ }

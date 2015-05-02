@@ -48,7 +48,7 @@ _QUERY;
 	}
 		
 		// option id
-		$str .= "<id>{$row['opt_id']}</id>";
+		$str .= "<option_id>{$row['opt_id']}</option_id>";
 		// option saletotal
 		$str .= "<saletotal>{$row['opt_saletotal']}</saletotal>";
 
@@ -61,7 +61,7 @@ _QUERY;
 	    }
 
 		    // option slice number
-		    $str .= "<num>{$row['opt_slice_num']}</num>";
+		    $str .= "<slice_number>{$row['opt_slice_num']}</slice_number>";
 		    
 		$optSliceSegIdFlag = false;
 		if ($prevRow['opt_slice_seg_id'] != $row['opt_slice_seg_id'])
@@ -72,13 +72,13 @@ _QUERY;
 		}
 			
 			// option slice segment id
-			$str .= "<id>{$row['opt_slice_seg_id']}</id>";
+			$str .= "<segment_id>{$row['opt_slice_seg_id']}</segment_id>";
 			// option slice segment duration
 			$str .= "<duration>{$row['opt_slice_seg_duration']}</duration>";
 			// option slice segment flight carrier
-			$str .= "<carrier>{$row['opt_slice_seg_flight_carrier']}</carrier>";
+			$str .= "<flight_carrier>{$row['opt_slice_seg_flight_carrier']}</flight_carrier>";
 			// option slice segment flight number
-			$str .= "<number>{$row['opt_slice_seg_flight_num']}</number>";
+			$str .= "<flight_number>{$row['opt_slice_seg_flight_num']}</flight_number>";
 			// option slice segment cabin
 			$str .= "<cabin>{$row['opt_slice_seg_cabin']}</cabin>";
 
@@ -91,7 +91,7 @@ _QUERY;
 		    }
 
 			    // option slice segment leg id
-			    $str .= "<id>{$row['opt_slice_seg_leg_id']}</id>";
+			    $str .= "<leg_id>{$row['opt_slice_seg_leg_id']}</leg_id>";
 			    // option slice segment leg aircraft
 			    $str .= "<aircraft>{$row['opt_slice_seg_leg_aircraft']}</aircraft>";
 			    // option slice segment leg arrival time

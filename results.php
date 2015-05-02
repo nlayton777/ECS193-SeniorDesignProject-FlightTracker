@@ -1,15 +1,11 @@
 <?php
 //session_start();
-$_SESSION['id'] = 296;
-$_SESSION['email'] = "nllayton@ucdavis.edu";
 
 $post = $_POST;
-$sesh = $_SESSION;
-
+$_SESSION['id'] = $post['id'];
+$_SESSION['email'] = $post['email'];
 $id = $post['id'];
 $email = $post['email'];
-$sesh['id'] = $post['id'];
-$sesh['email'] = $post['email'];
 
 $session_flag = true;
 ?>
@@ -72,7 +68,14 @@ $session_flag = true;
 				require_once './flight_tracker.php';
 
 				$remaining = getRemainingTime($id,$email);
-				echo "<script>var remaining = {$remaining};</script>";
+				//$oneWay = verifyOneWay($id, $email);
+				$oneWay = true;
+				echo <<<_SCRIPT
+				    <script>
+					var remaining = {$remaining};
+					//var isOneWay = boolean({$oneWay});
+				    </script>
+_SCRIPT;
 				if ($remaining > 0){
 				    echo <<<_DES
 					<p id="background-description">

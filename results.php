@@ -2,7 +2,6 @@
 //session_start();
 $_SESSION['id'] = 291;
 $_SESSION['email'] = "nllayton@ucdavis.edu";
-
 $sesh = $_SESSION;
 $session_flag = false;
 if (isset($sesh['id']) && isset($sesh['email']))
@@ -25,7 +24,8 @@ if (isset($sesh['id']) && isset($sesh['email']))
 	<link rel="stylesheet" href="flipclock.css"/>
 	<script src="flipclock.min.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
-	<script src="flight_tracker.js"></script>
+	<script src="countdownClock.js"></script>
+	<script src="Chart.js"></script>
 
     </head>
 
@@ -78,11 +78,40 @@ if (isset($sesh['id']) && isset($sesh['email']))
 			</div><!--end col-->
 		    </div><!--end row-->
 
-		    <h2>Search Time Remaining</h2>
-		    <div class="clock"></div>
+			<div class="row">
+			<div class="col-md-8">	
+		    	<h2>Search Time Remaining</h2>
+		    </div><!--end col-->
+		    <div class= "col-md-4"></div>
+		    </div><!--end row-->
+		    	
+		    <div class="row">
+			<div class="col-md-8">	
+		    	<div class="my-clock"></div>
+		    </div><!--end col-->
+		    <div class="col-md-4">
+		    	<canvas id="buyers" width=350></canvas>
+   				 <script>
+    				var buyers = document.getElementById('buyers').getContext('2d');
+    				var buyerData = {
+						labels : ["January","February","March","April","May","June"],
+		  				datasets : [
+		  					{
+			  					fillColor : "rgba(94, 71, 99, 0.4)",
+			  					strokeColor : "#5e4763",
+			  					pointColor : "#fff",
+			  					pointStrokeColor : "#413145",
+			  					data : [203,156,99,251,305,247]
+		  					}
+	  	  				]
+					}
+    				new Chart(buyers).Line(buyerData);
+    			</script>
+    		</div><!--end col-->
+    		</div><!--end row-->
+		    
 		    <?php
 			require_once './flight_tracker.php';
-
 			$remaining = getRemainingTime($id,$email);
 			if ($remaining > 0)
 			{
@@ -96,7 +125,6 @@ _STUFF;
 				<h2>Search Results</h2>
 _STUFF2;
 			} //if/else
-
 		    ?>
 
 		    <table id="results" class="table table-hover">
@@ -111,8 +139,8 @@ _STUFF2;
     </body>
 
     <script>
-	var id = <?php $id ?>;
-	var email = <?php $email ?>;
+	var id = "<?php echo $id; ?>";
+	var email = "<?php echo $email; ?>";
 	var seconds = 3;
 	window.setInterval(function () {
 	    var xmlhttp;
@@ -130,7 +158,6 @@ _STUFF2;
 	    xmlhttp.open("GET","retrieve.php?" + str,true);
 	    xmlhttp.send();
 	},seconds * 1000);
-
 	window.onload=function(){$('.dropdown').hide();};
 	<?php
 	    for ($i = 0; $i < $rowCount; $i++)
@@ -150,6 +177,5 @@ _STUFF2;
 _SECTION1;
 	    } // for
 	?>
-
     </script>
 </html>

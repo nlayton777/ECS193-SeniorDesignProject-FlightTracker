@@ -179,3 +179,12 @@ h5 {
     margin-bottom: 20px;
 }   
 
+.my-clock {
+	position: relative !important;
+	transform: scale(1);
+	-ms-transform: scale(1); /* IE 9 /
+	-webkit-transform: scale(1); / Safari and Chrome /
+	-o-transform: scale(1); / Opera /
+	-moz-transform: scale(1); / Firefox */
+
+}

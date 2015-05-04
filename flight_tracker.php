@@ -260,7 +260,7 @@ _STUFF9;
 		</td>   
 		<td class="expandButton">
 		<input type="button" id="btnExpCol{$rowCount}" class="btn btn-info search" 
-		    onclick="Expand()" value=" Expand "/>
+		    value=" Expand "/>
 		 
 		</td>
 	    </tr>

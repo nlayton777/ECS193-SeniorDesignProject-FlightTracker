@@ -323,6 +323,7 @@ _SECTION2;
 		    <?php
 			$result = getResults($post, 50);
 			$trips = $result->getTrips();
+			$rowCount = -1;
 			if (count($trips->getTripOption()) <= 0)
 			    echo "<h2>No Results Found</h2>";
 			else
@@ -347,22 +348,25 @@ _SECTION2;
 	window.onload=function(){$('.dropdown').hide();};
 
 	<?php
-	    for ($i = 0; $i < $rowCount; $i++)
+	    if ($rowCount != -1) 
 	    {
-		echo <<<_SECTION3
-		$(document).ready(function () {
-		    $('#btnExpCol{$i}').click(function () {
-			if ($(this).val() == 'Collapse') {
-			    $('#row{$i}').stop().slideUp('3000');
-			    $(this).val(' Expand ');
-			} else {
-			    $('#row{$i}').stop().slideDown('3000');
-			    $(this).val('Collapse');
-			}
+		for ($i = 0; $i < $rowCount; $i++)
+		{
+		    echo <<<_SECTION3
+		    $(document).ready(function () {
+			$('#btnExpCol{$i}').click(function () {
+			    if ($(this).val() == 'Collapse') {
+				$('#row{$i}').stop().slideUp('3000');
+				$(this).val(' Expand ');
+			    } else {
+				$('#row{$i}').stop().slideDown('3000');
+				$(this).val('Collapse');
+			    }
+			});
 		    });
-		});
 _SECTION3;
-	    } // for
+		} // for
+	    } // if
 	?>
 
     </script>

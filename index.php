@@ -87,10 +87,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		    <!--ONE-WAY CHECKBOX-->
 		    <div class="form-group">
 			<label class="no-indent" for="oneway">
-			<input type="checkbox" value="yes" 
+			<input type="checkbox" value="1" 
 			    onclick="OneWay()" id="oneway" name="one_way" 
 			    form="search_form"/>
-			<input class="form-control" type="hidden" value="no" 
+			<input class="form-control" type="hidden" value="0" 
 			    id="onewayHidden"  name="one_way"
 			    form="search_form" checked/>
 			One Way 

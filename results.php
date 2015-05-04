@@ -15,6 +15,10 @@ else if (isset($_POST['id']) && isset($_POST['email']))
     $id = $_POST['id'];
     $email = $_POST['email'];
 }
+/*
+$id = 399;
+$email = 'nllayton@ucdavis.edu';
+*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -105,8 +109,11 @@ _DES2;
 		    ?>
 
 		    <h2>Graph of Prices</h2>
-		    <canvas id="buyers" height="400"></canvas>
+		    <canvas id="buyers" width="400" height="400"></canvas>
 		    <script>
+			var canv = document.getElementById('buyers')
+			var parentWidth = canv.parentNode.offsetWidth;
+			canv.setAttribute('width', parentWidth);
 			var buyers = document.getElementById('buyers').getContext('2d');
 			var buyerData = {
 			    labels : [<?php echo implode(",", $data['labels']); ?>],
@@ -119,19 +126,81 @@ _DES2;
 				    data : [<?php echo implode(",", $data['data']); ?>]
 				}
 			    ]
-			}
-			new Chart(buyers).Line(buyerData);
+			};
+			var options = {
+			    scaleShowGridLines: true
+			};
+			new Chart(buyers).Line(buyerData, options);
 		    </script>
 
 		    <h2>Search Results</h2>
-		    <!-- TABLE OF RESULTS -->
-		    <table id="results" class="table table-hover">
-			<tr>
-			    <th id="price">Total Price</th>
-			    <th id="it">Itinerary</th>
-			    <th id="info">More Info</th>
-			</tr>
-		    </table>
+		    <?php
+			$connection = new mysqli ("localhost", "root");
+			if ($connection->connect_error) die($connection->connect_error);
+			$connection->select_db("flight_tracker");
+
+			// GET SEARCH PARAMETERS
+			$query = <<<_QUERY
+			    SELECT *
+			    FROM searches
+			    WHERE
+				id = {$id} AND
+				email = '{$email}';
+_QUERY;
+			$searchResults = $connection->query($query);
+			if (!$searchResults) die ($searchResults->connect_error);
+
+			// GET AIRLINES
+			$query = <<<_AIRLINES
+			    SELECT airline
+			    FROM airlines
+			    WHERE search_id = {$id} AND
+				email = '{$email}';
+_AIRLINES;
+			$airlineResults = $connection->query($query);
+			if (!$airlineResults) die ($airlineResults->connect_error);
+			$airlines = array();
+			$n = $airlineResults->num_rows;
+			for ($i = 0; $i < $n; ++$i)
+			{
+			    $airlineResults->data_seek($i);
+			    $row = $airlineResults->fetch_array(MYSQLI_ASSOC);
+			    $airlines[] = $row['airline'];
+			} // for each airline
+
+			$searchResults->data_seek(0);
+			$row = $searchResults->fetch_array(MYSQLI_ASSOC);
+			$d = explode("-", $row['depart_date']);
+			$d = implode("/", array($d[1], $d[2], $d[0]));
+			if (!isOneWay($row))
+			{
+			    $r = explode("-", $row['return_date']);
+			    $r = implode("/", array($r[1], $r[2], $r[0]));
+			} else
+			    $r = "";
+			$obj = array("id"	    => $id,
+				     "email"	    => $email,
+				     "source"	    => $row['origin'],
+				     "destination"  => $row['destination'],
+				     "depart_date"  => $d,
+				     "return_date"  => $r,
+				     "adults"	    => $row['adults'],
+				     "children"	    => $row['children'],
+				     "seniors"	    => $row['seniors'],
+				     "seat_infants" => $row['seat_infant'],
+				     "lap_infants"  => $row['lap_infant'],
+				     "airline"	    => $airlines,
+				     "price"	    => $row['price'],
+				     "one_way"	    => $row['one_way'],
+				    );
+
+			$result = getResults($obj, 50);
+			$trips = $result->getTrips();
+			if (count($trips->getTripOption()) <= 0)
+			    echo "<h2>No Results Founds</h2>";
+			else
+			    $rowCount = printResults($trips, $obj);
+		    ?>
 		</div><!--end col-->
 		<div class="col-xs-4 col-md-1"></div><!--end col-->
 	    </div><!--end row-->
@@ -192,7 +261,24 @@ _DES2;
 	} // displayResults()
 	*/
 
-	//window.onload=function(){$('.dropdown').hide();};
+	window.onload=function(){$('.dropdown').hide();};
+	<?php
+	    for ($i = 0; $i < $rowCount; $i++)
+	    {
+		echo <<<_SECTION3
+		$(document).ready(function () {
+		    $('#btnExpCol{$i}').click(function () {
+			if ($(this).val() == 'Collapse') {
+			    $('#row{$i}').stop().slideUp('3000');
+			    $(this).val(' Expand ');
+			} else {
+			    $('#row{$i}').stop().slideDown('3000');
+			    $(this).val('Collapse');
+			}
+		    });
+		});
+_SECTION3;
+	    } // for
+	?>
     </script>
 </html>
-    

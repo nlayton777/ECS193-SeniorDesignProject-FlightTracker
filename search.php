@@ -123,15 +123,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			    	<?php
 			    		$currentDate = date('m/d/Y');
 			    		$departDate = $post['depart_date'];
-			    		
 			    		$timeNow = strtotime($currentDate);
 			    		$timeDepart = strtotime($departDate);
-			    		
 			    		$departDay = date("N", $timeDepart);
-			    		
 			    		$diff = abs($timeDepart - $timeNow);
 			    		$diff /= 60 * 60 * 24; 
-		    		
 		    			if($isRoundTrip)
 		    			{
 			    			$returnDate = $post['return_date'];
@@ -307,7 +303,7 @@ _SECTION1;
 					<input type="hidden" name="seniors" value="{$post['seniors']}"/>
 					<input type="hidden" name="seat_infant" value="{$post['seat_infants']}"/>
 					<input type="hidden" name="lap_infant" value="{$post['lap_infants']}"/>
-					<input type="hidden" name="one_way" value="{$oneWay}"/>
+					<input type="hidden" name="one_way" value="{$post['one_way']}"/>
 _SECTION2;
 
 					foreach ($post['airline'] as $air)
@@ -327,7 +323,6 @@ _SECTION2;
 		    <?php
 			$result = getResults($post, 50);
 			$trips = $result->getTrips();
-
 			if (count($trips->getTripOption()) <= 0)
 			    echo "<h2>No Results Found</h2>";
 			else

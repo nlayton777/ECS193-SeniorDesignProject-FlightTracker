@@ -109,20 +109,21 @@ _QUERY2;
     {
 	// organize user input into an array
 	$d = explode("-",$rows['depart_date']);
+	$d = implode("/", array($d[1], $d[2], $d[0]));
 	if (!$oneWay)
 	{
 	    $r = explode("-",$rows['return_date']);
-	    $temp = implode("/", array($r[1], $r[2], $r[0]));
+	    $r = implode("/", array($r[1], $r[2], $r[0]));
 	} else
-	    $temp = "";
+	    $r = "";
 
 	$current_info = array( 
 	    "id" => $rows['ID'],
 	    "email" => $rows['email'],
 	    "source" => $rows['origin'],
 	    "destination" => $rows['destination'],
-	    "depart_date" => implode("/", array($d[1], $d[2], $d[0])),
-	    "return_date" => $temp,
+	    "depart_date" => $d, 
+	    "return_date" => $r,
 	    "adults" => $rows['adults'],
 	    "children" => $rows['children'],
 	    "seniors" => $rows['seniors'],

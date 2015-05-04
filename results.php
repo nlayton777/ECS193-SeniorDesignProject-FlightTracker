@@ -1,19 +1,25 @@
 <?php
-//session_start();
+session_start();
 
-$post = $_POST;
-$_SESSION['id'] = $post['id'];
-$_SESSION['email'] = $post['email'];
-$id = $post['id'];
-$email = $post['email'];
-
-$session_flag = true;
+// if already logged in
+if (isset($_SESSION['id']) && isset($_SESSION['email']))
+{
+    $id = $_SESSION['id'];
+    $email = $_SESSION['email'];
+} // else if not logged in....
+else if (isset($_POST['id']) && isset($_POST['email']))
+{
+    session_unset();
+    $_SESSION['id'] = $_POST['id'];
+    $_SESSION['email'] = $_POST['email'];
+    $id = $_POST['id'];
+    $email = $_POST['email'];
+}
 ?>
 <!DOCTYPE html>
 <html>
     <head>
 	<title>UCD Flight Tracker | Search Results</title>
-
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link rel="stylesheet" href="bootstrap.css"/>
@@ -22,7 +28,8 @@ $session_flag = true;
 	<link rel="stylesheet" href="flipclock.css"/>
 	<script src="flipclock.min.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
-	<script src="flight_tracker.js"></script>
+	<script src="countdownClock.js"></script>
+	<script src="Chart.js"></script>
     </head>
 
     <body>
@@ -47,6 +54,7 @@ $session_flag = true;
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
+			<li><a href="signin.php">Log Out</a></li>
 		    </ul>
 		</div>
 	    </div>
@@ -58,7 +66,7 @@ $session_flag = true;
 		<div class="col-xs-10 col-md-10">
 		    <div class="row">
 			<div class="col-md-6" id="search-title">
-			<?php echo "<h1>Search Results For Request #{$id}<h1>"; ?>
+			<?php echo "<h1>Request #{$id}<h1>"; ?>
 			</div><!--end col-->
 
 			<div class="col-md-6" id="background-info">
@@ -66,16 +74,7 @@ $session_flag = true;
 
 			    <?php
 				require_once './flight_tracker.php';
-
 				$remaining = getRemainingTime($id,$email);
-				//$oneWay = verifyOneWay($id, $email);
-				$oneWay = true;
-				echo <<<_SCRIPT
-				    <script>
-					var remaining = {$remaining};
-					//var isOneWay = boolean({$oneWay});
-				    </script>
-_SCRIPT;
 				if ($remaining > 0){
 				    echo <<<_DES
 					<p id="background-description">
@@ -85,8 +84,7 @@ _SCRIPT;
 						below.
 					</p>
 _DES;
-				} else 
-				{
+				} else {
 				    echo <<<_DES2
 					<p id="background-description">
 					    Your search is complete! You can either choose one of the options
@@ -95,29 +93,37 @@ _DES;
 					</p>
 _DES2;
 				}
-			    ?>
-
+		    ?>
 			</div><!--end col-->
 		    </div><!--end row-->
 
 		    <h2>Search Time Remaining</h2>
 		    <div class="clock"></div>
 		    <?php
-			if ($remaining > 0)
-			{
-			    echo <<<_STUFF
-				<script>CountdownClock({$remaining})</script>
-				<h2>Search Results So Far</h2>
-_STUFF;
-			} else {
-			    echo <<<_STUFF2
-				<script>CountdownClock(0)</script>
-				<h2>Search Results</h2>
-_STUFF2;
-			} //if/else
-
+			echo "<script>CountdownClock({$remaining})</script>";
+			$data = getGraphData($id, $email);
 		    ?>
 
+		    <h2>Graph of Prices</h2>
+		    <canvas id="buyers" height="400"></canvas>
+		    <script>
+			var buyers = document.getElementById('buyers').getContext('2d');
+			var buyerData = {
+			    labels : [<?php echo implode(",", $data['labels']); ?>],
+			    datasets : [
+				{
+				    fillColor : "rgba(94, 71, 99, 0.4)",
+				    strokeColor : "#5e4763",
+				    pointColor : "#fff",
+				    pointStrokeColor : "#413145",
+				    data : [<?php echo implode(",", $data['data']); ?>]
+				}
+			    ]
+			}
+			new Chart(buyers).Line(buyerData);
+		    </script>
+
+		    <h2>Search Results</h2>
 		    <!-- TABLE OF RESULTS -->
 		    <table id="results" class="table table-hover">
 			<tr>
@@ -126,16 +132,6 @@ _STUFF2;
 			    <th id="info">More Info</th>
 			</tr>
 		    </table>
-
-		    <!-- SCRIPT TO UPDATE TABLE WITH RESULTS -->
-		    <script>
-
-		    </script>
-
-		    <div id="test">
-			blah
-		    </div>
-
 		</div><!--end col-->
 		<div class="col-xs-4 col-md-1"></div><!--end col-->
 	    </div><!--end row-->
@@ -146,7 +142,9 @@ _STUFF2;
 	var id = <?php echo $id; ?>;
 	var email = "<?php echo $email; ?>";
 	var seconds = 3;
+	var count = 0;
 
+/*
 	window.setInterval(function () {
 	    if (remaining <= 0)
 	    {
@@ -161,36 +159,40 @@ _STUFF2;
 	    xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 		{
-		    document.getElementById("test").innerHTML = xmlhttp.responseXML;
+		    //document.getElementById("test").innerHTML = xmlhttp.responseText;
+		    xmldoc = xmlhttp.responseXML;
+		    var options = xmldoc.getElementsByTagName("OPTION"); 
+		    count = options.length;
+		    var table = document.getElementById("results");
+		    var i = 1;
+		    var option;
+
+		    for (option in options)
+		    {
+			var row = table.insertRow(i);
+			var cell1 = row.insertCell(0);
+			var cell2 = row.insertCell(1);
+			var cell3 = row.insertCell(2);
+
+			cell1.innerHtml = "NEW CELL 1";
+			cell1.innerHtml = "NEW CELL 1";
+			cell1.innerHtml = "NEW CELL 1";
+
+			i++;
+		    } // for
 		}
 	    }
-	    var str = "id=" + id + "&email=" + email;
+	    var str = "id=" + id + "&email=" + email + "&count=" + count;
 	    xmlhttp.open("GET","retrieve.php?" + str,true);
 	    xmlhttp.send();
-	},seconds * 1000);
+	},seconds * 1000); // get AJAX
 
-	window.onload=function(){$('.dropdown').hide();};
+	function displayResults(xml)
+	{
+	} // displayResults()
+	*/
 
-	<?php
-	/*
-	    for ($i = 0; $i < $rowCount; $i++)
-	    {
-		echo <<<_SECTION1
-		$(document).ready(function () {
-		    $('#btnExpCol{$i}').click(function () {
-			if ($(this).val() == 'Collapse') {
-			    $('#row{$i}').stop().slideUp('3000');
-			    $(this).val(' Expand ');
-			} else {
-			    $('#row{$i}').stop().slideDown('3000');
-			    $(this).val('Collapse');
-			}
-		    });
-		});
-_SECTION1;
-	    } // for
-	    */
-	?>
-	
+	//window.onload=function(){$('.dropdown').hide();};
     </script>
 </html>
+    

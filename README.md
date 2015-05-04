@@ -5,13 +5,15 @@ High Priority To-Do's:
 -results page
     -graph
 -algorithm
+-session logout
+-fix one way for background search
 
 Lower Priority To-Do's:
 -link to booking sites once user is satisfied with results (nina)
 
 Lowest Priority To-Do's:
 -put MySQL queries into transactions
--polish UI (especially index.php and search.php) (everyone)
+-polish UI 
 -finalize images and logo (nina)
 
 Quick guide to testing the background search:
@@ -91,3 +93,26 @@ table attributes:
     option segment leg duration,
     option segment leg mileage,
     option segment leg meal,
+
+xml tag names:
+    option
+	option_id
+	saletotal
+	slice
+	    slice_number
+	    segment
+		segment_id
+		segment_duration
+		flight_carrier
+		flight_number
+		cabin
+		leg
+		    leg_id
+		    aircraft
+		    arrival
+		    departure
+		    origin
+		    destination
+		    leg_duration
+		    mileage
+		    meal

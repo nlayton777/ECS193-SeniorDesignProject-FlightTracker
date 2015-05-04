@@ -1,7 +1,15 @@
+<?php
+session_start();
+$seshFlag = false;
+if (isset($_SESSION['id']) && isset($_SESSION['email']))
+{
+    $seshFlag = true;
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
-	<title>UCD Flight Tracker | Search</title>
+	<title>UCD Flight Tracker | Search Results</title>
 
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -66,15 +74,21 @@
 
 			<li class="active"><a href="index.php">Find a Flight</a></li>
 			<?php
-			    // if session is set
-				//echo "<li><a href=\"results.php\">My Search</a></li>";
-			    // else
+			    if ($seshFlag)
+				echo "<li><a href=\"results.php\">My Search</a></li>";
+			    else
 				echo "<li><a href=\"signin.php\">My Search</a></li>";
 			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
+			<?php
+			    if ($seshFlag)
+				echo "<li><a href=\"index.php\">Log Out</a></li>";
+			    else
+				echo "<li><a href=\"signin.php\">Log In</a></li>";
+			?>
 		    </ul>
 		</div>
 	    </div>
@@ -92,110 +106,152 @@
 				echo "<h3 id=\"trip-title\">" . $post['depart_date'] . "  <strong>" . 
 				    $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
 				    "<strong>" . $post['destination'] . "</strong>  ";
-				$roundTrip = false;
+				
+					$isRoundTrip = false;
+
 				if (!isOneWay($post))
 				{
-				    echo $post['return_date'];
-				    $roundTrip = true;
+					 echo $post['return_date'];
+					 $isRoundTrip = true;	
 				}
-				echo <<<_STUFF
-				</h3>
+				   
+				echo "</h3>";
+			    ?>
+
 			    <div>
 			    	<h3 style="color:red">Price Analysis Hints:</h3>
-_STUFF;
-				$currentDate = date('m/d/Y');
-				$departDate = $post['depart_date'];
-				$returnDate = $post['return_date'];
-				$timeNow = strtotime($currentDate);
-				$timeDepart = strtotime($departDate);
-				$timeReturn = strtotime($returnDate);
-				$departDay = date("N", $timeDepart);
-				$returnDay = date("N", $timeReturn);
-				$diff = abs($timeDepart - $timeNow);
-				$diff /= 60 * 60 * 24; 
+			    	<?php
+			    		$currentDate = date('m/d/Y');
+			    		$departDate = $post['depart_date'];
+			    		
+			    		$timeNow = strtotime($currentDate);
+			    		$timeDepart = strtotime($departDate);
+			    		
+			    		$departDay = date("N", $timeDepart);
+			    		
+			    		$diff = abs($timeDepart - $timeNow);
+			    		$diff /= 60 * 60 * 24; 
+		    		
+		    			if($isRoundTrip)
+		    			{
+			    			$returnDate = $post['return_date'];
+			    			$timeReturn = strtotime($returnDate);
+			    			$returnDay = date("N", $timeReturn);	
+		    			}
+		    			
+			    		// MOST OPTIMAL SITUATION 
+			    		if(($departDay == 2 || $departDay == 3 || $departDay ==6) && $isRoundTrip &&($returnDay == 2 || $returnDay == 3 || $returnDay == 6) && $diff == 47)
+			    		{
+			    			echo "You are planning on travelling on the best priced days of the week, and according to historic trends today is the prime day to book your tickets for the lowest price. We recommend you book your tickets now!";
+			    		}
+			    		else if (($departDay == 2 || $departDay == 3 || $departDay ==6) && $diff == 47)
+			    		{
+			    			echo "You are planning on travelling on the best priced days of the week, and according to historic trends today is the prime day to book your tickets for the lowest price. We recommend you book your tickets now!";
+			    		}
+			    		else//check for individual cases
+			    		{
+				    		//ANALYSIS ON DAY OF WEEK (TUES AND WED ARE BEST DAYS TO TRAVEL ON)
+				    		if(($departDay == 2 || $departDay == 3 || $departDay == 6) && $isRoundTrip && ($returnDay == 2 || $returnDay == 3 || $returnDay == 6))
+				    		{
+				    			if($departDay == 2)
+								{
+									$dow = "Tuesday";
+								}
+								else if ($departDay == 3)
+								{
+									$dow = "Wednesday";
+								}
+								else if ($departDay == 6)
+								{
+									$dow = "Saturday";
+								}
+								if($returnDay == 2)
+								{
+									$dow2 = "Tuesday";
+								}
+								else if ($returnDay == 3)
+								{
+									$dow2 = "Wednesday";
+								}
+								else if ($returnDay == 6)
+								{
+									$dow2 = "Saturday";
+								}
+				    			echo "You are currently planning on departing on a " .$dow. " and are planning to return on " . $dow2. ". These are historically the best priced days of the week to purchase a flight for. \n";
+				    		}
 
-				// MOST OPTIMAL SITUATION 
-				if((($departDay == 2 || $departDay == 3) && 
-				    ($returnDay == 2 || $returnDay == 3)) && $diff == 47)
-				{
-					echo "You are planning on travelling on the best ".
-					     "priced days of the week, and according to historic ".
-					     "trends today is the prime day to book your tickets ".
-					     "for the lowest price. We recommend you book your tickets now!";
-				}
-				else//check for individual cases
-				{
-					//ANALYSIS ON DAY OF WEEK (TUES AND WED ARE BEST DAYS TO TRAVEL ON)
-					if(($departDay == 2 || $departDay == 3) && 
-					    ($returnDay == 2 || $returnDay == 3))
-					{
-						if($departDay == 2) {
-						    $dow = "Tuesday";
-						} else if ($departDay == 3) {
-						    $dow = "Wednesday";
-						}
-						
-						if($returnDay == 2) {
-						    $dow2 = "Tuesday";
-						} else if ($returnDay == 3) {
-						    $dow2 = "Wednesday";
-						}
-						echo "You are currently planning on departing on a ".$dow. 
-						     " and planning to return on " . $dow2. 
-						     ". These are historically the best priced days of the ".
-						     "week to purchase a flight for. \n";
-					} else if($departDay == 2 || $departDay == 3) {
-						if($departDay == 2) {
-						    $dow = "Tuesday";
-						} else if ($departDay == 3) {
-						    $dow = "Wednesday";
-						}
-						echo "You are currently planning on departing on a ".$dow. 
-						     ". This is historically the best priced day of the ".
-						     "week to purchase a flight for. \n";
-					} else if($returnDay == 2 || $returnDay == 3) {
-						if($returnDay == 2)
-						{
-						    $dow = "Tuesday";
-						} else if ($returnDay == 3) {
-						    $dow = "Wednesday";
-						}
-						echo "You are currently planning on returning on a ".$dow. 
-						     ". This is historically the best priced day of the ".
-						     "week to purchase a flight for. \n";
-					} 
+				    		else if($departDay == 2 || $departDay == 3 || $departDay == 6)
+				    		{
+				    			if($departDay == 2)
+								{
+									$dow = "Tuesday";
+								}
+								else if ($departDay == 3)
+								{
+									$dow = "Wednesday";
+								}
+								else if ($departDay == 6)
+								{
+									$dow = "Saturday";
+								}
+				    			echo "You are currently planning on departing on a " .$dow. ". This is historically the best priced day of the week to purchase a flight for. \n";
+				    		}
 
-					//ANALYSIS ON DAYS BEFORE FLIGHT (47 DAYS BEFORE FLIGHT = BEST DAY TO PURCHASE FLIGHT)
-					if($diff == 47) {
-						echo "According to past trends, we recommend purchasing ".
-						     "your flight ticket today because it is the prime day ".
-						     "for you to book your flight!\n";	
-						echo "\n";		   						
-					} else if($diff > 47 && $diff < 114) {
-						$dayLeft = 114 - $diff;
-						echo "This is the prime booking window. We recommend that ".
-						     "you shold book your flight in the next ".$dayLeft.
-						     " days before prices begin to rise.\n";
-						echo "\n";	
-					} else if($diff < 47 && $diff > 14) {
-						$days = $diff - 14;
-						echo "You are reaching the end of the prime booking window ".
-						     "for this flight. We recommend that you should book your ".
-						     "flight within the next " .$days. " days before prices begin to rise.\n";
-						echo "\n";	
-					} else if($diff > 114) {
-						$daysRemain = $diff - 114;
-						echo "It seems to be a little too early to book this flight. ".
-						     "We would recommend waiting at least " .$daysRemain. 
-						     " days until booking your flight that way you can book ".
-						     "within the prime booking window.\n";
-						echo "\n";	
-					} else {
-						echo "Below are the current flight choices our search bot has found for you. We recommend booking soon since your flight is coming up very soon.\n";
-						echo "\n";	
-					}
-				}
-			    ?>
+				    		else if($isRoundTrip && ($returnDay == 2 || $returnDay == 3|| $returnDay == 6))
+				    		{
+				    			if($returnDay == 2)
+								{
+									$dow = "Tuesday";
+								}
+								else if ($returnDay == 3)
+								{
+									$dow = "Wednesday";
+								}
+								else if ($returnDay == 6)
+								{
+									$dow = "Saturday";
+								}
+				    			echo "You are currently planning on returning on a " .$dow. ". This is historically the best priced day of the week to purchase a flight for. \n";
+				    		} 
+				    		else
+				    		{
+				    			echo "If you are able to be flexible with your dates and would like to find the lowest priced flight option possible, we recommend flying on a Saturday, Tuesday, or Wednesday.";
+				    		}
+
+				    		//ANALYSIS ON DAYS BEFORE FLIGHT (47 DAYS BEFORE FLIGHT = BEST DAY TO PURCHASE FLIGHT)
+				    		if($diff == 47)
+				    		{
+				    			echo "According to past trends, we recommend purchasing your flight ticket today because it is the prime day for you to book your flight!\n";	
+				    			echo "\n";		   						
+				    		}
+
+				    		else if($diff > 47 && $diff < 114)
+				    		{
+				    			$dayLeft = 114 - $diff;
+				    			echo "This is the prime booking window. We recommend that you shold book your flight in the next ", $dayLeft," days before prices begin to rise.\n";
+				    			echo "\n";	
+				    		}
+
+				    		else if($diff < 47 && $diff > 14)
+				    		{
+				    			$days = $diff - 14;
+				    			echo "You are reaching the end of the prime booking window for this flight. We recommend that you should book your flight within the next " .$days. " days before prices begin to rise.\n";
+				    			echo "\n";	
+				    		}
+				    		else if($diff > 114)
+				    		{
+				    			$daysRemain = $diff - 114;
+				    			echo "It seems to be a little too early to book this flight. We would recommend waiting at least " .$daysRemain. " days until booking your flight that way you can book within the prime booking window.\n";
+				    			echo "\n";	
+				    		}
+				    		else
+				    		{
+				    			echo "Below are the current flight choices our search bot has found for you. We recommend booking soon since your flight is coming up very soon.\n";
+				    			echo "\n";	
+				    		}
+				    	}
+
+			    	?>
 
 			    </div>
 			</div>
@@ -206,8 +262,11 @@ _STUFF;
 			    <p id="background-description">
 				Our search engine can work in the background for you to find 
 				deals on flights whose prices might change in the near future. 
-				Provide us with the following information, and we will begin
-				searching.
+				Provide us with your information below, and we will begin
+				searching. Your current search parameters have not yet been
+				entered into our system. By continuing your search, you and 
+				the information you provide will be logged into our system 
+				for future contact and log-in.
 			    </p>
 
 			    <form name="searchwindow" onsubmit="return check(email);" method="post" action="countdown.php">
@@ -238,12 +297,17 @@ _STUFF;
 _SECTION1;
 					if (isset($post['return_date'])) echo "<input type=\"hidden\" name=\"return_date\" value=\"".$post['return_date']."\"/>";
 					else echo "<input type=\"hidden\" name=\"return_date\" value=\"NULL\"/>";
+					
+					$oneWay = false;
+					if (isOneWay($post))
+					    $oneWay = true;
 					echo <<<_SECTION2
 					<input type="hidden" name="adults" value="{$post['adults']}"/>
 					<input type="hidden" name="children" value="{$post['children']}"/>
 					<input type="hidden" name="seniors" value="{$post['seniors']}"/>
 					<input type="hidden" name="seat_infant" value="{$post['seat_infants']}"/>
 					<input type="hidden" name="lap_infant" value="{$post['lap_infants']}"/>
+					<input type="hidden" name="one_way" value="{$oneWay}"/>
 _SECTION2;
 
 					foreach ($post['airline'] as $air)

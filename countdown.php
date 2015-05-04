@@ -1,7 +1,19 @@
+<?php
+session_start();
+
+require_once('flight_tracker.php');
+$post = $_POST;
+$email = $post['email'];
+$userSource = $post['origin'];
+$userDestination = $post['destination'];
+$userID = createNewSearch($post);
+$_SESSION['email'] = $email;
+$_SESSION['id'] = $userID;
+?>
 <!DOCTYPE html>
 <html>
     <head>
-	<title>UCD Flight Tracker</title>
+	<title>UCD Flight Tracker | Background Search</title>
 
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -12,15 +24,6 @@
 	<link rel="stylesheet" href="flipclock.css"/>
 	<script src="flipclock.min.js"></script>
 	<script src="flight_tracker.js"></script>
-	<?php
-	    require_once('flight_tracker.php');
-
-	    $post = $_POST;
-	    $email = $post['email'];
-	    $userSource = $post['origin'];
-	    $userDestination = $post['destination'];
-	    $userID = createNewSearch($post);
-	?>
 
 	<script>
 	    window.onload = function() {
@@ -37,7 +40,6 @@
 		}
 		var str = "id=<?php echo $userID; ?>&email=<?php echo $email; ?>";
 		str += "&source=<?php echo $userSource; ?>&destination=<?php echo $userDestination; ?>";
-			document.getElementById("test").innerHTML = str;
 		xmlhttp.open("GET","background_search.php?" + str,true);
 		xmlhttp.send();
 	    }; // sendMessage()
@@ -61,16 +63,12 @@
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
 			<li class="active"><a href="index.php">Find a Flight</a></li>
-			<?php
-			    // if session is set
-				//echo "<li><a href=\"results.php\">My Search</a></li>";
-			    // else
-				echo "<li><a href=\"signin.php\">My Search</a></li>";
-			?>
+			<li><a href="results.php">My Search</a></li>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
+			<li><a href="signin.php">Log Out</a></li>
 		    </ul>
 		</div>
 	    </div>
@@ -93,7 +91,7 @@
 
 		<?php
 		    // start countdown clock
-		    $remaining = getRemainingTime($userID,$post['email']);
+		    $remaining = getRemainingTime($userID,$email);
 		    echo "<script>CountdownClock({$remaining})</script>";
 
 		    echo <<<_SECTION1

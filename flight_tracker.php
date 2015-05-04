@@ -1,195 +1,291 @@
 <?php
     define('__ROOT__',dirname(__FILE__));
 
-    /*		NEED THESE FILES FOR QPX API		*/  
+    /*      NEED THESE FILES FOR QPX API        */  
     require_once(__ROOT__ . 
-	'/google-api-php-client/src/Google/Service/QPXExpress.php');
+    '/google-api-php-client/src/Google/Service/QPXExpress.php');
     require_once(__ROOT__ .
-	'/google-api-php-client/src/Google/Client.php');
+    '/google-api-php-client/src/Google/Client.php');
 
     function isOneWay(&$val) {
 	$rv = false;
 	if (isset($val['one_way']) && 
-		 ($val['one_way'] == "yes")) 
+		 ($val['one_way'] == "yes" || 
+		  $val['one_way'] == true ||
+		  $val['one_way'] == 1)) 
 	    $rv = true;
 	return $rv;
     } // isOneWay($val)
 
     function printResults($trips, $post)
     {
-	$rowCount = 0;
-	$options = $trips->getTripOption();
-	if (isset($options)) 
-	{
-	    $multPass = false;
-	    if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 || 
-		$post['seat_infants'] > 1 || $post['lap_infants'] > 1)
-		$multPass = true;
+    $rowCount = 0;
+    $options = $trips->getTripOption();
+    if (isset($options)) 
+    {
+        $multPass = false;
+        if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 || 
+        $post['seat_infants'] > 1 || $post['lap_infants'] > 1)
+        $multPass = true;
 
-	    // print headers
-	    echo <<<_HEADERS
-	    <table id="results" class="table table-hover" style="background-color: rgba(150, 150, 150, 0)" align="center">
-		<tr>
-		    <th id="price">Total
+        // print headers
+        echo <<<_HEADERS
+        <table id="results" class="table table-hover" style="background-color: rgba(150, 150, 150, 0)" align="center">
+        <tr>
+            <th id="price">Total
 _HEADERS;
-		    if ($multPass)
-			echo "Group ";
-	    echo <<<_HEADERS2
-		    Price</th>
-		    <th id="it">Itinerary</th>
-		    <th id="info">More Info</th>
-		</tr>
+            if ($multPass)
+            echo "Group ";
+        echo <<<_HEADERS2
+            Price</th>
+            <th id="it">Itinerary</th>
+            <th id="info">More Info</th>
+        </tr>
 _HEADERS2;
-	    foreach ($options as $option) 
-	    {
-		$sub = substr($option->getSaleTotal(),3);
-		echo <<<_STUFF
-		<tr>
-		   <td>\${$sub}</td>
-		    <td>
+        foreach ($options as $option) 
+        {
+        $sub = substr($option->getSaleTotal(),3);
+        echo <<<_STUFF
+        <tr>
+           <td>\${$sub}</td>
+            <td>
 _STUFF;
-			// print if one way
-			if (!isOneWay($post))
-			{
-			    echo <<<_STUFF2
-			    <div id="on-the-way-there">
-				<h5>On the way there...</h5>
+            // print if one way
+            if (!isOneWay($post))
+            {
+                echo <<<_STUFF2
+                <div id="on-the-way-there">
+                <h5>On the way there...</h5>
 _STUFF2;
-			}
+            }
 
-			foreach ($option->getSlice()[0]->getSegment() as $segment)
-			{
-			    foreach ($segment->getLeg() as $leg)
-			    {
-				$orig = $leg->getOrigin();
-				$dest = $leg->getDestination();
-				$time1 = explode("-",explode("T",$leg->getDepartureTime())[1])[0];
-				$time2 = explode("-",explode("T",$leg->getArrivalTime())[1])[0];
-				echo <<<_STUFF3
-				<p>
-				    <strong>{$orig}</strong> {$time1} 
-				    &rarr; 
-				    <strong>{$dest}</strong> {$time2}
-				</p>
+            foreach ($option->getSlice()[0]->getSegment() as $segment)
+            {
+                foreach ($segment->getLeg() as $leg)
+                {
+                $orig = $leg->getOrigin();
+                $dest = $leg->getDestination();
+                $time1 = explode("-",explode("T",$leg->getDepartureTime())[1])[0];
+                $time2 = explode("-",explode("T",$leg->getArrivalTime())[1])[0];
+                echo <<<_STUFF3
+                <p>
+                    <strong>{$orig}</strong> {$time1} 
+                    &rarr; 
+                    <strong>{$dest}</strong> {$time2}
+                </p>
 _STUFF3;
-			    } // end for
-			} // end for
+                } // end for
+            } // end for
 
-			if (!isOneWay($post)) {
-			    echo <<<_STUFF4
-			    </div>
-			    <div id="on-the-way-back">
-				<h5>On the way back...</h5>
+            if (!isOneWay($post)) {
+                echo <<<_STUFF4
+                </div>
+                <div id="on-the-way-back">
+                <h5>On the way back...</h5>
 _STUFF4;
 
-			    foreach ($option->getSlice()[1]->getSegment() as $segment)
-			    {
-				foreach ($segment->getLeg() as $leg)
-				{
-				    $orig = $leg->getOrigin();
-				    $dest = $leg->getDestination();
-				    $time1 = explode("-",explode("T",$leg->getDepartureTime())[1])[0];
-				    $time2 = explode("-",explode("T",$leg->getArrivalTime())[1])[0];
-				    echo <<<_STUFF5
-				    <p>
-					<strong>{$orig}</strong> {$time1} 
-					&rarr; 
-					<strong>{$dest}</strong> {$time2}
-				    </p>
+                foreach ($option->getSlice()[1]->getSegment() as $segment)
+                {
+                foreach ($segment->getLeg() as $leg)
+                {
+                    $orig = $leg->getOrigin();
+                    $dest = $leg->getDestination();
+                    $time1 = explode("-",explode("T",$leg->getDepartureTime())[1])[0];
+                    $time2 = explode("-",explode("T",$leg->getArrivalTime())[1])[0];
+                    echo <<<_STUFF5
+                    <p>
+                    <strong>{$orig}</strong> {$time1} 
+                    &rarr; 
+                    <strong>{$dest}</strong> {$time2}
+                    </p>
 _STUFF5;
-				} // end for
-			    } // end for
-			    echo "</div>";
-			} // end if
+                } // end for
+                } // end for
+                echo "</div>";
+            } // end if
 
-			echo <<<_STUFF6
-			<div class="dropdown" id="row{$rowCount}">
+            echo <<<_STUFF6
+            <div class="dropdown" id="row{$rowCount}">
 
-			    <table id="dropdown-table">
-			    <tr>
-				<th>Leg</th>
-				<th>Carrier</th>
-				<th>Cabin</th>
-				<th>Aircraft</th>
-				<th>Meal</th>
-				<th>Mileage</th>
-				<th>Duration</th>
-			    </tr>
+                <table id="dropdown-table">
+                <tr>
+                <th>Leg</th>
+                <th>Carrier</th>
+                <th>Cabin</th>
+                <th>Aircraft</th>
+                <th>Meal</th>
+                <th>Mileage</th>
+                <th>Duration</th>
+                <th>Flight #</th>
+                </tr>
+
 _STUFF6;
-			    foreach ($option->getSlice() as $slice)
-			    {
-				foreach ($slice->getSegment() as $segment)
-				{
-				    foreach ($segment->getLeg() as $leg)
-				    {
-					$orig = $leg->getOrigin();
-					$dest = $leg->getDestination();
-					echo <<<_STUFF7
-					<tr>
-					    <td>
-						<strong>{$orig}</strong>
-						 &rarr; 
-						<strong>{$dest}</strong>: 
-					    </td>
-					    <td>
+                foreach ($option->getSlice() as $slice)
+                {
+                foreach ($slice->getSegment() as $segment)
+                {
+                    foreach ($segment->getLeg() as $leg)
+                    {
+                    //$orig and $dest are for the particular part of the flight
+                    //$origin and $destination are for the whole flight
+                    $orig = $leg->getOrigin();
+                    $dest = $leg->getDestination();
+                    $origin = $post['source'];
+                    $destination = $post['destination'];
+                
+                    
+                    echo <<<_STUFF7
+                    <tr>
+                        <td>
+                        <strong>{$orig}</strong>
+                         &rarr; 
+                        <strong>{$dest}</strong>: 
+                        </td>
+                        <td>
 _STUFF7;
-					    $carrier = $segment->getFlight()->getCarrier(); 
-					    foreach ($trips->getData()->getCarrier() as $carrier)
-					    {
-						if ($carrier->getCode() == $segment->getFlight()->getCarrier())
-						    echo $carrier->getName();
-					    }
-					    $cab = ucfirst(strtolower($segment->getCabin()));
-					    $lg = $leg->getAircraft();
 
-					    echo <<<_STUFF8
-					    </td>
-					    <td>{$cab}</td>
-					    <td>{$lg}</td>
-					    <td>
+
+                        $carrier = $segment->getFlight()->getCarrier();
+                        $previous = NULL; 
+                        foreach ($trips->getData()->getCarrier() as $carrier)
+                        {
+                        //GET THE AIRLINES      
+                        if ($carrier->getCode() == $segment->getFlight()->getCarrier()){
+                            echo $carrier->getName();
+                        
+                            $site = $carrier->getCode();
+                            //USE THE AIRLINE TO FIGURE OUT WHERE THE LINK NEEDS TO GO
+                            switch ($site) {
+                            case "AS":
+                                $website = 'http://www.alaskaair.com/planbook?semid=6d438f04-2f98-4cf7-86c2-38aa49bd0f07::43508::||Evergreen||&gclid=CLfmt9DWi8UCFUWVfgodf7UATQ';
+                                break;
+                            case "AA":
+                                $website = 'http://www.aa.com/reservation/roundTripSearchAccess.do';
+                                break;
+                            case "DL":
+                                $website = 'http://www.delta.com/air-shopping/searchFlights.action?tripType=ROUND_TRIP&Log=1&mkcpgn=SEzzzGGw1a&s_kwcid=TC|8489|delta%20airlines||S|e|63450946028&clickid=6d438f04-2f98-4cf7-86c2-38aa49bd0f07&tracking_id=284x2139560';
+                                break;
+                            case "F9":
+                                $website = 'https://booking.flyfrontier.com/Flight/Internal';
+                                break;
+                            case "B6":
+                                $website = 'http://www.jetblue.com/plan-a-trip/';
+                                break;
+                            case "WN":
+                                $website = 'https://www.southwest.com/';
+                                break;
+                            case "NK":
+                                $website = 'http://www.spirit.com/Default.aspx';
+                                break;
+                            case "US":
+                                $website = 'http://www.usairways.com/default.aspx?redir=https://www.google.com/';
+                                break;
+                            case "UA":
+                                $website = 'http://www.united.com/web/en-US/apps/booking/flight/searchRT.aspx';
+                                break;
+                            case "VX":
+                                $website = 'https://www.virginamerica.com/?cid=PS_gaw_BK_BNDSFO_2009_11_13&psmid=sZuPPQTzj%7Cdc_pcrid_56576924350_pkw_virgin%20america_pmt_e&psag=Virgin%20America%20-%20Top%20Term&psaid=e&gclid=CK2ssLCSlcUCFQSUfgodQj0A-w';
+                                break;
+                            default:
+                                echo "WE ARE NOT CURRENTLY SET UP TO ACCOMODATE THIS SITE";
+                                $website = 'http://giphy.com/gifs/facepalm-OWpMbuG5W4r4Y';
+                             }
+                             //CREATE THE BUTTON THAT CONTAINS THE LINK                         }
+                            if ( $origin == $orig || $orig== $destination || $origin == 'NYC'|| $destination == 'NYC' || $origin == 'WAS'|| $destination == 'WAS'){
+                                //THERE ARE A FEW ODD CASES SUCH AS NYC AND WAS WHICH HAVE MULTIPLE AIRPORTS TO THE SAME CODE
+                                if ($origin == 'NYC'){
+                                    if ($orig == 'EWR' || $orig == 'JFK' || $orig == 'LGA'){
+                                        echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+                                    } elseif ($orig == $destination){
+
+                                        echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+                                    }
+                                } elseif($destination == 'NYC'){
+                                    if ($orig == $origin){
+                                    
+                                        echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+                                    }elseif ($orig == 'EWR' || $orig == 'JFK' || $orig == 'LGA'){
+                                        echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+                                    }
+
+                                }elseif ($origin == 'WAS'){
+                                    if ($orig == 'DCA' || $orig == 'IAD' || $orig == 'BWI'){
+                                        echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+                                    } elseif ($orig == $destination){
+
+                                        echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+                                    }
+                                } elseif($destination == 'WAS'){
+                                    if ($orig == $origin){
+                                    
+                                        echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+                                    }elseif ($orig == 'DCA' || $orig == 'EAD' || $orig == 'BWI'){
+                                        echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+                                    }
+                                }else{
+                                    echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
+                                }
+                            }
+                        }
+                    }
+                        
+                     
+                           
+                       
+                        $cab = ucfirst(strtolower($segment->getCabin()));
+                        $lg = $leg->getAircraft();
+
+                        echo <<<_STUFF8
+                        </td>
+                        <td>{$cab}</td>
+                        <td>{$lg}</td>
+                        <td>
 _STUFF8;
-					    $meal = $leg->getMeal();
-					    if (isset($meal))
-						echo $meal;
-					    else
-						echo "None";
+                        $meal = $leg->getMeal();
+                        if (isset($meal))
+                        echo $meal;
+                        else
+                        echo "None";
 
-					    $mlg = $leg->getMileage();
-					    $dur = $leg->getDuration();
-					    echo <<<_STUFF9
-					    </td>
-					    <td>{$mlg} miles</td>
-					    <td>{$dur} minutes</td>
-					</tr>
+                        $mlg = $leg->getMileage();
+                        $dur = $leg->getDuration();
+                        $segFlightNum = $segment->getFlight()->getNumber();
+                        echo <<<_STUFF9
+                        </td>
+                        <td>{$mlg} miles</td>
+                        <td>{$dur} minutes</td>
+                        <td>{$site}{$segFlightNum}</td>
+                    </tr>
 _STUFF9;
-				    } // end for
-				} // end for
-			    } // end for
+                    } // end for
+                } // end for
+                } // end for
 
-			    echo <<<_STUFF10
-			    </table>
-			</div>  
-		    </td>	
-		    <td class="expandButton">
-			<input type="button" id="btnExpCol{$rowCount}" class="btn btn-info search" 
-			    onclick="Expand()" value=" Expand "/>
-		    </td>
-		</tr>
+                echo <<<_STUFF10
+                </table>
+            </div>  
+            </td>   
+            <td class="expandButton">
+            <input type="button" id="btnExpCol{$rowCount}" class="btn btn-info search" 
+                onclick="Expand()" value=" Expand "/>
+             
+            </td>
+        </tr>
 _STUFF10;
-		$rowCount++;
-	    } // end foreach(Trips)
-	    echo "</table>";
-	} else
-	{
-	    echo <<<_STUFF11
-	    <h2>
-		Sorry, we could not find any flights that match your
-		preferences. We suggest broadening your search parameters
-		to improve your chances at finding results.
-	    </h2>
+        $rowCount++;
+        } // end foreach(Trips)
+        echo "</table>";
+    } else
+    {
+        echo <<<_STUFF11
+        <h2>
+        Sorry, we could not find any flights that match your
+        preferences. We suggest broadening your search parameters
+        to improve your chances at finding results.
+        </h2>
 _STUFF11;
-	} // end if/else
-	return ($rowCount);
+    } // end if/else
+    return ($rowCount);
     } // printResults($post)
 
     function getResults(&$post,$num) {
@@ -197,14 +293,17 @@ _STUFF11;
 	$client = new Google_Client();
 	//$client->setApplicationName("Flight Tracker");
 	// nick
-	$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+	//$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
 	// rupali
 	//$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 	// kirsten
 	//$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
 	// nina
 	//$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
-
+	// flight tracker
+	//$client->setDeveloperKey("AIzaSyCCS0WHeRJDiRZmxfTmqA9jCbETtMIvAUg");
+	// rupali's other
+	$client->setDeveloperKey("AIzaSyAlIaLcBQiyOpWVTPSJC-fOJz_2veF94Zw");
 	// create QPX service
 	$service = new Google_Service_QPXExpress($client);
 
@@ -309,7 +408,7 @@ _STUFF11;
 
     function createNewSearch(&$post)
     {
-	/*		NEED THIS FILE FOR DATABASE	    */
+	/*      NEED THIS FILE FOR DATABASE     */
 	require_once('login.php');
 
 	// connect to database
@@ -331,19 +430,37 @@ _STUFF11;
 	$endTime = getEndTime($post['search_time']);
 	$query3 = <<<_QUERY3
 	    INSERT INTO searches (
-		email,origin,destination,
-		depart_date,return_date,adults,
-		children,seniors,seat_infant,
-		lap_infant,price,current,end,lowest_price
+		email,
+		origin,
+		destination,
+		depart_date,
+		return_date,
+		adults,
+		children,
+		seniors,
+		seat_infant,
+		lap_infant,
+		price,
+		current,
+		end,
+		lowest_price,
+		one_way
 	    ) VALUES (
 		'{$post['email']}',
-		'{$post['origin']}','{$post['destination']}',
-		'{$d_date}',{$r_date},
-		{$post['adults']},{$post['children']},
-		{$post['seniors']},{$post['seat_infant']},
-		{$post['lap_infant']},{$post['price']},
-		now(),'{$endTime}',
-		{$post['price']}
+		'{$post['origin']}',
+		'{$post['destination']}',
+		'{$d_date}',
+		{$r_date},
+		{$post['adults']},
+		{$post['children']},
+		{$post['seniors']},
+		{$post['seat_infant']},
+		{$post['lap_infant']},
+		{$post['price']},
+		now(),
+		'{$endTime}',
+		{$post['price']},
+		{$post['one_way']}
 	    );
 _QUERY3;
 
@@ -354,20 +471,23 @@ _QUERY3;
 	if (isset($post['airline']))
 	{
 	    $query4 = <<<_QUERY4
-		INSERT INTO airlines 
-		(search_id,email,airline) 
-		VALUES 
+	    INSERT INTO airlines 
+	    (search_id,email,airline) 
+	    VALUES 
 _QUERY4;
 
 	    $last = end($post['airline']);
 	    foreach ($post['airline'] as $airline)
+	    {
 		if ($airline != $last)
 		    $query4 .= "({$last_id},'{$post['email']}','{$airline}'), ";
 		else
 		    $query4 .= "({$last_id},'{$post['email']}','{$airline}');";
+	    } // foreach airline
+
 	    $result4 = $connection->query($query4);
 	    if (!$result4) die($connection->error);
-	} // foreach(airline)
+	} // is airline set
 
 	$connection->close();
 	return $last_id;
@@ -375,7 +495,6 @@ _QUERY4;
 
 
     define ('URL', "http://localhost:10088/signin.php");
-
     function getConfirmationEmail(&$post,$userSource,$userDestination,$userID)
     {
 	$returnArr = array(
@@ -432,13 +551,6 @@ _QUERY4;
 							    </td>
 							</tr>
 						    </table>
-						    <div class="footer" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
-							<table width="100%" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-							    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-								<td class="aligncenter content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top"><a href="'.URL.'" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">Unsubscribe</a> from these alerts.</td>
-							    </tr>
-							</table>
-						    </div>
 						</div>
 					    </td>
 					    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"></td>
@@ -513,13 +625,7 @@ _QUERY4;
 					    </td>
 					</tr>
 				    </table>
-				    <div class="footer" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
-					<table width="100%" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-					    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-						<td class="aligncenter content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top"><a href="'.URL.'" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">Unsubscribe</a> from these alerts.</td>
-					    </tr>
-					</table>
-				    </div></div>
+				    </div>
 			    </td>
 			    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"></td>
 			</tr>
@@ -597,13 +703,7 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 					    </td>
 					</tr>
 				    </table>
-				    <div class="footer" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
-					<table width="100%" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-					    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-						<td class="aligncenter content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top"><a href="'.URL.'" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">Unsubscribe</a> from these alerts.</td>
-					    </tr>
-					</table>
-				    </div></div>
+				    </div>
 			    </td>
 			    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"></td>
 			</tr>
@@ -638,7 +738,7 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 	    SELECT end
 	    FROM searches
 	    WHERE ID = {$id}
-		and email = '{$email}';
+	    and email = '{$email}';
 _QUERY;
 	$result = $connection->query($getTime);
 	if (!$result) die($connection->error);
@@ -673,4 +773,40 @@ _QUERY;
 	$result = $connection->query($getSearch);
 */
     } // checkOneWay()
+
+    function getGraphData($id, $email)
+    {
+	require_once 'login.php';
+	$connection = new mysqli ('localhost', 'root');
+	if ($connection->connect_error) die ($connection->connect_error);
+	$connection->select_db("flight_tracker");
+
+	$query = <<<_QUERY
+	    SELECT MIN(opt_saletotal), query_time
+	    FROM `{$id}`
+	    GROUP BY query_time;
+_QUERY;
+	$result = $connection->query($query);
+	if (!$result) die($connection->connect_error);
+	$rv = array();
+	$labels = array();
+	$data = array();
+	$numRows = $result->num_rows;
+	for ($i = 0; $i < $numRows; ++$i)
+	{
+	    $result->data_seek($i);
+	    $row = $result->fetch_array(MYSQLI_ASSOC);
+
+	    $date = explode("-",explode(" ", $row['query_time'])[0]);
+	    $time = explode(":",explode(" ", $row['query_time'])[1]);
+	    $fullTime = mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]);
+
+	    $labels[] = '"'.date("g:i:s A n/j", $fullTime).'"';
+	    $data[] = $row['MIN(opt_saletotal)'];
+	} // for each row
+	
+	$rv['labels'] = $labels;
+	$rv['data'] = $data;
+	return $rv;
+    } // getGraphData()
 ?>

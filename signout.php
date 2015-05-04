@@ -1,25 +1,7 @@
-<?php
-if (isset($_SESSION['id']) && isset($_SESSION['email']))
-{
-    unset($_SESSION['id']);
-    unset($_SESSION['email']);
-    session_unset();
-    $_SESSION = array();
-    unset($_SESSION);
-    session_destroy();
-    if (ini_get("session.use_cookies")) 
-    {
-	$params = session_get_cookie_params();
-	setcookie(session_name(), '', time() - 42000,
-		 $params["path"], $params["domain"],
-		 $params["secure"], $params["httponly"]);
-    }
-}
-?>
 <!DOCTYPE html>
 <html>
     <head>
-	<title>UCD Flight Tracker | Log In</title>
+	<title>UCD Flight Tracker</title>
 
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -112,42 +94,30 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			    // if session is set
 				//echo "<li class=\"active\"><a href=\"results.php\">Find a Flight</a></li>";
 			    // else
-				echo "<li><a href=\"signin.php\">My Search</a></li>";
+				echo "<li class=\"active\"><a href=\"signin.php\">My Search</a></li>";
 			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
-			<?php
-			    echo "<li class=\"active\"><a href=\"signin.php\">Log In</a></li>";
-			?>
 		    </ul>
 		</div>
 	    </div>
 	</nav>
 
 	<div class="container-fluid"> 
-	    <div class="row">
-		<div class="col-md-4"></div>
-		<div class="col-md-4">
-		    <form id="claimFlight" class="sign-up" >
-			<h3 class="sign-up-title">Check Flight Results!</h3>
-			<p>Provide the Email address and request ID that we sent with your
-			   confirmation message for the particular search for which you
-			   would like to view the results.
-			</p>
-			<input type="text" class="sign-up-input" name="email" id="email" placeholder="Email" autofocus>
-			<input type="text" class="sign-up-input" name="id"  id="id" placeholder="Request ID">
-			<input type="button" value="Submit" onclick="doStuff()" onkeypress="return checkEnter(event)" class="sign-up-button">
-		    </form>
+	    <form id="claimFlight" class="sign-up" >
+		<h3 class="sign-up-title">Check Flight Results!</h3>
+		<input type="text" class="sign-up-input" name="email" id="email" placeholder="Email" autofocus>
+		<input type="text" class="sign-up-input" name="id"  id="id" placeholder="Request ID">
+		<input type="button" value="Submit" onclick="doStuff()" onkeypress="return checkEnter(event)" class="sign-up-button">
+	    </form>
 
-		    <form id="hiddenForm" method="post" action="results.php">
-			<input type="hidden" name="email" id="hidden_email">
-			<input type="hidden" name="id"  id="hidden_id">
-		    </form>
-		</div>
-		<div class="col-md-4"></div>
-	    </div>
+	    <form id="hiddenForm" method="post" action="results.php">
+		<input type="hidden" name="email" id="hidden_email">
+		<input type="hidden" name="id"  id="hidden_id">
+	    </form>
+
 	</div>
     </body>
 </html>

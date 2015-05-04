@@ -1,3 +1,9 @@
+<?php
+session_start();
+$seshFlag = false;
+if (isset($_SESSION['id']) && isset($_SESSION['email']))
+    $seshFlag = true;
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -68,15 +74,21 @@
 		    <ul class="nav navbar-nav">
 			<li><a href="index.php">Find a Flight</a></li>
 			<?php
-			    // if session is set
-				//echo "<li><a href=\"results.php\">My Search</a></li>";
-			    // else
+			    if ($seshFlag)
+				echo "<li><a href=\"results.php\">My Search</a></li>";
+			    else
 				echo "<li><a href=\"signin.php\">My Search</a></li>";
 			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li class="active"><a href="contact.php">Contact</a></li>
+			<?php
+			    if ($seshFlag)
+				echo "<li><a href=\"signin.php\">Log Out</a></li>";
+			    else
+				echo "<li><a href=\"signin.php\">Log In</a></li>";
+			?>
 		    </ul>
 		</div>
 	    </div>

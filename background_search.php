@@ -12,6 +12,10 @@ $userSource = $post['source'];
 $userDestination = $post['destination'];
 $interval = 20; //seconds for sleep function
 
+$oneWay = false;
+if (checkIsOneWay($post))
+    $oneWay = true;
+
 // send email to user
 use Mailgun\Mailgun;
 $mgClient = new Mailgun('key-d76af0f266f20519801b8997210febfd');
@@ -45,17 +49,17 @@ CREATE TABLE {$tableName} (
     opt_slice_seg_leg_duration INT NOT NULL, 
     opt_slice_seg_leg_mileage INT NOT NULL, 
     opt_slice_seg_leg_meal VARCHAR(20) NOT NULL, 
+    query_time TIMESTAMP NOT NULL,
     PRIMARY KEY (
 	opt_id, opt_saletotal, 
 	opt_slice_seg_id, opt_slice_seg_leg_id
     )
-  );
+);
 _TABLEQUERY;
 $test = $userTable;
 $resultTable = $connection->query($userTable);
 if (!$resultTable) die ($connection->error);
 
-//echo "Search Has Begun!";
 do {	// begin search
 
     // get search parameters 
@@ -105,27 +109,33 @@ _QUERY2;
     {
 	// organize user input into an array
 	$d = explode("-",$rows['depart_date']);
-	$r = explode("-",$rows['return_date']);
+	if (!$oneWay)
+	{
+	    $r = explode("-",$rows['return_date']);
+	    $temp = implode("/", array($r[1], $r[2], $r[0]));
+	} else
+	    $temp = "";
+
 	$current_info = array( 
 	    "id" => $rows['ID'],
 	    "email" => $rows['email'],
 	    "source" => $rows['origin'],
 	    "destination" => $rows['destination'],
 	    "depart_date" => implode("/", array($d[1], $d[2], $d[0])),
-	    "return_date" => implode("/", array($r[1], $r[2], $r[0])),
+	    "return_date" => $temp,
 	    "adults" => $rows['adults'],
 	    "children" => $rows['children'],
 	    "seniors" => $rows['seniors'],
 	    "seat_infants" => $rows['seat_infant'],
 	    "lap_infants" => $rows['lap_infant'], 
 	    "price" => $rows['price'], 
-	    "airline" => $airlines
+	    "airline" => $airlines,
+	    "one_way" => $oneWay
 	  );
     
 	// get flight info from QPX API
 	$searchResults = getResults($current_info, 5);
 	$trips = $searchResults->getTrips();
-	//print_r($trips);
 
 	// start insertion query
 	$insertQuery = <<<_QUERY3
@@ -147,15 +157,16 @@ _QUERY2;
 		opt_slice_seg_leg_destination,
 		opt_slice_seg_leg_duration,
 		opt_slice_seg_leg_mileage,
-		opt_slice_seg_leg_meal
+		opt_slice_seg_leg_meal,
+		query_time
 	    ) VALUES 
 _QUERY3;
-	$flag = true;
 	// parse results
+	$flag = true;
+	$query_time = date("Y-m-d H:i:s", time());
 	foreach ($trips->getTripOption() as $option) {
 	    $tripOptionId = $option->getId();
 	    $tripOptionSaleTotal = substr($option->getSaleTotal(),3);
-
 	    $sliceCount = 1;
 	    foreach ($option->getSlice() as $slice) {
 		foreach ($slice->getSegment() as $segment) {
@@ -195,7 +206,8 @@ _QUERY3;
 			    '{$legDestination}',
 			     {$legDuration},
 			     {$legMileage},
-			    '{$legMeal}'
+			    '{$legMeal}',
+			    '{$query_time}'
 			    )
 _QUERY4;
 		    } // foreach leg
@@ -251,21 +263,23 @@ _QUERY4;
 
 function checkIsOneWay($post)
 {
+    require_once 'login.php';
+    $connection = new mysqli('localhost','root');
+    if ($connection->connect_error) die ($connection->connect_error);
+    $connection->select_db("flight_tracker");
     $query = <<<_BLAH
-	SELECT return_date 
+	SELECT one_way 
 	FROM searches  
-	WHERE return_date = NULL AND 
+	WHERE 
 	    id = {$post['id']} AND 
 	    email = '{$post['email']}';
 _BLAH;
-
     $result = $connection->query($query);
     if (!$result) die ($connection->error);
     $result->data_seek(0);
-    $ret_day->fetch_array(MYSQLI_ASSOC)['return_date'];
-
-    $val = true;
-    if(!isset($ret_day) || $ret_day === NULL || is_null($ret_day))
+    $row = $result->fetch_array(MYSQLI_ASSOC);
+    $val = false;
+    if ($row['one_way'])
 	$val = true;
 
     return $val;

@@ -1,4 +1,5 @@
 <?php
+/*
 if (isset($_SESSION['id']) && isset($_SESSION['email']))
 {
     unset($_SESSION['id']);
@@ -15,6 +16,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		 $params["secure"], $params["httponly"]);
     }
 }
+*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,46 +45,63 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 
   	<!--**************** AJAX STUFF ********************* -->
 	<script>
-	    function doStuff() {
-		var xmlhttp;
-		var id_val = document.getElementById("id").value;
-		var email_val = document.getElementById("email").value;
-		if (window.XMLHttpRequest)
-		{ xmlhttp  = new XMLHttpRequest(); }
-		else
-		{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
-
-		xmlhttp.onreadystatechange = function() {
-		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+	    function doStuff(mail) {
+	    	//check for email validation
+		  	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(claimFlight.email.value))
 		    {
-			if(xmlhttp.responseText == "false")
-			{
-				alert("bad auth");
-			}
+					 var id_val = document.getElementById("id").value;
+					 var isNum = isNaN(id_val); //returns true if ID input is not a number
+					 if(!isNum) //if false continue
+					 {	
+						var xmlhttp;
+						var email_val = document.getElementById("email").value;
+						if (window.XMLHttpRequest)
+						{ xmlhttp  = new XMLHttpRequest(); }
+						else
+						{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
+						xmlhttp.onreadystatechange = function() 
+						{
+						    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+						    {
+								if(xmlhttp.responseText == "false")
+								{
+									alert("bad auth");
+								}
+								else
+								{
+									//window.open("results.php","_self");
+									var obj = {id : id_val, email : email_val};
+									document.getElementById("test").innerHTML = JSON.stringify(obj);
+									post(obj);
+								}
+						    }
+						}
+						var str = "email=" + email_val + "&id=" + id_val;
+						//document.getElementById("test").innerHTML = str;
+						xmlhttp.open("GET","authenticate.php?"+str,true);
+						xmlhttp.send();
+					} //end if with AJAX stuff
+					else
+					{
+						alert("You have input an incorrect ID");
+						return(false);
+					}
+			} // end main if 
 			else
 			{
-				//window.open("results.php","_self");
-				var obj = {id : id_val, email : email_val};
-				//document.getElementById("test").innerHTML = JSON.stringify(obj);
-				post(obj);
+			  	alert("You have invalid email input");
+			  	return(false);
 			}
-		    }
-		}
-		var str = "email=" + email_val + "&id=" + id_val;
-		//document.getElementById("test").innerHTML = str;
-		xmlhttp.open("GET","authenticate.php?"+str,true);
-		xmlhttp.send();
-	    } // doStuff
-
-	    function checkEnter(e)
-	    {
-		if(e.which == 13 || e.keyCode == 13)
-		{
-		    doStuff();
-		    return true;
-		}
-	    } // checkEnter
-
+	  }//do Stuff
+	    
+	   function submitonEnter(evt)
+		{ 
+			var charCode = (evt.which) ? evt.which : event.keyCode 
+			if(charCode == "13")
+			{ 
+				document.searchwindow.submit(); 
+			} 
+		} 
 	    function post(params) 
 	    {
 		document.getElementById("hidden_id").value = params["id"];
@@ -138,7 +157,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			</p>
 			<input type="text" class="sign-up-input" name="email" id="email" placeholder="Email" autofocus>
 			<input type="text" class="sign-up-input" name="id"  id="id" placeholder="Request ID">
-			<input type="button" value="Submit" onclick="doStuff()" onkeypress="return checkEnter(event)" class="sign-up-button">
+			<input type="button" value="Submit" onclick="doStuff(email)" onKeyDown="javascript:return submitonEnter(event)" class="sign-up-button">
 		    </form>
 
 		    <form id="hiddenForm" method="post" action="results.php">
@@ -149,5 +168,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		<div class="col-md-4"></div>
 	    </div>
 	</div>
+
+	<div id="test">
+
+	</div>
+	
     </body>
 </html>

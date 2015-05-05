@@ -1,5 +1,6 @@
 <?php
 session_start();
+ini_set('session.gc_maxlifetime', 60 * 60 * 1);
 
 // if already logged in
 if (isset($_SESSION['id']) && isset($_SESSION['email']))
@@ -169,6 +170,7 @@ _DES2;
 			</div><!--end col-->
 		    </div><!--end row-->
 
+
 		    <h2>Search Time Remaining</h2>
 		    <div class="clock"></div>
 		    <?php
@@ -181,6 +183,9 @@ _SCRIPT;
 			$data = getGraphData($id, $email);
 		    ?>
 
+		    <div id="test">
+			blah
+		    </div>
 		    <h2>Graph of Prices</h2>
 		    <canvas id="buyers" width="400" height="400"></canvas>
 		    <script>
@@ -190,14 +195,14 @@ _SCRIPT;
 
 			var buyers = document.getElementById('buyers').getContext('2d');
 			var buyerData = {
-			    labels : ["Start",<?php echo implode(",", $data['labels']); ?>],
+			    labels : ["Start", <?php echo implode(",", $data['labels']); ?>],
 			    datasets : [
 				{
 				    fillColor : "rgba(94, 71, 99, 0.4)",
 				    strokeColor : "#5e4763",
 				    pointColor : "#fff",
 				    pointStrokeColor : "#413145",
-				    data : [0,<?php echo implode(",", $data['data']); ?>]
+				    data : [0, <?php echo implode(",", $data['data']); ?>]
 				}
 			    ]
 			};
@@ -205,7 +210,8 @@ _SCRIPT;
 			    scaleShowGridLines: true,
 			    bezierCurve: false
 			};
-			new Chart(buyers).Line(buyerData, options);
+			var lastRender = Math.floor(Date.now() / 1000);
+			var myChart = new Chart(buyers).Line(buyerData, options);
 		    </script>
 
 		    <h2>Search Results</h2>
@@ -235,61 +241,47 @@ _SCRIPT;
 	var id = <?php echo $id; ?>;
 	var email = "<?php echo $email; ?>";
 	var seconds = 3;
-	var count = 0;
+	var str = "id=" + id + "&email=" + email + "&time=" + lastRender;
+	var xmlhttp;
+	var description = "Your search is complete! " +
+	    "The graph below shows the progression of flight prices " + 
+	    "since the start of your search. If any of the search " + 
+	    "results below appeal to you, then click the Book It! " +
+	    "button, and we stop your background search and take you " +
+	    "to a booking page. If you are completely dissatisfied with " +
+	    "the results, then we encourage you to begin a new search " + 
+	    "by entering new parameters at our <a href=\"index.php\">" +
+	    "Search Page</a>.";
+	    /*
+	if (window.XMLHttpRequest)
+	{ xmlhttp = new XMLHttpRequest(); }
+	else
+	{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
 
-	window.setInterval(function () {
-	    if (Math.floor(Date.now() / 1000) >= end)
+	xmlhttp.onreadystatechange = function() {
+	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && remaining > 0)
 	    {
-		var str = "Your search is complete! " +
-		    "The graph below shows the progression of flight prices " + 
-		    "since the start of your search. If any of the search " + 
-		    "results below appeal to you, then click the Book It! " +
-		    "button, and we stop your background search and take you " +
-		    "to a booking page. If you are completely dissatisfied with " +
-		    "the results, then we encourage you to begin a new search " + 
-		    "by entering new parameters at our <a href=\"index.php\">" +
-		    "Search Page</a>.";
-		document.getElementById("background-description").innerHTML = str;
+		var dat = xmlhttp.responseText;
+		var newData = dat.split(",");
+		var price = newData[1].split("+");
+		myChart.addData([price[0]], newData[0])
+		document.getElementById("test").innerHTML = xmlhttp.responseText;
+		lastRender = Math.floor(Date.now() / 1000);
 	    }
+	} // onreadysatechange
+
+	*/
+	window.setInterval(function () {
+	    if (Math.floor(Date.now() / 1000) >= end) {
+		document.getElementById("background-description").innerHTML = description;
+	    } // if search over
 
 /*
-	    var xmlhttp;
-	    if (window.XMLHttpRequest)
-	    { xmlhttp = new XMLHttpRequest(); }
-	    else
-	    { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
-	    xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-		{
-		    //document.getElementById("test").innerHTML = xmlhttp.responseText;
-		    xmldoc = xmlhttp.responseXML;
-		    var options = xmldoc.getElementsByTagName("OPTION"); 
-		    count = options.length;
-		    var table = document.getElementById("results");
-		    var i = 1;
-		    var option;
-
-		    for (option in options)
-		    {
-			var row = table.insertRow(i);
-			var cell1 = row.insertCell(0);
-			var cell2 = row.insertCell(1);
-			var cell3 = row.insertCell(2);
-
-			cell1.innerHtml = "NEW CELL 1";
-			cell1.innerHtml = "NEW CELL 1";
-			cell1.innerHtml = "NEW CELL 1";
-
-			i++;
-		    } // for
-		}
-	    }
-	    var str = "id=" + id + "&email=" + email + "&count=" + count;
+	    str = "id=" + id + "&email=" + email + "&lastQuery=" + lastRender;
 	    xmlhttp.open("GET","retrieve.php?" + str,true);
 	    xmlhttp.send();
 	    */
-	},seconds * 1000); // get AJAX
-
+	}, seconds * 1000); // get AJAX
 
 	window.onload=function(){$('.dropdown').hide();};
 	<?php

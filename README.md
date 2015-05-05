@@ -2,19 +2,18 @@
 ECS 193 Lowest Flight Fare Tracker
 
 High Priority To-Do's:
--results page
-    -graph update dynamically 
-     and have something for when
-     no results exist
-    -insert hopper
-    -button for linking
 -algorithm
 -session logout
+-comment code
+-test
 
 Low Priority To-Do's:
+-graph update dynamically 
+ and have something for when
+ no results exist
 -put MySQL queries into transactions
 -polish UI 
--finalize images and logo (nina)
+-finalize images and logo 
 
 
 below is the database schema

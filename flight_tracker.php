@@ -286,7 +286,7 @@ _STUFF11;
 	$client = new Google_Client();
 	//$client->setApplicationName("Flight Tracker");
 	// nick
-	//$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+	$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
 	// rupali
 	//$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 	// kirsten
@@ -296,7 +296,7 @@ _STUFF11;
 	// flight tracker
 	//$client->setDeveloperKey("AIzaSyCCS0WHeRJDiRZmxfTmqA9jCbETtMIvAUg");
 	// rupali's other
-	$client->setDeveloperKey("AIzaSyAlIaLcBQiyOpWVTPSJC-fOJz_2veF94Zw");
+	//$client->setDeveloperKey("AIzaSyAlIaLcBQiyOpWVTPSJC-fOJz_2veF94Zw");
 	// create QPX service
 	$service = new Google_Service_QPXExpress($client);
 
@@ -497,7 +497,7 @@ _QUERY4;
 	$returnArr = array(
 		    'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>',
 		    'to'      => '<'.$post['email'].'>',
-		    'subject' => 'Thank you for using UCD Flight Tracker ',
+		    'subject' => 'UCD Flight Tracker Confirmation',
 		    'html'    => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 				  <html xmlns="http://www.w3.org/1999/xhtml" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 					<head>
@@ -566,21 +566,18 @@ _QUERY4;
     function getResultsEmail($userEmail, $userID, $userSource, $userDestination)
     {
 
-	$resultArr = array(
-		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 'to'      => '<'.$userEmail.'>',
-		'subject' => 'We found a flight for you!  ',
-		'html'    => '
-		    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	$resultsArr = array(
+		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 
+		'to'      => '<'.$userEmail.'>',
+		'subject' => 'New flight prices have been found!  ',
+		'html'    => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		    <html xmlns="http://www.w3.org/1999/xhtml" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 		    <head>
 		    <meta name="viewport" content="width=device-width" />
 		    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		    <title>UCD Flight Tracker</title>
-
 		    </head>
-
 		    <body itemscope itemtype="http://schema.org/EmailMessage" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
-
 		    <table class="body-wrap" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
 			<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 			    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
@@ -627,16 +624,13 @@ _QUERY4;
 			    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"></td>
 			</tr>
 		    </table>
-
-
 		    <style type="text/css">
 		    img { max-width: 100% !important; }
 		    body { -webkit-font-smoothing: antialiased !important; -webkit-text-size-adjust: none !important; width: 100% !important; height: 100% !important; line-height: 1.6 !important; }
 		    body { background-color: #f6f6f6 !important; }
 		    </style>
 		    </body>
-		    </html>'
-			    );
+		    </html>');
 	return $resultsArr;
     } // getResultsEmail()
 
@@ -644,8 +638,9 @@ _QUERY4;
 function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
     {
 
-	$resultArr = array(
-		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 'to'      => '<'.$userEmail.'>',
+	$resultsArr = array(
+		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 
+		'to'      => '<'.$userEmail.'>',
 		'subject' => 'We found a flight for you!  ',
 		'html'    => '
 		    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -654,11 +649,8 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 		    <meta name="viewport" content="width=device-width" />
 		    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		    <title>UCD Flight Tracker</title>
-
 		    </head>
-
 		    <body itemscope itemtype="http://schema.org/EmailMessage" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
-
 		    <table class="body-wrap" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
 			<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 			    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
@@ -705,19 +697,15 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 			    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"></td>
 			</tr>
 		    </table>
-
-
 		    <style type="text/css">
 		    img { max-width: 100% !important; }
 		    body { -webkit-font-smoothing: antialiased !important; -webkit-text-size-adjust: none !important; width: 100% !important; height: 100% !important; line-height: 1.6 !important; }
 		    body { background-color: #f6f6f6 !important; }
 		    </style>
 		    </body>
-		    </html>'
-			    );
+		    </html>');
 	return $resultsArr;
     } // SearchOverEmail()
-
 
     function getEndTime($search_time)
     //{ return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));} 

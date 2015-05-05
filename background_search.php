@@ -75,7 +75,7 @@ _QUERY;
     // get timing information from search;
     $result->data_seek(0);
     $rows = $result->fetch_array(MYSQLI_ASSOC);
-    $min_price = $rows['lowest_price']; // lowest price so far
+    $lowestPrice = $rows['lowest_price']; // lowest price so far
     $end = $rows['end'];    // end of search time
     $ymd = explode(" ", $end);
     $ymd2 = explode("-", $ymd[0]);
@@ -165,9 +165,11 @@ _QUERY3;
 	// parse results
 	$flag = true;
 	$query_time = date("Y-m-d H:i:s", time());
+	$prices = array();
 	foreach ($trips->getTripOption() as $option) {
 	    $tripOptionId = $option->getId();
 	    $tripOptionSaleTotal = substr($option->getSaleTotal(),3);
+	    $prices[] = $tripOptionSaleTotal;
 	    $sliceCount = 1;
 	    foreach ($option->getSlice() as $slice) {
 		foreach ($slice->getSegment() as $segment) {
@@ -220,29 +222,43 @@ _QUERY4;
 	$insertResult = $connection->query($insertQuery);
 	if (!$insertResult) die ($connection->error);
 
-	//If sale total is less than current lowest price found, update table and send mail to user
-/*	
-	if($rowCount['opt_saletotal'] < $min_price)
+	$newMin = false;
+	$min = $lowestPrice;
+	foreach ($prices as $price)
 	{
-	    $min_price = $rowCount['opt_saletotal'];
+	    if ($price < $lowestPrice)
+	    {
+		$newMin = true;
+		$min = $price;
+	    } // if
+	} // for each saletotal
 
+	/* if new minimum price has been found */
+	if ($newMin)
+	{
+	    $updateLowestPrice = <<<_QUERY5
+		UPDATE searches
+		SET lowest_price = {$min}
+		WHERE id = {$userID}
+		    AND email = '{$post['email']}';
+_QUERY5;
+	    $updateResults = $connection->query($updateLowestPrice);
+	    if (!$updateResults) die ($connection->error);
+
+	    /*
 	    define('__ROOT3__',dirname(__FILE__));
 	    require_once(__ROOT3__ . '/vendor/autoload.php');
 	    use Mailgun\Mailgun;
 	    $mgClient = new Mailgun('key-d76af0f266f20519801b8997210febfd');
 	    $domain = "sandboxc740d3f374c749c391b5e8abfdee56b2.mailgun.org";
+	    */
 
 	    // send email
 	    $result = $mgClient->sendMessage($domain, getResultsEmail($post['email'],$post['id'],$rows['origin'],$rows['destination'])); 
-	} // if lower price discovered
-	*/
-	
+	} // if new minimum has been found
     } // if search still needs to be running
     else // search is over, and we need to email
-    {
-	//echo "SEARCH IS OVER (0 TIME LEFT), CHANGE TIME PARAMETER IF TESTING BACKGROUND SEARCH";
 	break;
-    } // else: search is over
 
     // delay execution
     sleep($interval);
@@ -251,16 +267,14 @@ _QUERY4;
 
 //Send email once search is over
 /*
-
-	define('__ROOT3__',dirname(__FILE__));
-	require_once(__ROOT3__ . '/vendor/autoload.php');
-	use Mailgun\Mailgun;
-	$mgClient = new Mailgun('key-d76af0f266f20519801b8997210febfd');
-	$domain = "sandboxc740d3f374c749c391b5e8abfdee56b2.mailgun.org";
-
-	// send email
-	$result = $mgClient->sendMessage($domain, SearchOverEmail($post['email'],$post['id'],$rows['origin'],$rows['destination'])); 
-	*/
+define('__ROOT3__',dirname(__FILE__));
+require_once(__ROOT3__ . '/vendor/autoload.php');
+use Mailgun\Mailgun;
+$mgClient = new Mailgun('key-d76af0f266f20519801b8997210febfd');
+$domain = "sandboxc740d3f374c749c391b5e8abfdee56b2.mailgun.org";
+*/
+// send email
+$result = $mgClient->sendMessage($domain, SearchOverEmail($post['email'],$post['id'],$rows['origin'],$rows['destination'])); 
 
 function checkIsOneWay($post)
 {

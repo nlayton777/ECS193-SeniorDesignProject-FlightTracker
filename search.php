@@ -1,7 +1,16 @@
+<?php
+session_start();
+ini_set('session.gc_maxlifetime', 60 * 60 * 1);
+$seshFlag = false;
+if (isset($_SESSION['id']) && isset($_SESSION['email']))
+{
+    $seshFlag = true;
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
-	<title>UCD Flight Tracker | Search</title>
+	<title>UCD Flight Tracker | Search Results</title>
 
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -21,14 +30,12 @@
 		var CurrentSearchSecs = currentSecs + searchSecs;
 
 		//get Departure date and convert to seconds 
-		     <?php 
-			require_once('./flight_tracker.php');
-
-			$post = $_POST;
-			$departureDate = $post['depart_date'];
-			$departureDate = strtotime($departureDate);
-			echo "var departSecs = \"{$departureDate}\";";
-		     ?>  
+		 <?php 
+		    $post = $_POST;
+		    require_once('./flight_tracker.php');
+		    $departureDate = strtotime($post['depart_date']);
+		    echo "var departSecs = \"{$departureDate}\";";
+		 ?>  
 
 		 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchwindow.email.value))
 		  {
@@ -68,15 +75,21 @@
 
 			<li class="active"><a href="index.php">Find a Flight</a></li>
 			<?php
-			    // if session is set
-				//echo "<li><a href=\"results.php\">My Search</a></li>";
-			    // else
+			    if ($seshFlag)
+				echo "<li><a href=\"results.php\">My Search</a></li>";
+			    else
 				echo "<li><a href=\"signin.php\">My Search</a></li>";
 			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
+			<?php
+			    if ($seshFlag)
+				echo "<li><a href=\"index.php\">Log Out</a></li>";
+			    else
+				echo "<li><a href=\"signin.php\">Log In</a></li>";
+			?>
 		    </ul>
 		</div>
 	    </div>
@@ -91,8 +104,6 @@
 			    <h1>Search Results</h1>
 
 			    <?php
-
-				$post = $_POST;
 				echo "<h3 id=\"trip-title\">" . $post['depart_date'] . "  <strong>" . 
 				    $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
 				    "<strong>" . $post['destination'] . "</strong>  ";
@@ -115,8 +126,11 @@
 			    <p id="background-description">
 				Our search engine can work in the background for you to find 
 				deals on flights whose prices might change in the near future. 
-				Provide us with the following information, and we will begin
-				searching.
+				Provide us with your information below, and we will begin
+				searching. Your current search parameters have not yet been
+				entered into our system. By continuing your search, you and 
+				the information you provide will be logged into our system 
+				for future contact and log-in.
 			    </p>
 
 			    <form name="searchwindow" onsubmit="return check(email);" method="post" action="countdown.php">
@@ -145,16 +159,19 @@
 					<input type="hidden" name="destination" value="{$post['destination']}"/>
 					<input type="hidden" name="depart_date" value="{$post['depart_date']}"/>
 _SECTION1;
-					if (isset($post['return_date']))
-					    echo "<input type=\"hidden\" name=\"return_date\" value=\"".$post['return_date']."\"/>";
-					else
-					    echo "<input type=\"hidden\" name=\"return_date\" value=\"NULL\"/>";
+					if (isset($post['return_date'])) echo "<input type=\"hidden\" name=\"return_date\" value=\"".$post['return_date']."\"/>";
+					else echo "<input type=\"hidden\" name=\"return_date\" value=\"NULL\"/>";
+					
+					$oneWay = false;
+					if (isOneWay($post))
+					    $oneWay = true;
 					echo <<<_SECTION2
 					<input type="hidden" name="adults" value="{$post['adults']}"/>
 					<input type="hidden" name="children" value="{$post['children']}"/>
 					<input type="hidden" name="seniors" value="{$post['seniors']}"/>
 					<input type="hidden" name="seat_infant" value="{$post['seat_infants']}"/>
 					<input type="hidden" name="lap_infant" value="{$post['lap_infants']}"/>
+					<input type="hidden" name="one_way" value="{$post['one_way']}"/>
 _SECTION2;
 
 					foreach ($post['airline'] as $air)
@@ -218,26 +235,25 @@ _TABLE1;
 					  </tr>
 					</tbody>
 				  </table>
-				  <p><a href="http://www.hopper.com/flights/from-{$myArray[0]}/to-{$myArray[1]}/guide">See for Yourself!</a></p>
+				  <p><a href="http://www.hopper.com/flights/from-{$myArray[0]}/to-{$myArray[1]}/guide" target="_blank" >See for Yourself!</a></p>
 _TABLE2;
 				  } // endif
 
 			$result = getResults($post, 50);
 			$trips = $result->getTrips();
-
+			$rowCount = -1;
 			if (count($trips->getTripOption()) <= 0)
 			    echo "<h2>No Results Found</h2>";
 			else
 			    $rowCount = printResults($trips, $post);
 		    ?>
 		    <h4>
-			<strong>*NOTE:</strong> 
-			    If you were hoping to find
-			    more search results, then
-			    we recommend broadening your
-			    search parameters, particularly
-			    your maximum price range or
-			    your preferred airline.
+			If you were hoping to find
+			more search results, then
+			we recommend broadening your
+			search parameters, particularly
+			your maximum price range or
+			your preferred airline.
 		    </h4>
 
 		</div>
@@ -250,22 +266,25 @@ _TABLE2;
 	window.onload=function(){$('.dropdown').hide();};
 
 	<?php
-	    for ($i = 0; $i < $rowCount; $i++)
+	    if ($rowCount != -1) 
 	    {
-		echo <<<_SECTION3
-		$(document).ready(function () {
-		    $('#btnExpCol{$i}').click(function () {
-			if ($(this).val() == 'Collapse') {
-			    $('#row{$i}').stop().slideUp('3000');
-			    $(this).val(' Expand ');
-			} else {
-			    $('#row{$i}').stop().slideDown('3000');
-			    $(this).val('Collapse');
-			}
+		for ($i = 0; $i < $rowCount; $i++)
+		{
+		    echo <<<_SECTION3
+		    $(document).ready(function () {
+			$('#btnExpCol{$i}').click(function () {
+			    if ($(this).val() == 'Collapse') {
+				$('#row{$i}').stop().slideUp('3000');
+				$(this).val(' Expand ');
+			    } else {
+				$('#row{$i}').stop().slideDown('3000');
+				$(this).val('Collapse');
+			    }
+			});
 		    });
-		});
 _SECTION3;
-	    } // for
+		} // for
+	    } // if
 	?>
 
     </script>

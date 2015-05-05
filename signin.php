@@ -1,7 +1,27 @@
+<?php
+/*
+if (isset($_SESSION['id']) && isset($_SESSION['email']))
+{
+    unset($_SESSION['id']);
+    unset($_SESSION['email']);
+    session_unset();
+    $_SESSION = array();
+    unset($_SESSION);
+    session_destroy();
+    if (ini_get("session.use_cookies")) 
+    {
+	$params = session_get_cookie_params();
+	setcookie(session_name(), '', time() - 42000,
+		 $params["path"], $params["domain"],
+		 $params["secure"], $params["httponly"]);
+    }
+}
+*/
+?>
 <!DOCTYPE html>
 <html>
     <head>
-	<title>UCD Flight Tracker</title>
+	<title>UCD Flight Tracker | Log In</title>
 
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -25,46 +45,63 @@
 
   	<!--**************** AJAX STUFF ********************* -->
 	<script>
-	    function doStuff() {
-		var xmlhttp;
-		var id_val = document.getElementById("id").value;
-		var email_val = document.getElementById("email").value;
-		if (window.XMLHttpRequest)
-		{ xmlhttp  = new XMLHttpRequest(); }
-		else
-		{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
-
-		xmlhttp.onreadystatechange = function() {
-		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+	    function doStuff(mail) {
+	    	//check for email validation
+		  	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(claimFlight.email.value))
 		    {
-			if(xmlhttp.responseText == "false")
-			{
-				alert("bad auth");
-			}
+					 var id_val = document.getElementById("id").value;
+					 var isNum = isNaN(id_val); //returns true if ID input is not a number
+					 if(!isNum) //if false continue
+					 {	
+						var xmlhttp;
+						var email_val = document.getElementById("email").value;
+						if (window.XMLHttpRequest)
+						{ xmlhttp  = new XMLHttpRequest(); }
+						else
+						{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
+						xmlhttp.onreadystatechange = function() 
+						{
+						    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+						    {
+								if(xmlhttp.responseText == "false")
+								{
+									alert("bad auth");
+								}
+								else
+								{
+									//window.open("results.php","_self");
+									var obj = {id : id_val, email : email_val};
+									//document.getElementById("test").innerHTML = JSON.stringify(obj);
+									post(obj);
+								}
+						    }
+						}
+						var str = "email=" + email_val + "&id=" + id_val;
+						//document.getElementById("test").innerHTML = str;
+						xmlhttp.open("GET","authenticate.php?"+str,true);
+						xmlhttp.send();
+					} //end if with AJAX stuff
+					else
+					{
+						alert("You have input an incorrect ID");
+						return(false);
+					}
+			} // end main if 
 			else
 			{
-				window.open("results.php","_self");
-				var obj = {id : id_val, email : email_val};
-				document.getElementById("test").innerHTML = JSON.stringify(obj);
-				post(obj);
+			  	alert("You have invalid email input");
+			  	return(false);
 			}
-		    }
-		}
-		var str = "email=" + email_val + "&id=" + id_val;
-		//document.getElementById("test").innerHTML = str;
-		xmlhttp.open("GET","authenticate.php?"+str,true);
-		xmlhttp.send();
-	    } // doStuff
-
-	    function checkEnter(e)
-	    {
-		if(e.which == 13 || e.keyCode == 13)
-		{
-		    doStuff();
-		    return true;
-		}
-	    } // checkEnter
-
+	  }//do Stuff
+	    
+	   function submitonEnter(evt)
+		{ 
+			var charCode = (evt.which) ? evt.which : event.keyCode 
+			if(charCode == "13")
+			{ 
+				document.searchwindow.submit(); 
+			} 
+		} 
 	    function post(params) 
 	    {
 		document.getElementById("hidden_id").value = params["id"];
@@ -94,31 +131,47 @@
 			    // if session is set
 				//echo "<li class=\"active\"><a href=\"results.php\">Find a Flight</a></li>";
 			    // else
-				echo "<li class=\"active\"><a href=\"signin.php\">My Search</a></li>";
+				echo "<li><a href=\"signin.php\">My Search</a></li>";
 			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
+			<?php
+			    echo "<li class=\"active\"><a href=\"signin.php\">Log In</a></li>";
+			?>
 		    </ul>
 		</div>
 	    </div>
 	</nav>
 
 	<div class="container-fluid"> 
-	    <form id="claimFlight" class="sign-up" >
-		<h3 class="sign-up-title">Check Flight Results!</h3>
-		<input type="text" class="sign-up-input" name="email" id="email" placeholder="Email" autofocus>
-		<input type="text" class="sign-up-input" name="id"  id="id" placeholder="Request ID">
-		<input type="button" value="Submit" onclick="doStuff()" onkeypress="return checkEnter(event)" class="sign-up-button">
-	    </form>
+	    <div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+		    <form id="claimFlight" class="sign-up" >
+			<h3 class="sign-up-title">Check Flight Results!</h3>
+			<p>Provide the Email address and request ID that we sent with your
+			   confirmation message for the particular search for which you
+			   would like to view the results.
+			</p>
+			<input type="text" class="sign-up-input" name="email" id="email" placeholder="Email" autofocus>
+			<input type="text" class="sign-up-input" name="id"  id="id" placeholder="Request ID">
+			<input type="button" value="Submit" onclick="doStuff(email)" onKeyDown="javascript:return submitonEnter(event)" class="sign-up-button">
+		    </form>
 
-	    <form id="hiddenForm" method="post" action="results.php">
-		<input type="hidden" name="email" id="hidden_email">
-		<input type="hidden" name="id"  id="hidden_id">
-	    </form>
+		    <form id="hiddenForm" method="post" action="results.php">
+			<input type="hidden" name="email" id="hidden_email">
+			<input type="hidden" name="id"  id="hidden_id">
+		    </form>
+		</div>
+		<div class="col-md-4"></div>
+	    </div>
 	</div>
-	
+
+	<div id="test">
+
+	</div>
 	
     </body>
 </html>

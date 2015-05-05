@@ -1,3 +1,12 @@
+<?php
+session_start();
+ini_set('session.gc_maxlifetime', 60 * 60 * 1);
+$seshFlag = false;
+if (isset($_SESSION['id']) && isset($_SESSION['email']))
+{
+    $seshFlag = true;
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -48,15 +57,21 @@
 		    <ul class="nav navbar-nav">
 			<li class="active"><a href="index.php">Find a Flight</a></li>
 			<?php
-			    // if session is set
-				//echo "<li><a href=\"results.php\">My Search</a></li>";
-			    // else if not set
+			    if ($seshFlag)
+				echo "<li><a href=\"results.php\">My Search</a></li>";
+			     else 
 				echo "<li><a href=\"signin.php\">My Search</a></li>";
 			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
+			<?php
+			    if ($seshFlag)
+				echo "<li><a href=\"signin.php\">Log Out</a></li>";
+			    else
+				echo "<li><a href=\"signin.php\">Log In</a></li>";
+			?>
 		    </ul>
 		</div>
 	    </div>
@@ -73,10 +88,10 @@
 		    <!--ONE-WAY CHECKBOX-->
 		    <div class="form-group">
 			<label class="no-indent" for="oneway">
-			<input type="checkbox" value="yes" 
+			<input type="checkbox" value="1" 
 			    onclick="OneWay()" id="oneway" name="one_way" 
 			    form="search_form"/>
-			<input class="form-control" type="hidden" value="no" 
+			<input class="form-control" type="hidden" value="0" 
 			    id="onewayHidden"  name="one_way"
 			    form="search_form" checked/>
 			One Way 
@@ -163,7 +178,7 @@
 			    <section id="slider"></section>
 			    <script>
 				    $("#slider").noUiSlider({
-					start: 500, connect: 'lower', step: 10,
+					start: 5000, connect: 'lower', step: 10,
 					range: {'min': 0,'75%': 1000,'max': 5000}
 				    });
 				$("#slider").Link('lower').to($('#priceInput'));

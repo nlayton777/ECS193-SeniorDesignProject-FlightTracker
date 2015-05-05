@@ -179,27 +179,4 @@ h5 {
     margin-bottom: 20px;
 }   
 
-.my-clock {
-	position: relative !important;
-	transform: scale(1);
-	-ms-transform: scale(1); /* IE 9 /
-	-webkit-transform: scale(1); / Safari and Chrome /
-	-o-transform: scale(1); / Opera /
-	-moz-transform: scale(1); / Firefox */
 
-}
-
-.noUi-target {
-  border: 1px solid white;
-}
-.noUi-background {
-  background-color: transparent;
-}
-.noUi-connect {
-  /*background-color: #577;*/
-  background-color: transparent;
-}
-#background-search-submit {
-    border-color: black;
-    color: black;
-}

@@ -8,10 +8,10 @@
     '/google-api-php-client/src/Google/Client.php');
 
     function isOneWay(&$val) {
-    $rv = false;
-    if (isset($val['one_way'])) 
-        if ($val['one_way'] == "yes") $rv = true;
-    return $rv;
+	$rv = false;
+	if ($val['one_way'] == true || $val['one_way'] == 1) 
+	    $rv = true;
+	return $rv;
     } // isOneWay($val)
 
     function printResults($trips, $post)
@@ -53,82 +53,82 @@ _HEADERS;
             <th id="info" colspan="2" >More Info</th>
         </tr>
 _HEADERS2;
-        foreach ($options as $option) 
-        {
-        $sub = substr($option->getSaleTotal(),3);
-        echo <<<_STUFF
-        <tr>
-           <td>\${$sub}</td>
-            <td>
+	    foreach ($options as $option) 
+	    {
+	    $sub = substr($option->getSaleTotal(),3);
+	    echo <<<_STUFF
+	    <tr>
+	       <td>\${$sub}</td>
+		<td>
 _STUFF;
-            // print if one way
-            if (!isOneWay($post))
-            {
-                echo <<<_STUFF2
-                <div id="on-the-way-there">
-                <h5>On the way there...</h5>
+		// print if one way
+		if (!isOneWay($post))
+		{
+		    echo <<<_STUFF2
+		    <div id="on-the-way-there">
+		    <h5>On the way there...</h5>
 _STUFF2;
-            }
+		}
 
-            foreach ($option->getSlice()[0]->getSegment() as $segment)
-            {
-                foreach ($segment->getLeg() as $leg)
-                {
-                $orig = $leg->getOrigin();
-                $dest = $leg->getDestination();
-                $time1 = explode("-",explode("T",$leg->getDepartureTime())[1])[0];
-                $time2 = explode("-",explode("T",$leg->getArrivalTime())[1])[0];
-                echo <<<_STUFF3
-                <p>
-                    <strong>{$orig}</strong> {$time1} 
-                    &rarr; 
-                    <strong>{$dest}</strong> {$time2}
-                </p>
+		foreach ($option->getSlice()[0]->getSegment() as $segment)
+		{
+		    foreach ($segment->getLeg() as $leg)
+		    {
+		    $orig = $leg->getOrigin();
+		    $dest = $leg->getDestination();
+		    $time1 = explode("-",explode("T",$leg->getDepartureTime())[1])[0];
+		    $time2 = explode("-",explode("T",$leg->getArrivalTime())[1])[0];
+		    echo <<<_STUFF3
+		    <p>
+			<strong>{$orig}</strong> {$time1} 
+			&rarr; 
+			<strong>{$dest}</strong> {$time2}
+		    </p>
 _STUFF3;
-                } // end for
-            } // end for
+		    } // end for
+		} // end for
 
-            if (!isOneWay($post)) {
-                echo <<<_STUFF4
-                </div>
-                <div id="on-the-way-back">
-                <h5>On the way back...</h5>
+		if (!isOneWay($post)) {
+		    echo <<<_STUFF4
+		    </div>
+		    <div id="on-the-way-back">
+		    <h5>On the way back...</h5>
 _STUFF4;
 
-                foreach ($option->getSlice()[1]->getSegment() as $segment)
-                {
-                foreach ($segment->getLeg() as $leg)
-                {
-                    $orig = $leg->getOrigin();
-                    $dest = $leg->getDestination();
-                    $time1 = explode("-",explode("T",$leg->getDepartureTime())[1])[0];
-                    $time2 = explode("-",explode("T",$leg->getArrivalTime())[1])[0];
-                    echo <<<_STUFF5
-                    <p>
-                    <strong>{$orig}</strong> {$time1} 
-                    &rarr; 
-                    <strong>{$dest}</strong> {$time2}
-                    </p>
+		    foreach ($option->getSlice()[1]->getSegment() as $segment)
+		    {
+		    foreach ($segment->getLeg() as $leg)
+		    {
+			$orig = $leg->getOrigin();
+			$dest = $leg->getDestination();
+			$time1 = explode("-",explode("T",$leg->getDepartureTime())[1])[0];
+			$time2 = explode("-",explode("T",$leg->getArrivalTime())[1])[0];
+			echo <<<_STUFF5
+			<p>
+			<strong>{$orig}</strong> {$time1} 
+			&rarr; 
+			<strong>{$dest}</strong> {$time2}
+			</p>
 _STUFF5;
-                } // end for
-                } // end for
-                echo "</div>";
-            } // end if
+		    } // end for
+		    } // end for
+		    echo "</div>";
+		} // end if
 
-            echo <<<_STUFF6
-            <div class="dropdown" id="row{$rowCount}">
+		echo <<<_STUFF6
+		<div class="dropdown" id="row{$rowCount}">
 
-                <table id="dropdown-table">
-                <tr>
-                <th>Leg</th>
-                <th>Carrier</th>
-                <th>Cabin</th>
-                <th>Aircraft</th>
-                <th>Meal</th>
-                <th>Mileage</th>
-                <th>Duration</th>
-                <th>Flight #</th>
-                </tr>
+		    <table id="dropdown-table">
+		    <tr>
+		    <th>Leg</th>
+		    <th>Carrier</th>
+		    <th>Cabin</th>
+		    <th>Aircraft</th>
+		    <th>Meal</th>
+		    <th>Mileage</th>
+		    <th>Duration</th>
+		    <th>Flight #</th>
+		    </tr>
 
 _STUFF6;
 				$urlEnd = $urlString . "sel=";
@@ -242,200 +242,227 @@ _STUFF10;
         to improve your chances at finding results.
         </h2>
 _STUFF11;
-    } // end if/else
+	} // end if/else
     return ($rowCount);
     } // printResults($post)
 
     function getResults(&$post,$num) {
-    // create client 
-    $client = new Google_Client();
-    $client->setApplicationName("Flight Tracker");
-    // nick
-    //$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
-    // rupali
-    //$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
-    // kirsten
-    //$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
-    // nina
-    $client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
+	// create client 
+	$client = new Google_Client();
+	//$client->setApplicationName("Flight Tracker");
+	// nick
+	$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+	// rupali
+	//$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
+	// kirsten
+	//$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
+	// nina
+	//$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
+	// flight tracker
+	//$client->setDeveloperKey("AIzaSyCCS0WHeRJDiRZmxfTmqA9jCbETtMIvAUg");
+	// rupali's other
+	//$client->setDeveloperKey("AIzaSyAlIaLcBQiyOpWVTPSJC-fOJz_2veF94Zw");
+	// create QPX service
+	$service = new Google_Service_QPXExpress($client);
 
-    // create QPX service
-    $service = new Google_Service_QPXExpress($client);
+	// create slices: slice1 for one-way, slice2 for round trip
+	$slice1 = new Google_Service_QPXExpress_SliceInput();
+	$slice2 = new Google_Service_QPXExpress_SliceInput();
 
-    // create slices: slice1 for one-way, slice2 for round trip
-    $slice1 = new Google_Service_QPXExpress_SliceInput();
-    $slice2 = new Google_Service_QPXExpress_SliceInput();
+	// set origin information
+	if (isset($post['source'])) {
+	    $slice1->setOrigin($post['source']);
+	    if (!isOneWay($post)) // if round-trip 
+		$slice2->setDestination($post['source']);
+	} else {/*echo "source not set";*/}
 
-    // set origin information
-    if (isset($post['source'])) {
-        $slice1->setOrigin($post['source']);
-        if (!isOneWay($post)) // if round-trip 
-        $slice2->setDestination($post['source']);
-    } else {/*echo "source not set";*/}
+	// set destination information
+	if (isset($post['destination'])) {
+	    $slice1->setDestination($post['destination']);
+	    if (!isOneWay($post)) // if round-trip
+		$slice2->setOrigin($post['destination']);
+	} else {/*echo "destination not set";*/}
 
-    // set destination information
-    if (isset($post['destination'])) {
-        $slice1->setDestination($post['destination']);
-        if (!isOneWay($post)) // if round-trip
-        $slice2->setOrigin($post['destination']);
-    } else {/*echo "destination not set";*/}
+	// set/manage date information
+	if (isset($post['depart_date'])){
+	    // parse departure date
+	    $dep = explode('/', $post['depart_date']); 
+	    // reformat date
+	    $dep_date = $dep[2] . "-" . $dep[0] . "-" . $dep[1];
+	    // set date in request message
+	    $slice1->setDate($dep_date);
+	    // if not one-way
+	    if (!isOneWay($post) && isset($post['return_date'])){
+		// parse departure date
+		$ret = explode('/', $post['return_date']);
+		// reformat date
+		$ret_date = $ret[2] . "-" . $ret[0] . "-" . $ret[1];
+		// set date in request message
+		$slice2->setDate($ret_date);
+	    }else{/*echo "Return date NOT set </br>";*/}
+	}else{/*echo "Depart date NOT set </br>";*/}
 
-    // set/manage date information
-    if (isset($post['depart_date'])){
-        // parse departure date
-        $dep = explode('/', $post['depart_date']); 
-        // reformat date
-        $dep_date = $dep[2] . "-" . $dep[0] . "-" . $dep[1];
-        // set date in request message
-        $slice1->setDate($dep_date);
-        // if not one-way
-        if (!isOneWay($post) && isset($post['return_date'])){
-        // parse departure date
-        $ret = explode('/', $post['return_date']);
-        // reformat date
-        $ret_date = $ret[2] . "-" . $ret[0] . "-" . $ret[1];
-        // set date in request message
-        $slice2->setDate($ret_date);
-        }else{/*echo "Return date NOT set </br>";*/}
-    }else{/*echo "Depart date NOT set </br>";*/}
+	// create passenger counts
+	$passengers = new Google_Service_QPXExpress_PassengerCounts();
 
-    // create passenger counts
-    $passengers = new Google_Service_QPXExpress_PassengerCounts();
+	// set adult count
+	if (isset($post['adults'])) $passengers->setAdultCount($post['adults']);
 
-    // set adult count
-    if (isset($post['adults'])) $passengers->setAdultCount($post['adults']);
+	// set children count
+	if (isset($post['children'])) $passengers->setChildCount($post['children']);
 
-    // set children count
-    if (isset($post['children'])) $passengers->setChildCount($post['children']);
+	// set senior count
+	if (isset($post['seniors'])) $passengers->setSeniorCount($post['seniors']);
 
-    // set senior count
-    if (isset($post['seniors'])) $passengers->setSeniorCount($post['seniors']);
+	// set seat infant count
+	if (isset($post['seat_infants'])) $passengers->setInfantInSeatCount($post['seat_infants']);
 
-    // set seat infant count
-    if (isset($post['seat_infants'])) $passengers->setInfantInSeatCount($post['seat_infants']);
+	// set lap infant count
+	if (isset($post['lap_infants'])) $passengers->setInfantInLapCount($post['lap_infants']);
 
-    // set lap infant count
-    if (isset($post['lap_infants'])) $passengers->setInfantInLapCount($post['lap_infants']);
+	// set carrier information
+	if (isset($post['airline'])){
+	    $temp1 = array();
+	    $temp2 = array();
+	    foreach ($post['airline'] as $airline)
+	    {
+		if ($airline != "none")
+		{
+		   $temp1[] = $airline; 
+		    if (!isOneWay($post)) 
+			$temp2[] =$airline;
+		}
+	    }
+	    $slice1->setPermittedCarrier($temp1); 
+	    $slice2->setPermittedCarrier($temp2); 
+	}else{/*echo 'airline is NOT set </br>';*/}
 
-    // set carrier information
-    if (isset($post['airline'])){
-        $temp1 = array();
-        $temp2 = array();
-        foreach ($post['airline'] as $airline)
-        {
-        if ($airline != "none")
-        {
-           $temp1[] = $airline; 
-            if (!isOneWay($post)) 
-            $temp2[] =$airline;
-        }
-        }
-        $slice1->setPermittedCarrier($temp1); 
-        $slice2->setPermittedCarrier($temp2); 
-    }else{/*echo 'airline is NOT set </br>';*/}
+	// create request and initialize request
+	$request = new Google_Service_QPXExpress_TripOptionsRequest();
 
-    // create request and initialize request
-    $request = new Google_Service_QPXExpress_TripOptionsRequest();
+	// set solutions
+	$request->setSolutions($num);
+	$request->setMaxPrice("USD".$post['price']);
+	
+	// set slices
+	if (isOneWay($post))
+	    $request->setSlice(array($slice1));
+	else
+	    $request->setSlice(array($slice1,$slice2));
 
-    // set solutions
-    $request->setSolutions($num);
-    $request->setMaxPrice("USD".$post['price']);
-    
-    // set slices
-    if (isOneWay($post))
-        $request->setSlice(array($slice1));
-    else
-        $request->setSlice(array($slice1,$slice2));
+	// set passengers
+	$request->setPassengers($passengers);
 
-    // set passengers
-    $request->setPassengers($passengers);
+	// create and initialize search request
+	$searchRequest = new Google_Service_QPXExpress_TripsSearchRequest();
+	$searchRequest->setRequest($request);
 
-    // create and initialize search request
-    $searchRequest = new Google_Service_QPXExpress_TripsSearchRequest();
-    $searchRequest->setRequest($request);
+	// search
+	$trips = $service->trips;
+	$result = $trips->search($searchRequest);
 
-    // search
-    $trips = $service->trips;
-    $result = $trips->search($searchRequest);
-
-    return($result);
+	return($result);
     } // getResults($post)
 
     function createNewSearch(&$post)
     {
-    /*      NEED THIS FILE FOR DATABASE     */
-    require_once('login.php');
+	/*      NEED THIS FILE FOR DATABASE     */
+	require_once('login.php');
 
-    // connect to database
-    $connection = new mysqli ($db_hostname, $db_username);
-    if($connection->connect_error) die($connection->connect_error);
-    $connection->select_db("flight_tracker");
+	// connect to database
+	$connection = new mysqli ($db_hostname, $db_username);
+	if($connection->connect_error) die($connection->connect_error);
+	$connection->select_db("flight_tracker");
 
-    // add user info to db
-    $d_date = explode("/",$post['depart_date']);
-    $d_date = implode("-",array($d_date[2],$d_date[0],$d_date[1]));
-    if ($post['return_date'] != "NULL")
-    {
-        $r_date = explode("/",$post['return_date']);
-        $r_date = implode("-",array($r_date[2],$r_date[0],$r_date[1]));
-        $r_date = "'".$r_date."'";
-    } else
-        $r_date = "NULL";
-    
-    $endTime = getEndTime($post['search_time']);
-    $query3 = <<<_QUERY3
-        INSERT INTO searches (
-        email,origin,destination,
-        depart_date,return_date,adults,
-        children,seniors,seat_infant,
-        lap_infant,price,current,end,lowest_price
-        ) VALUES (
-        '{$post['email']}',
-        '{$post['origin']}','{$post['destination']}',
-        '{$d_date}',{$r_date},
-        {$post['adults']},{$post['children']},
-        {$post['seniors']},{$post['seat_infant']},
-        {$post['lap_infant']},{$post['price']},
-        now(),'{$endTime}',
-        {$post['price']}
-        );
+	// add user info to db
+	$d_date = explode("/",$post['depart_date']);
+	$d_date = "'".implode("-",array($d_date[2],$d_date[0],$d_date[1]))."'";
+	if ($post['return_date'] != "NULL")
+	{
+	    $r_date = explode("/",$post['return_date']);
+	    $r_date = implode("-",array($r_date[2],$r_date[0],$r_date[1]));
+	    $r_date = "'".$r_date."'";
+	} else
+	    $r_date = "NULL";
+	
+	$endTime = getEndTime($post['search_time']);
+	$query3 = <<<_QUERY3
+	    INSERT INTO searches (
+		email,
+		origin,
+		destination,
+		depart_date,
+		return_date,
+		adults,
+		children,
+		seniors,
+		seat_infant,
+		lap_infant,
+		price,
+		current,
+		end,
+		lowest_price,
+		one_way
+	    ) VALUES (
+		'{$post['email']}',
+		'{$post['origin']}',
+		'{$post['destination']}',
+		{$d_date},
+		{$r_date},
+		{$post['adults']},
+		{$post['children']},
+		{$post['seniors']},
+		{$post['seat_infant']},
+		{$post['lap_infant']},
+		{$post['price']},
+		now(),
+		'{$endTime}',
+		{$post['price']},
+		{$post['one_way']}
+	    );
 _QUERY3;
 
-    $result3 = $connection->query($query3);
-    if (!$result3) die($connection->error);
-
-    $last_id = $connection->insert_id;
-    if (isset($post['airline']))
-    {
-        $query4 = <<<_QUERY4
-        INSERT INTO airlines 
-        (search_id,email,airline) 
-        VALUES 
+	$result3 = $connection->query($query3);
+	if (!$result3) die($connection->error);
+	$last_id = $connection->insert_id;
+	if (isset($post['airline']))
+	{
+	    $query4 = <<<_QUERY4
+	    INSERT INTO airlines 
+	    (search_id,email,airline) 
+	    VALUES 
 _QUERY4;
 
-        $last = end($post['airline']);
-        foreach ($post['airline'] as $airline)
-        if ($airline != $last)
-            $query4 .= "({$last_id},'{$post['email']}','{$airline}'), ";
-        else
-            $query4 .= "({$last_id},'{$post['email']}','{$airline}');";
-        $result4 = $connection->query($query4);
-        if (!$result4) die($connection->error);
-    } // foreach(airline)
+	    $last = end($post['airline']);
+	    $flag = true;
+	    foreach ($post['airline'] as $airline)
+	    {
+		if ($flag)
+		{
+		    $query4 .= "({$last_id},'{$post['email']}','{$airline}') ";
+		    $flag = false;
+		}
+		else
+		    $query4 .= ",({$last_id},'{$post['email']}','{$airline}')";
+	    } // foreach airline
+	    $query4 .= ";";
 
-    $connection->close();
-    return $last_id;
+	    $result4 = $connection->query($query4);
+	    if (!$result4) die($connection->error);
+	} // is airline set
+
+	$connection->close();
+	return $last_id;
     } // createNewSearch($post)
 
 
-    define ('URL', "localhost:10088/signin.php");
-
+    define ('URL', "http://localhost:10088/signin.php");
     function getConfirmationEmail(&$post,$userSource,$userDestination,$userID)
     {
 	$returnArr = array(
 		    'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>',
 		    'to'      => '<'.$post['email'].'>',
-		    'subject' => 'Thank you for using UCD Flight Tracker ',
+		    'subject' => 'UCD Flight Tracker Confirmation',
 		    'html'    => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 				  <html xmlns="http://www.w3.org/1999/xhtml" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 					<head>
@@ -486,7 +513,6 @@ _QUERY4;
 							    </td>
 							</tr>
 						    </table>
-						   
 						</div>
 					    </td>
 					    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"></td>
@@ -505,21 +531,18 @@ _QUERY4;
     function getResultsEmail($userEmail, $userID, $userSource, $userDestination)
     {
 
-	$resultArr = array(
-		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 'to' => '<'.$userEmail.'>',
-		'subject' => 'We found a flight for you!  ',
-		'html'    => '
-		    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	$resultsArr = array(
+		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 
+		'to'      => '<'.$userEmail.'>',
+		'subject' => 'New flight prices have been found!  ',
+		'html'    => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		    <html xmlns="http://www.w3.org/1999/xhtml" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 		    <head>
 		    <meta name="viewport" content="width=device-width" />
 		    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		    <title>UCD Flight Tracker</title>
-
 		    </head>
-
 		    <body itemscope itemtype="http://schema.org/EmailMessage" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
-
 		    <table class="body-wrap" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
 			<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 			    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
@@ -566,16 +589,13 @@ _QUERY4;
 			    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"></td>
 			</tr>
 		    </table>
-
-
 		    <style type="text/css">
 		    img { max-width: 100% !important; }
 		    body { -webkit-font-smoothing: antialiased !important; -webkit-text-size-adjust: none !important; width: 100% !important; height: 100% !important; line-height: 1.6 !important; }
 		    body { background-color: #f6f6f6 !important; }
 		    </style>
 		    </body>
-		    </html>'
-			    );
+		    </html>');
 	return $resultsArr;
     } // getResultsEmail()
 
@@ -583,8 +603,9 @@ _QUERY4;
 function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
     {
 
-	$resultArr = array(
-		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 'to'      => '<'.$userEmail.'>',
+	$resultsArr = array(
+		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 
+		'to'      => '<'.$userEmail.'>',
 		'subject' => 'We found a flight for you!  ',
 		'html'    => '
 		    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -593,11 +614,8 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 		    <meta name="viewport" content="width=device-width" />
 		    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		    <title>UCD Flight Tracker</title>
-
 		    </head>
-
 		    <body itemscope itemtype="http://schema.org/EmailMessage" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
-
 		    <table class="body-wrap" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
 			<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 			    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
@@ -644,19 +662,15 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 			    <td style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"></td>
 			</tr>
 		    </table>
-
-
 		    <style type="text/css">
 		    img { max-width: 100% !important; }
 		    body { -webkit-font-smoothing: antialiased !important; -webkit-text-size-adjust: none !important; width: 100% !important; height: 100% !important; line-height: 1.6 !important; }
 		    body { background-color: #f6f6f6 !important; }
 		    </style>
 		    </body>
-		    </html>'
-			    );
+		    </html>');
 	return $resultsArr;
     } // SearchOverEmail()
-
 
     function getEndTime($search_time)
     //{ return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));} 
@@ -665,26 +679,84 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 
     function getRemainingTime($id,$email)
     {
-    require_once 'login.php';
-    $connection = new mysqli ('localhost', 'root');
-    if ($connection->connect_error) die ($connection->connect_error);
-    $connection->select_db("flight_tracker");
+	require_once 'login.php';
+	$connection = new mysqli ('localhost', 'root');
+	if ($connection->connect_error) die ($connection->connect_error);
+	$connection->select_db("flight_tracker");
 
-    $getTime = <<<_QUERY
-        SELECT end
-        FROM searches
-        WHERE ID = {$id}
-        and email = '{$email}';
+	$getTime = <<<_QUERY
+	    SELECT end
+	    FROM searches
+	    WHERE ID = {$id}
+	    and email = '{$email}';
 _QUERY;
-    $result = $connection->query($getTime);
-    if (!$result) die($connection->error);
-    $result->data_seek(0);
-    $end = $result->fetch_assoc()['end'];
-    $day_time = explode(" ",$end);
-    $day = explode("-",$day_time[0]);
-    $clock = explode(":",$day_time[1]);
-    $remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time()) / 60;
+	$result = $connection->query($getTime);
+	if (!$result) die($connection->error);
+	$result->data_seek(0);
+	$remaining = 0;
+	try {
+	    $end = $result->fetch_assoc()['end'];
+	    $day_time = explode(" ",$end);
+	    $day = explode("-",$day_time[0]);
+	    $clock = explode(":",$day_time[1]);
+	    $remaining = (mktime($clock[0], $clock[1], $clock[2], $day[1], $day[2], $day[0]) - time());
+	} catch (Exception $e)
+	{ }
 
-    return ($remaining < 0 ? 0 : $remaining);
-    } // getRemainingTime();
+	return ($remaining <= 0 ? 0 : $remaining);
+    } // getRemainingTime(); returns UNIX timestamp
+
+    function checkOneWay($id, $email)
+    {
+	require_once 'login.php';
+	$connection = new mysqli ('localhost', 'root');
+	if ($connection->connect_error) die ($connection->connect_error);
+	$connection->select_db("flight_tracker");
+	
+	/*
+	$getSearch <<<_QUERY
+	    SELECT return_date
+	    FROM   searches
+	    WHERE  ID    = {$id} and
+		   email = {$email};
+_QUERY;
+	$result = $connection->query($getSearch);
+*/
+    } // checkOneWay()
+
+    function getGraphData($id, $email)
+    {
+	require_once 'login.php';
+	$connection = new mysqli ('localhost', 'root');
+	if ($connection->connect_error) die ($connection->connect_error);
+	$connection->select_db("flight_tracker");
+
+	$query = <<<_QUERY
+	    SELECT MIN(opt_saletotal), query_time
+	    FROM `{$id}`
+	    GROUP BY query_time;
+_QUERY;
+	$result = $connection->query($query);
+	if (!$result) die($connection->connect_error);
+	$rv = array();
+	$labels = array();
+	$data = array();
+	$numRows = $result->num_rows;
+	for ($i = 0; $i < $numRows; ++$i)
+	{
+	    $result->data_seek($i);
+	    $row = $result->fetch_array(MYSQLI_ASSOC);
+
+	    $date = explode("-",explode(" ", $row['query_time'])[0]);
+	    $time = explode(":",explode(" ", $row['query_time'])[1]);
+	    $fullTime = mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]);
+
+	    $labels[] = '"'.date("g:i:s A n/j", $fullTime).'"';
+	    $data[] = $row['MIN(opt_saletotal)'];
+	} // for each row
+	
+	$rv['labels'] = $labels;
+	$rv['data'] = $data;
+	return $rv;
+    } // getGraphData()
 ?>

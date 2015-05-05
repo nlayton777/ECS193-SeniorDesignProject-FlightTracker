@@ -118,139 +118,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 				   
 				echo "</h3>";
 			    ?>
-
-			    <div>
-			    	<h3 style="color:red">Price Analysis Hints:</h3>
-			    	<?php
-			    		$currentDate = date('m/d/Y');
-			    		$departDate = $post['depart_date'];
-			    		$timeNow = strtotime($currentDate);
-			    		$timeDepart = strtotime($departDate);
-			    		$departDay = date("N", $timeDepart);
-			    		$diff = abs($timeDepart - $timeNow);
-			    		$diff /= 60 * 60 * 24; 
-		    			if($isRoundTrip)
-		    			{
-			    			$returnDate = $post['return_date'];
-			    			$timeReturn = strtotime($returnDate);
-			    			$returnDay = date("N", $timeReturn);	
-		    			}
-		    			
-			    		// MOST OPTIMAL SITUATION 
-			    		if(($departDay == 2 || $departDay == 3 || $departDay ==6) && $isRoundTrip &&($returnDay == 2 || $returnDay == 3 || $returnDay == 6) && $diff == 47)
-			    		{
-			    			echo "You are planning on travelling on the best priced days of the week, and according to historic trends today is the prime day to book your tickets for the lowest price. We recommend you book your tickets now!";
-			    		}
-			    		else if (($departDay == 2 || $departDay == 3 || $departDay ==6) && $diff == 47)
-			    		{
-			    			echo "You are planning on travelling on the best priced days of the week, and according to historic trends today is the prime day to book your tickets for the lowest price. We recommend you book your tickets now!";
-			    		}
-			    		else//check for individual cases
-			    		{
-				    		//ANALYSIS ON DAY OF WEEK (TUES AND WED ARE BEST DAYS TO TRAVEL ON)
-				    		if(($departDay == 2 || $departDay == 3 || $departDay == 6) && $isRoundTrip && ($returnDay == 2 || $returnDay == 3 || $returnDay == 6))
-				    		{
-				    			if($departDay == 2)
-								{
-									$dow = "Tuesday";
-								}
-								else if ($departDay == 3)
-								{
-									$dow = "Wednesday";
-								}
-								else if ($departDay == 6)
-								{
-									$dow = "Saturday";
-								}
-								if($returnDay == 2)
-								{
-									$dow2 = "Tuesday";
-								}
-								else if ($returnDay == 3)
-								{
-									$dow2 = "Wednesday";
-								}
-								else if ($returnDay == 6)
-								{
-									$dow2 = "Saturday";
-								}
-				    			echo "You are currently planning on departing on a " .$dow. " and are planning to return on " . $dow2. ". These are historically the best priced days of the week to purchase a flight for. \n";
-				    		}
-
-				    		else if($departDay == 2 || $departDay == 3 || $departDay == 6)
-				    		{
-				    			if($departDay == 2)
-								{
-									$dow = "Tuesday";
-								}
-								else if ($departDay == 3)
-								{
-									$dow = "Wednesday";
-								}
-								else if ($departDay == 6)
-								{
-									$dow = "Saturday";
-								}
-				    			echo "You are currently planning on departing on a " .$dow. ". This is historically the best priced day of the week to purchase a flight for. \n";
-				    		}
-
-				    		else if($isRoundTrip && ($returnDay == 2 || $returnDay == 3|| $returnDay == 6))
-				    		{
-				    			if($returnDay == 2)
-								{
-									$dow = "Tuesday";
-								}
-								else if ($returnDay == 3)
-								{
-									$dow = "Wednesday";
-								}
-								else if ($returnDay == 6)
-								{
-									$dow = "Saturday";
-								}
-				    			echo "You are currently planning on returning on a " .$dow. ". This is historically the best priced day of the week to purchase a flight for. \n";
-				    		} 
-				    		else
-				    		{
-				    			echo "If you are able to be flexible with your dates and would like to find the lowest priced flight option possible, we recommend flying on a Saturday, Tuesday, or Wednesday.";
-				    		}
-
-				    		//ANALYSIS ON DAYS BEFORE FLIGHT (47 DAYS BEFORE FLIGHT = BEST DAY TO PURCHASE FLIGHT)
-				    		if($diff == 47)
-				    		{
-				    			echo "According to past trends, we recommend purchasing your flight ticket today because it is the prime day for you to book your flight!\n";	
-				    			echo "\n";		   						
-				    		}
-
-				    		else if($diff > 47 && $diff < 114)
-				    		{
-				    			$dayLeft = 114 - $diff;
-				    			echo "This is the prime booking window. We recommend that you shold book your flight in the next ", $dayLeft," days before prices begin to rise.\n";
-				    			echo "\n";	
-				    		}
-
-				    		else if($diff < 47 && $diff > 14)
-				    		{
-				    			$days = $diff - 14;
-				    			echo "You are reaching the end of the prime booking window for this flight. We recommend that you should book your flight within the next " .$days. " days before prices begin to rise.\n";
-				    			echo "\n";	
-				    		}
-				    		else if($diff > 114)
-				    		{
-				    			$daysRemain = $diff - 114;
-				    			echo "It seems to be a little too early to book this flight. We would recommend waiting at least " .$daysRemain. " days until booking your flight that way you can book within the prime booking window.\n";
-				    			echo "\n";	
-				    		}
-				    		else
-				    		{
-				    			echo "Below are the current flight choices our search bot has found for you. We recommend booking soon since your flight is coming up very soon.\n";
-				    			echo "\n";	
-				    		}
-				    	}
-
-			    	?>
-
-			    </div>
 			</div>
 
 			<div class="col-md-6" id="background-info">
@@ -320,8 +187,58 @@ _SECTION2;
 			    </form>
 			</div><!--end col-->
 		    </div><!--end row-->
-
+		    
 		    <?php
+				 	$to = $post['source'];
+				 	$from = $post['destination'];
+				 	$java = 'java sample/Main ' . $to . ' ' . $from;
+				 	$output = shell_exec($java);
+				 	if (!(strpos($output,'ERROR') !== false)){
+				 		$myArray = explode(', ', $output);
+				 		echo <<<_TABLE1
+				  <h2>To Find the Best Price, Hopper.com suggests:</h2>
+				  <table class="table">
+					<tbody>
+					  <tr>
+						<td>A <b>Good Price</b> would be</td>
+						<td>{$myArray[2]}</td>
+					  </tr>
+					  <tr>
+						<td>Try <b>Flying Out</b> on a</td>
+						<td>{$myArray[3]}</td>
+					  </tr>
+					  <tr>
+						<td>Try <b>Flying Back</b> on a</td>
+						<td>{$myArray[4]}</td>
+					  </tr>
+					  <tr>
+						<td>Try these <b>Airlines</b></td>
+						<td>
+_TABLE1;
+						for ($x = 0; $x < $myArray[5]; $x++) {
+							echo $myArray[6+$x];
+							if($x+1 < $myArray[5])
+							{
+								echo ", ";
+							}
+						}	
+					  echo <<<_TABLE2
+					  </td>
+					  </tr>
+					  <tr>
+						<td>Also look at flights <b>Departing From</b></td>
+						<td>{$myArray[5+$myArray[5]+1]}</td>
+					  </tr>
+					  <tr>
+						<td>Also look at flights <b>Arriving Into</b></td>
+						<td>{$myArray[5+$myArray[5]+2]}</td>
+					  </tr>
+					</tbody>
+				  </table>
+				  <p><a href="http://www.hopper.com/flights/from-{$myArray[0]}/to-{$myArray[1]}/guide" target="_blank" >See for Yourself!</a></p>
+_TABLE2;
+				  } // endif
+
 			$result = getResults($post, 50);
 			$trips = $result->getTrips();
 			$rowCount = -1;

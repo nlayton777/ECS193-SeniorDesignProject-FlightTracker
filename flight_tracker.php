@@ -16,28 +16,42 @@
 
     function printResults($trips, $post)
     {
-	$rowCount = 0;
-	$options = $trips->getTripOption();
-	if (isset($options)) 
-	{
-	    $multPass = false;
-	    if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 || 
-	    $post['seat_infants'] > 1 || $post['lap_infants'] > 1)
-	    $multPass = true;
+    //Start making booking url
+    $urlString = "https://www.google.com/flights/#search;f={$post['source']};t={$post['destination']}";
+    $originalDepart = $post['depart_date'];
+    $newDepart = date("Y-m-d", strtotime($originalDepart));
+    $urlString .= ";d={$newDepart}";
+    if(!isOneWay($post)){
+    	$originalReturn = $post['return_date'];
+    	$newReturn = date("Y-m-d", strtotime($originalReturn));
+    	$urlString .= ";r={$newReturn};";
+    }else{
+    	$urlString .= ";tt=o;";
+    }
+    
+    $rowCount = 0;
+    
+    $options = $trips->getTripOption();
+    if (isset($options)) 
+    {
+        $multPass = false;
+        if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 || 
+        $post['seat_infants'] > 1 || $post['lap_infants'] > 1)
+        $multPass = true;
 
-	    // print headers
-	    echo <<<_HEADERS
-	    <table id="results" class="table table-hover" style="background-color: rgba(150, 150, 150, 0)" align="center">
-	    <tr>
-		<th id="price">Total
+        // print headers
+        echo <<<_HEADERS
+        <table id="results" class="table table-hover" style="background-color: rgba(150, 150, 150, 0)" align="center">
+        <tr>
+            <th id="price">Total
 _HEADERS;
-		if ($multPass)
-		echo "Group ";
-	    echo <<<_HEADERS2
-		Price</th>
-		<th id="it">Itinerary</th>
-		<th id="info">More Info</th>
-	    </tr>
+            if ($multPass)
+            echo "Group ";
+        echo <<<_HEADERS2
+            Price</th>
+            <th id="it">Itinerary</th>
+            <th id="info" colspan="2" >More Info</th>
+        </tr>
 _HEADERS2;
 	    foreach ($options as $option) 
 	    {
@@ -117,165 +131,116 @@ _STUFF5;
 		    </tr>
 
 _STUFF6;
-		    foreach ($option->getSlice() as $slice)
-		    {
-		    foreach ($slice->getSegment() as $segment)
-		    {
-			foreach ($segment->getLeg() as $leg)
-			{
-			//$orig and $dest are for the particular part of the flight
-			//$origin and $destination are for the whole flight
-			$orig = $leg->getOrigin();
-			$dest = $leg->getDestination();
-			$origin = $post['source'];
-			$destination = $post['destination'];
-		    
-			
-			echo <<<_STUFF7
-			<tr>
-			    <td>
-			    <strong>{$orig}</strong>
-			     &rarr; 
-			    <strong>{$dest}</strong>: 
-			    </td>
-			    <td>
+				$urlEnd = $urlString . "sel=";
+				$first = true;
+                foreach ($option->getSlice() as $slice)
+                {
+                	if(!$first){
+                		$urlEnd = substr($urlEnd, 0, -1);   
+						$urlEnd .= ","; 
+					}
+					$first = false;
+                foreach ($slice->getSegment() as $segment)
+                {         
+                    foreach ($segment->getLeg() as $leg)
+                    {
+                    //$orig and $dest are for the particular part of the flight
+                    //$origin and $destination are for the whole flight
+                    $orig = $leg->getOrigin();
+                    $dest = $leg->getDestination();
+                    $origin = $post['source'];
+                    $destination = $post['destination'];
+                
+                    
+                    echo <<<_STUFF7
+                    <tr>
+                        <td>
+                        <strong>{$orig}</strong>
+                         &rarr; 
+                        <strong>{$dest}</strong>: 
+                        </td>
+                        <td>
 _STUFF7;
 
 
-			    $carrier = $segment->getFlight()->getCarrier();
-			    $previous = NULL; 
-			    foreach ($trips->getData()->getCarrier() as $carrier)
-			    {
-			    //GET THE AIRLINES      
-			    if ($carrier->getCode() == $segment->getFlight()->getCarrier()){
-				echo $carrier->getName();
-			    
-				$site = $carrier->getCode();
-				//USE THE AIRLINE TO FIGURE OUT WHERE THE LINK NEEDS TO GO
-				switch ($site) {
-				case "AS":
-				    $website = 'http://www.alaskaair.com/planbook?semid=6d438f04-2f98-4cf7-86c2-38aa49bd0f07::43508::||Evergreen||&gclid=CLfmt9DWi8UCFUWVfgodf7UATQ';
-				    break;
-				case "AA":
-				    $website = 'http://www.aa.com/reservation/roundTripSearchAccess.do';
-				    break;
-				case "DL":
-				    $website = 'http://www.delta.com/air-shopping/searchFlights.action?tripType=ROUND_TRIP&Log=1&mkcpgn=SEzzzGGw1a&s_kwcid=TC|8489|delta%20airlines||S|e|63450946028&clickid=6d438f04-2f98-4cf7-86c2-38aa49bd0f07&tracking_id=284x2139560';
-				    break;
-				case "F9":
-				    $website = 'https://booking.flyfrontier.com/Flight/Internal';
-				    break;
-				case "B6":
-				    $website = 'http://www.jetblue.com/plan-a-trip/';
-				    break;
-				case "WN":
-				    $website = 'https://www.southwest.com/';
-				    break;
-				case "NK":
-				    $website = 'http://www.spirit.com/Default.aspx';
-				    break;
-				case "US":
-				    $website = 'http://www.usairways.com/default.aspx?redir=https://www.google.com/';
-				    break;
-				case "UA":
-				    $website = 'http://www.united.com/web/en-US/apps/booking/flight/searchRT.aspx';
-				    break;
-				case "VX":
-				    $website = 'https://www.virginamerica.com/?cid=PS_gaw_BK_BNDSFO_2009_11_13&psmid=sZuPPQTzj%7Cdc_pcrid_56576924350_pkw_virgin%20america_pmt_e&psag=Virgin%20America%20-%20Top%20Term&psaid=e&gclid=CK2ssLCSlcUCFQSUfgodQj0A-w';
-				    break;
-				default:
-				    echo "WE ARE NOT CURRENTLY SET UP TO ACCOMODATE THIS SITE";
-				    $website = 'http://giphy.com/gifs/facepalm-OWpMbuG5W4r4Y';
-				 }
-				 //CREATE THE BUTTON THAT CONTAINS THE LINK                         }
-				if ( $origin == $orig || $orig== $destination || $origin == 'NYC'|| $destination == 'NYC' || $origin == 'WAS'|| $destination == 'WAS'){
-				    //THERE ARE A FEW ODD CASES SUCH AS NYC AND WAS WHICH HAVE MULTIPLE AIRPORTS TO THE SAME CODE
-				    if ($origin == 'NYC'){
-					if ($orig == 'EWR' || $orig == 'JFK' || $orig == 'LGA'){
-					    echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
-					} elseif ($orig == $destination){
+                        $carrier = $segment->getFlight()->getCarrier();
+                        $previous = NULL; 
+                        foreach ($trips->getData()->getCarrier() as $carrier)
+                        {
+                        //GET THE AIRLINES      
+                        if ($carrier->getCode() == $segment->getFlight()->getCarrier()){
+                            echo $carrier->getName();
+                            $site = $carrier->getCode();
+                            $oper = $leg->getOperatingDisclosure();
+                            if ((strpos($oper,'AMERICAN AIRLINES') !== false)) {
+                            	if($site !== "AS")
+                            		$site = "AA";
+                            }
+                        }
+                    }
+                       
+                        $cab = ucfirst(strtolower($segment->getCabin()));
+                        $lg = $leg->getAircraft();
 
-					    echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
-					}
-				    } elseif($destination == 'NYC'){
-					if ($orig == $origin){
-					
-					    echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
-					}elseif ($orig == 'EWR' || $orig == 'JFK' || $orig == 'LGA'){
-					    echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
-					}
-
-				    }elseif ($origin == 'WAS'){
-					if ($orig == 'DCA' || $orig == 'IAD' || $orig == 'BWI'){
-					    echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
-					} elseif ($orig == $destination){
-
-					    echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
-					}
-				    } elseif($destination == 'WAS'){
-					if ($orig == $origin){
-					
-					    echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
-					}elseif ($orig == 'DCA' || $orig == 'EAD' || $orig == 'BWI'){
-					    echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
-					}
-				    }else{
-					echo "<input type=\"button\" value=\"Book It\" onClick= \"window.open('{$website}')\"/>";
-				    }
-				}
-			    }
-			}
-			    $cab = ucfirst(strtolower($segment->getCabin()));
-			    $lg = $leg->getAircraft();
-
-			    echo <<<_STUFF8
-			    </td>
-			    <td>{$cab}</td>
-			    <td>{$lg}</td>
-			    <td>
+                        echo <<<_STUFF8
+                        </td>
+                        <td>{$cab}</td>
+                        <td>{$lg}</td>
+                        <td>
 _STUFF8;
-			    $meal = $leg->getMeal();
-			    if (isset($meal))
-			    echo $meal;
-			    else
-			    echo "None";
+                        $meal = $leg->getMeal();
+                        if (isset($meal))
+                        echo $meal;
+                        else
+                        echo "None";
 
-			    $mlg = $leg->getMileage();
-			    $dur = $leg->getDuration();
-			    $segFlightNum = $segment->getFlight()->getNumber();
-			    echo <<<_STUFF9
-			    </td>
-			    <td>{$mlg} miles</td>
-			    <td>{$dur} minutes</td>
-			    <td>{$site}{$segFlightNum}</td>
-			</tr>
+                        $mlg = $leg->getMileage();
+                        $dur = $leg->getDuration();
+                        $segFlightNum = $segment->getFlight()->getNumber();
+                        
+                        //continue making booking url
+                        $urlEnd .= "{$orig}{$dest}0{$site}{$segFlightNum}-";
+                        
+                        echo <<<_STUFF9
+                        </td>
+                        <td>{$mlg} miles</td>
+                        <td>{$dur} minutes</td>
+                        <td>{$site}{$segFlightNum}</td>
+                    </tr>
 _STUFF9;
-			} // end for
-		    } // end for
-		    } // end for
-
-		    echo <<<_STUFF10
-		    </table>
-		</div>  
-		</td>   
-		<td class="expandButton">
-		<input type="button" id="btnExpCol{$rowCount}" class="btn btn-info search" 
-		    value=" Expand "/>
-		 
-		</td>
-	    </tr>
+                    } // end for
+                } // end for
+                } // end for
+                
+				$urlEnd = substr($urlEnd, 0, -1);
+				if($site == "AS")
+                	$urlEnd = $urlString . "a=AS";
+                echo <<<_STUFF10
+                </table>
+            </div>  
+            </td>   
+            <td class="expandButton">
+            <input type="button" id="btnExpCol{$rowCount}" class="btn btn-info search" 
+                onclick="Expand()" value=" Expand "/>
+            </td>
+            <td class="Book It">
+            <input type="button" id="bookit" class="btn btn-info search" value="Book It"
+                onclick="window.open('{$urlEnd}')"/>
+            </td>
+        </tr>
 _STUFF10;
-	    $rowCount++;
-	    } // end foreach(Trips)
-	    echo "</table>";
-	} else
-	{
-	    echo <<<_STUFF11
-	    <h2>
-	    Sorry, we could not find any flights that match your
-	    preferences. We suggest broadening your search parameters
-	    to improve your chances at finding results.
-	    </h2>
+        $rowCount++;
+        $urlEnd = "";
+        } // end foreach(Trips)
+        echo "</table>";
+    } else
+    {
+        echo <<<_STUFF11
+        <h2>
+        Sorry, we could not find any flights that match your
+        preferences. We suggest broadening your search parameters
+        to improve your chances at finding results.
+        </h2>
 _STUFF11;
 	} // end if/else
     return ($rowCount);

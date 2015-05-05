@@ -9,14 +9,12 @@ High Priority To-Do's:
 
 Low Priority To-Do's:
 -graph update dynamically 
- and have something for when
- no results exist
 -put MySQL queries into transactions
 -polish UI 
 -finalize images and logo 
 
 
-below is the database schema
+below is our database schema
 (the name of each table is listed above the table)
 database name: flight_tracker
 
@@ -38,7 +36,7 @@ Table name: searches
 | price        | int(11)     | YES  |     | NULL                |                             |
 | current      | timestamp   | NO   |     | CURRENT_TIMESTAMP   | on update CURRENT_TIMESTAMP |
 | end          | timestamp   | NO   |     | 0000-00-00 00:00:00 |                             |
-| lowest_price | float       | YES  |     | NULL                |                             |
+| lowest_price | float       | YES  |     | 5000                |                             |
 | one_way      | tinyint(1)  | NO   |     | NULL                |                             |
 +--------------+-------------+------+-----+---------------------+-----------------------------+
 

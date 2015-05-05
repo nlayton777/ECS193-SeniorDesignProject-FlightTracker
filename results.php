@@ -183,9 +183,6 @@ _SCRIPT;
 			$data = getGraphData($id, $email);
 		    ?>
 
-		    <div id="test">
-			blah
-		    </div>
 		    <h2>Graph of Prices</h2>
 		    <canvas id="buyers" width="400" height="400"></canvas>
 		    <script>

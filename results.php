@@ -1,15 +1,12 @@
 <?php
 //session_start();
-$_SESSION['id'] = 291;
-$_SESSION['email'] = "nllayton@ucdavis.edu";
-$sesh = $_SESSION;
-$session_flag = false;
-if (isset($sesh['id']) && isset($sesh['email']))
-{
-    $id = $sesh['id'];
-    $email = $sesh['email'];
-    $session_flag = true;
-}  
+$post = $_POST;
+$_SESSION['id'] = $post['id'];
+$_SESSION['email'] = $post['email'];
+$id = $post['id'];
+$email = $post['email'];
+
+$session_flag = true;
 ?>
 <!DOCTYPE html>
 <html>
@@ -26,7 +23,6 @@ if (isset($sesh['id']) && isset($sesh['email']))
 	<link rel="stylesheet" href="styles.css"/>
 	<script src="countdownClock.js"></script>
 	<script src="Chart.js"></script>
-
     </head>
 
     <body>
@@ -45,8 +41,8 @@ if (isset($sesh['id']) && isset($sesh['email']))
 
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
-			<li><a href="index.php">Search</a></li>
-			<li class="active"><a href="results.php">Search Status</a></li>
+			<li><a href="index.php">Find a Flight</a></li>
+			<li class="active"><a href="results.php">My Search</a></li>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
@@ -68,12 +64,7 @@ if (isset($sesh['id']) && isset($sesh['email']))
 			<div class="col-md-6" id="background-info">
 			    <img id="exclamation" src="exclamation.png" alt="Important" height="8%" width="8%" />
 
-			    <p id="background-description">
-				    You can choose to either continue your search if 
-				    you would like for us to keep searching or 
-				    terminate the search by selecting one of the options 
-				    below.
-			    </p>
+			    
 
 			</div><!--end col-->
 		    </div><!--end row-->
@@ -111,8 +102,6 @@ if (isset($sesh['id']) && isset($sesh['email']))
     		</div><!--end row-->
 		    
 		    <?php
-			require_once './flight_tracker.php';
-			$remaining = getRemainingTime($id,$email);
 			if ($remaining > 0)
 			{
 			    echo <<<_STUFF
@@ -129,9 +118,15 @@ _STUFF2;
 
 		    <table id="results" class="table table-hover">
 			<tr>
-			    <th id="price">Total
+			    <th id="price">Total Price</th>
+			    <th id="it">Itinerary</th>
+			    <th id="info">More Info</th>
 			</tr>
 		    </table>
+
+		    <div id="test">
+			blah
+		    </div>
 		</div><!--end col-->
 		<div class="col-xs-4 col-md-1"></div><!--end col-->
 	    </div><!--end row-->
@@ -139,10 +134,16 @@ _STUFF2;
     </body>
 
     <script>
-	var id = "<?php echo $id; ?>";
+	var id = <?php echo $id; ?>;
 	var email = "<?php echo $email; ?>";
 	var seconds = 3;
+
 	window.setInterval(function () {
+	    if (remaining <= 0)
+	    {
+		document.getElementById("background-description").innerHTML = "Your search is complete! You can either choose one of the options below, or start a new search from our <a href=\"index.php\">Search Page.</a>";
+	    }
+
 	    var xmlhttp;
 	    if (window.XMLHttpRequest)
 	    { xmlhttp = new XMLHttpRequest(); }
@@ -151,7 +152,7 @@ _STUFF2;
 	    xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 		{
-		    
+		    document.getElementById("test").innerHTML = xmlhttp.responseXML;
 		}
 	    }
 	    var str = "id=" + id + "&email=" + email;
@@ -159,7 +160,9 @@ _STUFF2;
 	    xmlhttp.send();
 	},seconds * 1000);
 	window.onload=function(){$('.dropdown').hide();};
+
 	<?php
+	/*
 	    for ($i = 0; $i < $rowCount; $i++)
 	    {
 		echo <<<_SECTION1
@@ -176,6 +179,7 @@ _STUFF2;
 		});
 _SECTION1;
 	    } // for
+	    */
 	?>
     </script>
 </html>

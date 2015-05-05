@@ -188,3 +188,18 @@ h5 {
 	-moz-transform: scale(1); / Firefox */
 
 }
+
+.noUi-target {
+  border: 1px solid white;
+}
+.noUi-background {
+  background-color: transparent;
+}
+.noUi-connect {
+  /*background-color: #577;*/
+  background-color: transparent;
+}
+#background-search-submit {
+    border-color: black;
+    color: black;
+}

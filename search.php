@@ -9,28 +9,43 @@
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
-	<script>
-	    //CHECK EMAIL VALIDATION
-	    var testresults;
-	    function checkemail() {
-		var str=document.searchwindow.email.value
-		var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-		if (filter.test(str))
-		    testresults=true
-		else {
-		    alert("Please input a valid email address!");
-		    testresults = false;
-		    return false;
-		}
-		return (testresults)
-	    } // checkemail
 
-	    function check() {
-		if (document.layers||document.getElementById||document.all)
-		return checkemail()
-		else
-		return true
-	    } // check
+
+	<script>
+	    //  VALIDATION
+	    function check(mail) 
+	    {
+		var currentSecs = new Date().getTime()/1000; //get time right now in seconds 
+		var searchTime = document.getElementById("numHours").value;
+		var searchSecs = searchTime * 60 * 60; //search window time in seconds 
+		var CurrentSearchSecs = currentSecs + searchSecs;
+
+		//get Departure date and convert to seconds 
+		     <?php 
+			require_once('./flight_tracker.php');
+
+			$post = $_POST;
+			$departureDate = $post['depart_date'];
+			$departureDate = strtotime($departureDate);
+			echo "var departSecs = \"{$departureDate}\";";
+		     ?>  
+
+		 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchwindow.email.value))
+		  {
+			if((CurrentSearchSecs) > departSecs)
+			{
+				alert("Please choose a search time that will complete before your departure date.")
+				return false;
+			}
+			return(true);
+		  }
+		  else
+		  {
+		    alert("You have entered an invalid email address!")
+		    return (false)
+		  }
+	    }//end  check() --  validation for email and search time
+
 	</script>
     </head>
 
@@ -50,8 +65,14 @@
 
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
-			<li class="active"><a href="index.php">Search</a></li>
-			<li><a href="results.php">Search Status</a></li>
+
+			<li class="active"><a href="index.php">Find a Flight</a></li>
+			<?php
+			    // if session is set
+				//echo "<li><a href=\"results.php\">My Search</a></li>";
+			    // else
+				echo "<li><a href=\"signin.php\">My Search</a></li>";
+			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
@@ -70,16 +91,20 @@
 			    <h1>Search Results</h1>
 
 			    <?php
-				//define('__ROOT3__',dirname(__FILE__));
-				//require_once(__ROOT3__ . '/flight_tracker.php');
-				require_once('./flight_tracker.php');
 
 				$post = $_POST;
 				echo "<h3 id=\"trip-title\">" . $post['depart_date'] . "  <strong>" . 
 				    $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
 				    "<strong>" . $post['destination'] . "</strong>  ";
+				
+					$isRoundTrip = false;
+
 				if (!isOneWay($post))
-				    echo $post['return_date'];
+				{
+					 echo $post['return_date'];
+					 $isRoundTrip = true;	
+				}
+				   
 				echo "</h3>";
 			    ?>
 			</div>
@@ -94,7 +119,7 @@
 				searching.
 			    </p>
 
-			    <form name="searchwindow" onsubmit="return check()" method="post" action="countdown.php">
+			    <form name="searchwindow" onsubmit="return check(email);" method="post" action="countdown.php">
 				<div class="form-group form-inline">
 				    <label for="email">Email
 					<input id="email" type="email" name="email">
@@ -145,8 +170,58 @@ _SECTION2;
 			    </form>
 			</div><!--end col-->
 		    </div><!--end row-->
-
+		    
 		    <?php
+				 	$to = $post['source'];
+				 	$from = $post['destination'];
+				 	$java = 'java sample/Main ' . $to . ' ' . $from;
+				 	$output = shell_exec($java);
+				 	if (!(strpos($output,'ERROR') !== false)){
+				 		$myArray = explode(', ', $output);
+				 		echo <<<_TABLE1
+				  <h2>To Find the Best Price, Hopper.com suggests:</h2>
+				  <table class="table">
+					<tbody>
+					  <tr>
+						<td>A <b>Good Price</b> would be</td>
+						<td>{$myArray[2]}</td>
+					  </tr>
+					  <tr>
+						<td>Try <b>Flying Out</b> on a</td>
+						<td>{$myArray[3]}</td>
+					  </tr>
+					  <tr>
+						<td>Try <b>Flying Back</b> on a</td>
+						<td>{$myArray[4]}</td>
+					  </tr>
+					  <tr>
+						<td>Try these <b>Airlines</b></td>
+						<td>
+_TABLE1;
+						for ($x = 0; $x < $myArray[5]; $x++) {
+							echo $myArray[6+$x];
+							if($x+1 < $myArray[5])
+							{
+								echo ", ";
+							}
+						}	
+					  echo <<<_TABLE2
+					  </td>
+					  </tr>
+					  <tr>
+						<td>Also look at flights <b>Departing From</b></td>
+						<td>{$myArray[5+$myArray[5]+1]}</td>
+					  </tr>
+					  <tr>
+						<td>Also look at flights <b>Arriving Into</b></td>
+						<td>{$myArray[5+$myArray[5]+2]}</td>
+					  </tr>
+					</tbody>
+				  </table>
+				  <p><a href="http://www.hopper.com/flights/from-{$myArray[0]}/to-{$myArray[1]}/guide">See for Yourself!</a></p>
+_TABLE2;
+				  } // endif
+
 			$result = getResults($post, 50);
 			$trips = $result->getTrips();
 

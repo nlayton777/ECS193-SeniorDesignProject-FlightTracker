@@ -201,24 +201,7 @@ function validate(){
 		return false;
     }
 
-//validation search time is after depart date
-    var currTime = new Date(); //get time right now 
-    var nowTime = getFromattedDate(currTime);
-    var departDate = document.getElementById("datepickerD");
-    
 }
-
-function getFormattedDate(date) {
-    var year = date.getFullYear();
-    var month = (1 + date.getMonth()).toString();
-    month = month.length > 1 ? month : '0' + month;
-    var day = date.getDate().toString();
-    day = day.length > 1 ? day : '0' + day;
-    return year + '/' + month + '/' + day;
-}
-
-
-
 
 
 jQuery(document).ready(function(){
@@ -1002,3 +985,12 @@ $(function() {
     });
 });
 	
+function CountdownClock(time)
+{
+    var numhours = (time / (60 * 60)) / 24;
+    var remaining_hours = 3600 * 24 * numhours;
+    var clock = $('.clock').FlipClock(remaining_hours, {
+    clockFace: 'DailyCounter',
+    countdown: true
+    });
+}

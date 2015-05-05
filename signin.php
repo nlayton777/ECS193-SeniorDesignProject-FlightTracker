@@ -71,7 +71,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 								{
 									//window.open("results.php","_self");
 									var obj = {id : id_val, email : email_val};
-									document.getElementById("test").innerHTML = JSON.stringify(obj);
+									//document.getElementById("test").innerHTML = JSON.stringify(obj);
 									post(obj);
 								}
 						    }

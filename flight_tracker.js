@@ -43,10 +43,27 @@ window.onmousemove = function (e) {
     var x = e.clientX, y = e.clientY;
 };
 
+function deleteFromArray(item, arr){
+  for (var i=0;i<arrr.length;i++){
+    if (arr[i]==item){
+      arr.splice(i,1); //this delete from the "i" index in the array to the "1" length
+      break;
+    }
+  }  
+}
+
 $(document).ready(function() {
     $('#airline').multiselect({
 	buttonWidth: '180px',
-	maxHeight: 200
+	maxHeight: 200,
+	onChange: function(option, checked, select) {
+				if($(option).val() != 'none' && $("#none").is(':checked')){
+					$('#airline').multiselect('deselect', ['none']);
+                }
+                else if($(option).val() == 'none' && $("#none").is(':checked')){
+                	$('#airline').multiselect('deselect', ['AS', 'AA', 'DL', 'F9', 'B6', 'WN', 'NK', 'US', 'UA', 'VX']);
+                }
+            }
     });
 });
 
@@ -96,6 +113,7 @@ function validate(){
 	var departError = "Enter a valid Departure Date";
 	var returnError = "Enter a valid Return Date";
 	var passError = "Enter a Number of Passengers between 1 and 9";
+	var chilError = "An Adult or Senior must accompany a child, seat infant, or lap infant";
 	
 	var oneway = document.getElementById('oneway');
 	
@@ -199,6 +217,16 @@ function validate(){
   			message: passError
 		});
 		return false;
+    }
+    
+    if(chilvalue >= 1 || sivalue >= 1 || livalue >= 1){
+    	if(advalue < 1 && senvalue < 1){
+    		bootbox.dialog({
+  				title: "Whoops!",
+  				message: chilError
+			});
+			return false;
+    	}	
     }
 
 }

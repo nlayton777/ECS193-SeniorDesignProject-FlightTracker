@@ -2,8 +2,7 @@
 ECS 193 Lowest Flight Fare Tracker
 
 High Priority To-Do's:
--fix Book It bugs
--session logout
+-session logout (nina)
 -algorithm
     -cycle through keys
     -only email when price decreases

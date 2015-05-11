@@ -71,7 +71,7 @@ else if (isset($_POST['id']) && isset($_POST['email']))
 			</div><!--end col-->
 
 			<div class="col-md-6" id="background-info">
-			    <img id="exclamation" src="exclamation.png" alt="Important" height="8%" width="8%" />
+			    <img class="exclamation" src="exclamation.png" alt="Important" height="8%" width="8%" />
 
 			    <?php
 				require_once './flight_tracker.php';
@@ -134,7 +134,7 @@ _AIRLINES;
 					     "one_way"	    => $row['one_way'],
 					    );
 
-				$result = getResults($obj, 50);
+				$result = getResults($obj, 50, time());
 	
 				$remaining = getRemainingTime($id,$email);
 				if ($remaining > 0){

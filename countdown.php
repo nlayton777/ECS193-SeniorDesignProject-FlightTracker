@@ -9,6 +9,7 @@ $userDestination = $post['destination'];
 $userID = createNewSearch($post);
 $_SESSION['email'] = $email;
 $_SESSION['id'] = $userID;
+$remaining = getRemainingTime($userID,$email);
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,6 +41,7 @@ $_SESSION['id'] = $userID;
 		}
 		var str = "id=<?php echo $userID; ?>&email=<?php echo $email; ?>";
 		str += "&source=<?php echo $userSource; ?>&destination=<?php echo $userDestination; ?>";
+		str += "&searchTime=<?php echo $post['search_time']; ?>";
 		xmlhttp.open("GET","background_search.php?" + str,true);
 		xmlhttp.send();
 	    }; // sendMessage()
@@ -76,7 +78,8 @@ $_SESSION['id'] = $userID;
 
 	
 	<div class="containter">
-	    <div class="jumbotron countdown">
+	    <div class="col-md-2"></div>
+	    <div class="col-md-6 countdown">
 		<h1>Search Time Remaining</h1>
 		<div class="clock"></div>
 		<p>We have begun your background search and will notify you once
@@ -91,13 +94,11 @@ $_SESSION['id'] = $userID;
 
 		<?php
 		    // start countdown clock
-		    $remaining = getRemainingTime($userID,$email);
 		    echo "<script>CountdownClock({$remaining})</script>";
 
 		    echo <<<_SECTION1
 		    <div class="row">
-			<div class="col-md-3"></div>
-			<div class="col-md-3">
+			<div class="col-md-6">
 			    <ul>
 				<li>Request ID: {$userID}</li>
 				<li>Email: {$post['email']}</li>
@@ -107,7 +108,7 @@ $_SESSION['id'] = $userID;
 			    </ul>
 			</div>
 
-			<div class="col-md-3">
+			<div class="col-md-6">
 			    <ul>
 				<li>Date of Departure: {$post['depart_date']}</li>
 				<li>Date of Return: {$post['return_date']}</li>
@@ -131,7 +132,6 @@ _SECTION1;
 				<li>Maximum Price Limit: \${$post['price']}</li>
 			    </ul>
 			</div>
-			<div class="col-md-3"></div>
 		    </div>
 		    
 		    <div id="test" class="row" style="margin-left: 200px;">stuff</div>
@@ -139,5 +139,7 @@ _SECTION1;
 _SECTION2;
 		?>
 	    </div>
+	    <div class="col-md-2"></div>
 	</div>
+    </body>
 </html>

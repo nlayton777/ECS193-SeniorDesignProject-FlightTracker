@@ -12,7 +12,6 @@ html {
 }
 body {
   margin: 0;
-
 }
 article,
 aside,
@@ -115,14 +114,9 @@ input,
 optgroup,
 select,
 textarea {
-  margin: 3px 0;
+  margin: 0;
   font: inherit;
   color: inherit;
-}
-input.phone {
-  margin: 3px 3px;
-  font: inherit;
-  color: inherit; 
 }
 button {
   overflow: visible;
@@ -186,20 +180,13 @@ textarea {
 optgroup {
   font-weight: bold;
 }
-/*THIS IS THE TABLE IM EDITTING*/ 
 table {
-/* border-spacing: 5px; */
-border-spacing: 0;
-border: 1px solid #bbb;
+  border-spacing: 0;
   border-collapse: collapse;
 }
 td,
 th {
-/* padding: 0; */
-border-top: 1px solid #ddd;
-padding 4 px, 8 px;
-text-align: center;
-vertical-align: middle;
+  padding: 0;
 }
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 @media print {
@@ -1086,24 +1073,13 @@ html {
 
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-/* changes */
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: #333;
-  /*background-color: #eaeaea;*/
-  background-color: white;
+  background-color: #fff;
 }
-/*
-#searchheader
-{
-    background: url('cloud.jpg') no-repeat center center;
-    background-size: auto 100%;
-    background-attachment: fixed;
-}
-*/
-
 input,
 button,
 select,
@@ -1611,20 +1587,6 @@ pre code {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
-}
-/* changes */
-.container-fluid#main {
-    margin-top: 0;
-    padding-top: 0;
-}
-/* changes */
-.container-fluid#details {
-  margin-top: 0;
-  padding-top: 0;
-}
-.container-fluid#header {
-  margin-bottom: 0;
-  padding-bottom: 0;
 }
 .row {
   margin-right: -15px;
@@ -2266,14 +2228,6 @@ pre code {
     margin-left: 0;
   }
 }
-/*ADDING TABLE RESULT FORMATTING*/
-table#results1
-{
-    width: 100%;    
-    background-color: #CCF5F6;
-}
-
-
 table {
   background-color: transparent;
 }
@@ -3199,61 +3153,59 @@ fieldset[disabled] .btn-success.active {
   color: #5cb85c;
   background-color: #fff;
 }
-/* changes */
-.btn-info {
-  color: #fff;
-  /*color: #46b8da;*/
-  /*background-color: #5bc0de;*/
-  background-color: transparent;
-  /*border-color: #46b8da;*/
-  border-color: white;
-  border-width: 1px;
-  -webkit-transition: background-color 0.2s ease-in;
-  -webkit-transition: color 0.2s ease-in;
-  transition: background-color 0.2s ease-in;
-  transition: color 0.2s ease-in;
-  vertical-align: middle;
-  text-align: center;
+/* changes 
+  color: #222222;
+  */
+#home .btn-info {
+  color: #ffffff;
+  /*background-color: #5bc0de; 
+  border-color: #46b8da; */
+  background-color: transparent; 
+  border-color: #ffffff; 
+  -webkit-transition: background-color ease-in-out .15s;
+       -o-transition: background-color ease-in-out .15s;
+	  transition: background-color ease-in-out .15s;
 }
-.search{
-  color: #000;
-  /*color: #46b8da;*/
-  /*background-color: #5bc0de;*/
-  background-color: transparent;
-  /*border-color: #46b8da;*/
-  border-color: #000;
-  border-width: 1px;
-  -webkit-transition: background-color 0.2s ease-in;
-  -webkit-transition: color 0.2s ease-in;
-  transition: background-color 0.2s ease-in;
-  transition: color 0.2s ease-in;
-}
+#home 
 .btn-info:hover,
 .btn-info:focus,
 .btn-info.focus,
 .btn-info:active,
 .btn-info.active,
 .open > .dropdown-toggle.btn-info {
-  color: #fff;
-  background-color: #31b0d5;
-  border-color: #269abc;
+  color: #222222;
+  /* background-color: #31b0d5; 
+  border-color: #269abc; */
+  background-color: #ffffff; 
+  border-color: #ffffff; 
+}
+#results .btn-info {
+  color: #222222;
+  /*background-color: #5bc0de; 
+  border-color: #46b8da; */
+  background-color: transparent; 
+  border-color: #222222; 
+  -webkit-transition: background-color ease-in-out .15s;
+       -o-transition: background-color ease-in-out .15s;
+	  transition: background-color ease-in-out .15s;
+}
+#results 
+.btn-info:hover,
+.btn-info:focus,
+.btn-info.focus,
+.btn-info:active,
+.btn-info.active,
+.open > .dropdown-toggle.btn-info {
+  color: #ffffff;
+  /* background-color: #31b0d5; 
+  border-color: #269abc; */
+  background-color: #222222; 
+  border-color: #222222; 
 }
 .btn-info:active,
 .btn-info.active,
 .open > .dropdown-toggle.btn-info {
   background-image: none;
-}
-/* changes */
-.btn-info:focus {
-  color: #fff;
-  background-color: transparent;
-  border-color: white;
-}
-/* changes */
-.btn-info:hover,active {
-  background-color: #46b8da;
-  border-color: #46b8da;
-  color: white;
 }
 .btn-info.disabled,
 .btn-info[disabled],
@@ -4807,18 +4759,6 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   cursor: not-allowed;
   background-color: #fff;
 }
-/*CHANGES - tooltip for popup bubble*/
-.tooltip span {
-    display:none;
-}
-
-.tooltip:hover span {
-    display:block;
-    position:absolute;
-    overflow:hidden;
-}
- /*end of changes */
-
 .label {
   display: inline;
   padding: .2em .6em .3em;
@@ -4935,45 +4875,15 @@ a.badge:focus {
   padding: 30px 15px;
   margin-bottom: 30px;
   color: inherit;
-  background-color: #eee;
+  /*background-color: #eee;*/
+  background-color: #ffffff;
 }
 .jumbotron#home {
-  padding: 30px 15px;
-  margin-bottom: 30px;
-  color: #ffffff;
-  background-color: #eee;
-  background-image: url('GoldenGate.jpg');
-  background-repeat: no-repeat;
-  background-size: 100% auto;
-  background-position: center center;
-  height: 500px;
-}
-.jumbotron#home p {
-    font-weight: bold;
-    color: inherit;
-}
-.jumbotron#about {
-  padding: 30px 15px;
-  margin-bottom: 30px;
-  color: #000000;
-  background-color: #eee;
-  background-image: url('Bicycle1.jpg');
-  background-repeat: no-repeat;
-  background-size: 100% auto;
-  height: 500px;
-  opacity: 0.85;
-}
-.jumbotron#contact {
-  padding: 30px 15px;
-  margin-bottom: 30px;
-  color: #000000;
-  background-color: #eee;
-  background-image: url('Bicycle2.jpg');
-  background-repeat: no-repeat;
-  background-size: 100% auto;
-  background-position: center center;
-  height: 600px;
-  opacity: 0.70;
+  background: #ffffff url('sfo.jpg') no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 .jumbotron h1,
 .jumbotron .h1 {
@@ -4993,61 +4903,6 @@ a.badge:focus {
 }
 .jumbotron .container {
   max-width: 100%;
-}
-/* HOME RESIZING */
-@media screen and (min-width: 1055px) {
-  .jumbotron#home {
-    height: 630px;
-    background-size: 100% auto;
-  }
-}
-@media screen and (min-width: 790px) and (max-width: 1054px) {
-  .jumbotron#home {
-    height: 630px;
-    background-size: auto 100%;
-  }
-}
-@media screen and (min-width: 413px) and (max-width: 789px) {
-  .jumbotron#home {
-    height: 900px;
-    background-size: auto 100%;
-  }
-}
-@media screen and (max-width: 412px) {
-  .jumbotron#home {
-    height: 1050px;
-    background-size: auto 100%;
-  }
-}
-/* ABOUT RESIZING */
-@media screen and (max-width: 679px) {
-  .jumbotron#about {
-    background-size: auto 100%;
-  }
-}
-/* CONTACT RESIZING */
-@media screen and (min-width: 992px) and (max-width: 1199px) {
-  .jumbotron#contact {
-    height: 610px;
-  }
-}
-@media screen and (min-width: 415px) and (max-width: 992px) {
-  .jumbotron#contact {
-    background-size: auto 100%;
-    height: 610px;
-  }
-}
-@media screen and (min-width: 321px) and (max-width: 414px) {
-  .jumbotron#contact {
-    background-size: auto 100%;
-    height: 700px;
-  }
-}
-@media screen and (max-width: 320px) {
-  .jumbotron#contact {
-    background-size: auto 100%;
-    height: 780px;
-  }
 }
 @media screen and (min-width: 768px) {
   .jumbotron {
@@ -6751,18 +6606,3 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
-/*Nina's font changes*/
-/*
-h1 {
-	font-family:'Bad Script', cursive;
-	font-weight:bold;
-	font-size: "300"
-	color: #333;
-}
-h6 {
-	font-family:'Bad Script', cursive;
-	font-weight:bold;
-	font-size: xx-large;
-	color: #333;
-}
-*/

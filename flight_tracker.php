@@ -35,22 +35,23 @@
     if (isset($options)) 
     {
         $multPass = false;
-        if ($post['adults'] > 1 || $post['children'] > 1 || $post['seniors'] > 1 || 
-        $post['seat_infants'] > 1 || $post['lap_infants'] > 1)
-        $multPass = true;
+        if (($post['adults'] + $post['children'] + 
+	     $post['seniors'] + $post['seat_infants'] + 
+	     $post['lap_infants']) > 1)
+	    $multPass = true;
 
         // print headers
         echo <<<_HEADERS
         <table id="results" class="table table-hover" style="background-color: rgba(150, 150, 150, 0)" align="center">
-        <tr>
+        <tr id="headers">
             <th id="price">Total
 _HEADERS;
             if ($multPass)
-            echo "Group ";
+            echo " Group ";
         echo <<<_HEADERS2
             Price</th>
             <th id="it">Itinerary</th>
-            <th id="info" colspan="2" >More Info</th>
+            <th id="info" colspan="2">More Info</th>
         </tr>
 _HEADERS2;
 	    foreach ($options as $option) 
@@ -65,7 +66,7 @@ _STUFF;
 		if (!isOneWay($post))
 		{
 		    echo <<<_STUFF2
-		    <div id="on-the-way-there">
+		    <div class="on-the-way-there">
 		    <h5>On the way there...</h5>
 _STUFF2;
 		}
@@ -91,7 +92,7 @@ _STUFF3;
 		if (!isOneWay($post)) {
 		    echo <<<_STUFF4
 		    </div>
-		    <div id="on-the-way-back">
+		    <div class="on-the-way-back">
 		    <h5>On the way back...</h5>
 _STUFF4;
 
@@ -118,13 +119,13 @@ _STUFF5;
 		echo <<<_STUFF6
 		<div class="dropdown" id="row{$rowCount}">
 
-		    <table id="dropdown-table">
+		    <table class="dropdown-table">
 		    <tr>
 		    <th>Leg</th>
 		    <th>Carrier</th>
 		    <th>Cabin</th>
 		    <th>Aircraft</th>
-		    <th>Meal</th>
+		    <th>Meal For Purchase</th>
 		    <th>Mileage</th>
 		    <th>Duration</th>
 		    <th>Flight #</th>
@@ -190,7 +191,22 @@ _STUFF7;
 _STUFF8;
                         $meal = $leg->getMeal();
                         if (isset($meal))
-                        echo $meal;
+			{
+			    if (strpos($meal, " for ") != FALSE)
+			    {
+				if(strpos($meal, " and ") != FALSE)
+				{
+				    $meal = explode(" and ", $meal);
+				    $meal =  implode("+", array($meal[0], $meal[1]));
+				    $meal = explode(" for ", $meal);
+				    echo $meal[0];
+				} else
+				{
+				    $meal = explode(" for ", $meal);
+				    echo $meal[0];
+				}
+			    }
+			}
                         else
                         echo "None";
 
@@ -203,8 +219,8 @@ _STUFF8;
                         
                         echo <<<_STUFF9
                         </td>
-                        <td>{$mlg} miles</td>
-                        <td>{$dur} minutes</td>
+                        <td>{$mlg}</td>
+                        <td>{$dur} mins</td>
                         <td>{$site}{$segFlightNum}</td>
                     </tr>
 _STUFF9;
@@ -246,22 +262,40 @@ _STUFF11;
     return ($rowCount);
     } // printResults($post)
 
-    function getResults(&$post,$num) {
+    function getResults(&$post,$num, $keyNum) {
 	// create client 
 	$client = new Google_Client();
 	//$client->setApplicationName("Flight Tracker");
-	// nick
-	$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
-	// rupali
-	//$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
-	// kirsten
-	//$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
-	// nina
-	//$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
-	// flight tracker
-	//$client->setDeveloperKey("AIzaSyCCS0WHeRJDiRZmxfTmqA9jCbETtMIvAUg");
-	// rupali's other
-	//$client->setDeveloperKey("AIzaSyAlIaLcBQiyOpWVTPSJC-fOJz_2veF94Zw");
+
+	$x = $keyNum % 6;
+	switch ($x)
+	{
+	    case 0:
+		// nick
+		$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+		break;
+	    case 1:
+		// rupali
+		$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
+		break;
+	    case 2:
+		// kirsten
+		$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
+		break;
+	    case 3:
+		// nina
+		$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
+		break;
+	    case 4:
+		// flight tracker
+		$client->setDeveloperKey("AIzaSyCCS0WHeRJDiRZmxfTmqA9jCbETtMIvAUg");
+		break;
+	    case 5:
+		// rupali's other
+		$client->setDeveloperKey("AIzaSyAlIaLcBQiyOpWVTPSJC-fOJz_2veF94Zw");
+		break;
+	} // switch
+
 	// create QPX service
 	$service = new Google_Service_QPXExpress($client);
 
@@ -673,8 +707,8 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
     } // SearchOverEmail()
 
     function getEndTime($search_time)
-    //{ return date('Y-m-d H:i:s', time() + ($search_time * 60 * 60));} 
-    { return date('Y-m-d H:i:s',(time() + 60)); }
+    { return date('Y-m-d H:i:s', time() + round(($search_time * 60 * 60),0));} 
+    //{ return date('Y-m-d H:i:s',(time() + 60)); }
     // getEndTime($search_time)
 
     function getRemainingTime($id,$email)

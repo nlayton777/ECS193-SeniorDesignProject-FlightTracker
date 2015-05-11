@@ -10,7 +10,7 @@ $post = $_GET;
 $userID = $post['id'];
 $userSource = $post['source'];
 $userDestination = $post['destination'];
-$interval = 20; //seconds for sleep function
+$interval = getInterval($post['searchTime']); //seconds for sleep function
 
 $oneWay = false;
 if (checkIsOneWay($post))
@@ -27,8 +27,7 @@ $connection = new mysqli ("localhost", "root");
 if($connection->connect_error) die($connection->connect_error);
 mysqli_select_db($connection,"flight_tracker");
 
-//Create table emailATemailDOTcomID and add attributes 
-//$tableName = str_replace(".","DOT",str_replace("@","AT",$post['email'])) . $post['id'];
+//Create table with name = ID and add attributes 
 $tableName = "`{$post['id']}`";
 $userTable = <<<_TABLEQUERY
 CREATE TABLE {$tableName} (
@@ -60,6 +59,7 @@ $test = $userTable;
 $resultTable = $connection->query($userTable);
 if (!$resultTable) die ($connection->error);
 
+$keyIndex = 0;
 do {	// begin search
 
     // get search parameters 
@@ -135,7 +135,7 @@ _QUERY2;
 	  );
     
 	// get flight info from QPX API
-	$searchResults = getResults($current_info, 5);
+	$searchResults = getResults($current_info, 5, $keyIndex);
 	$trips = $searchResults->getTrips();
 
 	// start insertion query
@@ -245,14 +245,6 @@ _QUERY5;
 	    $updateResults = $connection->query($updateLowestPrice);
 	    if (!$updateResults) die ($connection->error);
 
-	    /*
-	    define('__ROOT3__',dirname(__FILE__));
-	    require_once(__ROOT3__ . '/vendor/autoload.php');
-	    use Mailgun\Mailgun;
-	    $mgClient = new Mailgun('key-d76af0f266f20519801b8997210febfd');
-	    $domain = "sandboxc740d3f374c749c391b5e8abfdee56b2.mailgun.org";
-	    */
-
 	    // send email
 	    $result = $mgClient->sendMessage($domain, getResultsEmail($post['email'],$post['id'],$rows['origin'],$rows['destination'])); 
 	} // if new minimum has been found
@@ -262,18 +254,10 @@ _QUERY5;
 
     // delay execution
     sleep($interval);
+    ++$keyIndex;
 } while($current_sec < $end_secs);
 
-
 //Send email once search is over
-/*
-define('__ROOT3__',dirname(__FILE__));
-require_once(__ROOT3__ . '/vendor/autoload.php');
-use Mailgun\Mailgun;
-$mgClient = new Mailgun('key-d76af0f266f20519801b8997210febfd');
-$domain = "sandboxc740d3f374c749c391b5e8abfdee56b2.mailgun.org";
-*/
-// send email
 $result = $mgClient->sendMessage($domain, SearchOverEmail($post['email'],$post['id'],$rows['origin'],$rows['destination'])); 
 
 function checkIsOneWay($post)
@@ -299,4 +283,45 @@ _BLAH;
 
     return $val;
 } // checkIsOneWay()
+
+/*
+ * returns the number
+ * of seconds between each 
+ * query of results 
+ */
+function getInterval($searchTime)
+{
+    $seconds = 20;
+    if ($searchTime >= 1)
+    {
+	switch ($searchTime)
+	{
+	    case 1:
+		$seconds = 10 * 60;	
+		break;
+	    case 2:
+		$seconds = 15 * 60;	
+		break;
+	    case 4:
+		$seconds = 17 * 60;	
+		break;
+	    case 8:
+		$seconds = 20 * 60;	
+		break;
+	    case 12:
+		$seconds = 25 * 60;	
+		break;
+	    case 24:
+		$seconds = 30 * 60;	
+		break;
+	    case 48:
+	    case 72:
+	    case 96:
+		$seconds = 30 * 60;	
+		break;
+	} // switch
+    } // if
+
+    return ($seconds);
+} // getInterval()
 ?>

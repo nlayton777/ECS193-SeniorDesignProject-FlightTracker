@@ -14,6 +14,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bad+Script" />
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
+	<script src="flight_tracker.js"></script>
     </head>
 
     <body>
@@ -43,7 +44,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<li><a href="contact.php">Contact</a></li>
 			<?php
 			    if ($seshFlag)
-				echo "<li><a href=\"signin.php\">Log Out</a></li>";
+				echo "<li><a href=\"javascript:;\" onclick=\"submitForm()\">Log Out</a></li>";
 			    else
 				echo "<li><a href=\"signin.php\">Log In</a></li>";
 			?>
@@ -60,34 +61,36 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	</div>
 
 	<div class="container">
-		<div class="row">
-		    <div class="col-md-4">
-			<h2>Customize your travel needs!</h2>
-			<p>
-			    Our search engine allows you to specify the airline with whom you want to travel. 
-			    No more getting stuck with the companies that you don't prefer.
-			</p>
-		    </div>
-
-		    <div class="col-md-4">
-			<h2>Kick back, relax, and let us find the deals for you!</h2>
-			<p>
-			    Don't miss out on price reductions. 
-			    Provide us with a search window, and we search for your flight
-			    throughout that time. Feel free to leave your computer,
-			    and we will notify you once your price has been found. 
-			</p>
-		    </div>
-
-		    <div class="col-md-4">
-			<h2>Share your travel plans with friends!</h2>
-			<p>
-			    Show all your friends how excited you are for your trip. 
-			    No more having to take pictures of your flight itinerary.
-			    Just click the share link, and the work is done for you.
-			</p>
-		    </div>
+	    <div class="row">
+		<div class="col-md-6">
+		    <h2>Customize your travel needs!</h2>
+		    <p>
+			Many flight fare search enginers don't provide the user the ability
+			to select their desired airlines or price range. Our search engine 
+			allows you to specify all the typical flight parameters, in addition
+			to your preferred airlines and max price. No more getting stuck with 
+			the companies that you don't prefer or viewing the results that cost
+			more than your price range. Keep in mind, however, that the more 
+			narrow that your search filer is, the less results you might find. .
+		    </p>
 		</div>
+
+		<div class="col-md-6">
+		    <h2>Kick back, relax, and let us find the deals for you!</h2>
+		    <p>
+			Don't miss out on price reductions. 
+			Provide us with a search window, and we background search 
+			for your flight results while you relax. Feel free to leave 
+			your computer, and we notify you via email when price 
+			reductions are occuring or when it might be a good time
+			to book your flight.
+		    </p>
+		</div>
+	    </div>
 	</div>
+	
+	<form id="hiddenForm" method="post" action="logout.php">
+	    <input type="hidden" name="webpage" value="about.php" />
+	</form>
     </body>
 </html>

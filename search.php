@@ -37,22 +37,22 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		    echo "var departSecs = \"{$departureDate}\";";
 		 ?>  
 
-		 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchwindow.email.value))
-		  {
-			if((CurrentSearchSecs) > departSecs)
-			{
+		 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchwindow.email.value)) {
+			if((CurrentSearchSecs) > departSecs) {
 				alert("Please choose a search time that will complete before your departure date.")
 				return false;
 			}
 			return(true);
-		  }
-		  else
-		  {
+		  } else {
 		    alert("You have entered an invalid email address!")
 		    return (false)
 		  }
 	    }//end  check() --  validation for email and search time
 
+	    function submitForm()
+	    {
+		document.getElementById("hiddenForm").submit();
+	    }
 	</script>
     </head>
 
@@ -86,7 +86,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<li><a href="contact.php">Contact</a></li>
 			<?php
 			    if ($seshFlag)
-				echo "<li><a href=\"index.php\">Log Out</a></li>";
+				echo "<li><a href=\"javascript:;\" onclick=\"submitForm()\">Log Out</a></li>";
 			    else
 				echo "<li><a href=\"signin.php\">Log In</a></li>";
 			?>
@@ -107,22 +107,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 				echo "<h3 id=\"trip-title\">" . $post['depart_date'] . "  <strong>" . 
 				    $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
 				    "<strong>" . $post['destination'] . "</strong>  ";
-				
 					$isRoundTrip = false;
-
 				if (!isOneWay($post))
 				{
 					 echo $post['return_date'];
 					 $isRoundTrip = true;	
 				}
-				   
 				echo "</h3>";
 			    ?>
 			</div>
 
 			<div class="col-md-6" id="background-info">
-			    <img id="exclamation" src="exclamation.png" alt="Important" height="8%" width="8%" />
-
+			    <img class="exclamation" src="exclamation.png" alt="Important" height="8%" width="8%" />
 			    <p id="background-description">
 				Our search engine can work in the background for you to find 
 				deals on flights whose prices might change in the near future. 
@@ -139,8 +135,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 					<input id="email" type="email" name="email">
 				    </label>
 
-				    <label for="search-time">Search Time
+				    <label for="search_time">Search Time
 					<select name="search_time" id="numHours"> 
+					    <option value="0.01667">1 Min</option>
 					    <option value="1">1 Hour</option>
 					    <option value="2">2 Hours</option>
 					    <option value="4">4 Hours</option>
@@ -174,8 +171,12 @@ _SECTION1;
 					<input type="hidden" name="one_way" value="{$post['one_way']}"/>
 _SECTION2;
 
-					foreach ($post['airline'] as $air)
-					    echo "<input type=\"hidden\" name=\"airline[]\" value=\"".$air."\"/>";
+					if (isset($post['airline']))
+					{
+					    foreach ($post['airline'] as $air)
+						echo "<input type=\"hidden\" name=\"airline[]\" value=\"".$air."\"/>";
+					} else
+					    echo "<input type=\"hidden\" name=\"airline[]\" value=\"none\"/>";
 
 					echo "<input type=\"hidden\" name=\"price\" value=\"".$post['price']."\"/>";
 				    ?>
@@ -193,6 +194,7 @@ _SECTION2;
 				 	$from = $post['destination'];
 				 	$java = 'java sample/Main ' . $to . ' ' . $from;
 				 	$output = shell_exec($java);
+					$myarray = array();
 				 	if (!(strpos($output,'ERROR') !== false)){
 				 		$myArray = explode(', ', $output);
 				 		echo <<<_TABLE1
@@ -201,7 +203,7 @@ _SECTION2;
 					<tbody>
 					  <tr>
 						<td>A <b>Good Price</b> would be</td>
-						<td>{$myArray[2]}</td>
+						<td>{$myArray[2]} (per passenger)</td>
 					  </tr>
 					  <tr>
 						<td>Try <b>Flying Out</b> on a</td>
@@ -239,7 +241,7 @@ _TABLE1;
 _TABLE2;
 				  } // endif
 
-			$result = getResults($post, 50);
+			$result = getResults($post, 50, time());
 			$trips = $result->getTrips();
 			$rowCount = -1;
 			if (count($trips->getTripOption()) <= 0)
@@ -260,6 +262,10 @@ _TABLE2;
 		<div class="col-xs-4 col-md-1"></div>
 	    </div>
 	</div>
+
+	<form id="hiddenForm" method="post" action="logout.php">
+	    <input type="hidden" name="webpage" value="index.php" />
+	</form>
     </body>
 
     <script>

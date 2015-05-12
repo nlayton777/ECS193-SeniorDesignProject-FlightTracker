@@ -13,6 +13,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<link rel="stylesheet" href="bootstrap.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
+	<script src="flight_tracker.js"></script>
 	<style>
 	   html,body {
 		 height:100%;
@@ -85,7 +86,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<li class="active"><a href="contact.php">Contact</a></li>
 			<?php
 			    if ($seshFlag)
-				echo "<li><a href=\"signin.php\">Log Out</a></li>";
+				echo "<li><a href=\"javascript:;\" onclick=\"submitForm()\">Log Out</a></li>";
 			    else
 				echo "<li><a href=\"signin.php\">Log In</a></li>";
 			?>
@@ -124,10 +125,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
         </div>
       	<div class="col-md-6">
         	<div class="panel panel-default">
-            <div class="panel-heading"><h3>We'd Love to Hear Them.</h3></div>
-            <div class="panel-body">
-            	<form role="form form-inline"  class="form-vertical" method="post" action="contactsubmission.php">
-					<div class="form-group">
+		    <div class="panel-heading"><h3>We'd Love to Hear Them.</h3></div>
+		    <div class="panel-body">
+		    <form role="form form-inline"  class="form-vertical" method="post" action="contactsubmission.php">
+			<div class="form-group">
 			   			<label for="name">
 						Name: 
 						<input type="text" class="form-control" id="name" 
@@ -150,13 +151,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
             </div>
           </div>
         </div>
-      	<div class="col-md-3">
-        	
-        </div>
+      	<div class="col-md-3"></div>
     	</div>
     </div>
-
 </div>
 	</header>
+	<form id="hiddenForm" method="post" action="logout.php">
+	    <input type="hidden" name="webpage" value="contact.php" />
+	</form>
     </body>
 </html>

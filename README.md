@@ -2,8 +2,11 @@
 ECS 193 Lowest Flight Fare Tracker
 
 High Priority To-Do's:
+-session logout (nina)
 -algorithm
--session logout
+    -cycle through keys
+    -only email when price decreases
+    -link search period button to background search
 -comment code
 -test
 

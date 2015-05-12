@@ -20,7 +20,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 
 	<!--this is for the datepicker()-->
 	<link rel="stylesheet" href="jquery-ui.css"/>
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/eggplant/jquery-ui.css">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/ui-darkness/jquery-ui.css">
   	<script src="jquery-ui.js"></script>
 
 	<!--this is for checkbox list-->
@@ -38,6 +38,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<!--this is our js and css file-->
 	<script type="text/javascript" src="flight_tracker.js"></script>
 	<link rel="stylesheet" href="styles.css"/>	 	
+	<script>
+	    function changeFunction()
+	    {
+		document.getElementById("airline").options.namedItem("noPref").selected = false;
+		return false;
+	    }
+	</script>
     </head>
 
     <body>
@@ -68,7 +75,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<li><a href="contact.php">Contact</a></li>
 			<?php
 			    if ($seshFlag)
-				echo "<li><a href=\"logout.php\">Log Out</a></li>";
+				echo "<li><a href=\"javascript:;\" onclick=\"submitForm();\">Log Out</a></li>";
 			    else
 				echo "<li><a href=\"signin.php\">Log In</a></li>";
 			?>
@@ -84,7 +91,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		<h3>Customize your travel needs!</h3>
 
 		<form id="search_form" class="form-vertical" method="post" action="search.php" >
-		
 		    <!--ONE-WAY CHECKBOX-->
 		    <div class="form-group">
 			<label class="no-indent" for="oneway">
@@ -102,11 +108,19 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<div class="form-group form-inline">
 			    <!--SOURCE FIELD-->
 			    <label for="source" class="sr-only" required >Departure Location</label>
-			    <input class="textbox"  id="source" name="source" placeholder=" ---Select an Origin---"/>	
+				<input type="text" class="form-control"  id="source" name="source" 
+				    placeholder="Origin"/>	
+			    <!--
+			    <input class="textbox"  id="source" name="source" placeholder=" -Select an Origin-"/>	
+			    -->
 				
 			    <!--DESTINATION FIELD-->
 			    <label for="destination" class="sr-only">Arrival Location</label>
-			    <input class="textbox"  id="destination" name="destination" placeholder=" ---Select a Destination---"/>	
+				<input type="text" class="form-control"  id="destination" name="destination" 
+				    placeholder="Destination"/>	
+			    <!--
+			    <input class="textbox"  id="destination" name="destination" placeholder=" -Select a Destination-"/>	
+			    -->
 			    
 			    <!--DEPART DATE FIELD-->
 			    <label for="depart-date" class="sr-only">Date of Departure</label>
@@ -122,36 +136,38 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		    <div class="form-group form-inline">
 			<!--PASSENGERS FIELD-->
 			<label for="adult">
-				&nbsp;Adults
+				Adults
 				<input type='button' value='-' class='btn btn-info qtyminus' field='adults' />
 				<input type='text' name='adults' value='0' class='qty' id='adult' />
 				<input type='button' value='+' class='btn btn-info qtyplus' field='adults' />
 			</label>
 			<label for="child">
-				&nbsp;Children
+				Children
 				<input type='button' value='-' class='btn btn-info qtyminus' field='children' />
 				<input type='text' name='children' value='0' class='qty' id='child'  />
 				<input type='button' value='+' class='btn btn-info qtyplus' field='children' />
 			</label>
 			<label for="senior">
-				&nbsp;Seniors
+				Seniors
 				<input type='button' value='-' class='btn btn-info qtyminus' field='seniors' />
 				<input type='text' name='seniors' value='0' class='qty'id='senior'/>
 				<input type='button' value='+' class='btn btn-info qtyplus' field='seniors' />
 			</label>
 			<label for="seatinfant">
-				&nbsp;Seat Infant
+				Seat Infant
 				<input type='button' value='-' class='btn btn-info qtyminus' field='seat_infants' />
 				<input type='text' name='seat_infants' value='0' class='qty' id='seatinfant' />
 				<input type='button' value='+' class='btn btn-info qtyplus' field='seat_infants' />
 			</label>   
 			<label for="lapinfant">
-				&nbsp;Lap Infant
+				Lap Infant
 				<input type='button' value='-' class='btn btn-info qtyminus' field='lap_infants' />
 				<input type='text' name='lap_infants' value='0' class='qty' id='lapinfant' />
 				<input type='button' value='+' class='btn btn-info qtyplus' field='lap_infants' />
 			</label>
-			
+		    </div>
+
+		    <div class="form-group form-inline"> 		
 			<!--AIRLINE FIELD-->
 			<label for="airline">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline[]"
@@ -172,22 +188,30 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		    </div>
 
 		    <!--PRICE FIELD-->	
-		    <div class="form-group form-inline" id= "priceSlider"> 		
-		    <label for="price">Max Price: </label>
-			    <input class="textboxPrice" name="price" id="priceInput"></input>
+		    <div class="form-group form-inline"> 		
+			<label for="price">Max Price: </label>
+			    <!--<input type="text" class="textboxPrice" name="price" id="priceInput"></input>-->
+			    <input type="text" class="form-control" name="price" id="price"></input>
 			    <section id="slider"></section>
-			    <script>
-				    $("#slider").noUiSlider({
-					start: 5000, connect: 'lower', step: 10,
-					range: {'min': 0,'75%': 1000,'max': 5000}
-				    });
-				$("#slider").Link('lower').to($('#priceInput'));
-			    </script>
+			<script>
+				$("#slider").noUiSlider({
+				    start: 5000, connect: 'lower', step: 10,
+				    range: {'min': 0,'75%': 1000,'max': 5000}
+				});
+			    $("#slider").Link('lower').to($('#price'));
+			</script>
 		    </div>
 			
-		    <input id="submit-button" class="btn btn-info btn-lg" type="submit" onclick=" return validate();" value="Find your flight!"/>
+		    <div id="btn-container">
+		    <input id="submit-button" class="btn btn-info btn-lg" 
+			type="submit" onclick=" return validate();" value="Find Your Flight!"/>
+		    </div>
 		</form>
 	    </header>
 	</div>
+
+	<form id="hiddenForm" method="post" action="logout.php">
+	    <input type="hidden" name="webpage" value="index.php" />
+	</form>
     </body>
 </html>

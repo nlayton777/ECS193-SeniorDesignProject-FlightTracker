@@ -1,5 +1,4 @@
 <?php
-/*
 if (isset($_SESSION['id']) && isset($_SESSION['email']))
 {
     unset($_SESSION['id']);
@@ -16,7 +15,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		 $params["secure"], $params["httponly"]);
     }
 }
-*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -112,9 +110,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			var charCode = (evt.which) ? evt.which : event.keyCode 
 			if(charCode == "13")
 			{ 
-				document.searchwindow.submit(); 
+				document.getElementById("hiddenForm").submit(); 
 			} 
 		} 
+
 	    function post(params) 
 	    {
 		document.getElementById("hidden_id").value = params["id"];

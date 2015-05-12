@@ -297,27 +297,25 @@ function getInterval($searchTime)
 	switch ($searchTime)
 	{
 	    case 1:
-		$seconds = 10 * 60;	
+		$seconds = 10 * 60; // 10 minutes	
 		break;
 	    case 2:
-		$seconds = 15 * 60;	
+		$seconds = 15 * 60; // 15 minutes
 		break;
 	    case 4:
-		$seconds = 17 * 60;	
+		$seconds = 17 * 60; // 17 minutes	
 		break;
 	    case 8:
-		$seconds = 20 * 60;	
+		$seconds = 20 * 60; // 20 minutes	
 		break;
 	    case 12:
-		$seconds = 25 * 60;	
+		$seconds = 25 * 60; // 25 minutes	
 		break;
 	    case 24:
-		$seconds = 30 * 60;	
-		break;
 	    case 48:
 	    case 72:
 	    case 96:
-		$seconds = 30 * 60;	
+		$seconds = 30 * 60; // 30 minutes
 		break;
 	} // switch
     } // if

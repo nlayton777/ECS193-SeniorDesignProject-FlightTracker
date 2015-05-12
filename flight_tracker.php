@@ -176,6 +176,12 @@ _STUFF7;
                             if ((strpos($oper,'AMERICAN AIRLINES') !== false)) {
                             	if($site !== "AS")
                             		$site = "AA";
+                            } else if ((strpos($oper,'AMERICAN EAGLE') !== false)) {
+                            		if($site !== "AS")
+                            		$site = "AA";
+                            } else if ((strpos($oper,'US AIRWAYS') !== false)) {
+                            	if($site !== "AS")
+                            		$site = "US";
                             }
                         }
                     }
@@ -601,7 +607,7 @@ _QUERY4;
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							<td class="content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-							    Our search bot found some great flight options for you from'.$userSource.' to ' .$userDestination. '. Please check the status of your search by clicking on the button below. We will continue to post the results we find for you on this page. Use your request ID and email to login to our page to view your flight results. As a reminder your request ID was #'.$userID.'. We hope you enjoy your flight.
+							    Our search bot found some great flight options for you from '.$userSource.' to ' .$userDestination. '. Please check the status of your search by clicking on the button below. We will continue to post the results we find for you on this page. Use your request ID and email to login to our page to view your flight results. As a reminder your request ID was #'.$userID.'. We hope you enjoy your flight.
 							</td>
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -674,7 +680,7 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							<td class="content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-							    Our search bot found some flight results for you from'.$userSource.' to ' .$userDestination. '. Please check the final result of your search by clicking on the button below. Use your request ID and email to login to our page to view your flight results. As a reminder your request ID was #'.$userID.'. We hope you enjoy your flight! 
+							    Our search bot found some flight results for you from '.$userSource.' to ' .$userDestination. '. Please check the final result of your search by clicking on the button below. Use your request ID and email to login to our page to view your flight results. As a reminder your request ID was #'.$userID.'. We hope you enjoy your flight! 
 							</td>
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">

@@ -79,7 +79,7 @@ $remaining = getRemainingTime($userID,$email);
 	
 	<div class="containter">
 	    <div class="col-md-2"></div>
-	    <div class="col-md-6 countdown">
+	    <div class="col-md-8 countdown">
 		<h1>Search Time Remaining</h1>
 		<div class="clock"></div>
 		<p>We have begun your background search and will notify you once

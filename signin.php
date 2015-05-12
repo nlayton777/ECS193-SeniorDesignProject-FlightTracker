@@ -1,5 +1,4 @@
 <?php
-/*
 if (isset($_SESSION['id']) && isset($_SESSION['email']))
 {
     unset($_SESSION['id']);
@@ -16,7 +15,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		 $params["secure"], $params["httponly"]);
     }
 }
-*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -102,6 +100,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 				document.searchwindow.submit(); 
 			} 
 		} 
+
 	    function post(params) 
 	    {
 		document.getElementById("hidden_id").value = params["id"];

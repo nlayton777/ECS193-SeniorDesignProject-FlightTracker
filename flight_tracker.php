@@ -1,11 +1,9 @@
 <?php
     define('__ROOT__',dirname(__FILE__));
-
-    /*      NEED THESE FILES FOR QPX API        */  
     require_once(__ROOT__ . 
-    '/google-api-php-client/src/Google/Service/QPXExpress.php');
+	'/google-api-php-client/src/Google/Service/QPXExpress.php');
     require_once(__ROOT__ .
-    '/google-api-php-client/src/Google/Client.php');
+	'/google-api-php-client/src/Google/Client.php');
 
     function isOneWay(&$val) {
 	$rv = false;
@@ -273,7 +271,7 @@ _STUFF11;
 	$client = new Google_Client();
 	//$client->setApplicationName("Flight Tracker");
 
-	$x = $keyNum % 6;
+	$x = $keyNum % 5;
 	switch ($x)
 	{
 	    case 0:
@@ -284,19 +282,21 @@ _STUFF11;
 		// rupali
 		$client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 		break;
+		/*
 	    case 2:
 		// kirsten
 		$client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
 		break;
-	    case 3:
+		*/
+	    case 2:
 		// nina
 		$client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
 		break;
-	    case 4:
+	    case 3:
 		// flight tracker
 		$client->setDeveloperKey("AIzaSyCCS0WHeRJDiRZmxfTmqA9jCbETtMIvAUg");
 		break;
-	    case 5:
+	    case 4:
 		// rupali's other
 		$client->setDeveloperKey("AIzaSyAlIaLcBQiyOpWVTPSJC-fOJz_2veF94Zw");
 		break;

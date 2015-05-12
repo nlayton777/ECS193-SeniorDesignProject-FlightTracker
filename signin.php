@@ -97,7 +97,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			var charCode = (evt.which) ? evt.which : event.keyCode 
 			if(charCode == "13")
 			{ 
-				document.searchwindow.submit(); 
+				document.getElementById("hiddenForm").submit(); 
 			} 
 		} 
 

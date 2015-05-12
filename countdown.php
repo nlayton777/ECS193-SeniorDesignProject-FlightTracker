@@ -64,13 +64,13 @@ $remaining = getRemainingTime($userID,$email);
 
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
-			<li class="active"><a href="index.php">Find a Flight</a></li>
-			<li><a href="results.php">My Search</a></li>
+			<li><a href="index.php">Find a Flight</a></li>
+			<li class="active"><a href="results.php">My Search</a></li>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
-			<li><a href="signin.php">Log Out</a></li>
+			<li><a href="javascript:;" onclick="submitForm()">Log Out</a></li>
 		    </ul>
 		</div>
 	    </div>
@@ -141,5 +141,9 @@ _SECTION2;
 	    </div>
 	    <div class="col-md-2"></div>
 	</div>
+
+	<form id="hiddenForm" method="post" action="logout.php">
+	    <input type="hidden" name="webpage" value="index.php" \>
+	</form>
     </body>
 </html>

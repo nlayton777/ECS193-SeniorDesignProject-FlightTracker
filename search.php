@@ -48,6 +48,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		    return (false)
 		  }
 	    }//end  check() --  validation for email and search time
+
+	    function submitForm()
+	    {
+		document.getElementById("hiddenForm").submit();
+	    }
 	</script>
     </head>
 
@@ -81,7 +86,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<li><a href="contact.php">Contact</a></li>
 			<?php
 			    if ($seshFlag)
-				echo "<li><a href=\"index.php\">Log Out</a></li>";
+				echo "<li><a href=\"javascript:;\" onclick=\"submitForm()\">Log Out</a></li>";
 			    else
 				echo "<li><a href=\"signin.php\">Log In</a></li>";
 			?>
@@ -257,6 +262,10 @@ _TABLE2;
 		<div class="col-xs-4 col-md-1"></div>
 	    </div>
 	</div>
+
+	<form id="hiddenForm" method="post" action="logout.php">
+	    <input type="hidden" name="webpage" value="index.php" />
+	</form>
     </body>
 
     <script>

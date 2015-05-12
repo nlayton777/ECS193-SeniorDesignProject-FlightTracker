@@ -56,7 +56,7 @@ else if (isset($_POST['id']) && isset($_POST['email']))
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
-			<li><a href="signin.php">Log Out</a></li>
+			<li><a href="logout.php">Log Out</a></li>
 		    </ul>
 		</div>
 	    </div>

@@ -14,6 +14,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bad+Script" />
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
+	<script src="flight_tracker.js"></script>
     </head>
 
     <body>
@@ -43,7 +44,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<li><a href="contact.php">Contact</a></li>
 			<?php
 			    if ($seshFlag)
-				echo "<li><a href=\"signin.php\">Log Out</a></li>";
+				echo "<li><a href=\"javascript:;\" onclick=\"submitForm()\">Log Out</a></li>";
 			    else
 				echo "<li><a href=\"signin.php\">Log In</a></li>";
 			?>
@@ -87,5 +88,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		</div>
 	    </div>
 	</div>
+	
+	<form id="hiddenForm" method="post" action="logout.php">
+	    <input type="hidden" name="webpage" value="about.php" />
+	</form>
     </body>
 </html>

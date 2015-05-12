@@ -1022,3 +1022,8 @@ function CountdownClock(time)
     countdown: true
     });
 }
+
+function submitForm()
+{
+    document.getElementById("hiddenForm").submit();
+}

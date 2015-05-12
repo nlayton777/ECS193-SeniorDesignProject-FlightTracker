@@ -68,7 +68,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<li><a href="contact.php">Contact</a></li>
 			<?php
 			    if ($seshFlag)
-				echo "<li><a href=\"signin.php\">Log Out</a></li>";
+				echo "<li><a href=\"logout.php\">Log Out</a></li>";
 			    else
 				echo "<li><a href=\"signin.php\">Log In</a></li>";
 			?>
@@ -156,14 +156,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<label for="airline">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline[]"
 				    form="search_form" multiple="multiple">
-			<option value="none" id="none" selected>No Preference</option>
+			<option value="none" selected>No Preference</option>
 			<?php
 			    if (file_exists("airlines.txt")){
 				$codes = fopen("airlines.txt",'r');				
 				while ($line = fgets($codes)){
 				    $line_code = explode("(", $line);
 				    $code = substr($line_code[1], 0, 2);
-				    echo "<option value=\"{$code}\" id=\"". $code . "\"\>{$line_code[0]}</option>";
+				    echo "<option value=\"{$code}\">{$line_code[0]}</option>";
 				}
 			    } 
 			?>

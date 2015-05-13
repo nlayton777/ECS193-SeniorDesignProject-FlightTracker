@@ -66,6 +66,7 @@ $remaining = getRemainingTime($userID,$email);
 		    <ul class="nav navbar-nav">
 			<li><a href="index.php">Find a Flight</a></li>
 			<li><a href="results.php">My Search</a></li>
+			<li class="active"><a href="#">Search Summary</a></li>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">

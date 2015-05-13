@@ -54,7 +54,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		 margin-top:5%;
 	   }
 	   textarea {
-    	 resize: none;
+	    resize: none;
 	   }
 	</style>
     </head>
@@ -143,7 +143,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 					</div>
 					<label for="comments">
 						Message: 
-			    		<textarea rows="8" cols="60" id="comments" name="comments" placeholder="Let us know what you think!" required></textarea>
+			    		<textarea class="form-control" rows="8" cols="60" id="comments" name="comments" placeholder="Let us know what you think!" required></textarea>
 			    	</label>
 			    
 			    <input type="submit" class="btn btn-default" value="Submit"/>

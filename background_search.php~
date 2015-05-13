@@ -76,6 +76,7 @@ _QUERY;
     $result->data_seek(0);
     $rows = $result->fetch_array(MYSQLI_ASSOC);
     $lowestPrice = $rows['lowest_price']; // lowest price so far
+    $lastPrice = $rows['last_price'];
     $end = $rows['end'];    // end of search time
     $ymd = explode(" ", $end);
     $ymd2 = explode("-", $ymd[0]);
@@ -135,7 +136,7 @@ _QUERY2;
 	  );
     
 	// get flight info from QPX API
-	$searchResults = getResults($current_info, 5, $keyIndex);
+	$searchResults = getResults($current_info, 5, $keyIndex++);
 	$trips = $searchResults->getTrips();
 
 	// start insertion query
@@ -164,8 +165,8 @@ _QUERY2;
 _QUERY3;
 	// parse results
 	$flag = true;
-	$query_time = date("Y-m-d H:i:s", time());
 	$prices = array();
+	$query_time = date("Y-m-d H:i:s", time());
 	foreach ($trips->getTripOption() as $option) {
 	    $tripOptionId = $option->getId();
 	    $tripOptionSaleTotal = substr($option->getSaleTotal(),3);
@@ -222,6 +223,7 @@ _QUERY4;
 	$insertResult = $connection->query($insertQuery);
 	if (!$insertResult) die ($connection->error);
 
+<<<<<<< HEAD
 	$newMin = false;
 	$min = $lowestPrice;
 	foreach ($prices as $price)
@@ -236,11 +238,15 @@ _QUERY4;
 
 	/* if new minimum price has been found */
 	if ($newMin)
+=======
+	$minFromSearch = min($prices);
+	if ($minFromSearch < $lowestPrice)
+>>>>>>> cb0f490d9f4968ecd15c9e8551463b6b5e03761d
 	{
 	    $updateLowestPrice = <<<_QUERY5
 		UPDATE searches
-		SET lowest_price = {$min}
-		WHERE id = {$userID}
+		SET lowest_price = {$minFromSearch}
+		WHERE ID = {$userID}
 		    AND email = '{$post['email']}';
 _QUERY5;
 	    $updateResults = $connection->query($updateLowestPrice);
@@ -249,13 +255,25 @@ _QUERY5;
 	    // send email
 	    $result = $mgClient->sendMessage($domain, getResultsEmail($post['email'],$post['id'],$rows['origin'],$rows['destination'], $incDec)); 
 	} // if new minimum has been found
+	else if ($minFromSearch > $lastPrice)
+	{
+	    //$result = $mgClient->sendMessage($domain, getResultsEmail($post['email'],$post['id'],$rows['origin'],$rows['destination'])); 
+	}// if prices increased
+
+	$updateLastPrice = <<<_QUERY6
+	    UPDATE searches
+	    SET last_price = {$minFromSearch}
+	    WHERE ID = {$userID}
+		AND email = '{$post['email']}';
+_QUERY6;
+	$updateResults = $connection->query($updateLastPrice);
+	if (!$updateResults) die ($connection->error);
     } // if search still needs to be running
     else // search is over, and we need to email
 	break;
 
     // delay execution
     sleep($interval);
-    ++$keyIndex;
 } while($current_sec < $end_secs);
 
 //Send email once search is over

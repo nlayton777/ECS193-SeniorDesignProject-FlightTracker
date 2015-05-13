@@ -20,7 +20,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 
 	<!--this is for the datepicker()-->
 	<link rel="stylesheet" href="jquery-ui.css"/>
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/eggplant/jquery-ui.css">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/ui-darkness/jquery-ui.css">
   	<script src="jquery-ui.js"></script>
 
 	<!--this is for checkbox list-->
@@ -75,7 +75,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<li><a href="contact.php">Contact</a></li>
 			<?php
 			    if ($seshFlag)
-				echo "<li><a href=\"signin.php\">Log Out</a></li>";
+				echo "<li><a href=\"javascript:;\" onclick=\"submitForm();\">Log Out</a></li>";
 			    else
 				echo "<li><a href=\"signin.php\">Log In</a></li>";
 			?>
@@ -172,14 +172,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<label for="airline">Preferred Airline</label>
 			<select class="form-control" id="airline" name="airline[]"
 				    form="search_form" multiple="multiple">
-			<option value="none" id="none" selected>No Preference</option>
+			<option value="none" selected>No Preference</option>
 			<?php
 			    if (file_exists("airlines.txt")){
 				$codes = fopen("airlines.txt",'r');				
 				while ($line = fgets($codes)){
 				    $line_code = explode("(", $line);
 				    $code = substr($line_code[1], 0, 2);
-				    echo "<option value=\"{$code}\" id=\"". $code . "\"\>{$line_code[0]}</option>";
+				    echo "<option value=\"{$code}\">{$line_code[0]}</option>";
 				}
 			    } 
 			?>
@@ -209,5 +209,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		</form>
 	    </header>
 	</div>
+
+	<form id="hiddenForm" method="post" action="logout.php">
+	    <input type="hidden" name="webpage" value="index.php" />
+	</form>
     </body>
 </html>

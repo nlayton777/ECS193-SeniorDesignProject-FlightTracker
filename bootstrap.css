@@ -3153,54 +3153,20 @@ fieldset[disabled] .btn-success.active {
   color: #5cb85c;
   background-color: #fff;
 }
-/* changes 
-  color: #222222;
-  */
-#home .btn-info {
-  color: #ffffff;
-  /*background-color: #5bc0de; 
-  border-color: #46b8da; */
-  background-color: transparent; 
-  border-color: #ffffff; 
-  -webkit-transition: background-color ease-in-out .15s;
-       -o-transition: background-color ease-in-out .15s;
-	  transition: background-color ease-in-out .15s;
+.btn-info {
+  color: #fff;
+  background-color: #5bc0de;
+  border-color: #46b8da;
 }
-#home 
 .btn-info:hover,
 .btn-info:focus,
 .btn-info.focus,
 .btn-info:active,
 .btn-info.active,
 .open > .dropdown-toggle.btn-info {
-  color: #222222;
-  /* background-color: #31b0d5; 
-  border-color: #269abc; */
-  background-color: #ffffff; 
-  border-color: #ffffff; 
-}
-#results .btn-info {
-  color: #222222;
-  /*background-color: #5bc0de; 
-  border-color: #46b8da; */
-  background-color: transparent; 
-  border-color: #222222; 
-  -webkit-transition: background-color ease-in-out .15s;
-       -o-transition: background-color ease-in-out .15s;
-	  transition: background-color ease-in-out .15s;
-}
-#results 
-.btn-info:hover,
-.btn-info:focus,
-.btn-info.focus,
-.btn-info:active,
-.btn-info.active,
-.open > .dropdown-toggle.btn-info {
-  color: #ffffff;
-  /* background-color: #31b0d5; 
-  border-color: #269abc; */
-  background-color: #222222; 
-  border-color: #222222; 
+  color: #fff;
+  background-color: #31b0d5;
+  border-color: #269abc;
 }
 .btn-info:active,
 .btn-info.active,
@@ -3225,7 +3191,7 @@ fieldset[disabled] .btn-info:active,
 .btn-info.disabled.active,
 .btn-info[disabled].active,
 fieldset[disabled] .btn-info.active {
-  background-color: #transparent;
+  background-color: #5bc0de;
   border-color: #46b8da;
 }
 .btn-info .badge {
@@ -4875,15 +4841,7 @@ a.badge:focus {
   padding: 30px 15px;
   margin-bottom: 30px;
   color: inherit;
-  /*background-color: #eee;*/
-  background-color: #ffffff;
-}
-.jumbotron#home {
-  background: #ffffff url('sfo.jpg') no-repeat center center;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+  background-color: #eee;
 }
 .jumbotron h1,
 .jumbotron .h1 {

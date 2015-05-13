@@ -27,9 +27,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 
-	<!--this is for the increment button
-	<script src="jquery.min.js"></script>-->
-
 	<!--this is for alerts-->
 	<script src="bootbox.js"></script>
 
@@ -39,7 +36,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 
 	<meta charset="utf-8">
   	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  	<!--<link rel="stylesheet" href="signup.css"/>-->
 
   	<!--**************** AJAX STUFF ********************* -->
 	<script>
@@ -48,8 +44,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		  	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(claimFlight.email.value))
 		    {
 					 var id_val = document.getElementById("id").value;
+					 idExist = true;
+					 if (id_val == null || id_val == ""){
+					 	idExist = false;
+					 }
 					 var isNum = isNaN(id_val); //returns true if ID input is not a number
-					 if(!isNum) //if false continue
+					 if(!isNum && idExist) //if false continue
 					 {	
 						var xmlhttp;
 						var email_val = document.getElementById("email").value;
@@ -63,7 +63,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 						    {
 								if(xmlhttp.responseText == "false")
 								{
-									alert("bad auth");
+									bootbox.dialog({
+  										title: "Sorry!",
+  										message: "We don't have a record of that Email and ID"
+									});
 								}
 								else
 								{
@@ -81,13 +84,19 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 					} //end if with AJAX stuff
 					else
 					{
-						alert("You have input an incorrect ID");
+						bootbox.dialog({
+  							title: "Whoops!",
+  							message: "You have input an incorrect ID"
+						});
 						return(false);
 					}
 			} // end main if 
 			else
 			{
-			  	alert("You have invalid email input");
+				bootbox.dialog({
+  					title: "Whoops!",
+  					message: "You have invalid email input"
+				});
 			  	return(false);
 			}
 	  }//do Stuff
@@ -97,7 +106,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			var charCode = (evt.which) ? evt.which : event.keyCode 
 			if(charCode == "13")
 			{ 
-				document.searchwindow.submit(); 
+				document.getElementById("hiddenForm").submit(); 
 			} 
 		} 
 
@@ -126,12 +135,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
 			<li><a href="index.php">Find a Flight</a></li>
-			<?php
-			    // if session is set
-				//echo "<li class=\"active\"><a href=\"results.php\">Find a Flight</a></li>";
-			    // else
-				echo "<li><a href=\"signin.php\">My Search</a></li>";
-			?>
+			<li><a href="signin.php">My Search</a></li>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
@@ -148,16 +152,29 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	    <div class="row">
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
-		    <form id="claimFlight" class="sign-up" >
-			<h3 class="sign-up-title">Check Flight Results!</h3>
-			<p>Provide the Email address and request ID that we sent with your
-			   confirmation message for the particular search for which you
-			   would like to view the results.
-			</p>
-			<input type="text" class="sign-up-input" name="email" id="email" placeholder="Email" autofocus>
-			<input type="text" class="sign-up-input" name="id"  id="id" placeholder="Request ID">
-			<input type="button" value="Submit" onclick="doStuff(email)" onKeyDown="javascript:return submitonEnter(event)" class="sign-up-button">
-		    </form>
+		    <h3 class="sign-up-title">Welcome Back!</h3>
+		    <p>Provide the Email address and request ID that we sent with your
+		       confirmation message for the particular search in which you 
+		       are interested in viewing results.
+		    </p>
+		    <div class="panel panel-default">
+			<div class="panel-heading"><h3>Log In!</h3></div>
+			<div class="panel-body">
+			    <form id="claimFlight" class="sign-up" >
+				<div class="form-group">
+				    <label for="email">Email:
+					<input type="text" class="form-control sign-up-input" name="email" id="email" placeholder="john.smith@website.com" autofocus>
+				    </label>
+				</div>
+				<div class="form-group">
+				    <label for="id">Request ID:
+					<input type="text" class="form-control sign-up-input" name="id"  id="id" placeholder="1234">
+				    </label>
+				</div>
+				<input type="button" value="Submit" onclick="doStuff(email)" onKeyDown="javascript:return submitonEnter(event)" class="sign-up-button">
+			    </form>
+			</div>
+		    </div>
 
 		    <form id="hiddenForm" method="post" action="results.php">
 			<input type="hidden" name="email" id="hidden_email">

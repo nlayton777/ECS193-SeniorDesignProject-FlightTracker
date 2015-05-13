@@ -43,24 +43,19 @@ window.onmousemove = function (e) {
     var x = e.clientX, y = e.clientY;
 };
 
-function deleteFromArray(item, arr){
-  for (var i=0;i<arrr.length;i++){
-    if (arr[i]==item){
-      arr.splice(i,1); //this delete from the "i" index in the array to the "1" length
-      break;
-    }
-  }  
-}
-
 $(document).ready(function() {
     $('#airline').multiselect({
 	buttonWidth: '180px',
 	maxHeight: 200,
 	onChange: function(option, checked, select) {
-				if($(option).val() != 'none' && $("#none").is(':checked')){
+				if($(option).val() == 'none'){
+                	$('#airline').multiselect('select', ['none']);
+                }
+				
+				if($(option).val() != 'none' && !$("#none").is(':checked')){
 					$('#airline').multiselect('deselect', ['none']);
                 }
-                else if($(option).val() == 'none' && $("#none").is(':checked')){
+                else if($(option).val() == 'none' && !$("#none").is(':checked')){
                 	$('#airline').multiselect('deselect', ['AS', 'AA', 'DL', 'F9', 'B6', 'WN', 'NK', 'US', 'UA', 'VX']);
                 }
             }
@@ -1021,4 +1016,9 @@ function CountdownClock(time)
     clockFace: 'DailyCounter',
     countdown: true
     });
+}
+
+function submitForm()
+{
+    document.getElementById("hiddenForm").submit();
 }

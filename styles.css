@@ -1,5 +1,61 @@
-#home {
+.jumbotron#home {
     color: #ffffff;
+    background: #ffffff url('sfo.jpg') no-repeat center center;
+    -webkit-background-size: cover;
+       -moz-background-size: cover;
+         -o-background-size: cover;
+            background-size: cover;
+}
+
+.jumbotron#about {
+    color: #ffffff;
+    background: #ffffff url('Bicycle1.jpg') no-repeat center center;
+    -webkit-background-size: cover;
+       -moz-background-size: cover;
+         -o-background-size: cover;
+            background-size: cover;
+}
+
+.jumbotron#home .btn-info {
+    color: #fff;
+    background-color: transparent;
+    border-color: #fff;
+    -webkit-transition: background-color ease-in-out .15s;
+         -o-transition: background-color ease-in-out .15s;
+            transition: background-color ease-in-out .15s;
+}
+
+.jumbotron#home
+.btn-info:hover,
+.btn-info:focus,
+.btn-info.focus,
+.btn-info:active,
+.btn-info.active,
+.open > .dropdown-toggle.btn-info {
+    color: #222;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+#results .btn-info {
+    color: #222;
+    background-color: transparent;
+    border-color: #222;
+    -webkit-transition: background-color ease-in-out .15s;
+	 -o-transition: background-color ease-in-out .15s;
+	    transition: background-color ease-in-out .15s;
+}
+
+#results
+.btn-info:hover,
+.btn-info:focus,
+.btn-info.focus,
+.btn-info:active,
+.btn-info.active,
+.open > .dropdown-toggle.btn-info {
+    color: #fff;
+    background-color: #222;
+    border-color: #222;
 }
 
 .qty {

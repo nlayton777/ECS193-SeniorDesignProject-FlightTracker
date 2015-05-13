@@ -169,7 +169,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 
 		    <div class="form-group form-inline"> 		
 			<!--AIRLINE FIELD-->
-			<label for="airline">Preferred Airline</label>
+			<label for="airline">Preferred Airline
 			<select class="form-control" id="airline" name="airline[]"
 				    form="search_form" multiple="multiple">
 			<option value="none" selected>No Preference</option>
@@ -184,11 +184,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			    } 
 			?>
 
-			</select>
-		    </div>
+			</select></label>
 
 		    <!--PRICE FIELD-->	
-		    <div class="form-group form-inline"> 		
 			<label for="price">Max Price: </label>
 			    <!--<input type="text" class="textboxPrice" name="price" id="priceInput"></input>-->
 			    <input type="text" class="form-control" name="price" id="price"></input>
@@ -203,8 +201,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		    </div>
 			
 		    <div id="btn-container">
-		    <input id="submit-button" class="btn btn-info btn-lg" 
-			type="submit" onclick="return validate();" value="Find Your Flight!"/>
+			<input id="submit-button" class="btn btn-info btn-lg" 
+			    type="submit" onclick="return validate();" value="Find Your Flight!"/>
 		    </div>
 		</form>
 	    </header>

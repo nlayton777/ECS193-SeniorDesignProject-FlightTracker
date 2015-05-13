@@ -234,7 +234,7 @@ _QUERY4;
 _QUERY5;
 	    $updateResults = $connection->query($updateLowestPrice);
 	    if (!$updateResults) die ($connection->error);
-
+	    
 	    // send email
 	    $result = $mgClient->sendMessage($domain, getResultsEmail($post['email'],$post['id'],$rows['origin'],$rows['destination'],0)); 
 	} // if new minimum has been found

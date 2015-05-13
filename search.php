@@ -279,12 +279,12 @@ _TABLE2;
 		    echo <<<_SECTION3
 		    $(document).ready(function () {
 			$('#btnExpCol{$i}').click(function () {
-			    if ($(this).val() == 'Collapse') {
+			    if ($(this).val() == 'Hide') {
 				$('#row{$i}').stop().slideUp('3000');
-				$(this).val(' Expand ');
+				$(this).val('Show');
 			    } else {
 				$('#row{$i}').stop().slideDown('3000');
-				$(this).val('Collapse');
+				$(this).val('Hide');
 			    }
 			});
 		    });

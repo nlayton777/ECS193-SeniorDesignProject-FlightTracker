@@ -1,4 +1,5 @@
 rm ./*~
+cp ./*.html /usr/local/zend/apache2/htdocs/
 cp ./*.php /usr/local/zend/apache2/htdocs/
 cp ./*.css* /usr/local/zend/apache2/htdocs/
 cp ./*.js /usr/local/zend/apache2/htdocs/

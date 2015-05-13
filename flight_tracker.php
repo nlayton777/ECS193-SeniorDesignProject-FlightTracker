@@ -241,7 +241,7 @@ _STUFF9;
             </td>   
             <td class="expandButton">
             <input type="button" id="btnExpCol{$rowCount}" class="btn btn-info search" 
-                onclick="Expand()" value=" Expand "/>
+                onclick="Expand()" value=" Show "/>
             </td>
             <td class="Book It">
             <input type="button" id="bookit" class="btn btn-info search" value="Book It"
@@ -517,7 +517,7 @@ _QUERY4;
 						    <table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff">
 							<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							    <td class="alert alert-warning" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 30px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #f3a56f; margin: 0; padding: 20px;" align="center" bgcolor="#f3a56f" valign="top">
-							    It\'s Time to Fly!
+							    Your Search is About to Begin!
 							    </td>
 							</tr>
 							<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -534,12 +534,12 @@ _QUERY4;
 								    </tr>
 								    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 									<td class="content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-									    Our search bot will continue searching for your flight from '.$userSource.' to ' .$userDestination. '. Your request ID is #' .$userID. '. Please make note of your ID so that you can check the progress of your search and check your email for a notification from us when we find you the perfect flight! 
+									    Our search bot will continue searching for your flight from '.$userSource.' to ' .$userDestination. '. Your request ID is <b>#' .$userID. '</b>. Please make note of your ID so that you can check the progress of your search and check your email for a notification from us when we find you the perfect flight! 
 									</td>
 								    </tr>
 								    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 									<td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-									    <a href="'.URL.'" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Pack Your Bags!</a>
+									    <a href="'.URL.'?id='.$userID.'&email='.$post['email'].'" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Pack Your Bags!</a>
 									</td>
 								    </tr>
 								    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -566,8 +566,23 @@ _QUERY4;
 	return $returnArr;
     } // getSearchConfirmation()
 
-    function getResultsEmail($userEmail, $userID, $userSource, $userDestination)
+    
+    function getResultsEmail($userEmail, $userID, $userSource, $userDestination, $incOrDecr)
     {
+	$state = "";
+	if($incOrDecr == 1)
+	{
+	    $state = 'It seems that prices are increasing! We suggest you purchase your tickets soon before they become too expensive.';
+	}
+	else if($incOrDecr == 0)
+	{
+	    $state = 'It seems that prices are decreasing! Our search bot will continue to search and let you know when the prices begin to increase as well.';
+	}
+	//SHOULD NEVER GO INTO THIS ELSE
+	else
+	{
+	    $state = 'Prices seem to be staying the same for the most part. We will be sure to let you know if we find any change in the flight prices.';
+	}   
 
 	$resultsArr = array(
 		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 
@@ -589,7 +604,7 @@ _QUERY4;
 				    <table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff">
 					<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 					    <td class="alert alert-warning" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 30px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #f3a56f; margin: 0; padding: 20px;" align="center" bgcolor="#f3a56f" valign="top">
-						It\'s Time to Fly!
+						Our SearchBot Has Found Some Results to Share With You!
 					    </td>
 					</tr>
 					<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -605,12 +620,12 @@ _QUERY4;
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							<td class="content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-							    Our search bot found some great flight options for you from '.$userSource.' to ' .$userDestination. '. Please check the status of your search by clicking on the button below. We will continue to post the results we find for you on this page. Use your request ID and email to login to our page to view your flight results. As a reminder your request ID was #'.$userID.'. We hope you enjoy your flight.
+							   '.$state.' Our search bot has been searching for flight options for you from '.$userSource.' to ' .$userDestination. '. Please check the status of your search by clicking on the button below. We will continue to post the results we find for you on this page. Use your request ID and email to login to our page to view your flight results. As a reminder your request ID was <b>#'.$userID.'</b>. We hope you enjoy your flight.
 							</td>
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							<td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-							    <a href="'.URL.'" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Check Flight Status</a>
+							    <a href="'.URL.'?id='.$userID.'&email='.$userEmail.'" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Check Flight Status</a>
 							</td>
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -662,7 +677,7 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 				    <table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff">
 					<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 					    <td class="alert alert-warning" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 30px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #f3a56f; margin: 0; padding: 20px;" align="center" bgcolor="#f3a56f" valign="top">
-						It\'s Time to Fly!
+						It\'s Time to Fly! Your Search is Complete!
 					    </td>
 					</tr>
 					<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -678,12 +693,12 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							<td class="content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-							    Our search bot found some flight results for you from '.$userSource.' to ' .$userDestination. '. Please check the final result of your search by clicking on the button below. Use your request ID and email to login to our page to view your flight results. As a reminder your request ID was #'.$userID.'. We hope you enjoy your flight! 
+							    It looks like your search time is up. Our search bot found some flight results for you from '.$userSource.' to ' .$userDestination. '. Please check the final result of your search by clicking on the button below. Use your request ID and email to login to our page to view your flight results. As a reminder your request ID was <b>#'.$userID.'</b>. We hope you enjoy your flight! 
 							</td>
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							<td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-							    <a href="'.URL.'" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Pack Your Bags!</a>
+							    <a href="'.URL.'?id='.$userID.'&email='.$userEmail.'" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Pack Your Bags!</a>
 							</td>
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">

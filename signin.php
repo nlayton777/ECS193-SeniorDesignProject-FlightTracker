@@ -14,7 +14,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		 $params["path"], $params["domain"],
 		 $params["secure"], $params["httponly"]);
     }
-}
+} 
 ?>
 <!DOCTYPE html>
 <html>
@@ -39,17 +39,31 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 
   	<!--**************** AJAX STUFF ********************* -->
 	<script>
+	    <?php
+		if(isset($_GET['id']) && isset($_GET['email']))
+		{
+		    echo <<<_SCRIPT
+			function autoSubmit() {
+			    document.getElementById("email").value = "{$_GET['email']}";
+			    document.getElementById("id").value = "{$_GET['id']}";
+//			    document.getElementById("claimFlight").submit();
+			}
+_SCRIPT;
+		    $flag = true;
+		}
+	    ?>
+
 	    function doStuff(mail) {
-	    	//check for email validation
-		  	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(claimFlight.email.value))
+		//check for email validation
+		    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(claimFlight.email.value))
 		    {
 					 var id_val = document.getElementById("id").value;
 					 idExist = true;
 					 if (id_val == null || id_val == ""){
-					 	idExist = false;
+						idExist = false;
 					 }
-					 var isNum = isNaN(id_val); //returns true if ID input is not a number
-					 if(!isNum && idExist) //if false continue
+					 var isNan = isNaN(id_val); //returns true if ID input is not a number
+					 if(!isNan && idExist) //if false continue
 					 {	
 						var xmlhttp;
 						var email_val = document.getElementById("email").value;
@@ -64,29 +78,26 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 								if(xmlhttp.responseText == "false")
 								{
 									bootbox.dialog({
-  										title: "Sorry!",
-  										message: "We don't have a record of that Email and ID"
+										title: "Sorry!",
+										message: "We don't have a record of that Email and ID"
 									});
 								}
 								else
 								{
-									//window.open("results.php","_self");
 									var obj = {id : id_val, email : email_val};
-									//document.getElementById("test").innerHTML = JSON.stringify(obj);
 									post(obj);
 								}
 						    }
 						}
 						var str = "email=" + email_val + "&id=" + id_val;
-						//document.getElementById("test").innerHTML = str;
 						xmlhttp.open("GET","authenticate.php?"+str,true);
 						xmlhttp.send();
 					} //end if with AJAX stuff
 					else
 					{
 						bootbox.dialog({
-  							title: "Whoops!",
-  							message: "You have input an incorrect ID"
+							title: "Whoops!",
+							message: "You have input an incorrect ID"
 						});
 						return(false);
 					}
@@ -94,10 +105,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			else
 			{
 				bootbox.dialog({
-  					title: "Whoops!",
-  					message: "You have invalid email input"
+					title: "Whoops!",
+					message: "You have invalid email input"
 				});
-			  	return(false);
+				return(false);
 			}
 	  }//do Stuff
 	    
@@ -119,7 +130,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	</script>
     </head>
 
-    <body>
+    <body onload="autoSubmit()">
 	<nav class="navbar navbar-inverse" style="visibility: hidden;"></nav>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 	    <div class="container-fluid">
@@ -140,9 +151,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
-			<?php
-			    echo "<li class=\"active\"><a href=\"signin.php\">Log In</a></li>";
-			?>
+			<li class="active"><a href="signin.php">Log In</a></li>
 		    </ul>
 		</div>
 	    </div>
@@ -153,15 +162,31 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
 		    <h3 class="sign-up-title">Welcome Back!</h3>
-		    <p>Provide the Email address and request ID that we sent with your
-		       confirmation message for the particular search in which you 
-		       are interested in viewing results.
-		    </p>
+		    <?php
+			if ($flag)
+			{
+			    echo <<<_STUFF
+			    <p>Your search results will be shown momentarily!
+			    First, please verify that the Email address and request ID
+			    are correctly entered below before submitting the form. 
+			    </p>
+_STUFF;
+			} else
+			{
+			    echo <<<_STUFF2
+			    <p>Provide the Email address and request ID that we sent with your
+			       confirmation message for the particular search in which you 
+			       are interested in viewing results.
+			    </p>
+_STUFF2;
+			} // else
+
+		    ?>
 		    <hr>
 		    <div class="panel panel-default">
 			<div class="panel-heading"><h3>Log In!</h3></div>
 			<div class="panel-body">
-			    <form id="claimFlight" class="sign-up" >
+			    <form id="claimFlight" class="sign-up" onsubmit="doStuff(email)">
 				<div class="form-group">
 				    <label for="email">Email:
 					<input type="text" class="form-control sign-up-input" name="email" id="email" placeholder="john.smith@website.com" autofocus>
@@ -172,7 +197,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 					<input type="text" class="form-control sign-up-input" name="id"  id="id" placeholder="1234">
 				    </label>
 				</div>
-				<input type="button" value="Submit" onclick="doStuff(email)" onKeyDown="javascript:return submitonEnter(event)" class="sign-up-button">
+				<input type="button" value="Submit" onclick="doStuff(email)" 
+				    onKeyDown="javascript:return submitonEnter(event)" class="sign-up-button">
 			    </form>
 			</div>
 		    </div>
@@ -186,9 +212,5 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	    </div>
 	</div>
 
-	<div id="test">
-
-	</div>
-	
     </body>
 </html>

@@ -204,7 +204,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			
 		    <div id="btn-container">
 		    <input id="submit-button" class="btn btn-info btn-lg" 
-			type="submit" onclick=" return validate();" value="Find Your Flight!"/>
+			type="submit" onclick="return validate();" value="Find Your Flight!"/>
 		    </div>
 		</form>
 	    </header>

@@ -103,7 +103,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<h1>Comments?</h1>
 		  </div>
 		  </div> 
-		</div> <!-- /row -->
+		</div> 
   
 		<div class="row">
 	   
@@ -115,8 +115,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
   
   		<br><br><br><br><br>
 	
-	</div> <!-- /container full -->
-
+	</div> 
 <div class="container">
   	<hr>
   	<div class="row">

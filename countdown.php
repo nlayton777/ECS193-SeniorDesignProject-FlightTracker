@@ -97,6 +97,9 @@ $remaining = getRemainingTime($userID,$email);
 		    // start countdown clock
 		    echo "<script>CountdownClock({$remaining})</script>";
 
+		    $returnDate = $post['return_date'];
+		    if (!isset($post['return_date']) || $post['return_date'] == "NULL")
+			$returnDate = "N/A";
 		    echo <<<_SECTION1
 		    <div class="row">
 			<div class="col-md-6">
@@ -112,7 +115,7 @@ $remaining = getRemainingTime($userID,$email);
 			<div class="col-md-6">
 			    <ul>
 				<li>Date of Departure: {$post['depart_date']}</li>
-				<li>Date of Return: {$post['return_date']}</li>
+				<li>Date of Return: {$returnDate}</li>
 _SECTION1;
 
 				$type = array(1 => 'Adults', 2 => 'Children', 3 => 'Seniors', 4 => 'Seat Infants', 5 => 'Lap Infants');

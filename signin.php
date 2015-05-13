@@ -157,6 +157,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		       confirmation message for the particular search in which you 
 		       are interested in viewing results.
 		    </p>
+		    <hr>
 		    <div class="panel panel-default">
 			<div class="panel-heading"><h3>Log In!</h3></div>
 			<div class="panel-body">

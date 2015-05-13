@@ -44,8 +44,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		  	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(claimFlight.email.value))
 		    {
 					 var id_val = document.getElementById("id").value;
+					 idExist = true;
+					 if (id_val == null || id_val == ""){
+					 	idExist = false;
+					 }
 					 var isNum = isNaN(id_val); //returns true if ID input is not a number
-					 if(!isNum) //if false continue
+					 if(!isNum && idExist) //if false continue
 					 {	
 						var xmlhttp;
 						var email_val = document.getElementById("email").value;
@@ -59,7 +63,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 						    {
 								if(xmlhttp.responseText == "false")
 								{
-									alert("bad auth");
+									bootbox.dialog({
+  										title: "Sorry!",
+  										message: "We don't have a record of that Email and ID"
+									});
 								}
 								else
 								{
@@ -77,13 +84,19 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 					} //end if with AJAX stuff
 					else
 					{
-						alert("You have input an incorrect ID");
+						bootbox.dialog({
+  							title: "Whoops!",
+  							message: "You have input an incorrect ID"
+						});
 						return(false);
 					}
 			} // end main if 
 			else
 			{
-			  	alert("You have invalid email input");
+				bootbox.dialog({
+  					title: "Whoops!",
+  					message: "You have invalid email input"
+				});
 			  	return(false);
 			}
 	  }//do Stuff

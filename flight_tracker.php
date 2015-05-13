@@ -270,7 +270,6 @@ _STUFF11;
 	// create client 
 	$client = new Google_Client();
 	//$client->setApplicationName("Flight Tracker");
-
 	$x = $keyNum % 5;
 	switch ($x)
 	{
@@ -301,7 +300,6 @@ _STUFF11;
 		$client->setDeveloperKey("AIzaSyAlIaLcBQiyOpWVTPSJC-fOJz_2veF94Zw");
 		break;
 	} // switch
-
 	// create QPX service
 	$service = new Google_Service_QPXExpress($client);
 

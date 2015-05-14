@@ -1,5 +1,12 @@
 <?php
 /*
+ * this file is the homepage of the website.
+ * it provides fields for the user to submit
+ * their travel preferences and submit this info
+ * to search.php
+ */
+
+/*
  * start a session,
  * set its lifetime to an hour,
  * set a flag for later use that

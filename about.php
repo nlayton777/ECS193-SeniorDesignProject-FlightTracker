@@ -1,5 +1,10 @@
 <?php
 /*
+ * this file provides simple and brief 
+ * description of our website
+ */
+
+/*
  * start session,
  * check if user is 
  * already logged in by

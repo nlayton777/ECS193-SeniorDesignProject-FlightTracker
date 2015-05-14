@@ -1,3 +1,12 @@
+<!--
+    this file displays a form for the
+    user to enter their info and attempt
+    to login. 
+    the page displays errors if the user
+    info that was submitted was incorrect.
+    the page forwards the user to results.php
+    when valid info is submitted
+-->
 <!DOCTYPE html>
 <html>
     <head>

@@ -1,4 +1,10 @@
 <?php
+/* 
+ * this page provides fields for user to 
+ * enter comments/questions to our email 
+ * for user feedback
+ */
+
 /*
  * start session,
  * set session flag if user 

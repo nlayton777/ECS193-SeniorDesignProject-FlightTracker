@@ -1,4 +1,17 @@
 <?php
+/*
+ * this page displays search history in a graph along
+ * with live flight results for returning users. Users 
+ * can only reach this page either by signing in through 
+ * signin.php or revisiting the website from the link in 
+ * their email.
+ */
+
+ /*
+  * start session and set timeout.
+  * also set session variables according to the page
+  * from which the user visited
+  */
 session_start();
 ini_set('session.gc_maxlifetime', 60 * 60 * 1);
 
@@ -79,7 +92,10 @@ else if (isset($_POST['id']) && isset($_POST['email']))
 				if ($connection->connect_error) die($connection->connect_error);
 				$connection->select_db("flight_tracker");
 
-				// GET SEARCH PARAMETERS
+				/*
+				 * get the user's search parameters
+				 * for their current id and email
+				 */
 				$query = <<<_QUERY
 				    SELECT *
 				    FROM searches
@@ -90,7 +106,10 @@ _QUERY;
 				$searchResults = $connection->query($query);
 				if (!$searchResults) die ($searchResults->connect_error);
 
-				// GET AIRLINES
+				/*
+				 * also get the user's airline preferences
+				 * for their current id and email
+				 */
 				$query = <<<_AIRLINES
 				    SELECT airline
 				    FROM airlines
@@ -99,6 +118,10 @@ _QUERY;
 _AIRLINES;
 				$airlineResults = $connection->query($query);
 				if (!$airlineResults) die ($airlineResults->connect_error);
+
+				/*
+				 * store each of the airlines into an array
+				 */
 				$airlines = array();
 				$n = $airlineResults->num_rows;
 				for ($i = 0; $i < $n; ++$i)
@@ -108,6 +131,12 @@ _AIRLINES;
 				    $airlines[] = $row['airline'];
 				} // for each airline
 
+				/*
+				 * parse and package the user
+				 * search parameters into an object
+				 * to be sent to the getResults() 
+				 * function (see flight_tracker.php)
+				 */
 				$searchResults->data_seek(0);
 				$row = $searchResults->fetch_array(MYSQLI_ASSOC);
 				$d = explode("-", $row['depart_date']);
@@ -134,8 +163,19 @@ _AIRLINES;
 					     "one_way"	    => $row['one_way'],
 					    );
 
+				/*
+				 * perform QPX express
+				 * request for results
+				 */
 				$result = getResults($obj, 50, time());
 	
+				/* 
+				 * get remaining time for this search
+				 * and record the remaining
+				 * time. Also, print the appropriate message
+				 * depending on the amount of time
+				 * remaining in the search
+				 */
 				$remaining = getRemainingTime($id,$email);
 				if ($remaining > 0){
 				    echo <<<_DES
@@ -152,7 +192,8 @@ _AIRLINES;
 					    parameters at our <a href="index.php">Search Page</a>.
 					</p>
 _DES;
-				} else {
+				} else 
+				{
 				    echo <<<_DES2
 					<p id="background-description">
 					    Your search is complete! The graph below shows
@@ -165,12 +206,12 @@ _DES;
 					    <a href="index.php">Search Page</a>.
 					</p>
 _DES2;
-				}
+				} // else
 		    ?>
 			</div><!--end col-->
 		    </div><!--end row-->
 
-
+		    <!-- display header and countdown clock -->
 		    <h2>Search Time Remaining</h2>
 		    <div class="clock"></div>
 		    <?php
@@ -180,9 +221,19 @@ _DES2;
 				var remaining = {$remaining};
 			    </script>
 _SCRIPT;
+			/*
+			 * get past data from the database
+			 * for this current search to be displayed 
+			 * in a graph using the getGraphData()
+			 * function (see flight_tracker.php
+			 */
 			$data = getGraphData($id, $email);
 		    ?>
 
+		    <!--
+			display graph of prices that are stored in the 
+			database for this request ID
+		    -->
 		    <h2>Graph of Prices</h2>
 		    <canvas id="buyers" width="400" height="400"></canvas>
 		    <script>
@@ -214,6 +265,14 @@ _SCRIPT;
 
 		    <h2>Search Results</h2>
 		    <?php
+			/* 
+			 * print the table of results using the 
+			 * printResults() function (see 
+			 * flight_tracker.php) to display a table
+			 * of the search results received from 
+			 * QPX express, unless there were no results
+			 * found
+			 */
 			$trips = $result->getTrips();
 			$rowCount = -1;
 			if (count($trips->getTripOption()) <= 0)
@@ -227,6 +286,11 @@ _SCRIPT;
 			$endTime = explode(":", $end[1]);
 			$end_secs = mktime($endTime[0], $endTime[1], $endTime[2], 
 					   $endDate[1], $endDate[2], $endDate[0]);
+			/*
+			 * store the end time to later
+			 * be used to check if the countdown clock
+			 * has run out of time
+			 */
 			echo "<script>var end = {$end_secs};</script>";
 		    ?>
 		</div><!--end col-->
@@ -236,11 +300,6 @@ _SCRIPT;
     </body>
 
     <script>
-	var id = <?php echo $id; ?>;
-	var email = "<?php echo $email; ?>";
-	var seconds = 3;
-	var str = "id=" + id + "&email=" + email + "&time=" + lastRender;
-	var xmlhttp;
 	var description = "Your search is complete! " +
 	    "The graph below shows the progression of flight prices " + 
 	    "since the start of your search. If any of the search " + 
@@ -250,39 +309,27 @@ _SCRIPT;
 	    "the results, then we encourage you to begin a new search " + 
 	    "by entering new parameters at our <a href=\"index.php\">" +
 	    "Search Page</a>.";
-	    /*
-	if (window.XMLHttpRequest)
-	{ xmlhttp = new XMLHttpRequest(); }
-	else
-	{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
-
-	xmlhttp.onreadystatechange = function() {
-	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && remaining > 0)
-	    {
-		var dat = xmlhttp.responseText;
-		var newData = dat.split(",");
-		var price = newData[1].split("+");
-		myChart.addData([price[0]], newData[0])
-		document.getElementById("test").innerHTML = xmlhttp.responseText;
-		lastRender = Math.floor(Date.now() / 1000);
-	    }
-	} // onreadysatechange
-
-	*/
+	/*
+	 * update the description if the countdown
+	 * clock runs out of time
+	 */
+	var seconds = 3;
 	window.setInterval(function () {
 	    if (Math.floor(Date.now() / 1000) >= end) {
 		document.getElementById("background-description").innerHTML = description;
 	    } // if search over
-
-/*
-	    str = "id=" + id + "&email=" + email + "&lastQuery=" + lastRender;
-	    xmlhttp.open("GET","retrieve.php?" + str,true);
-	    xmlhttp.send();
-	    */
 	}, seconds * 1000); // get AJAX
 
+	/*
+	 * hide the dropdown tables that are hidden 
+	 * beneath the main table
+	 */
 	window.onload=function(){$('.dropdown').hide();};
 	<?php
+	    /* 
+	     * generate javascript code to handle the dropdown
+	     * table within each row of the main table
+	     */
 	    if ($rowCount != -1)
 	    {
 		for ($i = 0; $i < $rowCount; $i++)

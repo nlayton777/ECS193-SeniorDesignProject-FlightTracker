@@ -1,4 +1,19 @@
 <?php
+/*
+ * this file initiates the background search for
+ * the user request. it displays a summary of their 
+ * travel itinerary and displays the remaining search
+ * time
+ */
+
+/*
+ * don't need to check if user is already logged
+ * in because this page will log them into their 
+ * new account.
+ * 
+ * set the session variables with the new user 
+ * id and email
+ */
 session_start();
 
 require_once('flight_tracker.php');
@@ -27,20 +42,29 @@ $remaining = getRemainingTime($userID,$email);
 	<script src="flight_tracker.js"></script>
 
 	<script>
+	    /*
+	     * when the page loads, generate an AJAX
+	     * request to the background_search.php script
+	     * to initiate the background search with the 
+	     * specified ID and email
+	     */
 	    window.onload = function() {
 		var xmlhttp;
-		if (window.XMLHttpRequest)
-		{ xmlhttp = new XMLHttpRequest(); }
-		else
-		{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
+		if (window.XMLHttpRequest) { xmlhttp = new XMLHttpRequest(); }
+		else { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
+
 		xmlhttp.onreadystatechange = function() {
 		    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 		    { 
 			document.getElementById("test").innerHTML = xmlhttp.responseText;
 		    }
 		}
-		var str = "id=<?php echo $userID; ?>&email=<?php echo $email; ?>";
-		str += "&source=<?php echo $userSource; ?>&destination=<?php echo $userDestination; ?>";
+
+		// package the URL for the GET request to be sent
+		var str = "id=<?php echo $userID; ?>";
+		str += "&email=<?php echo $email; ?>";
+		str += "&source=<?php echo $userSource; ?>";
+		str += "&destination=<?php echo $userDestination; ?>";
 		str += "&searchTime=<?php echo $post['search_time']; ?>";
 		xmlhttp.open("GET","background_search.php?" + str,true);
 		xmlhttp.send();
@@ -49,6 +73,7 @@ $remaining = getRemainingTime($userID,$email);
     </head>
 
     <body>
+	<!-- navigation bar for top of page -->
 	<nav class="navbar navbar-inverse">
 	    <div id="main" class="container-fluid">
 		<div class="navbar-header">
@@ -77,9 +102,18 @@ $remaining = getRemainingTime($userID,$email);
 	</nav>
 
 	
+	<!-- 
+	    the container below holds the remaining search time
+	    and a summary of the search parameters
+	-->
 	<div class="containter">
 	    <div class="col-md-2"></div>
 	    <div class="col-md-8 countdown">
+		<!-- 
+		    display the header and the countdown
+		    clock that is set to the user-specified
+		    search interval
+		-->
 		<h1>Search Time Remaining</h1>
 		<div class="clock"></div>
 		<p>We have begun your background search and will notify you once
@@ -93,12 +127,20 @@ $remaining = getRemainingTime($userID,$email);
 		<h3>Summary of Itinerary</h3>
 
 		<?php
-		    // start countdown clock
+		    // start countdown clock with time specified by user
 		    echo "<script>CountdownClock({$remaining})</script>";
 
+		    /*
+		     * parse date information to be 
+		     * displayed in the itinerary
+		     */
 		    $returnDate = $post['return_date'];
 		    if (!isset($post['return_date']) || $post['return_date'] == "NULL")
 			$returnDate = "N/A";
+
+		    /*
+		     * display itinerary
+		     */
 		    echo <<<_SECTION1
 		    <div class="row">
 			<div class="col-md-6">
@@ -117,11 +159,27 @@ $remaining = getRemainingTime($userID,$email);
 				<li>Date of Return: {$returnDate}</li>
 _SECTION1;
 
-				$type = array(1 => 'Adults', 2 => 'Children', 3 => 'Seniors', 4 => 'Seat Infants', 5 => 'Lap Infants');
+				/*
+				 * scan the passenger types and display
+				 * their numbers depending on what was
+				 * specified by the user
+				 */
+				$type = array(
+				    1 => 'Adults', 
+				    2 => 'Children', 
+				    3 => 'Seniors', 
+				    4 => 'Seat Infants', 
+				    5 => 'Lap Infants'
+				);
+
 				foreach ($type as $t)
 				    if (isset($post[$t]) && $post[$t] > 0)
 					echo "<li>Number of {$t}: {$post[$t]}</li>";
 
+				/* 
+				 * scan the airline preferences and display
+				 * their codes as specified by the user
+				 */
 				$i = 1;
 				foreach ($post['airline'] as $airline) {
 				    if (count($post['airline']) > 1)
@@ -145,6 +203,10 @@ _SECTION2;
 	    <div class="col-md-2"></div>
 	</div>
 
+	<!--
+	    hidden form submits information to
+	    the logout page for managing sessions
+	-->
 	<form id="hiddenForm" method="post" action="logout.php">
 	    <input type="hidden" name="webpage" value="index.php" \>
 	</form>

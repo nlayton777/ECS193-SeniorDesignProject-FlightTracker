@@ -10,7 +10,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 <!DOCTYPE html>
 <html>
     <head>
-	<title>SoFly| Search</title>
+	<title>SoFly | Search</title>
 
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -48,8 +48,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
     </head>
 
     <body>
-	<nav class="navbar navbar-inverse" style="visibility: hidden;"></nav>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
+	<nav class="navbar navbar-inverse">
 	    <div class="container-fluid">
 		<div class="navbar-header">
 		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
@@ -87,7 +86,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<!-- HERE WE WILL HAVE OUR SEARCH BAR -->
 	<div class="container-fluid" id="header">
 	    <header class="jumbotron" id="home">
-		<h1>SoFly</h1>
+	    <div id="opaque">
+		<h1>SoFly Travel</h1>
 		<h3>Customize your travel needs!</h3>
 
 		<form id="search_form" class="form-vertical" method="post" action="search.php" >
@@ -108,103 +108,96 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<div class="form-group form-inline">
 			    <!--SOURCE FIELD-->
 			    <label for="source" class="sr-only" required >Departure Location</label>
-				<input type="text" class="form-control"  id="source" name="source" 
+				<input type="text" class="form-control text-field"  id="source" name="source" 
 				    placeholder="Origin"/>	
-			    <!--
-			    <input class="textbox"  id="source" name="source" placeholder=" -Select an Origin-"/>	
-			    -->
 				
 			    <!--DESTINATION FIELD-->
 			    <label for="destination" class="sr-only">Arrival Location</label>
-				<input type="text" class="form-control"  id="destination" name="destination" 
+				<input type="text" class="form-control text-field"  id="destination" name="destination" 
 				    placeholder="Destination"/>	
-			    <!--
-			    <input class="textbox"  id="destination" name="destination" placeholder=" -Select a Destination-"/>	
-			    -->
 			    
 			    <!--DEPART DATE FIELD-->
 			    <label for="depart-date" class="sr-only">Date of Departure</label>
-				<input type="text" class="form-control" id="datepickerD" 
+				<input type="text" class="form-control text-field" id="datepickerD" 
 				name="depart_date" placeholder="Depart"/ required>
 
 			    <!--RETURN DATE FIELD-->
 			    <label for="return-date" class="sr-only">Date of Return</label>
-				<input type="text" class="form-control" id="datepickerR" 
+				<input type="text" class="form-control text-field" id="datepickerR" 
 				name="return_date" placeholder="Return"/>
-				</div>
+			</div>
+		    </div>
+		    
+		    <div class="row">
+			<div class="form-group form-inline">
+			    <!--PASSENGERS FIELD-->
+			    <label class="pass" for="adult">Adults</label>
+			    <input type='button' value='-' class='btn btn-info qtyminus' field='adults' />
+			    <input type='text' name='adults' value='0' class='qty' id='adult' />
+			    <input type='button' value='+' class='btn btn-info qtyplus' field='adults' />
 
-		    <div class="form-group form-inline">
-			<!--PASSENGERS FIELD-->
-			<label for="adult">
-				Adults
-				<input type='button' value='-' class='btn btn-info qtyminus' field='adults' />
-				<input type='text' name='adults' value='0' class='qty' id='adult' />
-				<input type='button' value='+' class='btn btn-info qtyplus' field='adults' />
-			</label>
-			<label for="child">
-				Children
-				<input type='button' value='-' class='btn btn-info qtyminus' field='children' />
-				<input type='text' name='children' value='0' class='qty' id='child'  />
-				<input type='button' value='+' class='btn btn-info qtyplus' field='children' />
-			</label>
-			<label for="senior">
-				Seniors
-				<input type='button' value='-' class='btn btn-info qtyminus' field='seniors' />
-				<input type='text' name='seniors' value='0' class='qty'id='senior'/>
-				<input type='button' value='+' class='btn btn-info qtyplus' field='seniors' />
-			</label>
-			<label for="seatinfant">
-				Seat Infant
-				<input type='button' value='-' class='btn btn-info qtyminus' field='seat_infants' />
-				<input type='text' name='seat_infants' value='0' class='qty' id='seatinfant' />
-				<input type='button' value='+' class='btn btn-info qtyplus' field='seat_infants' />
-			</label>   
-			<label for="lapinfant">
-				Lap Infant
-				<input type='button' value='-' class='btn btn-info qtyminus' field='lap_infants' />
-				<input type='text' name='lap_infants' value='0' class='qty' id='lapinfant' />
-				<input type='button' value='+' class='btn btn-info qtyplus' field='lap_infants' />
-			</label>
+			    <label class="pass" for="child">Children</label>
+			    <input type='button' value='-' class='btn btn-info qtyminus' field='children' />
+			    <input type='text' name='children' value='0' class='qty' id='child'  />
+			    <input type='button' value='+' class='btn btn-info qtyplus' field='children' />
+
+			    <label class="pass" for="senior">Seniors</label>
+			    <input type='button' value='-' class='btn btn-info qtyminus' field='seniors' />
+			    <input type='text' name='seniors' value='0' class='qty'id='senior'/>
+			    <input type='button' value='+' class='btn btn-info qtyplus' field='seniors' />
+
+			    <label class="pass" for="seatinfant">Seat Infant</label>   
+			    <input type='button' value='-' class='btn btn-info qtyminus' field='seat_infants' />
+			    <input type='text' name='seat_infants' value='0' class='qty' id='seatinfant' />
+			    <input type='button' value='+' class='btn btn-info qtyplus' field='seat_infants' />
+
+			    <label class="pass" for="lapinfant">Lap Infant</label>
+			    <input type='button' value='-' class='btn btn-info qtyminus' field='lap_infants' />
+			    <input type='text' name='lap_infants' value='0' class='qty' id='lapinfant' />
+			    <input type='button' value='+' class='btn btn-info qtyplus' field='lap_infants' />
+			</div>
 		    </div>
 
-		    <div class="form-group form-inline"> 		
-			<!--AIRLINE FIELD-->
-			<label for="airline">Preferred Airline
-			<select class="form-control" id="airline" name="airline[]"
-				    form="search_form" multiple="multiple">
-			<option value="none" selected>No Preference</option>
-			<?php
-			    if (file_exists("airlines.txt")){
-				$codes = fopen("airlines.txt",'r');				
-				while ($line = fgets($codes)){
-				    $line_code = explode("(", $line);
-				    $code = substr($line_code[1], 0, 2);
-				    echo "<option value=\"{$code}\">{$line_code[0]}</option>";
-				}
-			    } 
-			?>
+		    <div class="row">
+			<div class="form-group form-inline"> 		
+			    <!--AIRLINE FIELD-->
+			    <label for="airline">Preferred Airline</label>
+			    <select class="form-control text-field" id="airline" name="airline[]"
+							    form="search_form" multiple="multiple">
+				<option value="none" selected>No Preference</option>
+				<?php
+				    if (file_exists("airlines.txt")){
+					$codes = fopen("airlines.txt",'r');				
+					while ($line = fgets($codes)){
+					    $line_code = explode("(", $line);
+					    $code = substr($line_code[1], 0, 2);
+					    echo "<option value=\"{$code}\">{$line_code[0]}</option>";
+					}
+				    } 
+				?>
+			    </select>
 
-			</select></label>
-
-		    <!--PRICE FIELD-->	
-			<label for="price">Max Price: </label>
-			    <!--<input type="text" class="textboxPrice" name="price" id="priceInput"></input>-->
-			    <input type="text" class="form-control" name="price" id="price"></input>
-			    <section id="slider"></section>
-			<script>
-				$("#slider").noUiSlider({
-				    start: 5000, connect: 'lower', step: 10,
-				    range: {'min': 0,'75%': 1000,'max': 5000}
-				});
-			    $("#slider").Link('lower').to($('#price'));
-			</script>
+			    <!--PRICE FIELD-->	
+			    <label for="price">Max Price: 
+				<input type="text" class="form-control text-field" name="price" id="price"></input>
+			    </label>
+				<section id="slider"></section>
+				<script>
+					$("#slider").noUiSlider({
+					    start: 5000, connect: 'lower', step: 10,
+					    range: {'min': 0,'75%': 1000,'max': 5000}
+					});
+				    $("#slider").Link('lower').to($('#price'));
+				</script>
+			</div>
 		    </div>
 			
-		    <div id="btn-container">
+		    <div class='row'>
 			<input id="submit-button" class="btn btn-info btn-lg" 
 			    type="submit" onclick="return validate();" value="Find Your Flight!"/>
 		    </div>
 		</form>
+		</div>
 	    </header>
 	</div>
 

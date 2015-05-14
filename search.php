@@ -57,8 +57,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
     </head>
 
     <body>
-	<nav class="navbar navbar-inverse" style="visibility: hidden;"></nav>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
+	<nav class="navbar navbar-inverse">
 	    <div id="main" class="container-fluid">
 		<div class="navbar-header">
 		    <button type="button" class="navbar-toggle" 
@@ -232,7 +231,7 @@ _TABLE1;
 						<td>{$myArray[5+$myArray[5]+1]}</td>
 					  </tr>
 					  <tr>
-						<td>Also look at flights <b>Arriving Into</b></td>
+						<td>Also look at flights <b>Arriving At</b></td>
 						<td>{$myArray[5+$myArray[5]+2]}</td>
 					  </tr>
 					</tbody>

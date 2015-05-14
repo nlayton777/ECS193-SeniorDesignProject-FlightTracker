@@ -35,8 +35,7 @@ else if (isset($_POST['id']) && isset($_POST['email']))
     </head>
 
     <body>
-	<nav class="navbar navbar-inverse" style="visibility: hidden;"></nav>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
+	<nav class="navbar navbar-inverse">
 	    <div id="main" class="container-fluid">
 		<div class="navbar-header">
 		    <button type="button" class="navbar-toggle" 
@@ -211,6 +210,7 @@ _SCRIPT;
 			var lastRender = Math.floor(Date.now() / 1000);
 			var myChart = new Chart(buyers).Line(buyerData, options);
 		    </script>
+		    <p>*Refresh the page to see updated results of the graph*</p>
 
 		    <h2>Search Results</h2>
 		    <?php

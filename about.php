@@ -19,8 +19,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
     </head>
 
     <body>
-	<nav class="navbar navbar-inverse" style="visibility: hidden;"></nav>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
+	<nav class="navbar navbar-inverse">
 	    <div class="container-fluid">
 		<div class="navbar-header">
 		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
@@ -56,8 +55,17 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 
 	<div class="container">
 	    <header class="jumbotron" id="about">
-		<h1>Find your destination</h1>
-		<h3>Let us help you find the flights that you need.</h3>
+		<div class='row'>
+		    <div class='col-lg-12 text-center v-center'>
+			<div class='transbox'>
+			    <h1>We are SoFly!</h1>
+			</div>
+		    </div>
+		</div>
+		<br><br>
+		<h3>...and we help find the <br>
+		    perfect flight arrangements for <br>
+		    your travel needs!</h3>
 	    </header>
 	</div>
 

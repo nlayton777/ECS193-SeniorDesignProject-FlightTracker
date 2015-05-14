@@ -1,4 +1,4 @@
-.jumbotron#home {
+#home.jumbotron {
     color: #ffffff;
     background: #ffffff url('sfo.jpg') no-repeat center center;
     -webkit-background-size: cover;
@@ -7,16 +7,8 @@
             background-size: cover;
 }
 
-.jumbotron#about {
-    color: #ffffff;
-    background: #ffffff url('Bicycle1.jpg') no-repeat center center;
-    -webkit-background-size: cover;
-       -moz-background-size: cover;
-         -o-background-size: cover;
-            background-size: cover;
-}
 
-.jumbotron#home .btn-info {
+#home.jumbotron .btn-info {
     color: #fff;
     background-color: transparent;
     border-color: #fff;
@@ -25,7 +17,13 @@
             transition: background-color ease-in-out .15s;
 }
 
-.jumbotron#home
+input#submit-button {
+    border-width: 2px;
+    width: 30%;
+}
+
+
+#home.jumbotron
 .btn-info:hover,
 .btn-info:focus,
 .btn-info.focus,
@@ -35,6 +33,15 @@
     color: #222;
     background-color: #fff;
     border-color: #fff;
+}
+
+.jumbotron#about {
+    color: #222;
+    background: #ffffff url('Bicycle1.jpg') no-repeat center center;
+    -webkit-background-size: cover;
+       -moz-background-size: cover;
+         -o-background-size: cover;
+            background-size: cover;
 }
 
 #results .btn-info {
@@ -78,7 +85,6 @@
 input.qtyplus {
     width: 1.5625em;
     height: 1.5625em;
-    /*color: white;*/
     text-align: center;
     vertical-align: middle;
     padding: 0px;
@@ -87,14 +93,13 @@ input.qtyplus {
 input.qtyminus {
     width: 1.5625em;
     height: 1.5625em;
-    /*color: white;*/
     text-align: center;
     vertical-align: middle;
     padding: 0px;
 }
 
 #slider {
-    width: 50%;
+    width: 30%;
     margin-top: 10px;
 }
 
@@ -108,10 +113,6 @@ input.qtyminus {
     text-align: center;
 }
 
-input#submit-button {
-    border-width: 2px;
-    width: 30%;
-}
 
 table#results td,th {
     text-align: center;
@@ -132,7 +133,6 @@ table#results tr#headers th {
 }
 
 .dropdown-table td,th {
-    /*font-size: 70%;*/
     padding: 0 0.6em;
     text-align: center;
 }
@@ -158,8 +158,6 @@ table#results tr#headers th {
 
 #search-submit-button {
   color: #222222;
-  /*background-color: #5bc0de; 
-  border-color: #46b8da; */
   background-color: transparent; 
   border-color: #222222; 
   -webkit-transition: background-color ease-in-out .15s;
@@ -174,12 +172,73 @@ table#results tr#headers th {
 #search-submit-button.active,
 .open > #search-submit-button.dropdown-toggle.btn-info {
   color: #ffffff;
-  /* background-color: #31b0d5; 
-  border-color: #269abc; */
   background-color: #222222; 
   border-color: #222222; 
 }
 
 .table td,th {
     text-align: center;
+}
+
+@media screen and (max-width: 850px) {
+    #home.jumbotron {
+	text-align: center;
+    }
+
+    #home.jumbotron section#slider {
+	margin: 5px auto;
+    }
+
+    #home.jumbotron input.text-field {
+	width: 177.614px; 
+	margin: 3px auto;
+    }
+
+    #home.jumbotron label.pass {
+	width: 100%;
+	margin: 0 auto;
+	text-align: center;
+    }
+
+    #home.jumbotron input#submit-button {
+	width: 300px;
+    }
+
+    #home.jumbotron label.pass {
+	clear: right;
+    }
+}
+
+div.transbox h1 {
+     font-family: Arial,sans-serif;
+     font-size: 63px;
+     font-weight: bold;
+     color: #000000;
+}
+
+#banner-stuff.container {
+    margin: 0 auto;
+    color: #eee;
+    min-height: 100%;
+    background: #ffffff url('Bicycle2.jpg') no-repeat center center;
+    -webkit-background-size: cover;
+       -moz-background-size: cover;
+         -o-background-size: cover;
+	    background-size: cover;
+    /*opacity: 0.85;*/
+} 
+
+.transbox {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #fff4e9;
+    opacity: 0.80;
+}
+
+.v-center {
+    margin-top:5%;
+}
+
+textarea {
+    resize: none;
 }

@@ -49,8 +49,7 @@ $remaining = getRemainingTime($userID,$email);
     </head>
 
     <body>
-	<nav class="navbar navbar-inverse" style="visibility: hidden;"></nav>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
+	<nav class="navbar navbar-inverse">
 	    <div id="main" class="container-fluid">
 		<div class="navbar-header">
 		    <button type="button" class="navbar-toggle" 
@@ -138,7 +137,7 @@ _SECTION1;
 			</div>
 		    </div>
 		    
-		    <div id="test" class="row" style="margin-left: 200px;">stuff</div>
+		    <div id="test" class="row" style="margin-left: 200px; background-color: yellow;">stuff</div>
 		    
 _SECTION2;
 		?>

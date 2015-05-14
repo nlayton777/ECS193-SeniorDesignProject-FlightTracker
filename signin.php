@@ -40,6 +40,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
   	<!--**************** AJAX STUFF ********************* -->
 	<script>
 	    <?php
+		$flag = false;
 		if(isset($_GET['id']) && isset($_GET['email']))
 		{
 		    echo <<<_SCRIPT
@@ -131,8 +132,7 @@ _SCRIPT;
     </head>
 
     <body onload="autoSubmit()">
-	<nav class="navbar navbar-inverse" style="visibility: hidden;"></nav>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
+	<nav class="navbar navbar-inverse">
 	    <div class="container-fluid">
 		<div class="navbar-header">
 		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">

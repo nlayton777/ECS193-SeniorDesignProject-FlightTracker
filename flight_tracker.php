@@ -40,7 +40,7 @@
 
 	    // print headers
 	    echo <<<_HEADERS
-	    <table id="results" class="table table-hover" style="background-color: rgba(150, 150, 150, 0)" align="center">
+	    <table id="results" class="table table-hover" style="background-color: rgba(150, 150, 150, 0)" >
 	    <tr id="headers">
 		<th id="price">Total
 _HEADERS;

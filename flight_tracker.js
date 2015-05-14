@@ -23,7 +23,11 @@ function OneWay() {
 	$("#datepickerR" ).datepicker('disable');	
 	document.getElementById("datepickerR").style.display = "none";
 	onewayHidden.disabled = true;
-	document.getElementById("datepickerD").style.width = "348px";
+	if (window.innerWidth > 850) {
+	    document.getElementById("datepickerD").style.width = "350px";
+	} else {
+	    document.getElementById("datepickerD").style.width = "177.614px";
+	}
     } else {
 	$("#datepickerR" ).datepicker('enable');
 	document.getElementById("datepickerR").style.display = "initial";

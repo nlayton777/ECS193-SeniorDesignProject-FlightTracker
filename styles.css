@@ -65,6 +65,10 @@ input#submit-button {
     border-color: #222;
 }
 
+div.dropdown {
+    margin: 0 auto;
+}
+
 .qty {
     color: black;
     width: 2.5em;
@@ -128,7 +132,7 @@ table#results tr#headers th {
     font-size: 1.7em;
 }
 
-.dropdown {
+table.dropdown-table {
     margin: 0 auto;
 }
 
@@ -180,6 +184,41 @@ table#results tr#headers th {
     text-align: center;
 }
 
+div.transbox h1 {
+     font-family: Arial,sans-serif;
+     font-size: 63px;
+     font-weight: bold;
+     color: #000000;
+}
+
+#banner-stuff.container {
+    margin: 0 auto;
+    color: #eee;
+    min-height: 100%;
+    background: #ffffff url('Bicycle2.jpg') no-repeat center center;
+    -webkit-background-size: cover;
+       -moz-background-size: cover;
+         -o-background-size: cover;
+	    background-size: cover;
+    border-radius: 6px;
+    /*opacity: 0.85;*/
+} 
+
+.transbox {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #fff4e9;
+    opacity: 0.80;
+}
+
+.v-center {
+    margin-top:5%;
+}
+
+textarea {
+    resize: none;
+}
+
 @media screen and (max-width: 850px) {
     #home.jumbotron {
 	text-align: center;
@@ -207,38 +246,14 @@ table#results tr#headers th {
     #home.jumbotron label.pass {
 	clear: right;
     }
+
+    #slider {
+	width: 70%;
+    }
 }
 
-div.transbox h1 {
-     font-family: Arial,sans-serif;
-     font-size: 63px;
-     font-weight: bold;
-     color: #000000;
-}
-
-#banner-stuff.container {
-    margin: 0 auto;
-    color: #eee;
-    min-height: 100%;
-    background: #ffffff url('Bicycle2.jpg') no-repeat center center;
-    -webkit-background-size: cover;
-       -moz-background-size: cover;
-         -o-background-size: cover;
-	    background-size: cover;
-    /*opacity: 0.85;*/
-} 
-
-.transbox {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    background-color: #fff4e9;
-    opacity: 0.80;
-}
-
-.v-center {
-    margin-top:5%;
-}
-
-textarea {
-    resize: none;
+@media screen and (max-width: 1050px) {
+    div.on-the-way-back {
+	margin-left: 35%;
+    }
 }

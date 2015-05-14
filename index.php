@@ -84,18 +84,22 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			     * to login page
 			     */
 			    if ($seshFlag)
+			    {
 				echo "<li>
 				          <a href=\"results.php\">My Search</a>
 				      </li>";
-			     else 
+			    } else 
+			    {
 				echo "<li>
 				          <a href=\"signin.php\">My Search</a>
 				      </li>";
+			    }
 			?>
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
+
 			<?php
 			    /*
 			     * if user is logged in, then
@@ -103,15 +107,20 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			     * "Log In", else print "Log In"
 			     */
 			    if ($seshFlag)
+			    {
 				echo "<li>
-				          <a href=\"javascript:;\" 
-					   onclick=\"submitForm();\">Log Out</a>
+				          <a href=\"javascript:;\" onclick=\"submitForm();\">
+					      Log Out
+					  </a>
 				      </li>";
-			    else
+			    } else 
+			    {
 				echo "<li>
 				          <a href=\"signin.php\">Log In</a>
 				      </li>";
+			    }
 			?>
+
 		    </ul>
 		</div>
 	    </div>
@@ -330,7 +339,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	    the form below is 
 	    a hidden form that is
 	    submitted to the logout
-	    page
+	    page for managing
+	    sessions
 	-->
 	<form id="hiddenForm" method="post" action="logout.php">
 	    <input type="hidden" name="webpage" value="index.php" />

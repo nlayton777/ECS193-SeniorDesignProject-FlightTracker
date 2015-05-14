@@ -1,4 +1,10 @@
 <?php
+/*
+ * start session,
+ * set session flag if user 
+ * information is stored in 
+ * session variables
+ */
 session_start();
 $seshFlag = false;
 if (isset($_SESSION['id']) && isset($_SESSION['email']))
@@ -23,6 +29,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
     </head>
 
     <body>
+	<!--
+	    nav element below is for 
+	    navbar at the top of window;
+	    collapses when window width is 
+	    small enough
+	_-->
 	<nav class="navbar navbar-inverse">
 	    <div class="container-fluid">
 		<div class="navbar-header">
@@ -36,27 +48,51 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
 			<li><a href="index.php">Find a Flight</a></li>
+
 			<?php
+			    /*
+			     * if user is logged in,
+			     * then send them straight to
+			     * results page, otherwise, send
+			     * them to login page
+			     */
 			    if ($seshFlag)
-				echo "<li><a href=\"results.php\">My Search</a></li>";
-			    else
-				echo "<li><a href=\"signin.php\">My Search</a></li>";
+			    {
+				echo "<li>
+				          <a href=\"results.php\">My Search</a>
+				      </li>";
+			    } else
+			    {
+				echo "<li>
+				          <a href=\"signin.php\">My Search</a>
+				      </li>";
+			    }
 			?>
+
 			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li class="active"><a href="contact.php">Contact</a></li>
+
 			<?php
 			    if ($seshFlag)
-				echo "<li><a href=\"javascript:;\" onclick=\"submitForm()\">Log Out</a></li>";
+				echo "<li>
+				          <a href=\"javascript:;\" onclick=\"submitForm()\">
+					      Log Out
+					  </a>
+				      </li>";
 			    else
 				echo "<li><a href=\"signin.php\">Log In</a></li>";
 			?>
+
 		    </ul>
 		</div>
 	    </div>
 	</nav>
 
+	<!--
+	    container below holds a banner with image
+	-->
 	<div class="container" id="banner-stuff">
 	    <div class="row">
 		<div class="col-lg-12 text-center v-center">
@@ -75,41 +111,59 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	    <br><br><br><br><br>
 	</div> 
 
+	<!--
+	    container below contains
+	    a form that submits comments 
+	    to our email address
+	-->
 	<div class="container" id="form-stuff">
 	    <hr>
 	    <div class="row">
 		<div class="col-md-3"></div>
 		<div class="col-md-6">
 		    <div class="panel panel-default">
-			<div class="panel-heading"><h3>We'd Love to Hear Them.</h3></div>
+			<div class="panel-heading">
+			    <h3>We'd Love to Hear Them.</h3>
+			</div>
 			<div class="panel-body">
-			    <form role="form form-inline"  class="form-vertical" method="post" action="contactsubmission.php">
-			    <div class="form-group">
-				<label for="name">
-				    Name: 
-				    <input type="text" class="form-control" id="name" 
-					    name = "name" size="20" placeholder="John Smith" required/>
-				</label>
+			    <form role="form form-inline"  class="form-vertical" 
+			     method="post" action="contactsubmission.php">
+				<div class="form-group">
+				    <label for="name">
+					Name: 
+					<input type="text" class="form-control" 
+					 id="name" name = "name" size="20" 
+					 placeholder="John Smith" required/>
+				    </label>
 
-				<label for="email">
-				    Email:
-				    <input type="email" class="form-control" id="email" name="email" 
-					    pattern="*@-.-" size="30" placeholder="john.smith@website.com" required/>
-				</label>
-			    </div>
+				    <label for="email">
+					Email:
+					<input type="email" class="form-control" 
+					 id="email" name="email" pattern="*@-.-" 
+					 size="30" placeholder="john.smith@website.com" required/>
+				    </label>
+				</div>
 
-			    <label for="comments">
-				Message: 
-				<textarea class="form-control" rows="8" cols="60" id="comments" name="comments" placeholder="Let us know what you think!" required></textarea>
-			    </label>
+				<label for="comments">
+				    Message: 
+				    <textarea class="form-control" rows="8" cols="60" id="comments" name="comments" placeholder="Let us know what you think!" required></textarea>
+				</label>
 			    
-			    <input type="submit" class="btn btn-default" value="Submit"/>
-			</form>
-		    </div>
-		</div>
+				<input type="submit" class="btn btn-default" value="Submit"/>
+			    </form>
+			</div> <!--end div.panel-body-->
+		    </div><!-- end div.panel.panel-default-->
+		</div><!-- end div.col-md-6-->
 		<div class="col-md-3"></div>
-	    </div>
-	</div>
+	    </div><!--end div.row-->
+	</div><!--end div.container-->
+
+	<!--
+	    the form below is a hidden
+	    form that submits a post request
+	    to the log out page for managing
+	    sessions
+	-->
 	<form id="hiddenForm" method="post" action="logout.php">
 	    <input type="hidden" name="webpage" value="contact.php" />
 	</form>

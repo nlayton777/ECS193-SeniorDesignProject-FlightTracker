@@ -1,4 +1,11 @@
 <?php
+/*
+ * start session,
+ * check if user is 
+ * already logged in by
+ * checking session variables,
+ * set session flag if logged in
+ */
 session_start();
 $seshFlag = false;
 if (isset($_SESSION['id']) && isset($_SESSION['email']))
@@ -19,6 +26,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
     </head>
 
     <body>
+	<!--
+	    element below is navbar
+	    at top of screen; has a dropdown
+	    functionality when screen width 
+	    is small
+	-->
 	<nav class="navbar navbar-inverse">
 	    <div class="container-fluid">
 		<div class="navbar-header">
@@ -32,27 +45,59 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="nav navbar-nav">
 			<li><a href="index.php">Find a Flight</a></li>
+
 			<?php
+			    /*
+			     * if logged in, then send user straight
+			     * to results page, otherwise, force
+			     * them to log in
+			     */
 			    if ($seshFlag)
-				echo "<li><a href=\"results.php\">My Search</a></li>";
-			    else
-				echo "<li><a href=\"signin.php\">My Search</a></li>";
+			    {
+				echo "<li>
+				          <a href=\"results.php\">My Search</a>
+				      </li>";
+			    } else
+			    {
+				echo "<li>
+				          <a href=\"signin.php\">My Search</a>
+				      </li>";
+			    }
 			?>
+
 			<li class="active"><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
 			<?php
+			    /*
+			     * if logged in, then print "Log Out"
+			     * on button, else print "Log In"
+			     */
 			    if ($seshFlag)
-				echo "<li><a href=\"javascript:;\" onclick=\"submitForm()\">Log Out</a></li>";
-			    else
-				echo "<li><a href=\"signin.php\">Log In</a></li>";
+			    {
+				echo "<li>
+				          <a href=\"javascript:;\" onclick=\"submitForm()\">
+					      Log Out
+					  </a>
+				      </li>";
+			    } else 
+			    {
+				echo "<li>
+				          <a href=\"signin.php\">Log In</a>
+				      </li>";
+			    }
 			?>
 		    </ul>
 		</div>
 	    </div>
 	</nav>
 
+	<!--
+	    the div below contains 
+	    header information with
+	    picture
+	-->
 	<div class="container">
 	    <header class="jumbotron" id="about">
 		<div class='row'>
@@ -69,8 +114,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	    </header>
 	</div>
 
+	<!--
+	    the div below contains
+	    two columns of information
+	    that describe our search engin
+	-->
 	<div class="container">
 	    <div class="row">
+		<!--COLUMN 1-->
 		<div class="col-md-6">
 		    <h2>Customize your travel needs!</h2>
 		    <p>
@@ -84,6 +135,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		    </p>
 		</div>
 
+		<!--COLUMN 2-->
 		<div class="col-md-6">
 		    <h2>Kick back, relax, and let us find the deals for you!</h2>
 		    <p>
@@ -98,6 +150,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	    </div>
 	</div>
 	
+	<!--
+	    form below is a hidden form
+	    that is submitted to the
+	    log out page for managing 
+	    sessions
+	-->
 	<form id="hiddenForm" method="post" action="logout.php">
 	    <input type="hidden" name="webpage" value="about.php" />
 	</form>

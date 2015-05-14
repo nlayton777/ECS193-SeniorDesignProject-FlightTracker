@@ -1026,3 +1026,101 @@ function submitForm()
 {
     document.getElementById("hiddenForm").submit();
 }
+
+
+/*
+ * this function performs validation checking 
+ * on the user input for email and id
+ */
+function doStuff(mail) 
+{
+    // check if email is valid
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(claimFlight.email.value))
+    {
+	var id_val = document.getElementById("id").value;
+	idExist = true;
+
+	// check if id exists
+	if (id_val == null || id_val == "")
+	{
+	    idExist = false;
+	}
+
+	// check if id is not a number
+	var isNan = isNaN(id_val); 
+
+	// if id exists and is a number
+	if(!isNan && idExist) 
+	{	
+	    /* 
+	     * send AJAX request to authenticate.php
+	     * to verify that the user is in our
+	     * database
+	     */
+	    var xmlhttp;
+	    var email_val = document.getElementById("email").value;
+	    if (window.XMLHttpRequest) { xmlhttp  = new XMLHttpRequest(); }
+	    else 
+	    { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
+
+	    /*
+	     * when AJAX response is received, 
+	     * then tell the user whether or not
+	     * they entered valid information
+	     */
+	    xmlhttp.onreadystatechange = function() 
+	    {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+		{
+		    // if user is not valid
+		    if(xmlhttp.responseText == "false")
+		    {
+			bootbox.dialog({
+			    title: "sorry!",
+			    message: "we don't have a record of that email and id"
+			});
+		    } else // if user is valid, send post request to results.php
+		    {
+			var obj = {id : id_val, email : email_val};
+			post(obj);
+		    } // if/else 
+		} // if
+	    } // end onreadystatechange function
+
+	    // open and send AJAX request
+	    var str = "email=" + email_val + "&id=" + id_val;
+	    xmlhttp.open("GET","authenticate.php?"+str,true);
+	    xmlhttp.send();
+	} else // if id was not valid
+	{
+	    bootbox.dialog({
+		title: "Whoops!",
+		message: "You have input an incorrect ID"
+	    });
+	    return(false);
+	} // if/else for id check
+    } else  // if email was invalid
+    {
+	bootbox.dialog({
+	    title: "Whoops!",
+	    message: "You have invalid email input"
+	});
+	return(false);
+    } // end if/else
+} // doStuff()
+
+function submitOnEnter(evt)
+{ 
+    var charCode = (evt.which) ? evt.which : event.keyCode 
+    if(charCode == "13")
+    { 
+	document.getElementById("hiddenForm").submit(); 
+    } 
+} // submitonenter 
+
+function post(params) 
+{
+    document.getElementById("hidden_id").value = params["id"];
+    document.getElementById("hidden_email").value = params["email"];
+    document.getElementById("hiddenForm").submit();
+} //  post

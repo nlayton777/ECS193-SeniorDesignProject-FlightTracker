@@ -1,21 +1,3 @@
-<?php
-if (isset($_SESSION['id']) && isset($_SESSION['email']))
-{
-    unset($_SESSION['id']);
-    unset($_SESSION['email']);
-    session_unset();
-    $_SESSION = array();
-    unset($_SESSION);
-    session_destroy();
-    if (ini_get("session.use_cookies")) 
-    {
-	$params = session_get_cookie_params();
-	setcookie(session_name(), '', time() - 42000,
-		 $params["path"], $params["domain"],
-		 $params["secure"], $params["httponly"]);
-    }
-} 
-?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,6 +5,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<link rel="stylesheet" href="bootstrap.css"/>
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
@@ -34,104 +17,37 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<script type="text/javascript" src="flight_tracker.js"></script>
 	<link rel="stylesheet" href="styles.css"/>	 
 
-	<meta charset="utf-8">
-  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
-  	<!--**************** AJAX STUFF ********************* -->
-	<script>
-	    <?php
-		$flag = false;
-		if(isset($_GET['id']) && isset($_GET['email']))
-		{
-		    echo <<<_SCRIPT
-			function autoSubmit() {
-			    document.getElementById("email").value = "{$_GET['email']}";
-			    document.getElementById("id").value = "{$_GET['id']}";
-//			    document.getElementById("claimFlight").submit();
-			}
-_SCRIPT;
-		    $flag = true;
-		}
-	    ?>
-
-	    function doStuff(mail) {
-		//check for email validation
-		    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(claimFlight.email.value))
-		    {
-					 var id_val = document.getElementById("id").value;
-					 idExist = true;
-					 if (id_val == null || id_val == ""){
-						idExist = false;
-					 }
-					 var isNan = isNaN(id_val); //returns true if ID input is not a number
-					 if(!isNan && idExist) //if false continue
-					 {	
-						var xmlhttp;
-						var email_val = document.getElementById("email").value;
-						if (window.XMLHttpRequest)
-						{ xmlhttp  = new XMLHttpRequest(); }
-						else
-						{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
-						xmlhttp.onreadystatechange = function() 
-						{
-						    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-						    {
-								if(xmlhttp.responseText == "false")
-								{
-									bootbox.dialog({
-										title: "Sorry!",
-										message: "We don't have a record of that Email and ID"
-									});
-								}
-								else
-								{
-									var obj = {id : id_val, email : email_val};
-									post(obj);
-								}
-						    }
-						}
-						var str = "email=" + email_val + "&id=" + id_val;
-						xmlhttp.open("GET","authenticate.php?"+str,true);
-						xmlhttp.send();
-					} //end if with AJAX stuff
-					else
-					{
-						bootbox.dialog({
-							title: "Whoops!",
-							message: "You have input an incorrect ID"
-						});
-						return(false);
-					}
-			} // end main if 
-			else
-			{
-				bootbox.dialog({
-					title: "Whoops!",
-					message: "You have invalid email input"
-				});
-				return(false);
-			}
-	  }//do Stuff
-	    
-	   function submitonEnter(evt)
-		{ 
-			var charCode = (evt.which) ? evt.which : event.keyCode 
-			if(charCode == "13")
-			{ 
-				document.getElementById("hiddenForm").submit(); 
-			} 
-		} 
-
-	    function post(params) 
+	<?php
+	    /*
+	     * the GET array would be set if the user
+	     * is returning from an email message. the code
+	     * below checks if the GET variables are set 
+	     * and autofills the fields with their information
+	     */
+	    $flag = false;
+	    if(isset($_GET['id']) && isset($_GET['email']))
 	    {
-		document.getElementById("hidden_id").value = params["id"];
-		document.getElementById("hidden_email").value = params["email"];
-		document.getElementById("hiddenForm").submit();
-	    } //  post
-	</script>
-    </head>
+		echo <<<_SCRIPT
+		<script>
+		    function autoSubmit() {
+			document.getElementById("email").value = "{$_GET['email']}";
+			document.getElementById("id").value = "{$_GET['id']}";
+//			document.getElementById("claimFlight").submit();
+		    }
+		</script>
+	    </head>
+	<body onload="autoSubmit()">
+_SCRIPT;
+		$flag = true;
+	    } else // if GET array not set
+		echo "<body>";
+	?>
 
-    <body onload="autoSubmit()">
+
+	<!-- 
+	    nav is for navigation 
+	    bar at top of page
+	-->
 	<nav class="navbar navbar-inverse">
 	    <div class="container-fluid">
 		<div class="navbar-header">
@@ -163,6 +79,12 @@ _SCRIPT;
 		<div class="col-md-4">
 		    <h3 class="sign-up-title">Welcome Back!</h3>
 		    <?php
+			/* 
+			 * flag indicates whether or not user 
+			 * visited from an email. the contents
+			 * of the paragraph depends on whether or
+			 * not user came from email
+			 */
 			if ($flag)
 			{
 			    echo <<<_STUFF
@@ -183,26 +105,44 @@ _STUFF2;
 
 		    ?>
 		    <hr>
+
+		    <!--
+			div below contains panel on which 
+			the form will be displayed
+		    -->
 		    <div class="panel panel-default">
 			<div class="panel-heading"><h3>Log In!</h3></div>
 			<div class="panel-body">
+			    <!--
+				on submission, the form calls function
+				to validate the user input, and if user
+				information is valid it's passed to 
+				results.php
+			    -->
 			    <form id="claimFlight" class="sign-up" onsubmit="doStuff(email)">
 				<div class="form-group">
 				    <label for="email">Email:
-					<input type="text" class="form-control sign-up-input" name="email" id="email" placeholder="john.smith@website.com" autofocus>
+					<input type="text" class="form-control sign-up-input" 
+					 name="email" id="email" placeholder="john.smith@website.com" autofocus>
 				    </label>
 				</div>
+
 				<div class="form-group">
 				    <label for="id">Request ID:
-					<input type="text" class="form-control sign-up-input" name="id"  id="id" placeholder="1234">
+					<input type="text" class="form-control sign-up-input" 
+					 name="id"  id="id" placeholder="1234">
 				    </label>
 				</div>
 				<input type="button" value="Submit" onclick="doStuff(email)" 
-				    onKeyDown="javascript:return submitonEnter(event)" class="sign-up-button">
+				    onKeyDown="javascript:return submitOnEnter(event)" class="sign-up-button">
 			    </form>
 			</div>
 		    </div>
 
+		    <!--
+			this hidden form contains the info that is
+			passed to results.php: request ID and email
+		    -->
 		    <form id="hiddenForm" method="post" action="results.php">
 			<input type="hidden" name="email" id="hidden_email">
 			<input type="hidden" name="id"  id="hidden_id">
@@ -211,6 +151,5 @@ _STUFF2;
 		<div class="col-md-4"></div>
 	    </div>
 	</div>
-
     </body>
 </html>

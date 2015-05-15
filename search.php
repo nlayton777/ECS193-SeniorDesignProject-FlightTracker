@@ -1,4 +1,19 @@
 <?php
+/*
+ * this page displays the results of a live search for
+ * the user's specified parameters. the user can expand
+ * the rows of each result to see more information about 
+ * the flight option. the user can also click the "Book It"
+ * button to book their flight. they can also elect to 
+ * perform a background search by entering their email 
+ * address and the time period during which they want to search
+ */
+
+ /*
+  * start session and check if user is logged in by
+  * checking if session variables are checked, and 
+  * record this result in a flag
+  */
 session_start();
 ini_set('session.gc_maxlifetime', 60 * 60 * 1);
 $seshFlag = false;
@@ -21,7 +36,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 
 
 	<script>
-	    //  VALIDATION
+	    /*
+	     * validate the email address and search time of the user
+	     * Note: the user cannot select a search time that passes 
+	     * the departure date of their itinerary
+	     */
 	    function check(mail) 
 	    {
 		var currentSecs = new Date().getTime()/1000; //get time right now in seconds 
@@ -30,25 +49,32 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		var CurrentSearchSecs = currentSecs + searchSecs;
 
 		//get Departure date and convert to seconds 
-		 <?php 
+		<?php 
 		    $post = $_POST;
 		    require_once('./flight_tracker.php');
 		    $departureDate = strtotime($post['depart_date']);
 		    echo "var departSecs = \"{$departureDate}\";";
-		 ?>  
+		?>  
 
-		 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchwindow.email.value)) {
-			if((CurrentSearchSecs) > departSecs) {
-				alert("Please choose a search time that will complete before your departure date.")
-				return false;
-			}
-			return(true);
-		  } else {
+		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchwindow.email.value)) 
+		{
+		    if((CurrentSearchSecs) > departSecs) 
+		    {
+			alert("Please choose a search time that will complete before your departure date.")
+			return false;
+		    }
+		    return(true);
+		} else 
+		{
 		    alert("You have entered an invalid email address!")
 		    return (false)
-		  }
-	    }//end  check() --  validation for email and search time
+		}
+	    }// check()
 
+	    /*
+	     * submit hidden form to logout page
+	     * for handling sessions 
+	     */
 	    function submitForm()
 	    { document.getElementById("hiddenForm").submit(); }
 	</script>
@@ -72,6 +98,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 
 			<li class="active"><a href="index.php">Find a Flight</a></li>
 			<?php
+			    /* 
+			     * if user is logged in then they can
+			     * go directly to the results.php page,
+			     * otherwise, force them to log in
+			     */
 			    if ($seshFlag)
 				echo "<li><a href=\"results.php\">My Search</a></li>";
 			    else
@@ -82,6 +113,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		    <ul class="nav navbar-nav navbar-right">
 			<li><a href="contact.php">Contact</a></li>
 			<?php
+			    /*
+			     * if user logged in, then display "Log Out",
+			     * otherwise, display "Log In"
+			     */
 			    if ($seshFlag)
 				echo "<li><a href=\"javascript:;\" onclick=\"submitForm()\">Log Out</a></li>";
 			    else
@@ -101,10 +136,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			    <h1>Search Results</h1>
 
 			    <?php
-				echo "<h3 id=\"trip-title\">" . $post['depart_date'] . "  <strong>" . 
-				    $post['source'] . "</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ") .
-				    "<strong>" . $post['destination'] . "</strong>  ";
-					$isRoundTrip = false;
+				echo "<h3 id=\"trip-title\">{$post['depart_date']} <strong>". 
+				     "{$post['source']}</strong> " . (isOneWay($post) ? "&rarr; " : "&harr; ").
+				     " <strong>{$post['destination']}</strong>";
+				$isRoundTrip = false;
 				if (!isOneWay($post))
 				{
 					 echo $post['return_date'];
@@ -114,6 +149,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			    ?>
 			</div>
 
+			<!--
+			    provide a description for the user to 
+			    understand how the background search works
+			-->
 			<div class="col-md-6" id="background-info">
 			    <img class="exclamation" src="exclamation.png" alt="Important" height="8%" width="8%" />
 			    <p id="background-description">
@@ -126,6 +165,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 				for future contact and log-in.
 			    </p>
 
+			    <!-- 
+				this form submits the user email and search
+				time to countdown.php, which initiates the 
+				background search
+			    -->
 			    <form name="searchwindow" onsubmit="return check(email);" method="post" action="countdown.php">
 				<div class="form-group form-inline">
 				    <label for="email">Email
@@ -148,6 +192,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 				    </label>
 
 				    <?php
+					/*
+					 * hidden input values for the form
+					 * that is sent to countdown
+					 * for parameters in background
+					 * search
+					 */
 					echo <<<_SECTION1
 					<input type="hidden" name="origin" value="{$post['source']}"/>
 					<input type="hidden" name="destination" value="{$post['destination']}"/>
@@ -187,57 +237,78 @@ _SECTION2;
 		    </div><!--end row-->
 		    
 		    <?php
-				 	$to = $post['source'];
-				 	$from = $post['destination'];
-				 	$java = 'java sample/Main ' . $to . ' ' . $from;
-				 	$output = shell_exec($java);
-					$myarray = array();
-				 	if (!(strpos($output,'ERROR') !== false)){
-				 		$myArray = explode(', ', $output);
-				 		echo <<<_TABLE1
-				  <h2>To Find the Best Price, Hopper.com suggests:</h2>
-				  <table class="table">
-					<tbody>
-					  <tr>
-						<td>A <b>Good Price</b> would be</td>
-						<td>{$myArray[2]} (per passenger)</td>
-					  </tr>
-					  <tr>
-						<td>Try <b>Flying Out</b> on a</td>
-						<td>{$myArray[3]}</td>
-					  </tr>
-					  <tr>
-						<td>Try <b>Flying Back</b> on a</td>
-						<td>{$myArray[4]}</td>
-					  </tr>
-					  <tr>
-						<td>Try these <b>Airlines</b></td>
-						<td>
+			/*
+			 * the following section
+			 * of code displays the 
+			 * suggestions made by Hopper.com
+			 * that provides analytic 
+			 * suggestions for best times and places 
+			 * to book flights
+			 */
+			$to = $post['source'];
+			$from = $post['destination'];
+			$java = 'java sample/Main ' . $to . ' ' . $from;
+			$output = shell_exec($java); // execute java code to get info
+			$myarray = array();
+			/*
+			 * if java program ran
+			 * successfully, then do the following
+			 */
+			if (!(strpos($output,'ERROR') !== false))
+			{
+			    $myArray = explode(', ', $output);
+			    echo <<<_TABLE1
+			    <h2>To Find the Best Price, Hopper.com suggests:</h2>
+			    <table class="table">
+				<tbody>
+				    <tr>
+					<td>A <b>Good Price</b> would be</td>
+					<td>{$myArray[2]} (per passenger)</td>
+				    </tr>
+				    <tr>
+					<td>Try <b>Flying Out</b> on a</td>
+					<td>{$myArray[3]}</td>
+				    </tr>
+				    <tr>
+					<td>Try <b>Flying Back</b> on a</td>
+					<td>{$myArray[4]}</td>
+				    </tr>
+				    <tr>
+					<td>Try these <b>Airlines</b></td>
+					<td>
 _TABLE1;
-						for ($x = 0; $x < $myArray[5]; $x++) {
-							echo $myArray[6+$x];
-							if($x+1 < $myArray[5])
-							{
-								echo ", ";
-							}
-						}	
-					  echo <<<_TABLE2
-					  </td>
-					  </tr>
-					  <tr>
-						<td>Also look at flights <b>Departing From</b></td>
-						<td>{$myArray[5+$myArray[5]+1]}</td>
-					  </tr>
-					  <tr>
-						<td>Also look at flights <b>Arriving At</b></td>
-						<td>{$myArray[5+$myArray[5]+2]}</td>
-					  </tr>
-					</tbody>
-				  </table>
-				  <p><a href="http://www.hopper.com/flights/from-{$myArray[0]}/to-{$myArray[1]}/guide" target="_blank" >See for Yourself!</a></p>
+			    for ($x = 0; $x < $myArray[5]; $x++) 
+			    {
+				echo $myArray[6+$x];
+				if($x+1 < $myArray[5])
+				    echo ", ";
+			    } // for	
+			    echo <<<_TABLE2
+					</td>
+				    </tr>
+				    <tr>
+					<td>Also look at flights <b>Departing From</b></td>
+					<td>{$myArray[5+$myArray[5]+1]}</td>
+				    </tr>
+				    <tr>
+					<td>Also look at flights <b>Arriving At</b></td>
+					<td>{$myArray[5+$myArray[5]+2]}</td>
+				    </tr>
+				</tbody>
+			    </table>
+			    <p><a href="http://www.hopper.com/flights/from-{$myArray[0]}/to-{$myArray[1]}/guide" target="_blank" >See for Yourself!</a></p>
 _TABLE2;
-				  } // endif
+			} // endif
 
+			/* 
+			 * use getResults() and printResults()
+			 * functions to perform Google QPX Express
+			 * request and to display the response object 
+			 * in  a table on the page
+			 * (see flight_tracker.php)
+			 * if no results were found, then
+			 * print a message to notify user
+			 */
 			$result = getResults($post, 50, time());
 			$trips = $result->getTrips();
 			$rowCount = -1;
@@ -266,9 +337,19 @@ _TABLE2;
     </body>
 
     <script>
+	/*
+	 * hide the hidden dropdown tables
+	 * within the main table when the window loads
+	 */
 	window.onload=function(){$('.dropdown').hide();};
-
 	<?php
+	    /*
+	     * generate javascript
+	     * to handle the expansion and
+	     * collapse of the dropdown tables 
+	     * that are within the main table
+	     * for each row in the table
+	     */
 	    if ($rowCount != -1) 
 	    {
 		for ($i = 0; $i < $rowCount; $i++)

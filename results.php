@@ -43,7 +43,10 @@ else if (isset($_POST['id']) && isset($_POST['email']))
 	<link rel="stylesheet" href="flipclock.css"/>
 	<script src="flipclock.min.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
+	<!--
 	<script src="countdownClock.js"></script>
+	-->
+	<script src="flight_tracker.js"></script>
 	<script src="Chart.js"></script>
     </head>
 

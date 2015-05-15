@@ -394,10 +394,11 @@ _QUERY6;
 	 * time this else is reach, so it will perform
 	 * one more final interation before terminating
 	 * just to obtain one more set of results
-	 */
 	if ($oneMoreIt) {break;}
 	$oneMoreIt = true;
 	sleep(5);
+	 */
+	 break;
     }
 
 } while(($current_sec < $end_secs) || $oneMoreIt);

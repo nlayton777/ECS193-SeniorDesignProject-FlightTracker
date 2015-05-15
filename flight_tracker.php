@@ -276,27 +276,25 @@ function getResults(&$post,$num, $keyNum) {
     {
 	case 0:
 	    // nick
-	    $client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
-	    break;
+	    //$client->setDeveloperKey("AIzaSyAxaZBEiV9Lwr8tni1sx2V6WVj8LKnrCas");
+	    //break;
 	case 1:
 	    // rupali
 	    $client->setDeveloperKey("AIzaSyAgWz2bB0YHTwCzWJcS-99pJnzjImluqyg");
 	    break;
-	    /*
 	case 2:
 	    // kirsten
 	    $client->setDeveloperKey("AIzaSyB-cjP2Pfmkq_50JqmB8TcRx5sVgAWW5_Y");
 	    break;
-	    */
-	case 2:
+	case 3:
 	    // nina
 	    $client->setDeveloperKey("AIzaSyDsAGm880MwQmxzceJPEfMLwEE9W84wl8s");
 	    break;
-	case 3:
+	case 4:
 	    // flight tracker
 	    $client->setDeveloperKey("AIzaSyCCS0WHeRJDiRZmxfTmqA9jCbETtMIvAUg");
 	    break;
-	case 4:
+	case 5:
 	    // rupali's other
 	    $client->setDeveloperKey("AIzaSyAlIaLcBQiyOpWVTPSJC-fOJz_2veF94Zw");
 	    break;

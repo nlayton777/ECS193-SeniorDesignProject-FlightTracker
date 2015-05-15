@@ -50,9 +50,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	    }//end  check() --  validation for email and search time
 
 	    function submitForm()
-	    {
-		document.getElementById("hiddenForm").submit();
-	    }
+	    { document.getElementById("hiddenForm").submit(); }
 	</script>
     </head>
 

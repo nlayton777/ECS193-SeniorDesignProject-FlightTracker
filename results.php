@@ -80,95 +80,113 @@ else if (isset($_POST['id']) && isset($_POST['email']))
 		<div class="col-xs-10 col-md-10">
 		    <div class="row">
 			<div class="col-md-6" id="search-title">
-			<?php echo "<h1>Request #{$id}<h1>"; ?>
+			<?php 
+			    require_once './flight_tracker.php';
+			    $connection = new mysqli ("localhost", "root");
+			    if ($connection->connect_error) die($connection->connect_error);
+			    $connection->select_db("flight_tracker");
+
+			    /*
+			     * get the user's search parameters
+			     * for their current id and email
+			     */
+			    $query = <<<_QUERY
+				SELECT *
+				FROM searches
+				WHERE
+				    id = {$id} AND
+				    email = '{$email}';
+_QUERY;
+			    $searchResults = $connection->query($query);
+			    if (!$searchResults) die ($searchResults->connect_error);
+
+			    /*
+			     * also get the user's airline preferences
+			     * for their current id and email
+			     */
+			    $query = <<<_AIRLINES
+				SELECT airline
+				FROM airlines
+				WHERE search_id = {$id} AND
+				    email = '{$email}';
+_AIRLINES;
+			    $airlineResults = $connection->query($query);
+			    if (!$airlineResults) die ($airlineResults->connect_error);
+
+			    /*
+			     * store each of the airlines into an array
+			     */
+			    $airlines = array();
+			    $n = $airlineResults->num_rows;
+			    for ($i = 0; $i < $n; ++$i)
+			    {
+				$airlineResults->data_seek($i);
+				$row = $airlineResults->fetch_array(MYSQLI_ASSOC);
+				$airlines[] = $row['airline'];
+			    } // for each airline
+
+			    /*
+			     * parse and package the user
+			     * search parameters into an object
+			     * to be sent to the getResults() 
+			     * function (see flight_tracker.php)
+			     */
+			    $oneWay = true;
+			    $searchResults->data_seek(0);
+			    $row = $searchResults->fetch_array(MYSQLI_ASSOC);
+			    $d = explode("-", $row['depart_date']);
+			    $d = implode("/", array($d[1], $d[2], $d[0]));
+			    if (!isOneWay($row))
+			    {
+				$r = explode("-", $row['return_date']);
+				$r = implode("/", array($r[1], $r[2], $r[0]));
+				$oneWay = false;
+			    } else 
+				$r = "";
+			    $obj = array("id"	    => $id,
+					 "email"	    => $email,
+					 "source"	    => $row['origin'],
+					 "destination"  => $row['destination'],
+					 "depart_date"  => $d,
+					 "return_date"  => $r,
+					 "adults"	    => $row['adults'],
+					 "children"	    => $row['children'],
+					 "seniors"	    => $row['seniors'],
+					 "seat_infants" => $row['seat_infant'],
+					 "lap_infants"  => $row['lap_infant'],
+					 "airline"	    => $airlines,
+					 "price"	    => $row['price'],
+					 "one_way"	    => $row['one_way'],
+					);
+
+			    /*
+			     * perform QPX express
+			     * request for results
+			     */
+			    $result = getResults($obj, 50, time());
+			    $retDate = $r;
+			    $arrow = '&harr; ';
+			    if ($oneWay) {
+				$arrow = '&rarr; ';
+				$retDate = '';
+			    }
+				
+			    echo <<<_HEADER
+				<h1>Search Results: <br>Request #{$id}<h1>
+				<h3 id="trip-title">
+				{$d} <strong>{$row['origin']}</strong> {$arrow} 
+				     <strong>{$row['destination']}</strong>
+				{$retDate}
+				</h3>
+_HEADER;
+    
+			?>
 			</div><!--end col-->
 
 			<div class="col-md-6" id="background-info">
 			    <img class="exclamation" src="exclamation.png" alt="Important" height="8%" width="8%" />
 
 			    <?php
-				require_once './flight_tracker.php';
-				$connection = new mysqli ("localhost", "root");
-				if ($connection->connect_error) die($connection->connect_error);
-				$connection->select_db("flight_tracker");
-
-				/*
-				 * get the user's search parameters
-				 * for their current id and email
-				 */
-				$query = <<<_QUERY
-				    SELECT *
-				    FROM searches
-				    WHERE
-					id = {$id} AND
-					email = '{$email}';
-_QUERY;
-				$searchResults = $connection->query($query);
-				if (!$searchResults) die ($searchResults->connect_error);
-
-				/*
-				 * also get the user's airline preferences
-				 * for their current id and email
-				 */
-				$query = <<<_AIRLINES
-				    SELECT airline
-				    FROM airlines
-				    WHERE search_id = {$id} AND
-					email = '{$email}';
-_AIRLINES;
-				$airlineResults = $connection->query($query);
-				if (!$airlineResults) die ($airlineResults->connect_error);
-
-				/*
-				 * store each of the airlines into an array
-				 */
-				$airlines = array();
-				$n = $airlineResults->num_rows;
-				for ($i = 0; $i < $n; ++$i)
-				{
-				    $airlineResults->data_seek($i);
-				    $row = $airlineResults->fetch_array(MYSQLI_ASSOC);
-				    $airlines[] = $row['airline'];
-				} // for each airline
-
-				/*
-				 * parse and package the user
-				 * search parameters into an object
-				 * to be sent to the getResults() 
-				 * function (see flight_tracker.php)
-				 */
-				$searchResults->data_seek(0);
-				$row = $searchResults->fetch_array(MYSQLI_ASSOC);
-				$d = explode("-", $row['depart_date']);
-				$d = implode("/", array($d[1], $d[2], $d[0]));
-				if (!isOneWay($row))
-				{
-				    $r = explode("-", $row['return_date']);
-				    $r = implode("/", array($r[1], $r[2], $r[0]));
-				} else
-				    $r = "";
-				$obj = array("id"	    => $id,
-					     "email"	    => $email,
-					     "source"	    => $row['origin'],
-					     "destination"  => $row['destination'],
-					     "depart_date"  => $d,
-					     "return_date"  => $r,
-					     "adults"	    => $row['adults'],
-					     "children"	    => $row['children'],
-					     "seniors"	    => $row['seniors'],
-					     "seat_infants" => $row['seat_infant'],
-					     "lap_infants"  => $row['lap_infant'],
-					     "airline"	    => $airlines,
-					     "price"	    => $row['price'],
-					     "one_way"	    => $row['one_way'],
-					    );
-
-				/*
-				 * perform QPX express
-				 * request for results
-				 */
-				$result = getResults($obj, 50, time());
-	
 				/* 
 				 * get remaining time for this search
 				 * and record the remaining
@@ -210,10 +228,12 @@ _DES2;
 		    ?>
 			</div><!--end col-->
 		    </div><!--end row-->
+		    <hr>
 
 		    <!-- display header and countdown clock -->
 		    <h2>Search Time Remaining</h2>
 		    <div class="clock"></div>
+		    <hr>
 		    <?php
 			echo <<<_SCRIPT
 			    <script>
@@ -262,6 +282,7 @@ _SCRIPT;
 			var myChart = new Chart(buyers).Line(buyerData, options);
 		    </script>
 		    <p>*Refresh the page to see updated results of the graph*</p>
+		    <hr>
 
 		    <h2>Search Results</h2>
 		    <?php

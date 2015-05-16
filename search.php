@@ -235,6 +235,7 @@ _SECTION2;
 			    </form>
 			</div><!--end col-->
 		    </div><!--end row-->
+		    <hr>
 		    
 		    <?php
 			/*

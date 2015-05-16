@@ -171,6 +171,7 @@ _STUFF7;
                             echo $carrier->getName();
                             $site = $carrier->getCode();
                             $oper = $leg->getOperatingDisclosure();
+                            //echo $oper;
                             if ((strpos($oper,'AMERICAN AIRLINES') !== false)) {
                             	if($site !== "AS")
                             		$site = "AA";
@@ -494,9 +495,13 @@ _QUERY4;
     } // createNewSearch($post)
 
 
-    define ('URL', "http://localhost:10088/signin.php");
     function getConfirmationEmail(&$post,$userSource,$userDestination,$userID)
     {
+    $data = array('email'=>$post['email'],'id'=>$userID);
+	$queryString = http_build_query($data) . "\n";
+	$url = 'http://localhost:10088/signin.php?' . $queryString;
+	define ('URL', $url);
+
 	$returnArr = array(
 		    'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>',
 		    'to'      => '<'.$post['email'].'>',
@@ -568,7 +573,12 @@ _QUERY4;
 
     function getResultsEmail($userEmail, $userID, $userSource, $userDestination)
     {
-
+	
+	$data = array('email'=>$post['email'],'id'=>$userID);
+	$queryString = http_build_query($data) . "\n";
+	$url = 'http://localhost:10088/signin.php?' . $queryString;
+	define ('URL', $url);
+	
 	$resultsArr = array(
 		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 
 		'to'      => '<'.$userEmail.'>',
@@ -641,6 +651,11 @@ _QUERY4;
 function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
     {
 
+	$data = array('email'=>$post['email'],'id'=>$userID);
+	$queryString = http_build_query($data) . "\n";
+	$url = 'http://localhost:10088/signin.php?' . $queryString;
+	define ('URL', $url);
+	
 	$resultsArr = array(
 		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 
 		'to'      => '<'.$userEmail.'>',

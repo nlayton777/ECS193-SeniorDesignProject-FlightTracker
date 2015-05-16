@@ -66,8 +66,8 @@ $remaining = getRemainingTime($userID,$email);
 		str += "&source=<?php echo $userSource; ?>";
 		str += "&destination=<?php echo $userDestination; ?>";
 		str += "&searchTime=<?php echo $post['search_time']; ?>";
-		xmlhttp.open("GET","background_search.php?" + str,true);
-		xmlhttp.send();
+//		xmlhttp.open("GET","background_search.php?" + str,true);
+//		xmlhttp.send();
 	    }; // sendMessage()
 	</script>
     </head>
@@ -165,11 +165,11 @@ _SECTION1;
 				 * specified by the user
 				 */
 				$type = array(
-				    1 => 'Adults', 
-				    2 => 'Children', 
-				    3 => 'Seniors', 
-				    4 => 'Seat Infants', 
-				    5 => 'Lap Infants'
+				    'Adults'	    => 'Adults', 
+				    'Children'	    => 'Children', 
+				    'Seniors'	    => 'Seniors', 
+				    'Seat Infants'  => 'Seat Infants', 
+				    'Lap Infants'   => 'Lap Infants'
 				);
 
 				foreach ($type as $t)

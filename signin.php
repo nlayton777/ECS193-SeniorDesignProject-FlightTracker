@@ -42,6 +42,7 @@
 			document.getElementById("email").value = "{$_GET['email']}";
 			document.getElementById("id").value = "{$_GET['id']}";
 //			document.getElementById("claimFlight").submit();
+			doStuff(email)
 		    }
 		</script>
 	    </head>

@@ -43,12 +43,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	     */
 	    function check(mail) 
 	    {
-		var currentSecs = new Date().getTime()/1000; //get time right now in seconds 
+		var currentSecs = new Date().getTime()/1000; // get current time in seconds
 		var searchTime = document.getElementById("numHours").value;
-		var searchSecs = searchTime * 60 * 60; //search window time in seconds 
+		var searchSecs = searchTime * 60 * 60; // search window time in seconds 
 		var CurrentSearchSecs = currentSecs + searchSecs;
 
-		//get Departure date and convert to seconds 
+		// get Departure date and convert to seconds 
 		<?php 
 		    $post = $_POST;
 		    require_once('./flight_tracker.php');

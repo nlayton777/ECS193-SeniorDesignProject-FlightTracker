@@ -66,8 +66,8 @@ $remaining = getRemainingTime($userID,$email);
 		str += "&source=<?php echo $userSource; ?>";
 		str += "&destination=<?php echo $userDestination; ?>";
 		str += "&searchTime=<?php echo $post['search_time']; ?>";
-//		xmlhttp.open("GET","background_search.php?" + str,true);
-//		xmlhttp.send();
+		xmlhttp.open("GET","background_search.php?" + str,true);
+		xmlhttp.send();
 	    }; // sendMessage()
 	</script>
     </head>
@@ -124,7 +124,9 @@ $remaining = getRemainingTime($userID,$email);
 		   Request ID and Email ready when you return for the updated 
 		   search results.
 		</p>
+		<hr>
 		<h3>Summary of Itinerary</h3>
+		<hr>
 
 		<?php
 		    // start countdown clock with time specified by user
@@ -148,15 +150,26 @@ $remaining = getRemainingTime($userID,$email);
 				<li>Request ID: {$userID}</li>
 				<li>Email: {$post['email']}</li>
 				<li>Search Time: {$post['search_time']} hours</li>
-				<li>Origin: {$post['origin']}</li>
-				<li>Destination: {$post['destination']}</li>
+				<li>Maximum Price Limit: \${$post['price']}</li>
 			    </ul>
 			</div>
 
 			<div class="col-md-6">
 			    <ul>
+				<li>Origin: {$post['origin']}</li>
+				<li>Destination: {$post['destination']}</li>
 				<li>Date of Departure: {$post['depart_date']}</li>
 				<li>Date of Return: {$returnDate}</li>
+			    </ul>
+			</div>
+		    </div>
+		    <hr>
+			
+		    <div class='row'>
+			<div class="col-md-6">
+			    <ul>
+				<li>Number of Passengers:</li>
+				<ul>
 _SECTION1;
 
 				/*
@@ -164,33 +177,81 @@ _SECTION1;
 				 * their numbers depending on what was
 				 * specified by the user
 				 */
-				$type = array(
-				    'Adults'	    => 'Adults', 
-				    'Children'	    => 'Children', 
-				    'Seniors'	    => 'Seniors', 
-				    'Seat Infants'  => 'Seat Infants', 
-				    'Lap Infants'   => 'Lap Infants'
+				$type = array('adults', 'children', 'seniors',
+					      'seat_infant', 'lap_infant');
+				$name = array(
+				    'adults'	    => 'Adults', 
+				    'children'	    => 'Children', 
+				    'seniors'	    => 'Seniors',
+				    'seat_infant'   => 'Seat Infant', 
+				    'lap_infant'    => 'Lap Infant'
 				);
 
 				foreach ($type as $t)
+				{
 				    if (isset($post[$t]) && $post[$t] > 0)
-					echo "<li>Number of {$t}: {$post[$t]}</li>";
+				    {
+					$str = "";
+					$temp = explode("_", $name[$t]);
+					if (count($temp) > 1)
+					{
+					    $pieces = array();
+					    foreach ($temp as $word)
+						$pieces[] = ucfirst($word);
+					    $str = implode(" ", $pieces);
+					} else
+					    $str = ucfirst($temp[0]);
+
+					echo "<li>{$str}: {$post[$t]}</li>";
+				    } // if
+				} // foreach
+				
+				$s = "";
+				$countFlag = false;
+				if (count($post['airline']) > 1)
+				{
+				    $countFlag = true;
+				    $s = "s";
+				}
+				echo <<<_SECTION1A
+				</ul>
+			    </ul>
+			</div>
+
+			<div class='col-md-6'>
+			    <ul>
+				<li>Airline Preference{$s}:</li>
+				<ul>
+_SECTION1A;
 
 				/* 
 				 * scan the airline preferences and display
 				 * their codes as specified by the user
 				 */
+				if (file_exists('airlines.txt')) {
+				    $codes = fopen('airlines.txt', 'r');
+				    $names = array();
+				    foreach ($post['airline'] as $airline) {
+					while ($line = fgets($codes)) {
+					    if (strpos($line, $airline) == true)
+					    {
+						$names[] = $line;
+						break;
+					    }
+					} // while
+				    } // for
+				} // if
 				$i = 1;
-				foreach ($post['airline'] as $airline) {
-				    if (count($post['airline']) > 1)
-					echo "<li>Airline Preference {$i}: {$airline}</li>";
+				foreach ($names as $airline) {
+				    if ($countFlag)
+					echo "<li>Airline {$i}: {$airline}</li>";
 				    else
-					echo "<li>Airline Preference: {$airline}</li>";
+					echo "<li>{$airline}</li>";
 				    $i++;
 				} // foreach airline
 
 				echo <<<_SECTION2
-				<li>Maximum Price Limit: \${$post['price']}</li>
+				</ul>
 			    </ul>
 			</div>
 		    </div>

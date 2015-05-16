@@ -41,7 +41,6 @@
 		    function autoSubmit() {
 			document.getElementById("email").value = "{$_GET['email']}";
 			document.getElementById("id").value = "{$_GET['id']}";
-//			document.getElementById("claimFlight").submit();
 			doStuff(email)
 		    }
 		</script>
@@ -143,8 +142,13 @@ _STUFF2;
 					 name="id"  id="id" placeholder="1234">
 				    </label>
 				</div>
+				<?php
+				    if (!$flag)
+					echo <<<_STUFF
 				<input type="button" value="Submit" onclick="doStuff(email)" 
 				    onKeyDown="javascript:return submitOnEnter(event)" class="sign-up-button">
+_STUFF;
+				?>
 			    </form>
 			</div>
 		    </div>

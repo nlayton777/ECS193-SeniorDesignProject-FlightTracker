@@ -43,10 +43,7 @@ else if (isset($_POST['id']) && isset($_POST['email']))
 	<link rel="stylesheet" href="flipclock.css"/>
 	<script src="flipclock.min.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
-	<!--
 	<script src="countdownClock.js"></script>
-	-->
-	<script src="flight_tracker.js"></script>
 	<script src="Chart.js"></script>
     </head>
 
@@ -246,14 +243,14 @@ _SCRIPT;
 
 			var buyers = document.getElementById('buyers').getContext('2d');
 			var buyerData = {
-			    labels : ["Start", <?php echo implode(",", $data['labels']); ?>],
+			    labels : ["Start"<?php echo ",".implode(",", $data['labels']); ?>],
 			    datasets : [
 				{
 				    fillColor : "rgba(94, 71, 99, 0.4)",
 				    strokeColor : "#5e4763",
 				    pointColor : "#fff",
 				    pointStrokeColor : "#413145",
-				    data : [0, <?php echo implode(",", $data['data']); ?>]
+				    data : [0 <?php echo ",".implode(",", $data['data']); ?>]
 				}
 			    ]
 			};

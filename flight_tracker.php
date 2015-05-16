@@ -770,7 +770,7 @@ function getGraphData($id, $email)
 	GROUP BY query_time;
 _QUERY;
     $result = $connection->query($query);
-    if (!$result) die($connection->connect_error);
+    if (!$result) die ($connection->error);
     $rv = array();
     $labels = array();
     $data = array();

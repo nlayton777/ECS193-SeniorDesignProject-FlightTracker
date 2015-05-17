@@ -498,15 +498,15 @@ _QUERY4;
     function getConfirmationEmail(&$post,$userSource,$userDestination,$userID)
     {
 	$returnArr = array(
-		    'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>',
+		    'from'    => 'SoFly <ucd.flight.tracker@gmail.com>',
 		    'to'      => '<'.$post['email'].'>',
-		    'subject' => 'UCD Flight Tracker Confirmation',
+		    'subject' => 'SoFly Confirmation',
 		    'html'    => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 				  <html xmlns="http://www.w3.org/1999/xhtml" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 					<head>
 					    <meta name="viewport" content="width=device-width" />
 					    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-					    <title>UCD Flight Tracker</title>
+					    <title>SoFly</title>
 					</head>
 					<body itemscope itemtype="http://schema.org/EmailMessage" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
 					    <table class="body-wrap" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
@@ -529,7 +529,7 @@ _QUERY4;
 									</td>
 								    </tr>
 									<td class="content-block" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-									    Thank you for submitting a search to UCD Flight Tracker. 
+									    Thank you for submitting a search to SoFly. 
 									</td>
 								    </tr>
 								    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -544,7 +544,7 @@ _QUERY4;
 								    </tr>
 								    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 									<td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-									    Thanks for choosing UCD Flight Tracker!
+									    Thanks for choosing SoFly!
 									</td>
 								    </tr>
 								</table>
@@ -585,7 +585,7 @@ _QUERY4;
 	}   
 
 	$resultsArr = array(
-		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 
+		'from'    => 'SoFly <ucd.flight.tracker@gmail.com>', 
 		'to'      => '<'.$userEmail.'>',
 		'subject' => 'New flight prices have been found!  ',
 		'html'    => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -593,7 +593,7 @@ _QUERY4;
 		    <head>
 		    <meta name="viewport" content="width=device-width" />
 		    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		    <title>UCD Flight Tracker</title>
+		    <title>SoFly</title>
 		    </head>
 		    <body itemscope itemtype="http://schema.org/EmailMessage" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
 		    <table class="body-wrap" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
@@ -630,7 +630,7 @@ _QUERY4;
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							<td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-							    Thanks for choosing UCD Flight Tracker!
+							    Thanks for choosing SoFly!
 							</td>
 						    </tr>
 						</table>
@@ -657,7 +657,7 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
     {
 
 	$resultsArr = array(
-		'from'    => 'UCD Flight Tracker <ucd.flight.tracker@gmail.com>', 
+		'from'    => 'SoFly <ucd.flight.tracker@gmail.com>', 
 		'to'      => '<'.$userEmail.'>',
 		'subject' => 'We found a flight for you!  ',
 		'html'    => '
@@ -666,7 +666,7 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 		    <head>
 		    <meta name="viewport" content="width=device-width" />
 		    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		    <title>UCD Flight Tracker</title>
+		    <title>SoFly</title>
 		    </head>
 		    <body itemscope itemtype="http://schema.org/EmailMessage" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
 		    <table class="body-wrap" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
@@ -703,7 +703,7 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 						    </tr>
 						    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							<td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-							    Thanks for choosing UCD Flight Tracker!
+							    Thanks for choosing SoFly!
 							</td>
 						    </tr>
 						</table>

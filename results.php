@@ -162,8 +162,21 @@ _AIRLINES;
 			    /*
 			     * perform QPX express
 			     * request for results
+			     * only if they are 
+			     * revisiting their 
+			     * results on a date 
+			     * prior to the departure
+			     * date
 			     */
-			    $result = getResults($obj, 50, time());
+			    $today = time();
+			    $depDate = mktime(0, 0, 0, $d[1], $d[2], $d[0]);
+			    if ($today < $depDate)
+				$result = getResults($obj, 50, time());
+			    else
+			    {
+				$result = "";
+				$noResults = true;
+			    }
 			    $retDate = $r;
 			    $arrow = '&harr; ';
 			    if ($oneWay) {
@@ -294,12 +307,16 @@ _SCRIPT;
 			 * QPX express, unless there were no results
 			 * found
 			 */
-			$trips = $result->getTrips();
-			$rowCount = -1;
-			if (count($trips->getTripOption()) <= 0)
+			if (!$noResults)
+			{
+			    $trips = $result->getTrips();
+			    $rowCount = -1;
+			    if (count($trips->getTripOption()) <= 0)
+				echo "<h2>No Results Founds</h2>";
+			    else
+				$rowCount = printResults($trips, $obj);
+			} else
 			    echo "<h2>No Results Founds</h2>";
-			else
-			    $rowCount = printResults($trips, $obj);
 
 			$end = $row['end'];
 			$end = explode(" ", $end);

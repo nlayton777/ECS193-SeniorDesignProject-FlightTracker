@@ -113,8 +113,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		    </div>
 		</div>
 		<br><br>
-		<h3>...and we help find the <br>
-		    perfect flight arrangements for <br>
+		<h3>...and we find the perfect<br>
+		    flight arrangements for <br>
 		    your travel needs!</h3>
 	    </header>
 	</div>

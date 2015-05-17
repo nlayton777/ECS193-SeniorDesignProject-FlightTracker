@@ -119,8 +119,8 @@ $remaining = getRemainingTime($userID,$email);
 		<p>We have begun your background search and will notify you once
 		   we have either found your results or reached the end of your 
 		   search time. We have provided a summary of your search 
-		   parameters below. Please stay near your phone or computer. 
-		   We will be updating you via email. Be sure to have your 
+		   parameters below. Please stay near your phone or computer because  
+		   we will be updating you via email. Be sure to have your 
 		   Request ID and Email ready when you return for the updated 
 		   search results.
 		</p>
@@ -147,8 +147,8 @@ $remaining = getRemainingTime($userID,$email);
 		    <div class="row">
 			<div class="col-md-6">
 			    <ul>
-				<li>Request ID: {$userID}</li>
-				<li>Email: {$post['email']}</li>
+				<li>Request ID: <strong>{$userID}</strong></li>
+				<li>Email: <strong>{$post['email']}</strong></li>
 				<li>Search Time: {$post['search_time']} hours</li>
 				<li>Maximum Price Limit: \${$post['price']}</li>
 			    </ul>

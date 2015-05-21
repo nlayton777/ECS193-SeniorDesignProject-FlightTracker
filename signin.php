@@ -120,7 +120,16 @@ _STUFF2;
 			the form will be displayed
 		    -->
 		    <div class="panel panel-default">
-			<div class="panel-heading"><h3>Log In!</h3></div>
+			<div class="panel-heading">
+			    <h3>
+			    <?php 
+				if ($flag)
+				    echo "We are signing you in...";
+				else
+				    echo "Log In";
+			    ?>
+			    </h3>
+			</div>
 			<div class="panel-body">
 			    <!--
 				on submission, the form calls function
@@ -144,10 +153,12 @@ _STUFF2;
 				</div>
 				<?php
 				    if (!$flag)
+				    {
 					echo <<<_STUFF
 				<input type="submit" class="btn btn-info" value="Submit" onclick="doStuff(email)" 
 				    onKeyDown="javascript:return submitOnEnter(event)">
 _STUFF;
+				    } 
 				?>
 			    </form>
 			</div>

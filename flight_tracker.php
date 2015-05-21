@@ -5,6 +5,13 @@ require_once(__ROOT__ .
 require_once(__ROOT__ .
     '/google-api-php-client/src/Google/Client.php');
 
+/*
+ * this function
+ * checks the value 
+ * to see if the user 
+ * requested a one-way
+ * trip on index.php
+ */
 function isOneWay(&$val) 
 {
     $rv = false;
@@ -14,9 +21,20 @@ function isOneWay(&$val)
     return $rv;
 } // isOneWay($val)
 
+/*
+ * this function generates
+ * html code to display
+ * the table of results in search.php
+ * and results.php
+ */
 function printResults($trips, $post)
 {
-    //Start making booking url
+    /*
+     * begin booking url
+     * for booking flights 
+     * from our search or results
+     * pages
+     */
     $urlString = "https://www.google.com/flights/#search;f={$post['source']};".
 		 "t={$post['destination']}";
     $originalDepart = $post['depart_date'];
@@ -31,17 +49,28 @@ function printResults($trips, $post)
     } else
 	$urlString .= ";tt=o;";
 
+    /*
+     * if there are search results,
+     * then begin making the results table
+     */
     $rowCount = 0;
     $options = $trips->getTripOption();
     if (isset($options)) 
     {
+	/*
+	 * check if there
+	 * were multiple passengers
+	 * in the trip
+	 */
 	$multPass = false;
 	if (($post['adults'] + $post['children'] + 
 	$post['seniors'] + $post['seat_infants'] + 
 	$post['lap_infants']) > 1)
 	    $multPass = true;
 
-	// print headers
+	/*
+	 * start printing the table
+	 */
 	echo <<<_HEADERS
 	<table id="results" class="table table-hover" style="background-color: rgba(150, 150, 150, 0)" align="center">
 	<tr id="headers">
@@ -54,15 +83,27 @@ _HEADERS;
 	<th id="info" colspan="2">More Info</th>
 	</tr>
 _HEADERS2;
+	/*
+	 * scan the array of trip options
+	 * provided from the search request
+	 */
 	foreach ($options as $option) 
 	{
+	    /*
+	     * parse the sale total amount
+	     */
 	    $sub = substr($option->getSaleTotal(),3);
 	    echo <<<_STUFF
 	    <tr>
 	    <td>\${$sub}</td>
 	    <td>
 _STUFF;
-	    // print if one way
+	    /*
+	     * print description
+	     * based on whether or 
+	     * not the user requested
+	     * a one-way trip
+	     */
 	    if (!isOneWay($post))
 	    {
 		echo <<<_STUFF2
@@ -71,10 +112,25 @@ _STUFF;
 _STUFF2;
 	    } // if
 
+	    /*
+	     * scan the array of segments
+	     * in the first slice of the 
+	     * trip (there might only
+	     * be 1 slice)
+	     */
 	    foreach ($option->getSlice()[0]->getSegment() as $segment)
 	    {
+		/*
+		 * scan the array of legs
+		 * within the current segment
+		 */
 		foreach ($segment->getLeg() as $leg)
 		{
+		    /*
+		     * get the origin and destination
+		     * and then parse the departure and
+		     * arrival times
+		     */
 		    $orig = $leg->getOrigin();
 		    $dest = $leg->getDestination();
 		    $time1 = explode("-",explode("T",$leg->getDepartureTime())[1])[0];
@@ -89,6 +145,13 @@ _STUFF3;
 		} // foreach
 	    } // foreach
 
+	    /*
+	     * if the trip
+	     * is a round-trip,
+	     * then also scan the 
+	     * same things in the 
+	     * second slice
+	     */
 	    if (!isOneWay($post)) 
 	    {
 		echo <<<_STUFF4
@@ -96,11 +159,24 @@ _STUFF3;
 		<div class="on-the-way-back">
 		    <h5>On the way back...</h5>
 _STUFF4;
-
+		
+		/*
+		 * scan the array of segments within
+		 * the second slice of the trip
+		 */
 		foreach ($option->getSlice()[1]->getSegment() as $segment)
 		{
+		    /*
+		     * scan the array of legs within
+		     * the second slice of the trip
+		     */
 		    foreach ($segment->getLeg() as $leg)
 		    {
+			/*
+			 * get the origin and destination
+			 * and then parse the departure and
+			 * arrival times
+			 */
 			$orig = $leg->getOrigin();
 			$dest = $leg->getDestination();
 			$time1 = explode("-",explode("T",$leg->getDepartureTime())[1])[0];
@@ -117,7 +193,13 @@ _STUFF5;
 		echo "</div>";
 	    } // end if
 
-echo <<<_STUFF6
+	    /*
+	     * generate the dropdown table
+	     * that is initially hidden and
+	     * can be expanded to show
+	     * additional information
+	     */
+	    echo <<<_STUFF6
 	    <div class="dropdown" id="row{$rowCount}">
 		<table class="dropdown-table">
 		    <tr>
@@ -132,6 +214,10 @@ echo <<<_STUFF6
 		    </tr>
 
 _STUFF6;
+	    /* 
+	     * again scan the slices, segments,
+	     * and legs to display additional information
+	     */
 	    $urlEnd = $urlString . "sel=";
 	    $first = true;
 	    foreach ($option->getSlice() as $slice)
@@ -147,8 +233,12 @@ _STUFF6;
 		{         
 		    foreach ($segment->getLeg() as $leg)
 		    {
-			//$orig and $dest are for the particular part of the flight
-			//$origin and $destination are for the whole flight
+			/*
+			 * $orig and $dest are for the 
+			 * particular leg of the flight 
+			 * and $origin and $destination 
+			 * are for the whole flight
+			 */
 			$orig = $leg->getOrigin();
 			$dest = $leg->getDestination();
 			$origin = $post['source'];
@@ -164,11 +254,14 @@ _STUFF6;
 			    <td>
 _STUFF7;
 
+			/*
+			 * get airline info to be
+			 * displayed in the dropdown table
+			 */
 			$carrier = $segment->getFlight()->getCarrier();
 			$previous = NULL; 
 			foreach ($trips->getData()->getCarrier() as $carrier)
 			{
-			    //GET THE AIRLINES      
 			    if ($carrier->getCode() == $segment->getFlight()->getCarrier())
 			    {
 				$name = explode(" ", $carrier->getName());
@@ -191,6 +284,11 @@ _STUFF7;
 			    } // if
 			} // foreach
    
+			/*
+			 * get the cabin and 
+			 * aircraft information to be
+			 * dispayed in the dropdown
+			 */
 			$cab = ucfirst(strtolower($segment->getCabin()));
 			$lg = $leg->getAircraft();
 
@@ -200,6 +298,14 @@ _STUFF7;
 			<td>{$lg}</td>
 			<td>
 _STUFF8;
+			/*
+			 * get meal information
+			 * to be displayed in
+			 * the dropdown table,
+			 * also, parse it to make
+			 * it more compact
+			 * in the table
+			 */
 			$meal = $leg->getMeal();
 			if (isset($meal))
 			{
@@ -216,16 +322,21 @@ _STUFF8;
 				    $meal = explode(" for ", $meal);
 				    echo $meal[0];
 				} // if else
-			    } // if
-			} // if
+			    } // if 
+			} // if meal set
 			else
 			    echo "None";
 
+			/*
+			 * get mileage and duration
+			 * to be displayed in the dropdown
+			 * table
+			 */
 			$mlg = $leg->getMileage();
 			$dur = $leg->getDuration();
 			$segFlightNum = $segment->getFlight()->getNumber();
     
-			//continue making booking url
+			/* continue making the booking url */
 			$urlEnd .= "{$orig}{$dest}0{$site}{$segFlightNum}-";
 			
 			echo <<<_STUFF9
@@ -242,6 +353,11 @@ _STUFF9;
 	    $urlEnd = substr($urlEnd, 0, -1);
 	    if($site == "AS") $urlEnd = $urlString . "a=AS";
 
+	    /*
+	     * finish displaying the final column
+	     * of the table with Hide/Show button
+	     * and Book It button
+	     */
 	    echo <<<_STUFF10
 		    </table>
 		</div>  
@@ -262,6 +378,10 @@ _STUFF10;
 	echo "</table>";
     } else
     {
+	/*
+	 * if no flights were found
+	 * then tell the user
+	 */
 	echo <<<_STUFF11
 	    <h2>
 		Sorry, we could not find any flights that match your
@@ -273,6 +393,14 @@ _STUFF11;
     return ($rowCount);
 } // printResults($post)
 
+/*
+ * this function performs a
+ * query to the Google QPX API
+ * and retrieves and returns an object
+ * that contains the flight 
+ * information for the parameters
+ * that the user answered.
+ */
 function getResults(&$post,$num, $keyNum) 
 {
     // create client 
@@ -408,16 +536,24 @@ function getResults(&$post,$num, $keyNum)
     return($result);
 } // getResults()
 
+/*
+ * this function creates a new
+ * database entry for a newly created
+ * background search request
+ */
 function createNewSearch(&$post)
 {
     require_once('login.php');
 
-    // connect to database
+    /* connect to database */
     $connection = new mysqli ($db_hostname, $db_username);
     if($connection->connect_error) die($connection->connect_error);
     $connection->select_db("flight_tracker");
 
-    // add user info to db
+    /*
+     * parse date information to
+     * be entered into the DB
+     */
     $d_date = explode("/",$post['depart_date']);
     $d_date = "'".implode("-",array($d_date[2],$d_date[0],$d_date[1]))."'";
     if ($post['return_date'] != "NULL")
@@ -427,7 +563,13 @@ function createNewSearch(&$post)
 	$r_date = "'".$r_date."'";
     } else {$r_date = "NULL";}
 
+    /*
+     * determine the point in time
+     * that is the end of the search
+     */
     $endTime = getEndTime($post['search_time']);
+
+    /* perform insertion query */
     $query3 = <<<_QUERY3
 	INSERT INTO searches (
 	    email,
@@ -464,11 +606,19 @@ function createNewSearch(&$post)
 	);
 _QUERY3;
 
+    /* execute query and check result */
     $result3 = $connection->query($query3);
     if (!$result3) die($connection->error);
+
+    /*
+     * also enter flight information
+     * for this user into the Airlines 
+     * table in DB
+     */
     $last_id = $connection->insert_id;
     if (isset($post['airline']))
     {
+	/* build query */
 	$query4 = <<<_QUERY4
 	    INSERT INTO airlines 
 		(search_id,email,airline) 
@@ -488,6 +638,10 @@ _QUERY4;
 	} // foreach airline
 	$query4 .= ";";
 
+	/* 
+	 * execute query 
+	 * and check conection 
+	 */
 	$result4 = $connection->query($query4);
 	if (!$result4) die($connection->error);
     } // if airline set
@@ -496,7 +650,20 @@ _QUERY4;
     return $last_id;
 } // createNewSearch()
 
+/*
+ * the macro below is used in the functions to 
+ * follow to return the user to the website with 
+ * their search ID and email appended to the url
+ * for when they return to the website
+ */
 define ('URL', "http://localhost:10088/signin.php");
+
+/*
+ * the three following functions construct
+ * and return strings (emails) that will be
+ * sent to the user that notify
+ * them of their background search
+ */
 function getConfirmationEmail(&$post,$userSource,$userDestination,$userID)
 {
     $returnArr = array(
@@ -541,7 +708,7 @@ function getConfirmationEmail(&$post,$userSource,$userDestination,$userID)
 							</tr>
 							<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 							    <td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-								<a href="'.URL.'" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Pack Your Bags!</a>
+								<a href="'.URL.'?id='.$userID.'&email='.$post['email'].'" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Pack Your Bags!</a>
 							    </td>
 							</tr>
 							<tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -568,7 +735,10 @@ function getConfirmationEmail(&$post,$userSource,$userDestination,$userID)
     return $returnArr;
 } // getConfirmationEmail()
 
-    
+/* 
+ * see note above getConfirmationEmail() for
+ * information about this function
+ */
 function getResultsEmail($userEmail, $userID, $userSource, $userDestination, $incOrDecr)
 {
     
@@ -624,7 +794,7 @@ function getResultsEmail($userEmail, $userID, $userSource, $userDestination, $in
 					    </tr>
 					    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 						<td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-						    <a href="'.URL.'" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Check Flight Status</a>
+						    <a href="'.URL.'?id='.$userID.'&email='.$userEmail.'" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Check Flight Status</a>
 						</td>
 					    </tr>
 					    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -652,6 +822,10 @@ function getResultsEmail($userEmail, $userID, $userSource, $userDestination, $in
 } // getResultsEmail()
 
 
+/* 
+ * see note above getConfirmationEmail() for
+ * information about this function
+ */
 function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 {
 
@@ -697,7 +871,7 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 					    </tr>
 					    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 						<td class="content-block-button" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
-						    <a href="'.URL.'" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Pack Your Bags!</a>
+						    <a href="'.URL.'?id='.$userID.'&email='.$userEmail.'" class="btn-primary" style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #5e4763; margin: 0; border-color: #5e4763; border-style: solid; border-width: 10px 20px;">Pack Your Bags!</a>
 						</td>
 					    </tr>
 					    <tr style="font-family: \'Helvetica Neue\', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -724,17 +898,34 @@ function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
     return $resultsArr;
 } // SearchOverEmail()
 
+/*
+ * this function returns
+ * the point in time at which
+ * the user's background search
+ * will end
+ */
 function getEndTime($search_time)
 { return date('Y-m-d H:i:s', time() + round(($search_time * 60 * 60),0));} 
 // getEndTime()
 
+/*
+ * this function returns the number
+ * of remaining seconds in the user's
+ * background search
+ */
 function getRemainingTime($id,$email)
 {
+    /*
+     * connect to database
+     */
     require_once 'login.php';
     $connection = new mysqli ('localhost', 'root');
     if ($connection->connect_error) die ($connection->connect_error);
     $connection->select_db("flight_tracker");
 
+    /*
+     * perform query to get the end time
+     */
     $getTime = <<<_QUERY
 	SELECT end
 	FROM searches
@@ -746,6 +937,9 @@ _QUERY;
     $result->data_seek(0);
     $remaining = 0;
 
+    /*
+     * determine the remaining time
+     */
     try {
 	$end = $result->fetch_assoc()['end'];
 	$day_time = explode(" ",$end);
@@ -758,13 +952,25 @@ _QUERY;
     return ($remaining <= 0 ? 0 : $remaining);
 } // getRemainingTime(); returns UNIX timestamp
 
+/*
+ * this function gets background search data
+ * from the database, parses the data, and returns
+ * it as an object to the results page to later
+ * be displayed in a graph
+ */
 function getGraphData($id, $email)
 {
+    /* connect to database */
     require_once 'login.php';
     $connection = new mysqli ('localhost', 'root');
     if ($connection->connect_error) die ($connection->connect_error);
     $connection->select_db("flight_tracker");
 
+    /*
+     * build and execute
+     * query to get the sale total
+     * and time of query
+     */
     $query = <<<_QUERY
 	SELECT MIN(opt_saletotal), query_time
 	FROM `{$id}`
@@ -773,6 +979,12 @@ _QUERY;
     $result = $connection->query($query);
     if (!$result) die($connection->connect_error);
 
+    /*
+     * scan the results of the query
+     * and append them into an array
+     * of data that will be returned 
+     * to results page
+     */
     $rv = array();
     $labels = array();
     $data = array();
@@ -800,10 +1012,13 @@ _QUERY;
  */
 function checkIsOneWay($post)
 {
+    /* connect to DB */
     require_once 'login.php';
     $connection = new mysqli('localhost','root');
     if ($connection->connect_error) die ($connection->connect_error);
     $connection->select_db("flight_tracker");
+
+    /* build and execute query */
     $query = <<<_BLAH
 	SELECT one_way 
 	FROM searches  
@@ -813,6 +1028,11 @@ function checkIsOneWay($post)
 _BLAH;
     $result = $connection->query($query);
     if (!$result) die ($connection->error);
+
+    /*
+     * check if the user
+     * wanted a one-way trip
+     */
     $result->data_seek(0);
     $row = $result->fetch_array(MYSQLI_ASSOC);
     $val = false;

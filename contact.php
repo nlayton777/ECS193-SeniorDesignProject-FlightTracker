@@ -15,47 +15,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<script src="bootstrap.js"></script>
 	<script src="flight_tracker.js"></script>
 	<style>
-	   html,body {
-		 height:100%;
-	   }
-	   h1 {
-		 font-family: Arial,sans-serif;
-		 font-size: 63px;
-		 font-weight: bold;
-		 color: #000000;
-	   }
-	   .lead {
-		   color:#000000;
-	   }
-	   /* Custom container */
-	   .container-full {
-		 margin: 0 auto;
-		 width: 100%;
-		 min-height:100%;
-		 color:#eee;
-		 overflow:hidden;
-  		 background-image: url('Bicycle2.jpg');
-  		 background-repeat: no-repeat;
-  		 background-size: 100% auto;
-  		 background-position: center center;
-  		 opacity: 0.85;	   
-  		 } 
-	   .container-full a {
-		 color:#efefef;
-		 text-decoration:none;
-	   }
-	   .transbox {
-	   	  margin-top: 20px;
-	   	  margin-bottom: 20px;
-	   	  background-color: #fff4e9;
-	   	  opacity: 0.80;
-	   }
-	   .v-center {
-		 margin-top:5%;
-	   }
-	   textarea {
-	    resize: none;
-	   }
+		textarea {
+    		resize: none;
+		}
+		.jumbotron#contact {
+    		color: #ffffff;
+    		background: #ffffff url('GoldenGate3.jpg') no-repeat center center;
+    		-webkit-background-size: cover;
+       		-moz-background-size: cover;
+         	-o-background-size: cover;
+            background-size: cover;
+            height: 200px;
+		}
 	</style>
     </head>
 
@@ -95,44 +66,26 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	    </div>
 	</nav>
 
-	<div class="container-full">
-
-		<div class="row">
-		  <div class="col-lg-12 text-center v-center">
-		  <div class="transbox">
-			<h1>Comments?</h1>
-		  </div>
-		  </div> 
-		</div> <!-- /row -->
-  
-		<div class="row">
-	   
-		  <div class="col-lg-12 text-center v-center" style="font-size:39pt;">
-			<a href="#"><i class="icon-google-plus"></i></a> <a href="#"><i class="icon-facebook"></i></a>  <a href="#"><i class="icon-twitter"></i></a> <a href="#"><i class="icon-github"></i></a> <a href="#"><i class="icon-pinterest"></i></a>
-		  </div>
-	  
-		</div>
-  
-  		<br><br><br><br><br>
-	
-	</div> <!-- /container full -->
-
 <div class="container">
-  	<hr>
+		<header class="jumbotron" id="contact">
+		<h1>Comments?</h1>
+		<h3>We'd Love to Hear Them.</h3>
+	    </header>
+	</div>
+<div class="container">
   	<div class="row">
         <div class="col-md-3">
           
         </div>
       	<div class="col-md-6">
         	<div class="panel panel-default">
-		    <div class="panel-heading"><h3>We'd Love to Hear Them.</h3></div>
 		    <div class="panel-body">
 		    <form role="form form-inline"  class="form-vertical" method="post" action="contactsubmission.php">
 			<div class="form-group">
 			   			<label for="name">
 						Name: 
 						<input type="text" class="form-control" id="name" 
-				    	name = "name" size="20" placeholder="John Smith" required/>
+				    	name = "name" size="25" placeholder="John Smith" required/>
 			    		</label>
 
 			    		<label for="email">
@@ -143,7 +96,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 					</div>
 					<label for="comments">
 						Message: 
-			    		<textarea class="form-control" rows="8" cols="60" id="comments" name="comments" placeholder="Let us know what you think!" required></textarea>
+			    		<textarea class="form-control" rows="4" cols="60" id="comments" name="comments" placeholder="Let us know what you think!" required></textarea>
 			    	</label>
 			    
 			    <input type="submit" class="btn btn-default" value="Submit"/>

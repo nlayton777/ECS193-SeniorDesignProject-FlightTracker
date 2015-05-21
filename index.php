@@ -19,8 +19,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<script src="bootstrap.js"></script>
 
 	<!--this is for the datepicker()-->
-	<link rel="stylesheet" href="jquery-ui.css"/>
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/ui-darkness/jquery-ui.css">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   	<script src="jquery-ui.js"></script>
 
 	<!--this is for checkbox list-->
@@ -37,7 +36,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 
 	<!--this is our js and css file-->
 	<script type="text/javascript" src="flight_tracker.js"></script>
-	<link rel="stylesheet" href="styles.css"/>	 	
+	<link rel="stylesheet" href="styles2.css"/>	 	
 	<script>
 	    function changeFunction()
 	    {
@@ -85,133 +84,162 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	</nav>
 
 	<!-- HERE WE WILL HAVE OUR SEARCH BAR -->
-	<div class="container-fluid" id="header">
-	    <header class="jumbotron" id="home">
-		<h1>UCD Flight Tracker</h1>
-		<h3>Customize your travel needs!</h3>
+	<div class="container-fluid" id="whole">
+	<div id="myCarousel" class="carousel slide" data-ride="carousel">
 
+	   <!-- Wrapper for slides -->
+	   <div class="carousel-inner" role="listbox">
+		 <div class="item active">
+		   <img class="img-responsive" src="Carousel/GoldenGate2.jpg" alt="Golden Gate">
+		 </div>
+		 <div class="item">
+		   <img class="img-responsive" src="Carousel/Arches.jpg" alt="Arches">
+		 </div>
+		 <div class="item">
+		   <img class="img-responsive" src="Carousel/Street.jpg" alt="Street">
+		 </div>
+		 <div class="item">
+		   <img class="img-responsive" src="Carousel/Yosemite.jpg" alt="Yosemite">
+		 </div>
+		 <div class="item">
+		   <img class="img-responsive" src="Carousel/Beach.jpg" alt="Beach">
+		 </div>
+	   </div>
+	 </div>
+	 
+	<div class="container-fluid" id="home">
+		<div class="jumbotron" id="home"><h1>SoFly. </h1><p>Customize your travel needs!</p></div>
+		<br>
+		<div class="panel panel-default">
+		<div class="panel-body" id="home">
 		<form id="search_form" class="form-vertical" method="post" action="search.php" >
-		    <!--ONE-WAY CHECKBOX-->
-		    <div class="form-group">
-			<label class="no-indent" for="oneway">
-			<input type="checkbox" value="1" 
-			    onclick="OneWay()" id="oneway" name="one_way" 
-			    form="search_form"/>
-			<input class="form-control" type="hidden" value="0" 
-			    id="onewayHidden"  name="one_way"
-			    form="search_form" checked/>
-			One Way 
-			</label>
-		    </div>
+			<div class="form-group">
+					<!--One Way Checkbox-->
+				    <label for="oneway">One Way:
+				    <input type="checkbox" value="1" 
+			    		onclick="OneWay()" id="oneway" name="one_way" 
+			    		form="search_form"/>
+					<input class="form-control" type="hidden" value="0" 
+			    		id="onewayHidden" name="one_way"
+			    		form="search_form" checked/>
+				    </label>
+				</div>	
+		
+				<div class="form-group">
+						<!--Source Field-->
+			   			<label for="source">
+						<input type="text" class="form-control" id="source" 
+				    		name = "source" size="30" placeholder="Origin" required/>
+			    		</label>
+						
+						<!--Destination Field-->
+			    		<label for="destination">
+						<input type="text" class="form-control" id="destination" name="destination" 
+				    		size="30" placeholder="Destination" required/>
+			    		</label>
+				</div>
+				<div class="form-group">
+						<!--DEPART DATE FIELD-->
+			    		<label for="depart-date">
+						<input type="text" class="form-control" id="datepickerD" 
+							name="depart_date" size="30" placeholder="Departure Date" required/>
+						</label>
 
-		    <div class="row">
-			<div class="form-group form-inline">
-			    <!--SOURCE FIELD-->
-			    <label for="source" class="sr-only" required >Departure Location</label>
-				<input type="text" class="form-control"  id="source" name="source" 
-				    placeholder="Origin"/>	
-			    <!--
-			    <input class="textbox"  id="source" name="source" placeholder=" -Select an Origin-"/>	
-			    -->
+			    		<!--RETURN DATE FIELD-->
+			    		<label for="return-date">
+						<input type="text" class="form-control" id="datepickerR" 
+							name="return_date" size="30" placeholder="Return Date"/>
+						</label>
+				</div>
 				
-			    <!--DESTINATION FIELD-->
-			    <label for="destination" class="sr-only">Arrival Location</label>
-				<input type="text" class="form-control"  id="destination" name="destination" 
-				    placeholder="Destination"/>	
-			    <!--
-			    <input class="textbox"  id="destination" name="destination" placeholder=" -Select a Destination-"/>	
-			    -->
-			    
-			    <!--DEPART DATE FIELD-->
-			    <label for="depart-date" class="sr-only">Date of Departure</label>
-				<input type="text" class="form-control" id="datepickerD" 
-				name="depart_date" placeholder="Depart"/ required>
-
-			    <!--RETURN DATE FIELD-->
-			    <label for="return-date" class="sr-only">Date of Return</label>
-				<input type="text" class="form-control" id="datepickerR" 
-				name="return_date" placeholder="Return"/>
+				<div class="form-group">
+					<!--PASSENGERS FIELD-->
+					<label for="adult">
+						Adults:
+						<input type='button' value='-' class='btn btn-info qtyminus' field='adults' />
+						<input type='text' name='adults' value='0' class='qty' id='adult' />
+						<input type='button' value='+' class='btn btn-info qtyplus' field='adults' />
+					</label>
+					&nbsp
+					<label for="child">
+						Children:
+						<input type='button' value='-' class='btn btn-info qtyminus' field='children' />
+						<input type='text' name='children' value='0' class='qty' id='child'  />
+						<input type='button' value='+' class='btn btn-info qtyplus' field='children' />
+					</label>
+					&nbsp
+					<label for="senior">
+						Seniors:
+						<input type='button' value='-' class='btn btn-info qtyminus' field='seniors' />
+						<input type='text' name='seniors' value='0' class='qty'id='senior'/>
+						<input type='button' value='+' class='btn btn-info qtyplus' field='seniors' />
+					</label>
+					</div>
+					<div class="form-group">
+					<label for="seatinfant">
+						Seat Infant:
+						<input type='button' value='-' class='btn btn-info qtyminus' field='seat_infants' />
+						<input type='text' name='seat_infants' value='0' class='qty' id='seatinfant' />
+						<input type='button' value='+' class='btn btn-info qtyplus' field='seat_infants' />
+					</label>   
+					&nbsp
+					<label for="lapinfant">
+						Lap Infant:
+						<input type='button' value='-' class='btn btn-info qtyminus' field='lap_infants' />
+						<input type='text' name='lap_infants' value='0' class='qty' id='lapinfant' />
+						<input type='button' value='+' class='btn btn-info qtyplus' field='lap_infants' />
+					</label>
+				</div>
+				
+				<div class="form-group"> 		
+					<!--AIRLINE FIELD-->
+					<label for="airline">Preferred Airline:</label>
+					<select class="form-control" id="airline" name="airline[]"
+						form="search_form" multiple="multiple">
+					<option value="none" selected>No Preference</option>
+					<?php
+						if (file_exists("airlines.txt")){
+							$codes = fopen("airlines.txt",'r');				
+							while ($line = fgets($codes)){
+								$line_code = explode("(", $line);
+								$code = substr($line_code[1], 0, 2);
+								echo "<option value=\"{$code}\">{$line_code[0]}</option>";
+							}
+						} 
+					?>
+				   </select>
+				   </div>
+				   <div class="form-group">
+				   <!--PRICE FIELD-->	
+				   	<label for="price" id="priceLabel">Maximum Price:</label>
+					<input type="text" class="form-control" name="price" id="price" size="25"></input>
 				</div>
 
-		    <div class="form-group form-inline">
-			<!--PASSENGERS FIELD-->
-			<label for="adult">
-				Adults
-				<input type='button' value='-' class='btn btn-info qtyminus' field='adults' />
-				<input type='text' name='adults' value='0' class='qty' id='adult' />
-				<input type='button' value='+' class='btn btn-info qtyplus' field='adults' />
-			</label>
-			<label for="child">
-				Children
-				<input type='button' value='-' class='btn btn-info qtyminus' field='children' />
-				<input type='text' name='children' value='0' class='qty' id='child'  />
-				<input type='button' value='+' class='btn btn-info qtyplus' field='children' />
-			</label>
-			<label for="senior">
-				Seniors
-				<input type='button' value='-' class='btn btn-info qtyminus' field='seniors' />
-				<input type='text' name='seniors' value='0' class='qty'id='senior'/>
-				<input type='button' value='+' class='btn btn-info qtyplus' field='seniors' />
-			</label>
-			<label for="seatinfant">
-				Seat Infant
-				<input type='button' value='-' class='btn btn-info qtyminus' field='seat_infants' />
-				<input type='text' name='seat_infants' value='0' class='qty' id='seatinfant' />
-				<input type='button' value='+' class='btn btn-info qtyplus' field='seat_infants' />
-			</label>   
-			<label for="lapinfant">
-				Lap Infant
-				<input type='button' value='-' class='btn btn-info qtyminus' field='lap_infants' />
-				<input type='text' name='lap_infants' value='0' class='qty' id='lapinfant' />
-				<input type='button' value='+' class='btn btn-info qtyplus' field='lap_infants' />
-			</label>
-		    </div>
-
-		    <div class="form-group form-inline"> 		
-			<!--AIRLINE FIELD-->
-			<label for="airline">Preferred Airline</label>
-			<select class="form-control" id="airline" name="airline[]"
-				    form="search_form" multiple="multiple">
-			<option value="none" selected>No Preference</option>
-			<?php
-			    if (file_exists("airlines.txt")){
-				$codes = fopen("airlines.txt",'r');				
-				while ($line = fgets($codes)){
-				    $line_code = explode("(", $line);
-				    $code = substr($line_code[1], 0, 2);
-				    echo "<option value=\"{$code}\">{$line_code[0]}</option>";
-				}
-			    } 
-			?>
-
-			</select>
-		    </div>
-
-		    <!--PRICE FIELD-->	
-		    <div class="form-group form-inline"> 		
-			<label for="price">Max Price: </label>
-			    <!--<input type="text" class="textboxPrice" name="price" id="priceInput"></input>-->
-			    <input type="text" class="form-control" name="price" id="price"></input>
-			    <section id="slider"></section>
-			<script>
-				$("#slider").noUiSlider({
-				    start: 5000, connect: 'lower', step: 10,
-				    range: {'min': 0,'75%': 1000,'max': 5000}
-				});
-			    $("#slider").Link('lower').to($('#price'));
-			</script>
-		    </div>
-			
-		    <div id="btn-container">
-		    <input id="submit-button" class="btn btn-info btn-lg" 
-			type="submit" onclick=" return validate();" value="Find Your Flight!"/>
-		    </div>
+					<div class="form-group">
+						<section id="slider"></section>	
+						<script>
+							$("#slider").noUiSlider({
+								start: 5000, connect: 'lower', step: 10,
+								range: {'min': 0,'75%': 5000,'max': 10000}
+							});
+							$("#slider").Link('lower').to($('#price'));
+						</script>
+				</div>
+				
+				<br>
+				<div id="btn-container">
+		    	<input id="submit-button" class="btn btn-info btn-lg" 
+					type="submit" onclick=" return validate();" value="Find Your Flight!"/>
+		    	</div>
 		</form>
-	    </header>
-	</div>
-
+		</div>
+		</div>
+		</div>
+		</div>
+	
 	<form id="hiddenForm" method="post" action="logout.php">
 	    <input type="hidden" name="webpage" value="index.php" />
 	</form>
     </body>
+
 </html>

@@ -23,7 +23,7 @@ function OneWay() {
 	$("#datepickerR" ).datepicker('disable');	
 	document.getElementById("datepickerR").style.display = "none";
 	onewayHidden.disabled = true;
-	document.getElementById("datepickerD").style.width = "348px";
+	document.getElementById("datepickerD").style.width = "initial";
     } else {
 	$("#datepickerR" ).datepicker('enable');
 	document.getElementById("datepickerR").style.display = "initial";

@@ -1,10 +1,22 @@
+.container-fluid#whole{
+	width:100%;
+	display:table;
+}
+
 .jumbotron#home {
-    color: #ffffff;
-    background: #ffffff url('sfo.jpg') no-repeat center center;
-    -webkit-background-size: cover;
-       -moz-background-size: cover;
-         -o-background-size: cover;
-            background-size: cover;
+	background: transparent;
+    width:50%;
+    display: table-cell;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.container-fluid#home {
+	margin-top:auto;
+	margin-bottom:auto;
+	width:50%;
+	display: table-cell;
+	vertical-align: top;
 }
 
 .jumbotron#about {
@@ -16,25 +28,25 @@
             background-size: cover;
 }
 
-.jumbotron#home .btn-info {
-    color: #fff;
+.container-fluid#home .btn-info {
+    color: #000;
     background-color: transparent;
-    border-color: #fff;
+    border-color: #000;
     -webkit-transition: background-color ease-in-out .15s;
          -o-transition: background-color ease-in-out .15s;
             transition: background-color ease-in-out .15s;
 }
 
-.jumbotron#home
+.container#home
 .btn-info:hover,
 .btn-info:focus,
 .btn-info.focus,
 .btn-info:active,
 .btn-info.active,
 .open > .dropdown-toggle.btn-info {
-    color: #222;
-    background-color: #fff;
-    border-color: #fff;
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
 }
 
 #results .btn-info {
@@ -58,6 +70,7 @@
     border-color: #222;
 }
 
+/*For Passenger Numbers*/
 .qty {
     color: black;
     width: 2.5em;
@@ -94,23 +107,22 @@ input.qtyminus {
 }
 
 #slider {
-    width: 50%;
-    margin-top: 5px;
+    width: 75%;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 #price {
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -webkit-border: none;
-    /*
     width: 100px;
-    */
     text-align: center;
 }
 
 input#submit-button {
     border-width: 2px;
-    width: 30%;
+    width: 200px;
 }
 
 table#results td,th {
@@ -182,4 +194,57 @@ table#results tr#headers th {
 
 .table td,th {
     text-align: center;
+}
+
+label{
+	color: #000000;
+}
+
+label#priceLabel{
+	margin-right:9px;
+	float:left;
+}
+
+.item{
+	width: auto;
+  	height: 550px;
+  	border-radius: 5px 5px 5px 5px;
+    overflow: hidden;
+}
+
+.carousel_slide#myCarousel{
+	width: 50%;
+    display: table-cell;
+}
+
+.carousel-caption {
+    top: 0;
+    bottom: auto;
+}
+
+.jumbotron h1, .jumbotron p{
+	display:inline;
+}
+
+
+
+@media screen and (max-width: 1200px) {
+	.container-fluid#home {
+		margin-top:auto;
+		margin-bottom:auto;
+		width:100%;
+		display: table-cell;
+		vertical-align: top;
+	}
+	
+	.jumbotron#home {
+    	width:100%;
+    	display: table-cell;
+	}
+	
+	.carousel_slide#myCarousel{
+		width: 0%;
+    	display: table-cell;
+	}
+	
 }

@@ -18,6 +18,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<script src="jquery-2.1.3.js"/></script>
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
+	
+	<!--this is for alerts-->
+	<script src="bootbox.js"></script>
 
 
 	<script>
@@ -39,12 +42,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 
 		 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchwindow.email.value)) {
 			if((CurrentSearchSecs) > departSecs) {
-				alert("Please choose a search time that will complete before your departure date.")
+				bootbox.dialog({
+  					title: "You have entered an invalid search time!",
+  					message: "Please choose a search time that will complete before your departure date."
+				});
 				return false;
 			}
 			return(true);
 		  } else {
-		    alert("You have entered an invalid email address!")
+		  		bootbox.dialog({
+  					title: "You have entered an invalid email address!",
+  					message: "Please enter a valid email address."
+				});
 		    return (false)
 		  }
 	    }//end  check() --  validation for email and search time

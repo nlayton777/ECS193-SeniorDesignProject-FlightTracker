@@ -223,8 +223,25 @@ _QUERY4;
 	$insertResult = $connection->query($insertQuery);
 	if (!$insertResult) die ($connection->error);
 
+<<<<<<< HEAD
+	$newMin = false;
+	$min = $lowestPrice;
+	foreach ($prices as $price)
+	{
+	    if ($price < $lowestPrice)
+	    {
+		$newMin = true;
+		$min = $price;
+	    } // if
+
+	} // for each saletotal
+
+	/* if new minimum price has been found */
+	if ($newMin)
+=======
 	$minFromSearch = min($prices);
 	if ($minFromSearch < $lowestPrice)
+>>>>>>> cb0f490d9f4968ecd15c9e8551463b6b5e03761d
 	{
 	    $updateLowestPrice = <<<_QUERY5
 		UPDATE searches

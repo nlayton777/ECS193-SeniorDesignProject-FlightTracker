@@ -10,7 +10,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 <!DOCTYPE html>
 <html>
     <head>
-	<title>UCD Flight Tracker | Search</title>
+	<title>SoFly| Search</title>
 
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -56,7 +56,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		    </button>
-		    <a class="navbar-brand" href="index.php">Flight Tracker</a>
+		    <a class="navbar-brand" href="index.php">SoFly</a>
 		</div>
 
 		<div class="collapse navbar-collapse" id="mynavbar">

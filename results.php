@@ -64,9 +64,9 @@ else if (isset($_POST['id']) && isset($_POST['email']))
 		    <ul class="nav navbar-nav">
 			<li><a href="index.php">Find a Flight</a></li>
 			<li class="active"><a href="results.php">My Search</a></li>
-			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
+			<li><a href="about.php">About</a></li>
 			<li><a href="contact.php">Contact</a></li>
 			<li><a href="logout.php">Log Out</a></li>
 		    </ul>
@@ -135,7 +135,7 @@ _AIRLINES;
 			    $searchResults->data_seek(0);
 			    $row = $searchResults->fetch_array(MYSQLI_ASSOC);
 			    $d = explode("-", $row['depart_date']);
-			    $d = implode("/", array($d[1], $d[2], $d[0]));
+			    $d2 = implode("/", array($d[1], $d[2], $d[0]));
 			    if (!isOneWay($row))
 			    {
 				$r = explode("-", $row['return_date']);
@@ -147,7 +147,7 @@ _AIRLINES;
 					 "email"	    => $email,
 					 "source"	    => $row['origin'],
 					 "destination"  => $row['destination'],
-					 "depart_date"  => $d,
+					 "depart_date"  => $d2,
 					 "return_date"  => $r,
 					 "adults"	    => $row['adults'],
 					 "children"	    => $row['children'],
@@ -170,6 +170,7 @@ _AIRLINES;
 			     */
 			    $today = time();
 			    $depDate = mktime(0, 0, 0, $d[1], $d[2], $d[0]);
+			    $noResults = false;
 			    if ($today < $depDate)
 				$result = getResults($obj, 50, time());
 			    else
@@ -187,7 +188,7 @@ _AIRLINES;
 			    echo <<<_HEADER
 				<h1>Search Results: <br>Request #{$id}<h1>
 				<h3 id="trip-title">
-				{$d} <strong>{$row['origin']}</strong> {$arrow} 
+				{$d2} <strong>{$row['origin']}</strong> {$arrow} 
 				     <strong>{$row['destination']}</strong>
 				{$retDate}
 				</h3>
@@ -197,7 +198,7 @@ _HEADER;
 			</div><!--end col-->
 
 			<div class="col-md-6" id="background-info">
-			    <img class="exclamation" src="exclamation.png" alt="Important" height="8%" width="8%" />
+			    <img class="exclamation" src="Pictures/exclamation.png" alt="Important" height="8%" width="8%" />
 
 			    <?php
 				/* 

@@ -91,9 +91,9 @@ $remaining = getRemainingTime($userID,$email);
 			<li><a href="index.php">Find a Flight</a></li>
 			<li><a href="results.php">My Search</a></li>
 			<li class="active"><a href="#">Search Summary</a></li>
-			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
+			<li><a href="about.php">About</a></li>
 			<li><a href="contact.php">Contact</a></li>
 			<li><a href="javascript:;" onclick="submitForm()">Log Out</a></li>
 		    </ul>
@@ -228,7 +228,8 @@ _SECTION1A;
 				 * scan the airline preferences and display
 				 * their codes as specified by the user
 				 */
-				if (file_exists('airlines.txt')) {
+				if (file_exists('airlines.txt')) 
+				{
 				    $codes = fopen('airlines.txt', 'r');
 				    $names = array();
 				    foreach ($post['airline'] as $airline) {
@@ -241,14 +242,17 @@ _SECTION1A;
 					} // while
 				    } // for
 				} // if
+
 				$i = 1;
-				foreach ($names as $airline) {
-				    if ($countFlag)
+				if ($countFlag)
+				{
+				    foreach ($names as $airline) 
+				    {
 					echo "<li>Airline {$i}: {$airline}</li>";
-				    else
-					echo "<li>{$airline}</li>";
-				    $i++;
-				} // foreach airline
+					$i++;
+				    } // foreach airline
+				} else // if there's only 1 airline
+				    echo "<li>{$airline}</li>";
 
 				echo <<<_SECTION2
 				</ul>

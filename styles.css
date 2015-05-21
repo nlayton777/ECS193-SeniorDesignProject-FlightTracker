@@ -1,68 +1,19 @@
 #home.jumbotron {
-    color: #ffffff;
-    background: #ffffff url('sfo.jpg') no-repeat center center;
+    color: #000;
+    background: #ffffff url('Pictures/sfo.jpg') no-repeat center center;
     -webkit-background-size: cover;
        -moz-background-size: cover;
          -o-background-size: cover;
             background-size: cover;
-}
-
-
-#home.jumbotron .btn-info {
-    color: #fff;
-    background-color: transparent;
-    border-color: #fff;
-    -webkit-transition: background-color ease-in-out .15s;
-         -o-transition: background-color ease-in-out .15s;
-            transition: background-color ease-in-out .15s;
-}
-
-input#submit-button {
-    border-width: 2px;
-    width: 30%;
-}
-
-
-#home.jumbotron
-.btn-info:hover,
-.btn-info:focus,
-.btn-info.focus,
-.btn-info:active,
-.btn-info.active,
-.open > .dropdown-toggle.btn-info {
-    color: #222;
-    background-color: #fff;
-    border-color: #fff;
 }
 
 .jumbotron#about {
     color: #222;
-    background: #ffffff url('Bicycle1.jpg') no-repeat center center;
+    background: #ffffff url('Pictures/Bicycle1.jpg') no-repeat center center;
     -webkit-background-size: cover;
        -moz-background-size: cover;
          -o-background-size: cover;
             background-size: cover;
-}
-
-#results .btn-info {
-    color: #222;
-    background-color: transparent;
-    border-color: #222;
-    -webkit-transition: background-color ease-in-out .15s;
-	 -o-transition: background-color ease-in-out .15s;
-	    transition: background-color ease-in-out .15s;
-}
-
-#results
-.btn-info:hover,
-.btn-info:focus,
-.btn-info.focus,
-.btn-info:active,
-.btn-info.active,
-.open > .dropdown-toggle.btn-info {
-    color: #fff;
-    background-color: #222;
-    border-color: #222;
 }
 
 div.dropdown {
@@ -111,18 +62,13 @@ input.qtyminus {
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -webkit-border: none;
-    /*
-    width: 100px;
-    */
     text-align: center;
 }
-
 
 table#results td,th {
     text-align: center;
     vertical-align: middle;
 }
-
 
 table#results th#it {
     width: 84%;
@@ -169,17 +115,6 @@ table.dropdown-table {
 	  transition: background-color ease-in-out .15s;
 }
 
-#search-submit-button:hover,
-#search-submit-button:focus,
-#search-submit-button.focus,
-#search-submit-button:active,
-#search-submit-button.active,
-.open > #search-submit-button.dropdown-toggle.btn-info {
-  color: #ffffff;
-  background-color: #222222; 
-  border-color: #222222; 
-}
-
 .table td,th {
     text-align: center;
 }
@@ -195,13 +130,12 @@ div.transbox h1 {
     margin: 0 auto;
     color: #eee;
     min-height: 100%;
-    background: #ffffff url('Bicycle2.jpg') no-repeat center center;
+    background: #ffffff url('Pictures/Bicycle2.jpg') no-repeat center center;
     -webkit-background-size: cover;
        -moz-background-size: cover;
          -o-background-size: cover;
 	    background-size: cover;
     border-radius: 6px;
-    /*opacity: 0.85;*/
 } 
 
 .transbox {
@@ -256,4 +190,21 @@ textarea {
     div.on-the-way-back {
 	margin-left: 35%;
     }
+}
+
+.btn-info {
+    border: 1px solid #222;
+    color: #000;
+    background-color: transparent;
+}
+
+.btn-info:hover,
+.btn-info:focus,
+.btn-info.focus,
+.btn-info:active,
+.btn-info.active,
+.open > .dropdown-toggle.btn-info {
+    border: 1px solid #222;
+    color: #000;
+    background-color: transparent;
 }

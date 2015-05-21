@@ -1,14 +1,15 @@
 rm ./*~
-cp ./*.html /usr/local/zend/apache2/htdocs/
+rm /usr/local/zend/apache2/htdocs/*.php*
+rm /usr/local/zend/apache2/htdocs/*.css*
+rm /usr/local/zend/apache2/htdocs/*.js*
 cp ./*.php /usr/local/zend/apache2/htdocs/
 cp ./*.css* /usr/local/zend/apache2/htdocs/
 cp ./*.js /usr/local/zend/apache2/htdocs/
 cp ./*.txt /usr/local/zend/apache2/htdocs/
-cp ./*.jpg /usr/local/zend/apache2/htdocs/
-cp ./*.png /usr/local/zend/apache2/htdocs/
 cp -R ./GoogleAPI/ /usr/local/zend/apache2/htdocs
 cp -r ./sample/ /usr/local/zend/apache2/htdocs/sample/
-rm /usr/local/zend/apache2/htdocs/*.html
-rm /usr/local/zend/apache2/htdocs/*~
 rm /usr/local/zend/apache2/htdocs/copy
+rm /usr/local/zend/apache2/htdocs/*~
+rm /usr/local/zend/apache2/htdocs/.*.swp
+rm ./.*.swp
 rm ./*~

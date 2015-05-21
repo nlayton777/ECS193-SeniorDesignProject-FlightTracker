@@ -34,7 +34,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<script src="bootstrap.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
 
-
 	<script>
 	    /*
 	     * validate the email address and search time of the user
@@ -56,16 +55,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 		    echo "var departSecs = \"{$departureDate}\";";
 		?>  
 
-		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchwindow.email.value)) 
-		{
-		    if((CurrentSearchSecs) > departSecs) 
-		    {
+		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchwindow.email.value)) {
+		    if((CurrentSearchSecs) > departSecs) {
 			alert("Please choose a search time that will complete before your departure date.")
 			return false;
 		    }
 		    return(true);
-		} else 
-		{
+		} else {
 		    alert("You have entered an invalid email address!")
 		    return (false)
 		}
@@ -108,9 +104,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			    else
 				echo "<li><a href=\"signin.php\">My Search</a></li>";
 			?>
-			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
+			<li><a href="about.php">About</a></li>
 			<li><a href="contact.php">Contact</a></li>
 			<?php
 			    /*
@@ -154,7 +150,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			    understand how the background search works
 			-->
 			<div class="col-md-6" id="background-info">
-			    <img class="exclamation" src="exclamation.png" alt="Important" height="8%" width="8%" />
+			    <img class="exclamation" src="Pictures/exclamation.png" alt="Important" height="8%" width="8%" />
 			    <p id="background-description">
 				Our search engine can work in the background for you to find 
 				deals on flights whose prices might change in the near future. 

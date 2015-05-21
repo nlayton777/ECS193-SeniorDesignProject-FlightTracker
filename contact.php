@@ -75,9 +75,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			    }
 			?>
 
-			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
+			<li><a href="about.php">About</a></li>
 			<li class="active"><a href="contact.php">Contact</a></li>
 
 			<?php
@@ -155,7 +155,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 				    <textarea class="form-control" rows="8" cols="60" id="comments" name="comments" placeholder="Let us know what you think!" required></textarea>
 				</label>
 			    
-				<input type="submit" class="btn btn-default" value="Submit"/>
+				<input type="submit" class="btn btn-info" value="Submit"/>
 			    </form>
 			</div> <!--end div.panel-body-->
 		    </div><!-- end div.panel.panel-default-->

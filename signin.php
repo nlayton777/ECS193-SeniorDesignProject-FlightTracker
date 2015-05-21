@@ -72,9 +72,9 @@ _SCRIPT;
 		    <ul class="nav navbar-nav">
 			<li><a href="index.php">Find a Flight</a></li>
 			<li><a href="signin.php">My Search</a></li>
-			<li><a href="about.php">About</a></li>
 		    </ul>
 		    <ul class="nav navbar-nav navbar-right">
+			<li><a href="about.php">About</a></li>
 			<li><a href="contact.php">Contact</a></li>
 			<li class="active"><a href="signin.php">Log In</a></li>
 		    </ul>
@@ -145,8 +145,8 @@ _STUFF2;
 				<?php
 				    if (!$flag)
 					echo <<<_STUFF
-				<input type="button" value="Submit" onclick="doStuff(email)" 
-				    onKeyDown="javascript:return submitOnEnter(event)" class="sign-up-button">
+				<input type="submit" class="btn btn-info" value="Submit" onclick="doStuff(email)" 
+				    onKeyDown="javascript:return submitOnEnter(event)">
 _STUFF;
 				?>
 			    </form>

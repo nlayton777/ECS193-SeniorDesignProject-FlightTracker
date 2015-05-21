@@ -1,0 +1,189 @@
+.container-fluid#whole {
+    width:100%;
+    display:table;
+}
+
+.jumbotron#home {
+    background: transparent;
+    width:50%;
+    display: table-cell;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.container-fluid#home {
+    margin-top:auto;
+    margin-bottom:auto;
+    width:50%;
+    display: table-cell;
+    vertical-align: top;
+}
+
+.jumbotron#about {
+    color: #ffffff;
+    background: #ffffff url('Bicycle1.jpg') no-repeat center center;
+    -webkit-background-size: cover;
+       -moz-background-size: cover;
+         -o-background-size: cover;
+            background-size: cover;
+}
+
+.qty {
+    color: black;
+    width: 2.5em;
+    height: 1.5625em;
+    font-size: 0.875em;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+	 -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+input.qtyplus {
+    width: 1.5625em;
+    height: 1.5625em;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0px;
+}
+
+input.qtyminus {
+    width: 1.5625em;
+    height: 1.5625em;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0px;
+}
+
+#slider {
+    width: 75%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#price {
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -webkit-border: none;
+    width: 100px;
+    text-align: center;
+}
+
+input#submit-button {
+    border-width: 2px;
+    width: 200px;
+}
+
+table#results td,th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+table#results th#it {
+    width: 84%;
+}
+
+table#results tr#headers th {
+    font-size: 1.7em;
+}
+
+.dropdown {
+    margin: 0 auto;
+}
+
+.dropdown-table td,th {
+    padding: 0 0.6em;
+    text-align: center;
+}
+
+.on-the-way-there {
+    float: left;
+    margin-left: 35%;
+    margin-right: 3%;
+}
+
+.on-the-way-back {
+    float: left;
+}
+
+.dropdown {
+    clear: left;
+}
+
+.exclamation {
+    float: left;
+    margin-right: 0.1875em;
+}
+
+#search-submit-button {
+    color: #222222;
+    background-color: transparent; 
+    border-color: #222222; 
+    -webkit-transition: background-color ease-in-out .15s;
+       -o-transition: background-color ease-in-out .15s;
+	  transition: background-color ease-in-out .15s;
+}
+
+.table td,th {
+    text-align: center;
+}
+
+label {
+    color: #000000;
+}
+
+label#priceLabel {
+    margin-right:9px;
+    float:left;
+}
+
+.item {
+    width: auto;
+    height: 550px;
+    border-radius: 5px 5px 5px 5px;
+    overflow: hidden;
+}
+
+.carousel_slide#myCarousel {
+    width: 50%;
+    display: table-cell;
+}
+
+.carousel-caption {
+    top: 0;
+    bottom: auto;
+}
+
+.jumbotron h1, .jumbotron p{
+    display:inline;
+}
+
+@media screen and (max-width: 1200px) {
+    .container-fluid#home {
+	margin-top:auto;
+	margin-bottom:auto;
+	width:100%;
+	display: table-cell;
+	vertical-align: top;
+    }
+
+    .jumbotron#home {
+	width:100%;
+	display: table-cell;
+    }
+
+    .carousel_slide#myCarousel{
+	width: 0%;
+	display: table-cell;
+    }
+}
+
+.noUi-target {
+    background-color: #222;
+}

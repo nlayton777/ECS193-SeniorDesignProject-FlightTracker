@@ -13,15 +13,16 @@ public class Main{
     public static void main(String[] args) {
         FlightData fData = new FlightData();
 
+
+        //Take in the Orgin(args[0]) and Destination(args[1]) Airport Codes)
         fData.setFrom(args[0]);
         fData.setTo(args[1]);
-
+            
+        //Start the data extractor
         boolean pass = fData.dataExtractor();
-        //boolean pass = true;
-
-
-        //lets print stuff out
-        if (!pass)                                                      //failure
+        
+        //Print an error statement if hte extractor fails
+        if (!pass)                                                      
         {
             System.out.println("\nERROR: " + fData.getErrorMessage());
         }

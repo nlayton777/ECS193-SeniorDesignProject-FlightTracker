@@ -56,11 +56,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 				});
 		    return (false)
 		  }
-	    }//end  check() --  validation for email and search time
+	    }//end check() --  validation for email and search time
 
 	    function submitForm()
 	    {
-		document.getElementById("hiddenForm").submit();
+			document.getElementById("hiddenForm").submit();
 	    }
 	</script>
     </head>
@@ -204,51 +204,87 @@ _SECTION2;
 				 	$java = 'java sample/Main ' . $to . ' ' . $from;
 				 	$output = shell_exec($java);
 					$myarray = array();
+
 				 	if (!(strpos($output,'ERROR') !== false)){
 				 		$myArray = explode(', ', $output);
-				 		echo <<<_TABLE1
-				  <h2>To Find the Best Price, Hopper.com suggests:</h2>
-				  <table class="table">
-					<tbody>
-					  <tr>
-						<td>A <b>Good Price</b> would be</td>
-						<td>{$myArray[2]} (per passenger)</td>
-					  </tr>
-					  <tr>
-						<td>Try <b>Flying Out</b> on a</td>
-						<td>{$myArray[3]}</td>
-					  </tr>
-					  <tr>
-						<td>Try <b>Flying Back</b> on a</td>
-						<td>{$myArray[4]}</td>
-					  </tr>
-					  <tr>
-						<td>Try these <b>Airlines</b></td>
-						<td>
+
+				 		if( ($myArray[2] != '') or ($myArray[3] != '') or ($myArray[4] != '') or ($myArray[5] != 0) or ($myArray[5+$myArray[5]+1] != '') or ($myArray[5+$myArray[5]+2] != '') )
+						{		
+				 			echo <<<_TABLE1
+								<h2>To Find the Best Price, Hopper.com suggests:</h2>
+									<table class="table">
+										<tbody>
 _TABLE1;
-						for ($x = 0; $x < $myArray[5]; $x++) {
-							echo $myArray[6+$x];
-							if($x+1 < $myArray[5])
-							{
-								echo ", ";
+		
+							if($myArray[2] != ''){
+								echo <<< _Row1
+									<tr>
+										<td>A <b>Good Price</b> would be</td>
+										<td>{$myArray[2]} (per passenger)</td>
+									</tr>
+_Row1;
 							}
-						}	
-					  echo <<<_TABLE2
-					  </td>
-					  </tr>
-					  <tr>
-						<td>Also look at flights <b>Departing From</b></td>
-						<td>{$myArray[5+$myArray[5]+1]}</td>
-					  </tr>
-					  <tr>
-						<td>Also look at flights <b>Arriving Into</b></td>
-						<td>{$myArray[5+$myArray[5]+2]}</td>
-					  </tr>
-					</tbody>
-				  </table>
-				  <p><a href="http://www.hopper.com/flights/from-{$myArray[0]}/to-{$myArray[1]}/guide" target="_blank" >See for Yourself!</a></p>
+
+							if($myArray[3] != ''){
+								echo <<< _Row2
+					  				<tr>
+										<td>Try <b>Flying Out</b> on a</td>
+										<td>{$myArray[3]}</td>
+					  				</tr>
+_Row2;
+							}
+
+							if($myArray[4] != ''){
+								echo <<<_Row3
+									<tr>
+										<td>Try <b>Flying Back</b> on a</td>
+										<td>{$myArray[4]}</td>
+					  				</tr>
+_Row3;
+							}
+
+							if($myArray[5] != 0){
+								echo <<<_Row4
+					  				<tr>
+										<td>Try these <b>Airlines</b></td>
+										<td>
+_Row4;
+								for ($x = 0; $x < $myArray[5]; $x++) {
+									echo $myArray[6+$x];
+									if($x+1 < $myArray[5])
+									{
+										echo ", ";
+									}
+								}
+
+								echo ('</td></tr>');	
+							}
+
+							if($myArray[5+$myArray[5]+1] != ''){
+								echo <<<_Row5
+									<tr>
+										<td>Also look at flights <b>Departing From</b></td>
+										<td>{$myArray[5+$myArray[5]+1]}</td>
+					  				</tr>
+_Row5;
+							}
+
+							if($myArray[5+$myArray[5]+2] != ''){
+								echo <<<_Row6
+					  				<tr>
+										<td>Also look at flights <b>Arriving Into</b></td>
+										<td>{$myArray[5+$myArray[5]+2]}</td>
+					  				</tr>
+_Row6;
+							}
+
+							echo <<<_TABLE2
+								</tbody>
+				  				</table>
+				  				<p><a href="http://www.hopper.com/flights/from-{$myArray[0]}/to-{$myArray[1]}/guide" target="_blank" >See for Yourself!</a></p>
 _TABLE2;
-				  } // endif
+						}//endif for hopper table(has at least one row)
+				  	} // endif
 
 			$result = getResults($post, 50, time());
 			$trips = $result->getTrips();

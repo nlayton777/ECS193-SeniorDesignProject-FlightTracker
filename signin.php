@@ -172,6 +172,30 @@ _STUFF;
 			<input type="hidden" name="email" id="hidden_email">
 			<input type="hidden" name="id"  id="hidden_id">
 		    </form>
+		    <script>
+  				var qstr = window.location.search;
+  				if(qstr != ""){
+				   var qstr_dec = decodeURIComponent(qstr);
+				   qstr_dec = qstr_dec.substring(1);
+				   var params = {}, queries, temp, i, l;
+ 
+				   // Split into key/value pairs
+				   queries = qstr_dec.split("&");
+				
+				   // Convert the array of strings into an object
+				   for ( i = 0, l = queries.length; i < l; i++ ) {
+					   temp = queries[i].split('=');
+					   if(temp[0] == "email"){
+						   document.getElementById("email").value = temp[1];
+					   }
+					   if(temp[0] == "id")
+						   document.getElementById("id").value = temp[1];
+				   }
+				
+				   doStuff(email);
+				}
+ 
+		</script> 
 		</div>
 		<div class="col-md-4"></div>
 	    </div>

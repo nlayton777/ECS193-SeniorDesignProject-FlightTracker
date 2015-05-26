@@ -291,12 +291,40 @@ _STUFF7;
 			 */
 			$cab = ucfirst(strtolower($segment->getCabin()));
 			$lg = $leg->getAircraft();
+                        $carrier = $segment->getFlight()->getCarrier();
+                        $previous = NULL; 
+                        foreach ($trips->getData()->getCarrier() as $carrier)
+                        {
+			    //GET THE AIRLINES      
+			    if ($carrier->getCode() == $segment->getFlight()->getCarrier())
+			    {
+				echo $carrier->getName();
+				$site = $carrier->getCode();
+				$oper = $leg->getOperatingDisclosure();
+				if ((strpos($oper,'AMERICAN AIRLINES') !== false)) 
+				{
+				    if($site !== "AS")
+					$site = "AA";
+				} else if ((strpos($oper,'AMERICAN EAGLE') !== false)) 
+				{
+				    if($site !== "AS")
+					$site = "AA";
+				} else if ((strpos($oper,'US AIRWAYS') !== false)) 
+				{
+				    if($site !== "AS")
+					$site = "US";
+				} // else if
+			    } // if
+			} // foreach code/carrier
+                       
+                        $cab = ucfirst(strtolower($segment->getCabin()));
+                        $lg = $leg->getAircraft();
 
-			echo <<<_STUFF8
-			</td>
-			<td>{$cab}</td>
-			<td>{$lg}</td>
-			<td>
+                        echo <<<_STUFF8
+                        </td>
+                        <td>{$cab}</td>
+                        <td>{$lg}</td>
+                        <td>
 _STUFF8;
 			/*
 			 * get meal information
@@ -742,16 +770,19 @@ function getConfirmationEmail(&$post,$userSource,$userDestination,$userID)
 function getResultsEmail($userEmail, $userID, $userSource, $userDestination, $incOrDecr)
 {
     
+    /*
+     * incOrDecr indicates whether
+     * prices have risen or dropped
+     * so we can change the contents 
+     * of the notification emails
+     * accordingly
+     */
     if($incOrDecr == 1)
-    {
 	$state = 'It seems that prices are increasing! We suggest you purchase your tickets soon before they become too expensive.';
-    } else if($incOrDecr == 0)
-    {
+    else if($incOrDecr == 0)
 	$state = 'It seems that prices are decreasing! Our search bot will continue to search and let you know when the prices begin to increase as well.';
-    } else // this else shouldn't really ever be reached (just in case)
-    {
+    else // this else shouldn't really ever be reached (just in case)
 	$state = 'Prices seem to be staying the same for the most part. We will be sure to let you know if we find any change in the flight prices.';
-    } // if else  
 
     $resultsArr = array(
 	'from'    => 'SoFly <ucd.flight.tracker@gmail.com>', 
@@ -828,7 +859,6 @@ function getResultsEmail($userEmail, $userID, $userSource, $userDestination, $in
  */
 function SearchOverEmail($userEmail, $userID, $userSource, $userDestination)
 {
-
     $resultsArr = array(
 	'from'    => 'SoFly <ucd.flight.tracker@gmail.com>', 
 	'to'      => '<'.$userEmail.'>',

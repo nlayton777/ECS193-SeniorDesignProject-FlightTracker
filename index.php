@@ -246,4 +246,5 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	    <input type="hidden" name="webpage" value="index.php" />
 	</form>
     </body>
+
 </html>

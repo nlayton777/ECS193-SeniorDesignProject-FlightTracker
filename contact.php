@@ -27,6 +27,20 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<script src="bootstrap.js"></script>
 	<script src="flight_tracker.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
+	<style>
+		textarea {
+    		resize: none;
+		}
+		.jumbotron#contact {
+    		color: #ffffff;
+    		background: #ffffff url('GoldenGate3.jpg') no-repeat center center;
+    		-webkit-background-size: cover;
+       		-moz-background-size: cover;
+         	-o-background-size: cover;
+            background-size: cover;
+            height: 200px;
+		}
+	</style>
     </head>
 
     <body>

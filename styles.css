@@ -6,6 +6,10 @@
          -o-background-size: cover;
             background-size: cover;
 }
+.container-fluid#whole {
+	width:100%;
+	display:table;
+}
 
 .jumbotron#about {
     color: #222;
@@ -207,4 +211,54 @@ textarea {
     border: 1px solid #222;
     color: #000;
     background-color: transparent;
+}
+
+label {
+    color: #000000;
+}
+
+label#priceLabel {
+    margin-right:9px;
+    float:left;
+}
+
+.item{
+    width: auto;
+    height: 550px;
+    border-radius: 5px 5px 5px 5px;
+    overflow: hidden;
+}
+
+#myCarousel.carousel_slide {
+    width: 50%;
+    display: table-cell;
+}
+
+.carousel-caption {
+    top: 0;
+    bottom: auto;
+}
+
+.jumbotron h1, .jumbotron p{
+    display:inline;
+}
+
+@media screen and (max-width: 1200px) {
+    #home.container-fluid {
+	margin-top:auto;
+	margin-bottom:auto;
+	width:100%;
+	display: table-cell;
+	vertical-align: top;
+    }
+
+    #home.jumbotron {
+	width:100%;
+	display: table-cell;
+    }
+
+    #myCarousel.carousel_slide{
+	width: 0%;
+	display: table-cell;
+    }
 }

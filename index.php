@@ -239,6 +239,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 			</form>
 		    </div>
 		</div>
+		<p>
+		    *Note: broadening your search preferences will 
+		    yield more results. Limiting your list of preferred 
+		    airlines or your maximum price can sometimes result 
+		    in limited or no search results.
+		</p>
 	    </div>
 	</div>
 	

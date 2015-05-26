@@ -27,11 +27,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 	<script src="bootstrap.js"></script>
 	<script src="flight_tracker.js"></script>
 	<link rel="stylesheet" href="styles.css"/>
-	<style>
-	   html,body {
-		 height:100%;
-	   }
-	</style>
     </head>
 
     <body>

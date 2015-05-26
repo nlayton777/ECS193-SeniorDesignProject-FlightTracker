@@ -138,7 +138,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 				$isRoundTrip = false;
 				if (!isOneWay($post))
 				{
-					 echo $post['return_date'];
+					 echo " ".$post['return_date'];
 					 $isRoundTrip = true;	
 				}
 				echo "</h3>";

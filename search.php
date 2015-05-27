@@ -144,10 +144,179 @@ if (isset($_SESSION['id']) && isset($_SESSION['email']))
 					 echo " ".$post['return_date'];
 					 $isRoundTrip = true;	
 				}
-				echo "</h3>";
-			    ?>
-			</div>
+				echo <<<_STUFF
+				</h3>
+			    <div>
+			    	<h3 style="color:red">Price Analysis Hints:</h3>
+_STUFF;
+				$currentDate = date('m/d/Y');
+				$departDate = $post['depart_date'];
+				$returnDate = $post['return_date'];
+				$timeNow = strtotime($currentDate);
+				$timeDepart = strtotime($departDate);
+				$timeReturn = strtotime($returnDate);
+				$departDay = date("N", $timeDepart);
+				$returnDay = date("N", $timeReturn);
+				$diff1 = abs($timeDepart - $timeNow);
+				$diff = $diff1 /(60 * 60 * 24); 
+				// OPTIMAL SITUATION 
+				if((($departDay == 2 || $departDay == 3) && 
+				    ($returnDay == 2 || $returnDay == 3)) && $diff == 47)
+				{
+						if($departDay == 2) {
+						    $dow = "Tuesday";
+						} else if ($departDay == 3) {
+						    $dow = "Wednesday";
+						}
+						
+						if($returnDay == 2) {
+						    $dow2 = "Tuesday";
+						} else if ($returnDay == 3) {
+						    $dow2 = "Wednesday";
+						}
+					echo "You are planning on travelling on the best ".
+					     "priced days of the week, and according to historic ".
+					     "trends today is the prime day to book your tickets ".
+					     "for the lowest price. We recommend you book your tickets now!";
+				}
+				else//check for individual cases
+				{
+					//ANALYSIS ON DAY OF WEEK (TUES AND WED ARE BEST DAYS TO TRAVEL ON)
+					if(($departDay == 2 || $departDay == 3) && 
+					    ($returnDay == 2 || $returnDay == 3))
+					{
+						if($departDay == 2) {
+						    $dow = "Tuesday";
+						} else if ($departDay == 3) {
+						    $dow = "Wednesday";
+						}
+						
+						if($returnDay == 2) {
+						    $dow2 = "Tuesday";
+						} else if ($returnDay == 3) {
+						    $dow2 = "Wednesday";
+						}
+						echo "You are currently planning on departing on a ".$dow. 
+						     " and planning to return on " . $dow2. 
+						     ". These are historically the best priced days of the ".
+						     "week to travel. \n";
+					} else if($departDay == 2 || $departDay == 3) {
+						//case if departDay is on a Tuesday or Wednesday but returnDay is not
+						if($departDay == 2) {
+						    $dow = "Tuesday";
+						} else if ($departDay == 3) {
+						    $dow = "Wednesday";
+						}
+						if($returnDay == 1) {
+						    $dow2 = "Monday";
+						} else if ($returnDay == 2) {
+						    $dow2 = "Tuesday";
+						} else if ($returnDay == 3) {
+						    $dow2 = "Wednesday";
+						} else if ($returnDay == 4) {
+						    $dow2 = "Thursday";
+						} else if ($returnDay == 5) {
+						    $dow2 = "Friday";
+						} else if ($returnDay == 6) {
+						    $dow2 = "Saturday";
+						} else if ($returnDay == 7) {
+						    $dow2 = "Sunday";
+						} else if ($returnDay == 0) {
+						    $dow2 = "Sunday";
+						} 
+						echo "You are currently planning on departing on a ".$dow. 
+						     ". This is historically the best priced day of the ".
+						     "week to travel on. You are returning on a ".$dow2. 
+						     ", which historically does not have the best price ".
+						     "for travel. If your days of travel are flexible, we ".
+						     "recommend changing the day of your return flight.\n";
+					} else if($returnDay == 2 || $returnDay == 3) {
+						//case if returnDay is on a Tuesday or Wednesday but departDay is not
+						if($departDay == 1) {
+						    $dow2 = "Monday";
+						} else if ($departDay == 2) {
+						    $dow2 = "Tuesday";
+						} else if ($departDay == 3) {
+						    $dow2 = "Wednesday";
+						} else if ($departDay == 4) {
+						    $dow2 = "Thursday";
+						} else if ($departDay == 5) {
+						    $dow2 = "Friday";
+						} else if ($departDay == 6) {
+						    $dow2 = "Saturday";
+						} else if ($departDay == 7) {
+						    $dow2 = "Sunday";
+						} else if ($departDay == 0) {
+						    $dow2 = "Sunday";
+						} 
+						if($returnDay == 1)
+						{
+						    $dow = "Tuesday";
+						} else if ($returnDay == 3) {
+						    $dow = "Wednesday";
+						}
+						echo "You are currently planning to depart on a ".$dow2. 
+						     ", which historically does not have the best price ".
+						     "for travel. If your days of travel are flexible, we ".
+						     "recommend changing the day of your departing flight. ". 
+						     "You are returning on a ".$dow. ". This is historically ".
+						     "the best priced day of the week to purchase a flight for. \n";
+					} else {
+						echo "Historically Flying on a Tuesday or a Wednesday". 
+						     "yield the lowest fares. If your flight dates are".
+						     "flexible we recommend choosing flights for one of those days. \n";
 
+
+					}
+					//ANALYSIS ON DAYS BEFORE FLIGHT (47 DAYS BEFORE FLIGHT = BEST DAY TO PURCHASE FLIGHT)
+					if($diff == 47) {
+						echo "Today is 47 days before your flight. According ".
+						     "to past trends, we highly recommend purchasing ".
+						     "your flight ticket today as it is the prime day.".
+						     "for you to book your flight!\n";	
+						echo "\n";		   						
+					} else if($diff > 47 && $diff < 114) {
+						//user has time to watch prices between 47 and 114 days before the flight
+						$dayLeft = $diff - 47;
+						echo "Today is ".$diff." days before your flight. According ".
+						     "to past trends, we highly recommend checking fares ".
+						     "often for your flight in the next ".$dayLeft." days as ".
+						     "historically prices drop during this time. Our background ".
+						     "search tool is a good way to keep track of any drop in price!\n";
+						     
+						echo "\n";	
+					} else if($diff < 47 && $diff > 14) {
+						//user needs to start booking because flights will not be getting much cheaper
+						$days = $diff - 14;
+						echo "You are reaching the end of the prime booking window ".
+						     "for this flight. We recommend that you book your ".
+						     "flight as soon as possible, and definitely within the ".
+						     " next " .$days. " days, as historically, prices do not drop ".
+						     " further.\n";
+						echo "\n";	
+					} else if($diff > 114) {
+						//user is trying to book too early. It is hightly likely a better price will come about
+						$daysRemain = $diff - 114;
+						echo "It seems to be a little too early to book this flight. ".
+						     "We would recommend waiting at least " .$daysRemain. 
+						     " days until booking your flight that way you can book ".
+						     "within the prime booking window.\n";
+						echo "\n";	
+					} else {
+						//coming up on the flight in the next 2 weeks should book immediately
+						if ($diff != 1){
+						echo "Below are the current flight choices our search bot has found for you. We recommend booking as soon as possible since your flight is coming up very soon, and historically prices will not drop within the next " .$diff. " days.\n";
+						echo "\n";
+						}else {
+							echo "Below are the current flight choices our search bot has found for you. We recommend booking as soon as possible since your flight is coming up very soon, and historically prices will not drop within the next " .$diff. " day.\n";
+						echo "\n";
+						}
+					}
+				}
+			    ?>
+
+			    </div>
+			</div>
 			<!--
 			    provide a description for the user to 
 			    understand how the background search works
